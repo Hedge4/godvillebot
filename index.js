@@ -102,7 +102,7 @@ async function giveGodpower(message) {
         User[message.author.id] = userDoc.data()[message.author.id];
     }
 
-    console.log(godpowerAdd+' godpower added for user '+message.author.username+' in channel '+message.channel.name)
+    console.log(godpowerAdd+' godpower added for user '+message.author.username+' in channel '+message.channel.name);
     godpowerCooldown.add(message.author.id);
 
     let curGodpower = User[message.author.id].godpower;
@@ -114,8 +114,11 @@ async function giveGodpower(message) {
     totalGodpower = totalGodpower + godpowerAdd;
 
     if (nextLevel <= newGodpower) {
+        console.log('User '+message.author.username+' levelled up from level '+curLevel+' to level '+eval(curLevel + 1));
+        let goldAdd = Math.floor(100*(Math.sqrt(curLevel + 1)))
         User[message.author.id].godpower = newGodpower - nextLevel;
         User[message.author.id].level = curLevel + 1;
+        User[message.author.id].gold = User[message.author.id].gold + goldAdd;
         let newLevel = curLevel + 2;
         let newNextLevel = Math.floor(100*1.2**((curLevel+1)**(4/5)));
         let nickname = message.guild.member(message.author) ? message.guild.member(message.author).displayName : null;
@@ -124,7 +127,7 @@ async function giveGodpower(message) {
             .setColor('d604cf')
             .setTitle(nickname+' levelled UP! <:screen_pantheonup:441043802325778442>')
             .setDescription('You gathered '+nextLevel+' godpower <:stat_godpower:401412765232660492> and levelled up to level '+User[message.author.id].level+'! :tada: - You now have '+User[message.author.id].total_godpower+' godpower total.')
-            .addField("Gold rewarded", 'This isn\'t implemented yet :/')
+            .addField("Gold rewarded", `You earned ${goldAdd} <:stat_gold:401414686651711498> for reaching level `+User[message.author.id].level+'. You now have '+User[message.author.id].gold+' gold total.')
             .setFooter(`You'll need ${newNextLevel} godpower for level ${newLevel}.`, message.author.displayAvatarURL);
         client.channels.get(levelup_channel).send("Congratulations on reaching level "+User[message.author.id].level+', '+message.author+"!");
         client.channels.get(levelup_channel).send(lvlUpEmbed);
