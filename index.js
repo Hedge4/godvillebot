@@ -92,7 +92,6 @@ async function giveGodpower(message) {
     let godpowerAdd = Math.floor(Math.random() * 5) + 3;
     if(userDoc.data()[message.author.id] === undefined) {
         User[message.author.id] = {
-            last_username: string,
             godpower: 0,
             total_godpower: 0,
             level: 0
@@ -147,14 +146,17 @@ async function displayLevel(message) {
         user = message.author;
     }
 
+    let author = user.username+'#'+user.discriminator
     let userDoc = await userData.get();
     let User = {};
     if(userDoc.data()[user.id] === undefined) {
         User[user.id] = {
             godpower: 0,
             total_godpower: 0,
-            level: 0
+            level: 0,
+            gold: 0
         }
+        User[message.author.id].last_username = message.author.username+'#'+message.author.discriminator;
         await userData.set(User, {merge: true});
     } else {
         User[user.id] = userDoc.data()[user.id];
@@ -166,7 +168,6 @@ async function displayLevel(message) {
     let nextLevel = curLevel+1;
     let difference = reqGodpower - curGodpower;
     let nickname = message.guild.member(user) ? message.guild.member(user).displayName : null;
-    let author = user.username+'#'+user.discriminator
     if (nickname !== user.username) {
         author = author+' / '+ nickname;
     }
@@ -183,8 +184,41 @@ async function displayLevel(message) {
     message.channel.send(lvlEmbed);
 }
 
-client.login(token)
-
 async function displayGold(message) {
-    message.reply('this hasn\'t been implemented yet :/');
+
+    let user = message.mentions.users.first();
+    if (!user) {
+        user = message.author;
+    }
+
+    let author = user.username+'#'+user.discriminator
+    let userDoc = await userData.get();
+    let User = {};
+    if(userDoc.data()[user.id] === undefined) {
+        User[user.id] = {
+            godpower: 0,
+            total_godpower: 0,
+            level: 0,
+            gold: 0
+        }
+        User[message.author.id].last_username = message.author.username+'#'+message.author.discriminator;
+        await userData.set(User, {merge: true});
+    } else {
+        User[user.id] = userDoc.data()[user.id];
+    }
+
+    let nickname = message.guild.member(user) ? message.guild.member(user).displayName : null;
+    if (nickname !== user.username) {
+        author = author+' / '+ nickname;
+    }
+
+    let goldEmbed = new Discord.RichEmbed()
+    .setAuthor(author)
+    .setColor('ffd700')
+    .addField("Gold", User[user.id].gold, true)
+    .setFooter(`${difference} godpower needed for level ${nextLevel}.`, user.displayAvatarURL);
+
+    message.channel.send(goldEmbed);
 }
+
+client.login(token)
