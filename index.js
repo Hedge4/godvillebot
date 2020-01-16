@@ -159,7 +159,7 @@ async function displayLevel(message) {
             level: 0,
             gold: 0
         }
-        User[message.author.id].last_username = message.author.username+'#'+message.author.discriminator;
+        User[user.id].last_username = author;
         await userData.set(User, {merge: true});
     } else {
         User[user.id] = userDoc.data()[user.id];
@@ -204,7 +204,7 @@ async function displayGold(message) {
             level: 0,
             gold: 0
         }
-        User[message.author.id].last_username = message.author.username+'#'+message.author.discriminator;
+        User[user.id].last_username = author;
         await userData.set(User, {merge: true});
     } else {
         User[user.id] = userDoc.data()[user.id];
@@ -219,7 +219,7 @@ async function displayGold(message) {
     .setAuthor(author)
     .setColor('ffd700')
     .addField("Gold", User[user.id].gold, true)
-    .setFooter(`${difference} godpower needed for level ${nextLevel}.`, user.displayAvatarURL);
+    .setThumbnail(user.displayAvatarURL)
 
     message.channel.send(goldEmbed);
 }
