@@ -131,7 +131,7 @@ async function giveGodpower(message) {
         client.channels.get(levelup_channel).send(lvlUpEmbed);
     }
 
-    User[message.author.id].last_username = user.username+'#'+user.discriminator;
+    User[message.author.id].last_username = message.author.username+'#'+message.author.discriminator;
     userData.set(User, {merge: true});
     userData.update({1:totalGodpower});
 
