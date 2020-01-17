@@ -41,7 +41,7 @@ client.on('ready', () => {
     if (totalGodpower === undefined) {
         totalGodpower = 0;
     }
-    client.channels.get(levelup_channel).send('Succesfully restarted!');
+    client.channels.get(levelup_channel).send('<@346301339548123136>, succesfully restarted!');
 });
 
 client.on('message', message => {
@@ -146,7 +146,23 @@ async function displayLevel(message) {
 
     let user = message.mentions.users.first();
     if (!user) {
-        user = message.author;
+        if (message.content.length >= 7) {
+            let username = message.content.slice(6).trim();
+            if (message.content.includes('#')) {
+                let args = username.split('#');
+                username = args[0];
+                let discriminator = args[1].slice(0, 4);
+                user = client.users.find(user => user.tag == (username + '#' + discriminator));
+            } else {
+                user = client.users.find(user => user.username == username);
+            }
+            if (!user) {
+                message.reply('mention a valid user or use a valid username!')
+                return;
+            }
+        } else {
+            user = message.author;
+        }
     }
 
     let author = user.username+'#'+user.discriminator
@@ -179,7 +195,7 @@ async function displayLevel(message) {
     .setAuthor(author)
     .setColor('32cd32')
     .addField("Level", curLevel, true)
-    .addField("Godpower", curGodpower, true)
+    .addField("Godpower <:stat_godpower:401412765232660492>", curGodpower, true)
     .addField("Total godpower", User[user.id].total_godpower, false)
     .addField("Rank", 'This hasn\'t been added yet.', true)
     .setFooter(`${difference} godpower needed for level ${nextLevel}.`, user.displayAvatarURL);
@@ -191,7 +207,23 @@ async function displayGold(message) {
 
     let user = message.mentions.users.first();
     if (!user) {
-        user = message.author;
+        if (message.content.length >= 7) {
+            let username = message.content.slice(6).trim();
+            if (message.content.includes('#')) {
+                let args = username.split('#');
+                username = args[0];
+                let discriminator = args[1].slice(0, 4);
+                user = client.users.find(user => user.tag == (username + '#' + discriminator));
+            } else {
+                user = client.users.find(user => user.username == username);
+            }
+            if (!user) {
+                message.reply('mention a valid user or use a valid username!')
+                return;
+            }
+        } else {
+            user = message.author;
+        }
     }
 
     let author = user.username+'#'+user.discriminator
@@ -218,7 +250,7 @@ async function displayGold(message) {
     let goldEmbed = new Discord.RichEmbed()
     .setAuthor(author)
     .setColor('ffd700')
-    .addField("Gold", User[user.id].gold, true)
+    .addField("Gold <:stat_gold:401414686651711498>", User[user.id].gold, true)
     .setThumbnail(user.displayAvatarURL)
 
     message.channel.send(goldEmbed);
