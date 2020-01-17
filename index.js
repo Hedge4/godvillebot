@@ -96,7 +96,7 @@ async function giveGodpower(message) {
             total_godpower: 0,
             level: 0
         }
-        User[message.author.id].last_username = user.username+'#'+user.discriminator;
+        User[message.author.id].last_username = message.author.username+'#'+message.author.discriminator;
         await userData.set(User, {merge: true});
     } else {
         User[message.author.id] = userDoc.data()[message.author.id];
