@@ -49,7 +49,7 @@ client.on('message', message => {
 
     if (message.channel.type === 'dm') {
         if (message.author.id !== bot_id) {
-            console.log('A DM was sent to the bot by \'' + message.author.username + '#' + message.author.discriminator + '\'. The content was: \'' + message.content + '\'');
+            console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
         }
     } else if (message.guild.id === server) {
         if (message.author.id != bot_id) {
@@ -96,7 +96,7 @@ async function giveGodpower(message) {
             total_godpower: 0,
             level: 0
         }
-        User[message.author.id].last_username = message.author.username+'#'+message.author.discriminator;
+        User[message.author.id].last_username = message.author.tag;
         await userData.set(User, {merge: true});
     } else {
         User[message.author.id] = userDoc.data()[message.author.id];
@@ -133,7 +133,7 @@ async function giveGodpower(message) {
         client.channels.get(levelup_channel).send(lvlUpEmbed);
     }
 
-    User[message.author.id].last_username = message.author.username+'#'+message.author.discriminator;
+    User[message.author.id].last_username = message.author.tag;
     userData.set(User, {merge: true});
     userData.update({1:totalGodpower});
 
@@ -165,7 +165,7 @@ async function displayLevel(message) {
         }
     }
 
-    let author = user.username+'#'+user.discriminator
+    let author = user.tag;
     let userDoc = await userData.get();
     let User = {};
     if(userDoc.data()[user.id] === undefined) {
@@ -226,7 +226,7 @@ async function displayGold(message) {
         }
     }
 
-    let author = user.username+'#'+user.discriminator
+    let author = user.tag;
     let userDoc = await userData.get();
     let User = {};
     if(userDoc.data()[user.id] === undefined) {
