@@ -102,7 +102,7 @@ async function giveGodpower(message) {
         User[message.author.id] = userDoc.data()[message.author.id];
     }
 
-    console.log(godpowerAdd+' godpower added for user '+message.author.username+' in channel '+message.channel.name);
+    console.log(godpowerAdd+' godpower added for user '+message.author.tag+' in channel '+message.channel.name);
     godpowerCooldown.add(message.author.id);
 
     let curGodpower = User[message.author.id].godpower;
@@ -114,7 +114,7 @@ async function giveGodpower(message) {
     totalGodpower = totalGodpower + godpowerAdd;
 
     if (nextLevel <= newGodpower) {
-        console.log('User '+message.author.username+' levelled up from level '+curLevel+' to level '+eval(curLevel + 1));
+        console.log('User '+message.author.tag+' levelled up from level '+curLevel+' to level '+eval(curLevel + 1));
         let goldAdd = Math.floor(100*(Math.sqrt(curLevel + 1)))
         User[message.author.id].godpower = newGodpower - nextLevel;
         User[message.author.id].level = curLevel + 1;
