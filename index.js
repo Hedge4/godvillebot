@@ -65,7 +65,7 @@ client.on('message', message => {
                 if (message.content.toLowerCase().startsWith(`${prefix}gold`)) {
                     displayGold(message);
                 }
-                if (message.content.toLowerCase().startsWith(`${prefix}mentiontoggle`)) {
+                if (message.content.toLowerCase().startsWith(`${prefix}toggle-mentions`)) {
                     switchMentionSetting(message);
                 }
             }
