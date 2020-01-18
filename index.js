@@ -65,10 +65,41 @@ client.on('message', message => {
                 if (message.content.toLowerCase().startsWith(`${prefix}gold`)) {
                     displayGold(message);
                 }
+                if (message.content.toLowerCase().startsWith(`${prefix}mentiontoggle`)) {
+                    switchMentionSetting(message);
+                }
             }
         }
     }
 });
+
+async function switchMentionSetting(message) {
+    let userDoc = await userData.get();
+    let User = {};
+    if(userDoc.data()[message.author.id] === undefined) {
+        User[message.author.id] = {
+            godpower: 0,
+            gold: 0,
+            total_godpower: 0,
+            level: 0,
+            mention: false
+        }
+        User[message.author.id].last_username = message.author.tag;
+        await userData.set(User, {merge: true});
+        message.reply('succesfully disabled mentioning for level-ups!')
+    } else {
+        User[message.author.id] = userDoc.data()[message.author.id];
+        if (User[message.author.id].mention === false) {
+            User[message.author.id].mention = true;
+            await userData.set(User, {merge: true});
+            message.reply('succesfully enabled mentioning for level-ups!')
+        } else {
+            User[message.author.id].mention = false;
+            await userData.set(User, {merge: true});
+            message.reply('succesfully disabled mentioning for level-ups!')
+        }
+    }
+}
 
 async function giveGodpower(message) {
     let spam = 0;
@@ -93,6 +124,7 @@ async function giveGodpower(message) {
     if(userDoc.data()[message.author.id] === undefined) {
         User[message.author.id] = {
             godpower: 0,
+            gold: 0,
             total_godpower: 0,
             level: 0
         }
@@ -129,7 +161,7 @@ async function giveGodpower(message) {
             .setDescription('You gathered '+nextLevel+' godpower <:stat_godpower:401412765232660492> and levelled up to level '+User[message.author.id].level+'! :tada: - You now have '+User[message.author.id].total_godpower+' godpower total.')
             .addField("Gold rewarded", `You earned ${goldAdd} <:stat_gold:401414686651711498> for reaching level `+User[message.author.id].level+'. You now have '+User[message.author.id].gold+' gold total.')
             .setFooter(`You'll need ${newNextLevel} godpower for level ${newLevel}.`, message.author.displayAvatarURL);
-        client.channels.get(levelup_channel).send("Congratulations on reaching level "+User[message.author.id].level+', '+message.author+"!");
+        if (User[message.author.id].mention === false) { client.channels.get(levelup_channel).send("Congratulations on reaching level "+User[message.author.id].level+', '+message.author+"!")}
         client.channels.get(levelup_channel).send(lvlUpEmbed);
     }
 
