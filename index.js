@@ -161,7 +161,7 @@ async function giveGodpower(message) {
             .setDescription('You gathered '+nextLevel+' godpower <:stat_godpower:401412765232660492> and levelled up to level '+User[message.author.id].level+'! :tada: - You now have '+User[message.author.id].total_godpower+' godpower total.')
             .addField("Gold rewarded", `You earned ${goldAdd} <:stat_gold:401414686651711498> for reaching level `+User[message.author.id].level+'. You now have '+User[message.author.id].gold+' gold total.')
             .setFooter(`You'll need ${newNextLevel} godpower for level ${newLevel}.`, message.author.displayAvatarURL);
-        if (User[message.author.id].mention === false) { client.channels.get(levelup_channel).send("Congratulations on reaching level "+User[message.author.id].level+', '+message.author+"!")}
+        if (User[message.author.id].mention !== false) { client.channels.get(levelup_channel).send("Congratulations on reaching level "+User[message.author.id].level+', '+message.author+"!")}
         client.channels.get(levelup_channel).send(lvlUpEmbed);
     }
 
