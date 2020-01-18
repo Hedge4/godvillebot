@@ -108,6 +108,7 @@ async function giveGodpower(message) {
         if (message.content.startsWith(element)) {spam = 1}
     });
 
+    console.log(message.content.length);
     if (message.content.length < 2) {
         return;
     }
