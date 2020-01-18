@@ -108,11 +108,10 @@ async function giveGodpower(message) {
         if (message.content.startsWith(element)) {spam = 1}
     });
 
-    console.log(message.content.length);
-    if (message.content.length < 2) {
-        return;
-    }
+    if (message.content.length < 7) {spam = 1}
 
+    if (message.content.trim() === /(<:([^:]+):([0-9]{18})>)+/) {spam = 1}
+    
     if (godpowerCooldown.has(message.author.id)) {spam = 1}
 
     if (spam === 1) {
