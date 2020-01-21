@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { prefix, token, owner, server, bot_id, no_xp_channels, levelup_channel, command_channels, no_xp_prefixes, cdSeconds } = require('./config.json');
+const { prefix, token, owner, server, bot_id, no_xp_channels, levelup_channel, command_channels, no_xp_prefixes, cdSeconds, xp_blocked } = require('./config.json');
 const client = new Discord.Client();
 let godpowerCooldown = new Set();
 
@@ -24,7 +24,7 @@ client.on('ready', () => {
     if (totalGodpower === undefined) {
         totalGodpower = 0;
     }
-//    client.channels.get(levelup_channel).send('<@346301339548123136>, succesfully restarted!');
+    client.channels.get(levelup_channel).send('<@346301339548123136>, succesfully restarted!');
 });
 
 client.on('message', message => {
@@ -87,6 +87,8 @@ async function switchMentionSetting(message) {
 
 async function giveGodpower(message) {
     let spam = 0;
+
+    if (xp_blocked.includes(message.author.id)) {return}
 
     no_xp_prefixes.forEach(element => {
         if (message.content.startsWith(element)) {spam = 1}
