@@ -24,7 +24,7 @@ client.on('ready', () => {
     if (totalGodpower === undefined) {
         totalGodpower = 0;
     }
-    client.channels.get(levelup_channel).send('<@346301339548123136>, succesfully restarted!');
+//    client.channels.get(levelup_channel).send('<@346301339548123136>, succesfully restarted!');
 });
 
 client.on('message', message => {
@@ -219,6 +219,7 @@ async function displayLevel(message) {
     .addField("Rank", rank, true)
     .setFooter(`${difference} godpower needed for level ${nextLevel}.`, user.displayAvatarURL);
 
+    console.log(`${message.author.tag} requested the level card for ${user.tag}.`)
     message.channel.send(lvlEmbed);
 }
 
@@ -247,7 +248,6 @@ async function displayGold(message) {
 
     let author = user.tag;
     let userDoc = await userData.get();
-    console.log(userDoc.data())
     let User = {};
     if(userDoc.data()[user.id] === undefined) {
         User[user.id] = {
@@ -273,21 +273,19 @@ async function displayGold(message) {
     .addField("Gold <:stat_gold:401414686651711498>", User[user.id].gold, true)
     .setThumbnail(user.displayAvatarURL)
 
+    console.log(`${message.author.tag} requested the gold amount for ${user.tag}.`)
     message.channel.send(goldEmbed);
 }
 
 async function getOwnRanking(userID, userDocData) {
     var sortable = [];
-    for (var userID in userDocData) {
-        sortable.push([userID, userDocData[userID].total_godpower]);
+    for (var ID in userDocData) {
+        sortable.push([ID, userDocData[ID].total_godpower]);
     }
     sortable.sort(function(a, b) {
         return b[1] - a[1];
     });
-    console.log(sortable);
     rank = sortable.findIndex((element) => element[0] === userID);
-    console.log(rank);
-    console.log(sortable[rank])
     if (rank === -1) {return "Not found"};
     return rank;
 }
@@ -313,8 +311,8 @@ async function getRanking(message) {
     if(userDoc.data()[message.author.id] !== undefined) {own_ranking = true};
     const grand_total = userDoc.data()[1];
     var sortable = [];
-    for (var userID in userDoc.data()) {
-        sortable.push([userID, userDoc.data()[userID].total_godpower, userDoc.data()[userID].last_username, userDoc.data()[userID].level]);
+    for (var ID in userDoc.data()) {
+        sortable.push([ID, userDoc.data()[ID].total_godpower, userDoc.data()[ID].last_username, userDoc.data()[ID].level]);
     }
     sortable.sort(function(a, b) {
         return b[1] - a[1];
