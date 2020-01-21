@@ -16,23 +16,6 @@ let getDoc = userData.get()
         totalGodpower = doc.data()[1]}
     );
 
-/*db.collection('data').get()
-  .then((snapshot) => {
-    snapshot.forEach((doc) => {
-      console.log(doc.id, '=>', doc.data());
-    });
-  })
-  .catch((err) => {
-    console.log('Error getting documents', err);
-  });
-
-async function test() {
-    let a = await userData.get();
-    let b = a.data();
-    console.log(b);
-}
-test()*/
-
 client.on('ready', () => {
     const currentDate = new Date();
     console.log('\n' + currentDate + ` - Logged in as ${client.user.tag}!`);
@@ -53,11 +36,9 @@ client.on('message', message => {
         }
     } else if (message.guild.id === server) {
         if (message.author.id != bot_id) {
-//            if (message.channel.id === '666856171524587527') {
             if (!no_xp_channels.includes(message.channel.id)) {
                 giveGodpower(message);
             }
-//            if (message.channel.id === '666856171524587527') {
             if (command_channels.includes(message.channel.id)) {
                 if (message.content.toLowerCase().startsWith(`${prefix}level`)) {
                     displayLevel(message);
@@ -67,6 +48,9 @@ client.on('message', message => {
                 }
                 if (message.content.toLowerCase().startsWith(`${prefix}toggle-mentions`)) {
                     switchMentionSetting(message);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}ranking`)) {
+                    getRanking(message);
                 }
             }
         }
@@ -197,6 +181,7 @@ async function displayLevel(message) {
         }
     }
 
+    let rank = "";
     let author = user.tag;
     let userDoc = await userData.get();
     let User = {};
@@ -213,6 +198,8 @@ async function displayLevel(message) {
         User[user.id] = userDoc.data()[user.id];
     }
 
+    if (User[user.id].total_godpower <= 0) {rank = "Unranked"};
+    if (rank !== "Unranked") {rank = await getOwnRanking(user.id, userDoc.data())};
     let curGodpower = User[user.id].godpower;
     let curLevel = User[user.id].level;
     let reqGodpower = Math.floor(100*1.2**(curLevel**(4/5)));
@@ -228,8 +215,8 @@ async function displayLevel(message) {
     .setColor('32cd32')
     .addField("Level", curLevel, true)
     .addField("Godpower <:stat_godpower:401412765232660492>", curGodpower, true)
-    .addField("Total godpower", User[user.id].total_godpower, false)
-    .addField("Rank", 'This hasn\'t been added yet.', true)
+    .addField("Total godpower", User[user.id].total_godpower, true)
+    .addField("Rank", rank, true)
     .setFooter(`${difference} godpower needed for level ${nextLevel}.`, user.displayAvatarURL);
 
     message.channel.send(lvlEmbed);
@@ -260,6 +247,7 @@ async function displayGold(message) {
 
     let author = user.tag;
     let userDoc = await userData.get();
+    console.log(userDoc.data())
     let User = {};
     if(userDoc.data()[user.id] === undefined) {
         User[user.id] = {
@@ -286,6 +274,74 @@ async function displayGold(message) {
     .setThumbnail(user.displayAvatarURL)
 
     message.channel.send(goldEmbed);
+}
+
+async function getOwnRanking(userID, userDocData) {
+    var sortable = [];
+    for (var userID in userDocData) {
+        sortable.push([userID, userDocData[userID].total_godpower]);
+    }
+    sortable.sort(function(a, b) {
+        return b[1] - a[1];
+    });
+    console.log(sortable);
+    rank = sortable.findIndex((element) => element[0] === userID);
+    console.log(rank);
+    console.log(sortable[rank])
+    if (rank === -1) {return "Not found"};
+    return rank;
+}
+
+async function getRanking(message) {
+    const args = message.content.slice(8).trim().split(' ');
+    let page = 1;
+    if (args.length > 1) {
+        return message.reply('the correct syntax is >ranking [page].');
+    }
+    if (!args[0].length) {
+        page = 1;
+    } else {
+        if (isNaN(args[0])) {
+            return message.reply('the correct syntax is >ranking [page].');
+        } else {
+            page = Math.floor(args[0])
+            if (page <= 0) {return message.reply('the lowest page number you can request is 1, dumdum.')}
+        }
+    }
+    let userDoc = await userData.get();
+    let own_ranking = false;
+    if(userDoc.data()[message.author.id] !== undefined) {own_ranking = true};
+    const grand_total = userDoc.data()[1];
+    var sortable = [];
+    for (var userID in userDoc.data()) {
+        sortable.push([userID, userDoc.data()[userID].total_godpower, userDoc.data()[userID].last_username, userDoc.data()[userID].level]);
+    }
+    sortable.sort(function(a, b) {
+        return b[1] - a[1];
+    });
+
+    let own_rank = undefined;
+    if (own_ranking === true) {
+        own_rank = sortable.findIndex((element) => element[0] === message.author.id);
+        if (own_rank === -1) {own_rank = "Not found"};
+    }
+
+    let index = 0;
+    sortable.splice(index, 1);
+    const total_users = sortable.length;
+    const max_page = Math.floor((total_users / 10) + 1);
+    if (page > max_page) {return message.reply(`that page doesn't exist, the highest page number is ${max_page}.`)}
+    const end_index = page * 10; 
+    const start_index = end_index - 10;
+    const usersOnPage = sortable.slice(start_index, end_index);
+
+    let ranking = `Total users registered: ${total_users} - Total godpower collected: ${grand_total}\n-------------------------------------------------------------\n`;
+    for (let i = 0; i<usersOnPage.length; i++) {
+        ranking += `Rank {${i+1+(page-1)*10}}    - "${usersOnPage[i][2]}", level ${usersOnPage[i][3]}.\n              Total godpower: ${usersOnPage[i][1]}\n`;
+    }
+    ranking += `------------------------------------------------\nYour rank: {${own_rank}} - Level ${userDoc.data()[message.author.id].level}, total godpower: ${userDoc.data()[message.author.id].total_godpower}`;
+
+    message.reply("here is page "+page+" of the godpower rankings:\n```\n"+ranking+"\n```")
 }
 
 client.login(token)
