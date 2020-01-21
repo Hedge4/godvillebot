@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { prefix, token, owner, server, bot_id, no_xp_channels, levelup_channel, command_channels, no_xp_prefixes, cdSeconds, xp_blocked } = require('./config.json');
+const { prefix, token, owner, server, bot_id, no_xp_channels, levelup_channel, command_channels, no_xp_prefixes, cdSeconds, xp_blocked, bot_blocked } = require('./config.json');
 const client = new Discord.Client();
 let godpowerCooldown = new Set();
 
@@ -29,6 +29,7 @@ client.on('ready', () => {
 
 client.on('message', message => {
     if (message.author.bot) {return}
+    if (bot_blocked.includes(message.author.id)) {return}
 
     if (message.channel.type === 'dm') {
         if (message.author.id !== bot_id) {
