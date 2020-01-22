@@ -19,10 +19,14 @@ let getDoc = userData.get()
 client.on('ready', () => {
     const currentDate = new Date();
     console.log('\n' + currentDate + ` - Logged in as ${client.user.tag}!`);
-    console.log('Logged in to the following guilds: ' + client.guilds.array().sort() + '\n');
+    console.log('Logged in to the following guilds: ' + client.guilds.array().sort());
     client.channels.forEach((channel) => {
-        console.log(` -- ${channel.name} (${channel.type}) - ${channel.id}`)
+//        console.log(` -- "${channel.name}" (${channel.type}) - ${channel.id}`)
+        if (channel.name === "los-adminos") {
+            console.log('Logged in to Los Adminos as well *smirk*')
+        }
     })
+    console.log('');
     client.user.setActivity(`${prefix}level` + ' | Still testing! - by Wawajabba');
     if (totalGodpower === undefined) {
         totalGodpower = 0;
