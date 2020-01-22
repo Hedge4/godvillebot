@@ -20,6 +20,8 @@ client.on('ready', () => {
     const currentDate = new Date();
     console.log('\n' + currentDate + ` - Logged in as ${client.user.tag}!`);
     console.log('Logged in to the following guilds: ' + client.guilds.array().sort() + '\n');
+    console.log('With access to the following channels: '+ client.channels.array().sort() + '\n')
+    let channel_names = []
     client.user.setActivity(`${prefix}level` + ' | Still testing! - by Wawajabba');
     if (totalGodpower === undefined) {
         totalGodpower = 0;
