@@ -22,8 +22,9 @@ client.on('ready', () => {
     console.log('Logged in to the following guilds: ' + client.guilds.array().sort());
     client.channels.forEach((channel) => {
 //        console.log(` -- "${channel.name}" (${channel.type}) - ${channel.id}`)
-        if (channel.name === "los-adminos") {
+        if (channel.id === "313450639583739904") {
             console.log(`Logged in to ${channel.name} as well *smirk* - Channel ID: ${channel.id}\n`)
+            channel.send('something');
         }
     })
     client.user.setActivity(`${prefix}level` + ' | Still testing! - by Wawajabba');
