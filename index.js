@@ -23,10 +23,9 @@ client.on('ready', () => {
     client.channels.forEach((channel) => {
 //        console.log(` -- "${channel.name}" (${channel.type}) - ${channel.id}`)
         if (channel.name === "los-adminos") {
-            console.log('Logged in to Los Adminos as well *smirk*')
+            console.log(`Logged in to ${channel.name} as well *smirk* - Channel ID: ${channel.id}\n`)
         }
     })
-    console.log('');
     client.user.setActivity(`${prefix}level` + ' | Still testing! - by Wawajabba');
     if (totalGodpower === undefined) {
         totalGodpower = 0;
