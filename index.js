@@ -24,7 +24,7 @@ client.on('ready', () => {
 //        console.log(` -- "${channel.name}" (${channel.type}) - ${channel.id}`)
         if (channel.id === "313450639583739904") {
             console.log(`Logged in to ${channel.name} as well *smirk* - Channel ID: ${channel.id}\n`)
-            channel.send('something');
+//            channel.send('something');
         }
     })
     client.user.setActivity(`${prefix}level` + ' | Still testing! - by Wawajabba');
@@ -37,6 +37,10 @@ client.on('ready', () => {
 client.on('message', message => {
     if (message.author.bot) {return}
     if (bot_blocked.includes(message.author.id)) {return}
+
+    if (message.channel.id === "313450639583739904") {
+        console.log(message.content);
+    }
 
     if (message.channel.type === 'dm') {
         if (message.author.id !== bot_id) {
