@@ -79,8 +79,11 @@ client.on('message', message => {
 
 function suggest(message) {
     const suggestion = message.content.slice(8).trim();
+    if (suggestion.length <= 40) {return message.reply('please add some more detail and make the description of your suggestion a bit longer!');}
+    if (suggestion.length >= 500) {return message.reply('please be a bit more concise in your description and use less than 500 characters!');}
     const suggestion_user = client.users.get(owner);
     suggestion_user.send(`${message.author.tag} sent the following suggestion from ${message.channel.name}:\n` + '`' + suggestion + '`');
+    message.reply('thank you for your suggestion!');
 }
 
 client.login(token);
