@@ -70,8 +70,17 @@ client.on('message', message => {
                     getRanking.getRanking(message, userData);
                 }
             }
+            if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
+                suggest(message);
+            }
         }
     }
 });
+
+function suggest(message) {
+    const suggestion = message.content.slice(8).trim();
+    const suggestion_user = client.users.get(owner);
+    suggestion_user.send(`${message.author.tag} sent the following suggestion from ${message.channel.name}:\n` + '`' + suggestion + '`');
+}
 
 client.login(token);
