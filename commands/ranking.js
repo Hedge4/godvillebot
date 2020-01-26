@@ -8,10 +8,10 @@ async function getRanking(message, userData) {
         page = 1;
     } else if (isNaN(args[0])) {
             return message.reply('the correct syntax is >ranking [page].');
-        } else {
-            page = Math.floor(args[0]);
-            if (page <= 0) {return message.reply('the lowest page number you can request is 1, dumdum.');}
-        }
+    } else {
+        page = Math.floor(args[0]);
+        if (page <= 0) {return message.reply('the lowest page number you can request is 1, dumdum.');}
+    }
     const userDoc = await userData.get();
     let own_ranking = false;
     if(userDoc.data()[message.author.id] !== undefined) {own_ranking = true;}

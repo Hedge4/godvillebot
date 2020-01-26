@@ -1,12 +1,13 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { prefix, token, owner, server, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked } = require('./config.json');
+const { prefix, token, server, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked } = require('./config.json');
 
 const mentions = require('./commands/togglementions');
 const giveXP = require('./commands/givexp');
 const displayLevel = require('./commands/levelcard');
 const displayGold = require('./commands/goldcard');
 const getRanking = require('./commands/ranking');
+const suggest = require('./commands/suggest');
 
 const admin = require('firebase-admin');
 const serviceAccount = require('./serviceAccountKey.json');
@@ -71,20 +72,10 @@ client.on('message', message => {
                 }
             }
             if (message.content.toLowerCase().startsWith(`${prefix}suggest `)) {
-                suggest(message);
+                suggest.suggestion(client, message);
             }
         }
     }
 });
-
-async function suggest(message) {
-    const suggestion = message.content.slice(8).trim();
-    if (suggestion.length <= 10) {return message.reply('please add enough detail and make the description of your suggestion at least 40 characters!');}
-    if (suggestion.length >= 500) {return message.reply('please be a bit more concise in your description and use less than 500 characters!');}
-    const suggestion_user = await client.fetchUser(owner);
-    if (suggestion_user === undefined) {message.reply('the message couldn\'t be sent.');}
-    suggestion_user.send(`${message.author.tag} sent the following suggestion from ${message.channel.name}:\n` + '`' + suggestion + '`');
-    message.reply('thank you for your suggestion!');
-}
 
 client.login(token);
