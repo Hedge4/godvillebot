@@ -10,7 +10,7 @@ const commands_list = [
 
 function constructHelp(message, Discord) {
     let text = '';
-    for (let i = 1; i < commands_list.length; i++) {
+    for (let i = 0; i < commands_list.length; i++) {
         text += `\`${commands_list[i][0]}\` ${commands_list[i][1]}\n`;
     }
     const helpEmbed = new Discord.RichEmbed()

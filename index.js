@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { prefix, token, server, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked } = require('./config.json');
+const { prefix, owner, token, server, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked } = require('./config.json');
 
 const mentions = require('./commands/togglementions');
 const giveXP = require('./commands/givexp');
@@ -79,11 +79,32 @@ client.on('message', message => {
                     help.helpMessage(message, Discord);
                 }
             }
-            if (message.content.toLowerCase().startsWith(`${prefix}suggest `)) {
+            if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
                 suggest.suggestion(client, message);
+            }
+            if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
+                    purge(message);
             }
         }
     }
 });
+
+async function purge(message) {
+    if (message.member.roles.has('313448657540349962') || message.author.id === owner) {
+        if (message.channel.id === '671046033291345943') {
+            message.delete();
+            message.channel.fetchMessages().then(messages => {
+                message.channel.bulkDelete(messages);
+                const messagesDeleted = messages.array().length; // number of messages deleted
+                // Logging the number of messages deleted on both the channel and console.
+                message.reply('deletion of messages successful. Total messages deleted: ' + messagesDeleted);
+                console.log('Deletion of messages successful. Total messages deleted: ' + messagesDeleted);
+            }).catch(err => {
+                console.log('Error while doing Bulk Delete');
+                console.log(err);
+            });
+        } else { message.reply('that command can not be used in this channel.'); }
+    } else { message.reply('you do not have access to this command.'); }
+}
 
 client.login(token);
