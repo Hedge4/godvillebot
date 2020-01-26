@@ -1,4 +1,4 @@
-const { owner } = require('./config.json');
+const { owner } = require('../config.json');
 
 
 async function purge(message) {
