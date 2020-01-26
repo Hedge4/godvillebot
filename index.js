@@ -86,6 +86,9 @@ client.on('message', message => {
             if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
                     purge.purge(message);
             }
+            if (message.content.toLowerCase().includes('turtle rides on back')) {
+                message.reply('that\'s not funny and you should be ashamed of yourself.');
+            }
         }
     }
 });
