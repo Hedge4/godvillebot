@@ -10,4 +10,4 @@ async function suggest(client, message) {
     message.reply('thank you for your suggestion!');
 }
 
-exports.suggest = suggest;
+exports.suggestion = suggest;
