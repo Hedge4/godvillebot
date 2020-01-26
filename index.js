@@ -9,6 +9,7 @@ const displayGold = require('./commands/goldcard');
 const getRanking = require('./commands/ranking');
 const suggest = require('./commands/suggest');
 const guide = require('./commands/guides');
+const help = require('./commands/help');
 
 const admin = require('firebase-admin');
 const serviceAccount = require('./serviceAccountKey.json');
@@ -73,6 +74,9 @@ client.on('message', message => {
                 }
                 if (message.content.toLowerCase().startsWith(`${prefix}guides`)) {
                     guide.guides(message, Discord);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
+                    help.helpMessage(message, Discord);
                 }
             }
             if (message.content.toLowerCase().startsWith(`${prefix}suggest `)) {
