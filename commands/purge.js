@@ -2,7 +2,7 @@ const { owner } = require('./config.json');
 
 
 async function purge(message) {
-    if (message.member.roles.has('313448657540349962') || message.author.id === owner) {
+    if (message.member.roles.has('313448657540349962') || owner.has(message.author.id)) {
         if (message.channel.id === '671046033291345943') {
             message.delete();
             message.channel.fetchMessages().then(messages => {
