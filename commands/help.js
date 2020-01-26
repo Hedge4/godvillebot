@@ -3,6 +3,8 @@ const { prefix } = require('../config.json');
 const commands_list = [
     [`${prefix}help`,
     'Displays this help message.'],
+    [`${prefix}suggest <suggestion>`,
+    'Makes you an absolutely wonderful human being and sends a feature request to the mods/me. I need ideas!'],
 ];
 
 function constructHelp(message, Discord) {
