@@ -3,8 +3,8 @@ async function show_profile(message, client, Discord, godData) {
     let self = false;
     let user = message.mentions.users.first();
     if (!user) {
-        if (message.content.length >= 7) {
-            let username = message.content.slice(6).trim();
+        if (message.content.length >= 10) {
+            let username = message.content.slice(8).trim();
             if (message.content.includes('#')) {
                 const args = username.split('#');
                 username = args[0];
@@ -41,6 +41,7 @@ async function show_profile(message, client, Discord, godData) {
     const godEmbed = new Discord.RichEmbed()
     .setTitle(god)
     .setURL(godURL)
+    .setDescription('Click the god\'s username to open their Godville page.')
     .setColor('006600')
     .setFooter(author, user.displayAvatarURL);
     message.channel.send(godEmbed);
