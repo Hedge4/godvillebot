@@ -8,7 +8,7 @@ function show_guides_list(message) {
     for (let i = 0; i < guides_list.length; i++) {
         text += ` {${i + 1}}   ${guides_list[i][0]}\n`;
     }
-    text += '```\nUse `>guides [number]` to get the URL to a specific guide.';
+    text += '\nUse ">guides [number]" to get the URL to a specific guide.\n```';
     message.reply(`here are all currently available guides:\n${text}`);
 }
 
@@ -24,7 +24,7 @@ function show_guide(message, guide_number, Discord) {
 }
 
 function list_or_guide(message, Discord) {
-    const number = message.content.slice(7).trim();
+    let number = message.content.slice(7).trim();
     if (!number.length) {
         show_guides_list(message);
     } else {
@@ -34,6 +34,7 @@ function list_or_guide(message, Discord) {
         if (number < 1 || number > guides_list.length) {
             return message.reply('that guide number doesn\'t exist.');
         }
+        number = Math.floor(number);
         show_guide(message, number, Discord);
     }
 }
