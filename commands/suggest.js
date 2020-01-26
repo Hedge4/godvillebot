@@ -11,8 +11,8 @@ async function suggest(client, message) {
     channel.send(` --- ${message.author.tag} sent the following suggestion from channel ${message.channel.name}:\n` + '`' + suggestion + '`')
     .then(botMessage => {
         botMessage.react('👍');
-        botMessage.react('👎');
         botMessage.react('🤷');
+        botMessage.react('👎');
     });
     message.reply('thank you for your suggestion!');
 }

@@ -11,6 +11,7 @@ const suggest = require('./commands/suggest');
 const guide = require('./commands/guides');
 const help = require('./commands/help');
 const purge = require('./commands/purge');
+const profile = require('./commands/profile');
 
 const admin = require('firebase-admin');
 const serviceAccount = require('./serviceAccountKey.json');
@@ -19,6 +20,7 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 const userData = db.collection('data').doc('users');
+const godData = db.collection('data').doc('gods');
 global.totalGodpower = 0;
 userData.get()
     .then (doc => {
@@ -34,15 +36,6 @@ client.on('ready', () => {
         if (channel.id === '313450639583739904') {
             console.log(`Logged in to ${channel.name} as well *smirk* - Channel ID: ${channel.id}\n`);
 //            channel.send('something');
-        }
-        if (channel.id === '670981969596645407') {
-            channel.fetchMessages().then(messages => {
-                messages.forEach((message) => {
-                    message.react('👍');
-                    message.react('👎');
-                    message.react('🤷');
-                });
-            });
         }
     });
     client.user.setActivity(`${prefix}help | I like bot stuff | By Wawajabba`);
@@ -87,6 +80,12 @@ client.on('message', message => {
                 }
                 if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
                     help.helpMessage(message, Discord);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}profile`)) {
+                    profile.show(message, client, Discord, godData);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}link`)) {
+                    profile.link(message);
                 }
             }
             if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
