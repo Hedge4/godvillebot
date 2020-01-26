@@ -1,9 +1,6 @@
 const { prefix } = require('../config.json');
 
 const commands_list = [
-    [`${prefix}example-command`,
-    'Example command description',
-    'Much longer command description'],
     [`${prefix}help`,
     'Displays this help message.'],
 ];

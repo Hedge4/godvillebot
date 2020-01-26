@@ -36,7 +36,7 @@ client.on('ready', () => {
 //            channel.send('something');
         }
     });
-    client.user.setActivity(`${prefix}level` + ' | Still testing! - by Wawajabba');
+    client.user.setActivity(`${prefix}help | I like bot stuff | By Wawajabba`);
     if (totalGodpower === undefined) {
         totalGodpower = 0;
     }
@@ -87,7 +87,7 @@ client.on('message', message => {
                     purge.purge(message);
             }
             if (message.content.toLowerCase().includes('turtle rides on back')) {
-                message.reply('that\'s not funny and you should be ashamed of yourself.');
+                message.reply('that\'s not funny and you should be ashamed of your sense of humour.');
             }
         }
     }
