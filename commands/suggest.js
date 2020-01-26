@@ -2,8 +2,8 @@ const suggestion_channel = '670981969596645407';
 
 async function suggest(client, message) {
     let suggestion = message.content.slice(8).trim();
-    suggestion = suggestion.slice('`');
-    suggestion = suggestion.join();
+    suggestion = suggestion.split('`');
+    suggestion = suggestion.join('');
     if (suggestion.length <= 10) {return message.reply('please add enough detail and make the description of your suggestion at least 40 characters!');}
     if (suggestion.length >= 500) {return message.reply('please be a bit more concise in your description and use less than 500 characters!');}
     const channel = await client.channels.get(suggestion_channel);
