@@ -8,7 +8,7 @@ async function suggest(client, message) {
     if (suggestion.length >= 500) {return message.reply('please be a bit more concise in your description and use less than 500 characters!');}
     const channel = await client.channels.get(suggestion_channel);
     if (channel === undefined) {message.reply('the message couldn\'t be sent.');}
-    channel.send(`${message.author.tag} sent the following suggestion from channel ${message.channel.name}:\n` + '`' + suggestion + '`');
+    channel.send(` --- ${message.author.tag} sent the following suggestion from channel ${message.channel.name}:\n` + '`' + suggestion + '`');
     message.reply('thank you for your suggestion!');
 }
 

@@ -72,7 +72,7 @@ client.on('message', message => {
                     getRanking.getRanking(message, userData);
                 }
                 if (message.content.toLowerCase().startsWith(`${prefix}guides`)) {
-                    guide.guides(message);
+                    guide.guides(message, Discord);
                 }
             }
             if (message.content.toLowerCase().startsWith(`${prefix}suggest `)) {
