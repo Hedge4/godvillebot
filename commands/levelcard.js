@@ -55,7 +55,6 @@ async function displayLevel(message, userData, Discord, client) {
     .setColor('32cd32')
     .addField('Level', curLevel, true)
     .addField('Godpower <:stat_godpower:401412765232660492>', curGodpower, true)
-    .addField('', '', false)
     .addField('Total godpower', User[user.id].total_godpower, true)
     .addField('Rank', rank, true)
     .setFooter(`${difference} godpower needed for level ${nextLevel}.`, user.displayAvatarURL);
