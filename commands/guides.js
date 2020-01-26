@@ -1,12 +1,12 @@
 const guides_list = [
-    ['short description1', 'long description1', 'fake_url', 'not existing author'],
-    ['2nd entry', 'this is the second and very long description', 'fake_url2', 'unknown'],
+    ['short description1', 'long description1', 'https://www.google.com/', 'not existing author'],
+    ['2nd entry', 'this is the second and very long description', 'https://www.youtube.com/', 'unknown'],
 ];
 
 function show_guides_list(message) {
     let text = '```\n';
     for (let i = 0; i < guides_list.length; i++) {
-        text += ` {${i}}   ${guides_list[i][0]}\n`;
+        text += ` {${i + 1}}   ${guides_list[i][0]}\n`;
     }
     text += '```\nUse `>guides [number]` to get the URL to a specific guide.';
     message.reply(`here are all currently available guides:\n${text}`);
