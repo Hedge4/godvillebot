@@ -35,6 +35,15 @@ client.on('ready', () => {
             console.log(`Logged in to ${channel.name} as well *smirk* - Channel ID: ${channel.id}\n`);
 //            channel.send('something');
         }
+        if (channel.id === '670981969596645407') {
+            channel.fetchMessages().then(messages => {
+                messages.forEach((message) => {
+                    message.react('👍');
+                    message.react('👎');
+                    message.react('🤷');
+                });
+            });
+        }
     });
     client.user.setActivity(`${prefix}help | I like bot stuff | By Wawajabba`);
     if (totalGodpower === undefined) {

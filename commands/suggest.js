@@ -12,6 +12,7 @@ async function suggest(client, message) {
     .then(botMessage => {
         botMessage.react('👍');
         botMessage.react('👎');
+        botMessage.react('🤷');
     });
     message.reply('thank you for your suggestion!');
 }
