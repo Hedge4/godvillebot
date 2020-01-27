@@ -36,7 +36,7 @@ async function show_profile(message, client, Discord, godData) {
         } else { return message.reply('You haven\'t linked your Godville account yet.'); }
     }
     const godURL = godDoc.data()[user.id];
-    let god = godURL.slice(30, -1);
+    let god = godURL.slice(30);
     god = god.replace('%20', ' ');
 
     const godEmbed = new Discord.RichEmbed()
