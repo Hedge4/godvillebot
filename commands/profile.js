@@ -59,9 +59,16 @@ function link_profile(message, godData) {
         goodLink = false;
     }
     if (goodLink === true) {
+        if (link.slice(30, -1).includes('/' || '?')) {
+            goodLink === false;
+            message.channel.send(`<@${message.author.id}>, your god name can't contain '/' or '?'.`)
+        }
+    }
+    if (goodLink === true) {
         const user = {};
         user[message.author.id] = link;
         godData.set(user, { merge: true });
+        message.reply('I have set or updated the link to your Godville account.');
     } else { return message.channel.send('Please format the link exactly like this:\n\'https://godvillegame.com/gods/YOUR_GOD_NAME/\''); }
 }
 
