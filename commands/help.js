@@ -5,6 +5,16 @@ const commands_list = [
     'Displays this help message.'],
     [`${prefix}suggest <suggestion>`,
     'Makes you an absolutely wonderful human being and sends a feature request to the mods/me. I need ideas!'],
+    [`${prefix}level [user]`,
+    ''],
+    [`${prefix}gold [user]`,
+    ''],
+    [`${prefix}ranking [page]`,
+    ''],
+    [`${prefix}link <URL>`,
+    ''],
+    [`${prefix}profile`,
+    ''],
 ];
 
 function constructHelp(message, Discord) {
