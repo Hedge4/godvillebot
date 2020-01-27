@@ -1,6 +1,5 @@
 const guides_list = [
-    ['short description1', 'long description1', 'https://www.google.com/', 'not existing author'],
-    ['2nd entry', 'this is the second and very long description', 'https://www.youtube.com/', 'unknown'],
+    ['Extensive sailing guide by Blue Feather', 'This is a very extensive sailing guide that covers pretty much everything a beginning (or experienced) sailor would like to know. If you haven\'t unlocked sailing yet, this guide may be a bit tough to start with.', 'https://wiki.godvillegame.com/Feather_Mail#Sailing_Guide', 'Blue Feather, contributors at bottom of page'],
 ];
 
 function show_guides_list(message) {
@@ -9,7 +8,7 @@ function show_guides_list(message) {
         text += ` {${i + 1}}   ${guides_list[i][0]}\n`;
     }
     text += '\nUse ">guides [number]" to get the URL to a specific guide.\nContact Wawajabba to include your guide here.\n```';
-    message.reply(`here are all currently available guides:\n${text}`);
+    message.reply(`here are all ${guides_list.length} currently available guides:\n${text}`);
 }
 
 function show_guide(message, guide_number, Discord) {

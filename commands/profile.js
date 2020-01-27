@@ -53,16 +53,35 @@ async function show_profile(message, client, Discord, godData) {
         return message.channel.send(godEmbed);
     }
 
-    const godEmbed = new Discord.RichEmbed()
-    .setTitle(god)
-    .setURL(godURL)
-    .setThumbnail(godvilleData[1])
-    .setDescription('Click the god(dess)\'s username to open their Godville page.')
-    .addField(`${godvilleData[0]} name`, godvilleData[2], true)
-    .addField(`${godvilleData[0]} level`, godvilleData[3], true)
-    .setColor('006600')
-    .setFooter(author, user.displayAvatarURL);
-    message.channel.send(godEmbed);
+    if (!godvilleData[6]) {
+        const godEmbed = new Discord.RichEmbed()
+        .setTitle(`${god} - Age: ${godvilleData[11]}`)
+        .setURL(godURL)
+        .setThumbnail(godvilleData[1])
+        .setDescription(`Click the ${godvilleData[4]}'s username to open their Godville page.`)
+        .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}`, true)
+        .addField('Motto', godvilleData[8], true)
+        .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
+        .addField('Medals', godvilleData[5], false)
+        .setColor('006600')
+        .setFooter(author, user.displayAvatarURL);
+        message.channel.send(godEmbed);
+    } else {
+        const godEmbed = new Discord.RichEmbed()
+        .setTitle(`${god} - Age: ${godvilleData[11]}`)
+        .setURL(godURL)
+        .setThumbnail(godvilleData[1])
+        .setDescription(`Click the ${godvilleData[4]}'s username to open their Godville page.`)
+        .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}`, true)
+        .addField('Motto', godvilleData[8], true)
+        .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
+        .addField('Pet type', godvilleData[6], true)
+        .addField('Pet name/level', godvilleData[7], true)
+        .addField('Medals', godvilleData[5], false)
+        .setColor('006600')
+        .setFooter(author, user.displayAvatarURL);
+        message.channel.send(godEmbed);
+    }
 }
 
 function link_profile(message, godData) {
@@ -123,18 +142,76 @@ async function getGodData(URL, message) {
     const rx_level = /(?:class="level">)[\s\S]*?(\d+)/;
     const rx_name = /og:title[\s\S]*?hero[\w]* ([\s\S]*?)"/;
     const rx_gender = /heroine/i;
+    const rx_god_gender = /goddess/i;
+    const rx_temple = />(Temple Owner since \d+\/\d+\/\d+)/;
+    const rx_ark = />(Ark Owner since \d+\/\d+\/\d+)/;
+    const rx_animalist = />(Animalist since \d+\/\d+\/\d+)/;
+    const rx_trader = />(Trader since \d+\/\d+\/\d+)/;
+    const rx_CM = />(Creature Master since \d+\/\d+\/\d+)/;
+    const rx_pet_type = /label">Pet(?:[\s\S]*?>){3}([\s\S]*?)</;
+    const rx_pet_name = /label">Pet(?:[\s\S]*?>){4}([\s\S]*?)</;
+    const rx_motto = /motto">([\s\S]+?)</;
+    const rx_guild = /name guild">[\s\S]+?>([\s\S]+?)</;
+    const rx_guild_url = /name guild[\s\S]+?href="([\s\S]+?)"/;
+    const rx_age = /label">Age(?:[\s\S]+?>){2}([\s\S]+?)</;
+
     const gravatar_regex = rx_gravatar.exec(html);
     if (!gravatar_regex) {
         return(null);
     }
+
+    let motto = rx_motto.exec(html)[1];
     const level = rx_level.exec(html)[1];
     const name = rx_name.exec(html)[1];
+    const age = rx_age.exec(html)[1];
     const gravatar_url = gravatar_regex[1];
     const gender_res = rx_gender.exec(html);
+    const god_gender_res = rx_god_gender.exec(html);
+    const temple = rx_temple.exec(html);
+    const ark = rx_ark.exec(html);
+    const animalist = rx_animalist.exec(html);
+    const trader = rx_trader.exec(html);
+    const CM = rx_CM.exec(html);
+    const pet_type_res = rx_pet_type.exec(html);
+    const guild_url_res = rx_guild_url.exec(html);
+
+    let guild_name = 'No guild.';
+    let guild_url = '';
+    if (guild_url_res) {
+        guild_name = rx_guild.exec(html)[1].trim();
+        guild_url = guild_url_res[1];
+    }
+    motto = motto.trim();
+    if (!motto.length) {
+        motto = 'No motto set.';
+    }
+    motto = motto.replace('&#39;', '\'');
+    let pet_name = '';
+    let pet_type = '';
+    if (pet_type_res) {
+        pet_name = rx_pet_name.exec(html)[1];
+        pet_type = pet_type_res[1];
+    } else {
+        pet_name = null;
+        pet_type = null;
+    }
     let gender = '';
+    let god_gender = '';
     if (!gender_res) {
         gender = 'Hero';
     } else { gender = 'Heroine'; }
+    if (!god_gender_res) {
+        god_gender = 'god';
+    } else { god_gender = 'goddess'; }
+    let achievements = '';
+    if (!temple && !animalist) {
+        achievements = `This ${god_gender} doesn't have any medals yet.`;
+    }
+    if (temple) { achievements += `${temple.slice(1)}\n`; }
+    if (ark) { achievements += `${ark.slice(1)}\n`; }
+    if (animalist) { achievements += `${animalist.slice(1)}\n`; }
+    if (trader) { achievements += `${trader.slice(1)}\n`; }
+    if (CM) { achievements += `${CM.slice(1)}\n`; }
 
-    return([gender, gravatar_url, name, level]);
+    return([gender, gravatar_url, name, level, god_gender, achievements, pet_type, pet_name, motto, guild_name, guild_url, age]);
 }

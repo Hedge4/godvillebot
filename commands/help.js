@@ -15,6 +15,8 @@ const commands_list = [
     ''],
     [`${prefix}profile`,
     ''],
+    [`${prefix}guides [number]`,
+    ''],
 ];
 
 function constructHelp(message, Discord) {
