@@ -12,7 +12,6 @@ async function toggleMentions(message, userData) {
         User[message.author.id].last_username = message.author.tag;
         await userData.set(User, { merge: true });
         message.reply('succesfully disabled mentioning for level-ups!');
-    // eslint-disable-next-line brace-style
     } else {
         User[message.author.id] = userDoc.data()[message.author.id];
         if (User[message.author.id].mention === false) {

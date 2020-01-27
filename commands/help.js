@@ -15,7 +15,7 @@ function constructHelp(message, Discord) {
     const helpEmbed = new Discord.RichEmbed()
         .setTitle('GodBot commands')
         .setColor(0x63CCBE) // Soft blue
-        .setDescription('GodBot gives server members XP, or \'godpower\' for talking in channels that aren\'t <#431305701021974539> or <#315874239779569666>. After reaching a specific amount of godpower, you\'ll level up.\n\n' + text)
+        .setDescription('GodBot gives server members XP, or \'godpower\' for talking in channels that aren\'t <#313398792588099604> or <#315874239779569666>. After reaching a specific amount of godpower, you\'ll level up.\n\n' + text)
         .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
         .setTimestamp()
         .setFooter('GodBot is brought to you by Wawajabba', 'https://images-na.ssl-images-amazon.com/images/I/71SFEHfhpxL.png');

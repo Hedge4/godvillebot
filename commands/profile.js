@@ -47,4 +47,23 @@ async function show_profile(message, client, Discord, godData) {
     message.channel.send(godEmbed);
 }
 
+function link_profile(message, godData) {
+    let goodLink = true;
+    const link = message.content.slice(5).trim();
+    if (!link.startsWith('https://godvillegame.com/gods/')) {
+        message.channel.send(`<@${message.author.id}>, your link doesn't start with 'https://godvillegame.com/gods/'`);
+        goodLink = false;
+    }
+    if (!link.endsWith('/')) {
+        message.channel.send(`<@${message.author.id}>, your link doesn't end with '/'`);
+        goodLink = false;
+    }
+    if (goodLink === true) {
+        const user = {};
+        user[message.author.id] = link;
+        godData.set(user, { merge: true });
+    } else { return message.channel.send('Please format the link exactly like this:\n\'https://godvillegame.com/gods/YOUR_GOD_NAME/\''); }
+}
+
 exports.show = show_profile;
+exports.link = link_profile;

@@ -85,7 +85,7 @@ client.on('message', message => {
                     profile.show(message, client, Discord, godData);
                 }
                 if (message.content.toLowerCase().startsWith(`${prefix}link`)) {
-                    profile.link(message);
+                    profile.link(message, godData);
                 }
             }
             if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
