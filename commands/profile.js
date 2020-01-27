@@ -36,7 +36,8 @@ async function show_profile(message, client, Discord, godData) {
         } else { return message.reply('You haven\'t linked your Godville account yet.'); }
     }
     const godURL = godDoc.data()[user.id];
-    const god = godURL.slice(30, -1);
+    let god = godURL.slice(30, -1);
+    god = god.replace('%20', ' ');
 
     const godEmbed = new Discord.RichEmbed()
     .setTitle(god)
@@ -54,14 +55,16 @@ function link_profile(message, godData) {
         message.channel.send(`<@${message.author.id}>, your link doesn't start with 'https://godvillegame.com/gods/'`);
         goodLink = false;
     }
-    if (!link.endsWith('/')) {
-        message.channel.send(`<@${message.author.id}>, your link doesn't end with '/'`);
-        goodLink = false;
+    if (goodLink === true) {
+        if (link.slice(30).includes('/')) {
+            goodLink === false;
+            message.channel.send(`<@${message.author.id}>, your god name can't contain '/'.`)
+        }
     }
     if (goodLink === true) {
-        if (link.slice(30, -1).includes('/' || '?')) {
+        if (link.slice(30).includes('?')) {
             goodLink === false;
-            message.channel.send(`<@${message.author.id}>, your god name can't contain '/' or '?'.`)
+            message.channel.send(`<@${message.author.id}>, your god name can't contain '?'.`)
         }
     }
     if (goodLink === true) {
@@ -69,7 +72,7 @@ function link_profile(message, godData) {
         user[message.author.id] = link;
         godData.set(user, { merge: true });
         message.reply('I have set or updated the link to your Godville account.');
-    } else { return message.channel.send('Please format the link exactly like this:\n\'https://godvillegame.com/gods/YOUR_GOD_NAME/\''); }
+    } else { return message.channel.send('Please format the link exactly like this:\n\'https://godvillegame.com/gods/YOUR_GOD_NAME\''); }
 }
 
 exports.show = show_profile;
