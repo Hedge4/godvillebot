@@ -1,4 +1,5 @@
 const https = require('https');
+const prefix = require('../config.json');
 
 async function show_profile(message, client, Discord, godData) {
 
@@ -35,7 +36,7 @@ async function show_profile(message, client, Discord, godData) {
     if(godDoc.data()[user.id] === undefined) {
         if (self === false) {
             return message.reply(`${user} hasn't linked their Godville account yet.`);
-        } else { return message.reply('You haven\'t linked your Godville account yet. You can do that with the following command in <#315874239779569666>: \'>link <https://godvillegame.com/gods/YOUR_GOD_NAME>\''); }
+        } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#315874239779569666>: \n\n${prefix}link <https://godvillegame.com/gods/YOUR_GOD_NAME>`); }
     }
     const godURL = godDoc.data()[user.id];
     let god = godURL.slice(30);
@@ -178,18 +179,18 @@ async function getGodData(URL, message) {
     let guild_name = 'No guild.';
     let guild_url = '';
     if (guild_url_res) {
-        guild_name = decodeURI(rx_guild.exec(html)[1].trim());
+        guild_name = (decodeURI(rx_guild.exec(html)[1].trim())).replace('&#39;', '\'');
         guild_url = guild_url_res[1];
     }
-    motto = decodeURI(motto.trim());
+    motto = (decodeURI(motto.trim())).replace('&#39;', '\'');
     if (!motto.length) {
         motto = 'No motto set.';
     }
     let pet_name = '';
     let pet_type = '';
     if (pet_type_res) {
-        pet_name = decodeURI(rx_pet_name.exec(html)[1]);
-        pet_type = decodeURI(pet_type_res[1]);
+        pet_name = (decodeURI(rx_pet_name.exec(html)[1])).replace('&#39;', '\'');
+        pet_type = (decodeURI(pet_type_res[1])).replace('&#39;', '\'');
     } else {
         pet_name = null;
         pet_type = null;
