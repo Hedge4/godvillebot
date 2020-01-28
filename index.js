@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const { prefix, token, server, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked } = require('./config.json');
+const version = (require('./package.json')).version;
 
 const mentions = require('./commands/togglementions');
 const giveXP = require('./commands/givexp');
@@ -12,6 +13,7 @@ const guide = require('./commands/guides');
 const help = require('./commands/help');
 const purge = require('./commands/purge');
 const profile = require('./commands/profile');
+const godville = require('./commands/godville_interaction');
 
 const admin = require('firebase-admin');
 const serviceAccount = require('./serviceAccountKey.json');
@@ -42,7 +44,13 @@ client.on('ready', () => {
     if (totalGodpower === undefined) {
         totalGodpower = 0;
     }
-    client.channels.get(levelup_channel).send('**Succesfully restarted!**');
+    const startEmbed = new Discord.RichEmbed()
+        .setTitle('**Succesfully restarted!**')
+        .setColor('ffffff')
+        .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '>help'.`)
+        .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL)
+        .setTimestamp();
+    client.channels.get(levelup_channel).send(startEmbed);
 });
 
 client.on('message', message => {
@@ -62,37 +70,42 @@ client.on('message', message => {
             if (!no_xp_channels.includes(message.channel.id)) {
                 giveXP.giveGodpower(message, userData, Discord, client);
             }
-            if (command_channels.includes(message.channel.id)) {
-                if (message.content.toLowerCase().startsWith(`${prefix}level`)) {
-                    displayLevel.displayLevel(message, userData, Discord, client);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}gold`)) {
-                    displayGold.displayGold(message, userData, Discord, client);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}toggle-mentions`)) {
-                    mentions.toggleMentions(message, userData);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}ranking`)) {
-                    getRanking.getRanking(message, userData);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}guides`)) {
-                    guide.guides(message, Discord);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
-                    help.helpMessage(message, Discord);
+            if (message.content.toLowerCase().startsWith(prefix)) {
+                if (command_channels.includes(message.channel.id)) {
+                    if (message.content.toLowerCase().startsWith(`${prefix}level`)) {
+                        displayLevel.displayLevel(message, userData, Discord, client);
+                    }
+                    if (message.content.toLowerCase().startsWith(`${prefix}gold`)) {
+                        displayGold.displayGold(message, userData, Discord, client);
+                    }
+                    if (message.content.toLowerCase().startsWith(`${prefix}toggle-mentions`)) {
+                        mentions.toggleMentions(message, userData);
+                    }
+                    if (message.content.toLowerCase().startsWith(`${prefix}ranking`)) {
+                        getRanking.getRanking(message, userData);
+                    }
+                    if (message.content.toLowerCase().startsWith(`${prefix}guides`)) {
+                        guide.guides(message, Discord);
+                    }
+                    if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
+                        help.helpMessage(message, Discord, client);
+                    }
+                    if (message.content.toLowerCase().startsWith(`${prefix}link`)) {
+                        profile.link(message, godData);
+                    }
                 }
                 if (message.content.toLowerCase().startsWith(`${prefix}profile`)) {
                     profile.show(message, client, Discord, godData);
                 }
-                if (message.content.toLowerCase().startsWith(`${prefix}link`)) {
-                    profile.link(message, godData);
+                if (message.content.toLowerCase().startsWith(`${prefix}godwiki`)) {
+                    godville.search(message);
                 }
-            }
-            if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
-                suggest.suggestion(client, message);
-            }
-            if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
-                    purge.purge(message);
+                if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
+                    suggest.suggestion(client, message);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
+                        purge.purge(message);
+                }
             }
         }
     }

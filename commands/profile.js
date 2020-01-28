@@ -34,12 +34,12 @@ async function show_profile(message, client, Discord, godData) {
     const godDoc = await godData.get();
     if(godDoc.data()[user.id] === undefined) {
         if (self === false) {
-            return message.reply(`${author} hasn't linked their Godville account yet.`);
-        } else { return message.reply('You haven\'t linked your Godville account yet.'); }
+            return message.reply(`${user} hasn't linked their Godville account yet.`);
+        } else { return message.reply('You haven\'t linked your Godville account yet. You can do that with the following command in <#315874239779569666>: \'>link <https://godvillegame.com/gods/YOUR_GOD_NAME>\''); }
     }
     const godURL = godDoc.data()[user.id];
     let god = godURL.slice(30);
-    god = god.replace('%20', ' ');
+    god = decodeURI(god);
 
     const godvilleData = await getGodData(godURL, message);
     if (!godvilleData) {
@@ -88,7 +88,7 @@ function link_profile(message, godData) {
     let goodLink = true;
     const link = message.content.slice(5).trim();
     if (!link.startsWith('https://godvillegame.com/gods/')) {
-        message.channel.send(`<@${message.author.id}>, your link doesn't start with 'https://godvillegame.com/gods/'`);
+        message.channel.send(`<@${message.author.id}>, your link doesn't start with '<https://godvillegame.com/gods/>'`);
         goodLink = false;
     }
     if (goodLink === true) {
@@ -106,7 +106,7 @@ function link_profile(message, godData) {
         user[message.author.id] = link;
         godData.set(user, { merge: true });
         message.reply('I have set or updated the link to your Godville account.');
-    } else { return message.channel.send('Please format the link exactly like this:\n\'https://godvillegame.com/gods/YOUR_GOD_NAME\''); }
+    } else { return message.channel.send('Please format the link exactly like this:\n\'<https://godvillegame.com/gods/YOUR_GOD_NAME>\''); }
 }
 
 exports.show = show_profile;
@@ -162,7 +162,7 @@ async function getGodData(URL, message) {
 
     let motto = rx_motto.exec(html)[1];
     const level = rx_level.exec(html)[1];
-    const name = rx_name.exec(html)[1];
+    const name = decodeURI(rx_name.exec(html)[1]);
     const age = rx_age.exec(html)[1];
     const gravatar_url = gravatar_regex[1];
     const gender_res = rx_gender.exec(html);
@@ -178,19 +178,18 @@ async function getGodData(URL, message) {
     let guild_name = 'No guild.';
     let guild_url = '';
     if (guild_url_res) {
-        guild_name = rx_guild.exec(html)[1].trim();
+        guild_name = decodeURI(rx_guild.exec(html)[1].trim());
         guild_url = guild_url_res[1];
     }
-    motto = motto.trim();
+    motto = decodeURI(motto.trim());
     if (!motto.length) {
         motto = 'No motto set.';
     }
-    motto = motto.replace('&#39;', '\'');
     let pet_name = '';
     let pet_type = '';
     if (pet_type_res) {
-        pet_name = rx_pet_name.exec(html)[1];
-        pet_type = pet_type_res[1];
+        pet_name = decodeURI(rx_pet_name.exec(html)[1]);
+        pet_type = decodeURI(pet_type_res[1]);
     } else {
         pet_name = null;
         pet_type = null;
