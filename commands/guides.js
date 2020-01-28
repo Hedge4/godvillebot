@@ -1,5 +1,8 @@
 const guides_list = [
-    ['Extensive sailing guide by Blue Feather', 'This is a very extensive sailing guide that covers pretty much everything a beginning (or experienced) sailor would like to know. If you haven\'t unlocked sailing yet, this guide may be a bit tough to start with.', 'https://wiki.godvillegame.com/Feather_Mail#Sailing_Guide', 'Blue Feather, contributors at bottom of page'],
+    ['Extensive sailing guide by Blue Feather',
+    'This is a very extensive sailing guide that covers pretty much everything a beginning (or experienced) sailor would like to know. If you haven\'t unlocked sailing yet, this guide may be a bit tough to start with.',
+    'https://wiki.godvillegame.com/Feather_Mail#Sailing_Guide',
+    'Blue Feather, contributors at bottom of page'],
 ];
 
 function show_guides_list(message) {

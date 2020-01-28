@@ -94,11 +94,6 @@ client.on('message', message => {
             if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
                     purge.purge(message);
             }
-            if (message.content.toLowerCase().includes('turtle rides on back')) {
-                if (message.author.id !== '306895366601834498') {
-                    message.reply('that\'s not funny and you should be ashamed of your sense of humour.');
-                }
-            }
         }
     }
 });
