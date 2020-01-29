@@ -10,5 +10,6 @@
     "no_xp_prefixes": ["?", "t!", "!", ">", ":"],
     "cdSeconds": "20",
     "xp_blocked": [""],
-    "bot_blocked": [""]
+    "bot_blocked": [""],
+    "suggest_blocked": ["280578618424426496"]
 }

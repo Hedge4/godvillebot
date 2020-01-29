@@ -11,7 +11,7 @@ const commands_list = [
     'Checks how many server gold someone has.'],
     [`${prefix}ranking [page]`,
     'Shows the server godpower rankings.'],
-    [`${prefix}link <URL>`,
+    [`${prefix}link <URL/god-name>`,
     'Links your Godville account to your Discord account.'],
     [`${prefix}profile`,
     'Shows your Godville account, if you\'ve linked it.'],

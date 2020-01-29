@@ -36,7 +36,7 @@ async function show_profile(message, client, Discord, godData) {
     if(godDoc.data()[user.id] === undefined) {
         if (self === false) {
             return message.reply(`${user} hasn't linked their Godville account yet.`);
-        } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#315874239779569666>: \n\n${prefix}link <https://godvillegame.com/gods/GOD_NAME>`); }
+        } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#315874239779569666>: \n${prefix}\`link god_name\` or\n\`>link <https://godvillegame.com/gods/GOD_NAME>\``); }
     }
     const godURL = godDoc.data()[user.id];
     let god = godURL.slice(30);
