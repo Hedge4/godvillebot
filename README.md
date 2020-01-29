@@ -1,5 +1,5 @@
 # GodBot
-Version: 2.9.1
+Version: 2.9.2
 
 ## What's new in version 2?
 Version 2 entails a major rewrite of all the code.
