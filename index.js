@@ -57,16 +57,15 @@ client.on('message', message => {
     if (message.author.bot) {return;}
     if (bot_blocked.includes(message.author.id)) {return;}
 
-/*    if (message.channel.id === '313450639583739904') {
-        console.log(message.content);
-    }*/
-
     if (message.channel.type === 'dm') {
         if (message.author.id !== bot_id) {
             console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
         }
     } else if (message.guild.id === server) {
         if (message.author.id != bot_id) {
+            /*if (message.channel.id === '313450639583739904') {
+                console.log(message.content);
+            }*/
             if (!no_xp_channels.includes(message.channel.id)) {
                 giveXP.giveGodpower(message, userData, Discord, client);
             }
@@ -109,7 +108,7 @@ client.on('message', message => {
             }
         }
     } else if (message.channel.id === suggestion_channel) {
-        if (message.author.id === owner) {
+        if (owner.includes(message.author.id)) {
             if (message.content.toLowerCase().startsWith('accept')) {
                 suggest.accept(message, client);
             }
