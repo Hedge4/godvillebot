@@ -20,6 +20,7 @@ async function suggest(client, message) {
 }
 
 async function accept(message, client) {
+    console.log('reached bit 2')
     const msg_id = message.content.slice(7).trim();
     message.delete();
     const old_channel = await client.channels.get(suggestion_channel[0]);
