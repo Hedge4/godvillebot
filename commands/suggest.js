@@ -24,7 +24,7 @@ async function accept(message, client) {
     if (args[2] || !args[0].length) {
         return message.delete();
     }
-    if (!args[1].length) {
+    if (!args[1] || !args[1].length) {
         args[1] = 'No reason provided.';
     }
     const author = message.author.tag;
@@ -42,7 +42,7 @@ async function reject(message, client) {
     if (args[2] || !args[0].length) {
         return message.delete();
     }
-    if (!args[1].length) {
+    if (!args[1] || !args[1].length) {
         args[1] = 'No reason provided.';
     }
     const author = message.author.tag;
