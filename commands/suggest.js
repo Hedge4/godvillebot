@@ -20,31 +20,39 @@ async function suggest(client, message) {
 }
 
 async function accept(message, client) {
-    const msg_id = message.content.slice(7).trim();
+    const args = message.content.slice(7).trim().split(' ');
+    if (args[2] || !args[0].length) {
+        return message.delete();
+    }
+    if (!args[1].length) {
+        args[1] = 'No reason provided.';
+    }
+    const author = message.author.tag;
     message.delete();
     const old_channel = await client.channels.get(suggestion_channel[0]);
     const new_channel = await client.channels.get(suggestion_channel[1]);
-    const old_msg = await old_channel.fetchMessage(msg_id);
+    const old_msg = await old_channel.fetchMessage(args[0]);
     const contents = old_msg.content;
     old_msg.delete();
-    new_channel.send(contents)
-    .then(botMessage => {
-        botMessage.react('✅');
-    });
+    new_channel.send(`${author} accepted :white_check_mark: a suggestion with reason:\n${args[1]}\nSuggestion: \`${contents.replace('`', '')}\``);
 }
 
 async function reject(message, client) {
-    const msg_id = message.content.slice(7).trim();
+    const args = message.content.slice(7).trim().split(' ');
+    if (args[2] || !args[0].length) {
+        return message.delete();
+    }
+    if (!args[1].length) {
+        args[1] = 'No reason provided.';
+    }
+    const author = message.author.tag;
     message.delete();
     const old_channel = await client.channels.get(suggestion_channel[0]);
     const new_channel = await client.channels.get(suggestion_channel[2]);
-    const old_msg = await old_channel.fetchMessage(msg_id);
+    const old_msg = await old_channel.fetchMessage(args[0]);
     const contents = old_msg.content;
     old_msg.delete();
-    new_channel.send(contents)
-    .then(botMessage => {
-        botMessage.react('❌');
-    });
+    new_channel.send(`${author} rejected :x: a suggestion with reason:\n${args[1]}\nSuggestion: \`${contents.replace('`', '')}\``);
 }
 
 exports.suggestion = suggest;
