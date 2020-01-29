@@ -107,9 +107,8 @@ client.on('message', message => {
                 }
             }
         }
-    } else if (message.channel.id === suggestion_channel) {
+    } else if (message.channel.id === suggestion_channel[0]) {
         if (owner.includes(message.author.id)) {
-            console.log('reached bit 1')
             if (message.content.toLowerCase().startsWith('accept')) {
                 suggest.accept(message, client);
             }
