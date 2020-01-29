@@ -3,6 +3,18 @@ const guides_list = [
     'This is a very extensive sailing guide that covers pretty much everything a beginning (or experienced) sailor would like to know. If you haven\'t unlocked sailing yet, this guide may be a bit tough to start with.',
     'https://wiki.godvillegame.com/Feather_Mail#Sailing_Guide',
     'Blue Feather, contributors at bottom of page'],
+    ['Arena tips by Hairplug4men',
+    'Arena basics and strategies.',
+    'http://wiki.godvillegame.com/hairplug4men',
+    'Hairplug4men'],
+    ['Avolyt\'s arena advice',
+    'A well-outlined and organized strategy guide.',
+    'https://wiki.godvillegame.com/Avolyt#Avolyt\'s_Arena_Guide',
+    'Avolyt'],
+    ['A plethora of useful references',
+    'A basic guide for new players and a reference to many useful pages in the wiki.',
+    'https://godvillegame.com/gods/Hairplug4men#chronicle',
+    'Hairplug4men'],
 ];
 
 function show_guides_list(message) {
@@ -10,7 +22,7 @@ function show_guides_list(message) {
     for (let i = 0; i < guides_list.length; i++) {
         text += ` {${i + 1}}   ${guides_list[i][0]}\n`;
     }
-    text += '\nUse ">guides [number]" to get the URL to a specific guide.\nContact Wawajabba to include your guide here, or use >suggest. Be sure to include the URL, a short and an extended description and the guide authors.\n```';
+    text += '\nUse ">guides [number]" to get the URL to a specific guide. Contact Wawajabba to include your guide here, or use >suggest. Be sure to include the URL, a short and an extended description and the guide authors.\n```';
     message.reply(`here are all ${guides_list.length} currently available guides:\n${text}`);
 }
 
