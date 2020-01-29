@@ -11,5 +11,6 @@
     "cdSeconds": "20",
     "xp_blocked": [""],
     "bot_blocked": [""],
-    "suggest_blocked": ["280578618424426496"]
+    "suggest_blocked": ["280578618424426496"],
+    "suggestion_channel": ["670981969596645407", "671889392381591562", "671889435842969662"]
 }

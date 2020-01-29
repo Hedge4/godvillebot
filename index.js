@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { prefix, token, server, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked } = require('./config.json');
+const { prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, suggestion_channel } = require('./config.json');
 const version = (require('./package.json')).version;
 
 const mentions = require('./commands/togglementions');
@@ -106,6 +106,15 @@ client.on('message', message => {
                 if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
                         purge.purge(message);
                 }
+            }
+        }
+    } else if (message.channel.id === suggestion_channel) {
+        if (message.author.id === owner) {
+            if (message.content.toLowerCase().startsWith('accept')) {
+                suggest.accept(message, client);
+            }
+            if (message.content.toLowerCase().startsWith('reject')) {
+                suggest.reject(message, client);
             }
         }
     }
