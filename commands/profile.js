@@ -93,13 +93,9 @@ function link_profile(message, godData) {
         goodLink = false;
     }
     if (goodLink === true) {
-        if (link.slice(30).includes('/')) {
-            goodLink === false;
-            message.channel.send(`<@${message.author.id}>, your god name can't contain '/'.`);
-        }
-        if (link.slice(30).includes('?')) {
-            goodLink === false;
-            message.channel.send(`<@${message.author.id}>, your god name can't contain '?'.`);
+        if (link.slice(30) !== /[a-z0-9- ]{3,30}/i) {
+            goodLink = false;
+            message.channel.reply(`${link.slice(30)} doesn't look like a correct god name.`);
         }
     }
     if (goodLink === true) {
