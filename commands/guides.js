@@ -11,7 +11,7 @@ const guides_list = [
     'A well-outlined and organized strategy guide.',
     'https://wiki.godvillegame.com/Avolyt#Avolyt\'s_Arena_Guide',
     'Avolyt'],
-    ['A plethora of useful references',
+    ['Advice for new players and a plethora of useful references',
     'A basic guide for new players and a reference to many useful pages in the wiki.',
     'https://godvillegame.com/gods/Hairplug4men#chronicle',
     'Hairplug4men'],

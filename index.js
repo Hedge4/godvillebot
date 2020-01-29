@@ -83,9 +83,6 @@ client.on('message', message => {
                     if (message.content.toLowerCase().startsWith(`${prefix}ranking`)) {
                         getRanking.getRanking(message, userData);
                     }
-                    if (message.content.toLowerCase().startsWith(`${prefix}guides`)) {
-                        guide.guides(message, Discord);
-                    }
                     if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
                         help.helpMessage(message, Discord, client);
                     }
@@ -98,6 +95,9 @@ client.on('message', message => {
                 }
                 if (message.content.toLowerCase().startsWith(`${prefix}godwiki`)) {
                     godville.search(message);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}guides`)) {
+                    guide.guides(message, Discord);
                 }
                 if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
                     suggest.suggestion(client, message);
