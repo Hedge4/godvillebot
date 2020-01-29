@@ -89,7 +89,7 @@ function link_profile(message, godData) {
     let link = message.content.slice(5).trim();
     link = link.replace('%20', ' ');
     if (link.startsWith('https://godvillegame.com/gods/')) {
-        if (/[a-z0-9- ]{3,30}/i.test(link.slice(30))) {
+        if (/^[a-z0-9- ]{3,30}$/i.test(link.slice(30))) {
             link = link.replace(' ', '%20');
             const user = {};
             user[message.author.id] = link;
@@ -99,7 +99,7 @@ function link_profile(message, godData) {
             message.reply(`The start of your link seems correct, but '${link.slice(30)}' doesn't look like a correct god name.`);
             return message.channel.send('God names can only contain letters, numbers, hyphens and spaces. Using %20 to encode spaces is okay too.');
         }
-    } else if (/[a-z0-9- ]{3,30}/i.test(link)) {
+    } else if (/^[a-z0-9- ]{3,30}$/i.test(link)) {
         message.reply(`'${link}' looks like a god name. I have set or updated the link to your Godville account.`);
         link = 'https://godvillegame.com/gods/' + link.replace(' ', '%20');
         const user = {};
