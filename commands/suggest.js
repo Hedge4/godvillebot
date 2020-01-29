@@ -34,7 +34,7 @@ async function accept(message, client) {
     const old_msg = await old_channel.fetchMessage(args[0]);
     const contents = old_msg.content;
     old_msg.delete();
-    new_channel.send(`${author} accepted :white_check_mark: a suggestion with reason:\n${args[1]}\n\`\`\`Suggestion: ${contents.slice(6, -1)}\`\`\``);
+    new_channel.send(`${author} accepted :white_check_mark: a suggestion with reason:\n${args[1]}\n\`\`\`Suggestion: ${contents.slice(4, -1).replace('`', '')}\`\`\``);
 }
 
 async function reject(message, client) {
@@ -52,7 +52,7 @@ async function reject(message, client) {
     const old_msg = await old_channel.fetchMessage(args[0]);
     const contents = old_msg.content;
     old_msg.delete();
-    new_channel.send(`${author} rejected :x: a suggestion with reason:\n${args[1]}\n\`\`\`Suggestion: ${contents.slice(6, -1)}\`\`\``);
+    new_channel.send(`${author} rejected :x: a suggestion with reason:\n${args[1]}\n\`\`\`Suggestion: ${contents.slice(4, -1).replace('`', '')}\`\`\``);
 }
 
 exports.suggestion = suggest;
