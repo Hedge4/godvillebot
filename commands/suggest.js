@@ -20,39 +20,49 @@ async function suggest(client, message) {
 }
 
 async function accept(message, client) {
-    const args = message.content.slice(7).trim().split(' ');
-    if (args[2] || !args[0].length) {
+    let args = message.content.slice(7).trim().split(' ');
+    let ID = 0;
+    if (!args[0] || !args[0].length || isNaN(args[0])) {
         return message.delete();
+    } else {
+        ID = args[0];
+        args.shift();
     }
-    if (!args[1] || !args[1].length) {
-        args[1] = 'No reason provided.';
+    args = args.join(' ');
+    if (!args || !args.length) {
+        args = 'No reason provided.';
     }
     const author = message.author.tag;
     message.delete();
     const old_channel = await client.channels.get(suggestion_channel[0]);
     const new_channel = await client.channels.get(suggestion_channel[1]);
-    const old_msg = await old_channel.fetchMessage(args[0]);
+    const old_msg = await old_channel.fetchMessage(ID);
     const contents = old_msg.content;
     old_msg.delete();
-    new_channel.send(`${author} accepted :white_check_mark: a suggestion with reason:\n${args[1]}\n\`\`\`Suggestion: ${contents.slice(4, -1).replace('`', '\n')}\`\`\``);
+    new_channel.send(`${author} accepted :white_check_mark: a suggestion with reason:\n${args}\n\`\`\`Suggestion: ${contents.slice(4, -1).replace('`', '\n')}\`\`\``);
 }
 
 async function reject(message, client) {
-    const args = message.content.slice(7).trim().split(' ');
-    if (args[2] || !args[0].length) {
+    let args = message.content.slice(7).trim().split(' ');
+    let ID = 0;
+    if (!args[0] || !args[0].length || isNaN(args[0])) {
         return message.delete();
+    } else {
+        ID = args[0];
+        args.shift();
     }
-    if (!args[1] || !args[1].length) {
-        args[1] = 'No reason provided.';
+    args = args.join(' ');
+    if (!args || !args.length) {
+        args = 'No reason provided.';
     }
     const author = message.author.tag;
     message.delete();
     const old_channel = await client.channels.get(suggestion_channel[0]);
     const new_channel = await client.channels.get(suggestion_channel[2]);
-    const old_msg = await old_channel.fetchMessage(args[0]);
+    const old_msg = await old_channel.fetchMessage(ID);
     const contents = old_msg.content;
     old_msg.delete();
-    new_channel.send(`${author} rejected :x: a suggestion with reason:\n${args[1]}\n\`\`\`Suggestion: ${contents.slice(4, -1).replace('`', '\n')}\`\`\``);
+    new_channel.send(`${author} rejected :x: a suggestion with reason:\n${args}\n\`\`\`Suggestion: ${contents.slice(4, -1).replace('`', '\n')}\`\`\``);
 }
 
 exports.suggestion = suggest;
