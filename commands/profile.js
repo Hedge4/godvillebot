@@ -56,10 +56,10 @@ async function show_profile(message, client, Discord, godData) {
 
     if (!godvilleData[6]) {
         const godEmbed = new Discord.RichEmbed()
-        .setTitle(`${god} - Age: ${godvilleData[11]}`)
+        .setTitle(god)
         .setURL(godURL)
         .setThumbnail(godvilleData[1])
-        .setDescription(`Click the ${godvilleData[4]}'s username to open their Godville page.`)
+        .setDescription(` - Age: ${godvilleData[11]}`)
         .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}`, true)
         .addField('Motto', godvilleData[8], true)
         .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
@@ -69,10 +69,10 @@ async function show_profile(message, client, Discord, godData) {
         message.channel.send(godEmbed);
     } else {
         const godEmbed = new Discord.RichEmbed()
-        .setTitle(`${god} - Age: ${godvilleData[11]}`)
+        .setTitle(god)
         .setURL(godURL)
         .setThumbnail(godvilleData[1])
-        .setDescription(`Click the ${godvilleData[4]}'s username to open their Godville page.`)
+        .setDescription(` - Age: ${godvilleData[11]}`)
         .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}`, true)
         .addField('Motto', godvilleData[8], true)
         .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)

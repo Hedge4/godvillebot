@@ -10,7 +10,7 @@ function show_guides_list(message) {
     for (let i = 0; i < guides_list.length; i++) {
         text += ` {${i + 1}}   ${guides_list[i][0]}\n`;
     }
-    text += '\nUse ">guides [number]" to get the URL to a specific guide.\nContact Wawajabba to include your guide here.\n```';
+    text += '\nUse ">guides [number]" to get the URL to a specific guide.\nContact Wawajabba to include your guide here, or use >suggest. Be sure to include the URL, a short and an extended description and the guide authors.\n```';
     message.reply(`here are all ${guides_list.length} currently available guides:\n${text}`);
 }
 
