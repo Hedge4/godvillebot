@@ -1,5 +1,5 @@
 # GodBot
-Version: 2.8.4
+Version: 2.9
 
 ## What's new in version 2?
 Version 2 entails a major rewrite of all the code.
@@ -14,6 +14,7 @@ There's now a 'commands' folder with separate files for each function/command.
 * 2.6 The >profile command now also downloads the god page of the user and extracts certain data from it to show in the profile embed.
 * 2.7 The bot can now search the godwiki for a specific search term with >godwiki.
 * 2.8 Instead of a generic message, the bot now shows a nice restart embed on restart and its version number.
+* 2.9 For >link, the bot now accepts god names as well and has a 100% working checking system.
 
 ## What's new in version 1?
 Version 0 was only about creating the XP and gold system, but version 1 focusses on making the bot work online. The bot now uses a database to store userdata instead of a local file, and the bot is now hosted on Heroku. All userdata is reset.

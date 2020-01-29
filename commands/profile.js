@@ -86,16 +86,41 @@ async function show_profile(message, client, Discord, godData) {
 }
 
 function link_profile(message, godData) {
-    let goodLink = true;
-    const link = message.content.slice(5).trim();
-    if (!link.startsWith('https://godvillegame.com/gods/')) {
+    let link = message.content.slice(5).trim();
+    link = link.replace('%20', ' ');
+    if (link.startsWith('https://godvillegame.com/gods/')) {
+        if (link.slice(30) === /[a-z0-9- ]{3,30}/i) {
+            link = link.replace(' ', '%20');
+            const user = {};
+            user[message.author.id] = link;
+            godData.set(user, { merge: true });
+            return message.reply('I have set or updated the link to your Godville account.');
+        } else {
+            message.reply(`The start of your link seems correct, but '${link.slice(30)}' doesn't look like a correct god name.`);
+            return message.channel.send('God names can only contain letters, numbers, hyphens and spaces. Using %20 to encode spaces is okay too.');
+        }
+    } else if (link === /[a-z0-9- ]{3,30}/i) {
+        message.reply(`'${link}' looks like a god name. I have set or updated the link to your Godville account.`);
+        link = 'https://godvillegame.com/gods/' + link.replace(' ', '%20');
+        const user = {};
+        user[message.author.id] = link;
+        godData.set(user, { merge: true });
+        return;
+    } else {
+        message.reply('your link doesn\'t start with \'<https://godvillegame.com/gods/>\' or you made a typo in your god name.');
+        message.channel.send('Please format the link exactly like this:\n\'<https://godvillegame.com/gods/YOUR-GOD-NAME>\'');
+        return message.channel.send('God names can only contain letters, numbers, hyphens and spaces. Using %20 to encode spaces is okay too.');
+    }
+
+
+/*    if (!link.startsWith('https://godvillegame.com/gods/')) {
         message.channel.send(`<@${message.author.id}>, your link doesn't start with '<https://godvillegame.com/gods/>'`);
         goodLink = false;
     }
     if (goodLink === true) {
         if (link.slice(30) !== /[a-z0-9- ]{3,30}/i) {
             goodLink = false;
-            message.channel.reply(`${link.slice(30)} doesn't look like a correct god name.`);
+            message.reply(`${link.slice(30)} doesn't look like a correct god name.`);
         }
     }
     if (goodLink === true) {
@@ -103,8 +128,8 @@ function link_profile(message, godData) {
         user[message.author.id] = link;
         godData.set(user, { merge: true });
         message.reply('I have set or updated the link to your Godville account.');
-    } else { return message.channel.send('Please format the link exactly like this:\n\'<https://godvillegame.com/gods/YOUR_GOD_NAME>\''); }
-}
+    } else { return message.channel.send('Please format the link exactly like this:\n\'<https://godvillegame.com/gods/YOUR-GOD-NAME>\''); }
+*/}
 
 exports.show = show_profile;
 exports.link = link_profile;
