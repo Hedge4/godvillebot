@@ -1,6 +1,6 @@
 {
-  "name": "GodBot",
-  "version": "2.11.7",
+  "name": "godbot",
+  "version": "2.11.8",
   "description": "",
   "main": "index.js",
   "scripts": {

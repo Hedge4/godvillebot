@@ -48,7 +48,7 @@ async function show_profile(message, client, Discord, godData) {
         .setTitle(god)
         .setURL(godURL)
         .setDescription('Click the god(dess)\'s username to open their Godville page.')
-        .addField('ERROR', 'Extra data such as their Gravatar and level could not be found for this god; this page has probably been linked incorrectly.')
+        .addField('ERROR', 'Extra data such as their Gravatar and level could not be found for this god; either the bot can\'t acces this page or it was linked incorrectly. In case of the former, the link above will still work.')
         .setColor('006600')
         .setFooter(author, user.displayAvatarURL);
         return message.channel.send(godEmbed);
@@ -66,7 +66,7 @@ async function show_profile(message, client, Discord, godData) {
         .addField('Medals', godvilleData[5], false)
         .setColor('006600')
         .setFooter(author, user.displayAvatarURL);
-        message.channel.send(godEmbed);
+        return message.channel.send(godEmbed);
     } else {
         const godEmbed = new Discord.RichEmbed()
         .setTitle(god)
@@ -81,16 +81,16 @@ async function show_profile(message, client, Discord, godData) {
         .addField('Medals', godvilleData[5], false)
         .setColor('006600')
         .setFooter(author, user.displayAvatarURL);
-        message.channel.send(godEmbed);
+        return message.channel.send(godEmbed);
     }
 }
 
 function link_profile(message, godData) {
     let link = message.content.slice(5).trim();
-    link = link.replace('%20', ' ');
+    link = link.replace(/%20/g, ' ');
     if (link.startsWith('https://godvillegame.com/gods/')) {
         if (/^[a-z0-9- ]{3,30}$/i.test(link.slice(30))) {
-            link = link.replace(' ', '%20');
+            link = link.replace(/ /g, '%20');
             const user = {};
             user[message.author.id] = link;
             godData.set(user, { merge: true });
@@ -101,35 +101,17 @@ function link_profile(message, godData) {
         }
     } else if (/^[a-z0-9- ]{3,30}$/i.test(link)) {
         message.reply(`'${link}' looks like a god name. I have set or updated the link to your Godville account.`);
-        link = 'https://godvillegame.com/gods/' + link.replace(' ', '%20');
+        link = 'https://godvillegame.com/gods/' + link.replace(/ /g, '%20');
         const user = {};
         user[message.author.id] = link;
         godData.set(user, { merge: true });
         return;
     } else {
-        message.reply('your link doesn\'t start with \'<https://godvillegame.com/gods/>\' or you made a typo in your god name.');
+        message.reply(`your link doesn't start with '<https://godvillegame.com/gods/>' or you made a typo in your god name: "${link}".`);
         message.channel.send('Please format the link exactly like this:\n\'<https://godvillegame.com/gods/YOUR-GOD-NAME>\'');
         return message.channel.send('God names can only contain letters, numbers, hyphens and spaces. Using %20 to encode spaces is okay too.');
     }
-
-
-/*    if (!link.startsWith('https://godvillegame.com/gods/')) {
-        message.channel.send(`<@${message.author.id}>, your link doesn't start with '<https://godvillegame.com/gods/>'`);
-        goodLink = false;
-    }
-    if (goodLink === true) {
-        if (link.slice(30) !== /[a-z0-9- ]{3,30}/i) {
-            goodLink = false;
-            message.reply(`${link.slice(30)} doesn't look like a correct god name.`);
-        }
-    }
-    if (goodLink === true) {
-        const user = {};
-        user[message.author.id] = link;
-        godData.set(user, { merge: true });
-        message.reply('I have set or updated the link to your Godville account.');
-    } else { return message.channel.send('Please format the link exactly like this:\n\'<https://godvillegame.com/gods/YOUR-GOD-NAME>\''); }
-*/}
+}
 
 exports.show = show_profile;
 exports.link = link_profile;
@@ -138,11 +120,11 @@ async function getGodData(URL, message) {
     const myFirstPromise = new Promise((resolve, reject) => {
         https.get(URL, (res) => {
             res.on('data', (d) => {
-                //console.log(String(d));
+                console.log(String(d));
                 resolve(String(d));
-        });
+            });
         }).on('error', (e) => {
-            //console.error(e);
+            console.error(e);
             reject(e);
         });
     });
@@ -200,18 +182,18 @@ async function getGodData(URL, message) {
     let guild_name = 'No guild.';
     let guild_url = '';
     if (guild_url_res) {
-        guild_name = (decodeURI(rx_guild.exec(html)[1].trim())).replace('&#39;', '\'');
+        guild_name = (decodeURI(rx_guild.exec(html)[1].trim())).replace(/&#39;/g, '\'');
         guild_url = guild_url_res[1];
     }
-    motto = (decodeURI(motto.trim())).replace('&#39;', '\'');
+    motto = (decodeURI(motto.trim())).replace(/&#39;/g, '\'');
     if (!motto.length) {
         motto = 'No motto set.';
     }
     let pet_name = '';
     let pet_type = '';
     if (pet_type_res) {
-        pet_name = (decodeURI(rx_pet_name.exec(html)[1])).replace('&#39;', '\'');
-        pet_type = (decodeURI(pet_type_res[1])).replace('&#39;', '\'');
+        pet_name = (decodeURI(rx_pet_name.exec(html)[1])).replace(/&#39;/g, '\'');
+        pet_type = (decodeURI(pet_type_res[1])).replace(/&#39;/g, '\'');
     } else {
         pet_name = null;
         pet_type = null;
