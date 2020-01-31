@@ -44,8 +44,8 @@ async function getRanking(message, userData) {
         ranking += ` {${i + 1 + (page - 1) * 10}}    - "${usersOnPage[i][2]}", level ${usersOnPage[i][3]}.\n              Total godpower: ${usersOnPage[i][1]}\n`;
     }
     ranking += `------------------------------------------\nYour rank: {${own_rank}} - Level ${userDoc.data()[message.author.id].level}, total godpower: ${userDoc.data()[message.author.id].total_godpower}`;
-
-    message.reply('here is page ' + page + ' of the godpower rankings:\n```\n' + ranking + '\n```');
+    console.log(`${message.author.tag} requested page ${page} of the godpower rankings.`);
+    return message.reply('here is page ' + page + ' of the godpower rankings:\n```\n' + ranking + '\n```');
 }
 
 exports.getRanking = getRanking;

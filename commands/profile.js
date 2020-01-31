@@ -39,16 +39,27 @@ async function show_profile(message, client, Discord, godData) {
         } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#315874239779569666>: \n${prefix}\`link god_name\` or\n\`>link <https://godvillegame.com/gods/GOD_NAME>\``); }
     }
     const godURL = godDoc.data()[user.id];
+    if (!godURL || godURL.length <= 33) {
+        return message.reply('Somehow, the URL to your page doesn\'t seem correct. Please correct it before using this command. Your URL: ' + godURL);
+    }
     let god = godURL.slice(30);
     god = decodeURI(god);
+    console.log(`${message.author.tag} requested profile page for ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
 
-    const godvilleData = await getGodData(godURL, message);
+    let godvilleData = null;
+    try {
+        godvilleData = await getGodData(godURL, message);
+    } catch(err) {
+        console.log('Error while getting god data for ${godURL}! Error: \n' + err);
+        godvilleData = null;
+    }
+
     if (!godvilleData) {
         const godEmbed = new Discord.RichEmbed()
         .setTitle(god)
         .setURL(godURL)
         .setDescription('Click the god(dess)\'s username to open their Godville page.')
-        .addField('ERROR', 'Extra data such as their Gravatar and level could not be found for this god; either the bot can\'t acces this page or it was linked incorrectly. In case of the former, the link above will still work.')
+        .addField('ERROR', 'Extra data such as their (gr)avatar and level could not be found for this god; either the bot can\'t acces this page or it was linked incorrectly. In case of the former, the link above will still work.')
         .setColor('006600')
         .setFooter(author, user.displayAvatarURL);
         return message.channel.send(godEmbed);
@@ -88,6 +99,7 @@ async function show_profile(message, client, Discord, godData) {
 function link_profile(message, godData) {
     let link = message.content.slice(5).trim();
     link = link.replace(/%20/g, ' ');
+    console.log(`${message.author.tag} tried to link their account to '${link}'.`);
     if (link.startsWith('https://godvillegame.com/gods/')) {
         if (/^[a-z0-9- ]{3,30}$/i.test(link.slice(30))) {
             link = link.replace(/ /g, '%20');
@@ -120,7 +132,7 @@ async function getGodData(URL, message) {
     const myFirstPromise = new Promise((resolve, reject) => {
         https.get(URL, (res) => {
             res.on('data', (d) => {
-                console.log(String(d));
+                //console.log(String(d));
                 resolve(String(d));
             });
         }).on('error', (e) => {
@@ -135,6 +147,8 @@ async function getGodData(URL, message) {
         //console.log(html);
     }).catch((error) => {
         console.log('Oops! Couldn\'t get this God\'s page!' + error);
+        message.channel.send('Could not obtain online data. This is most likely a connection error, or your URL is incorrect.');
+        return(null);
     });
 
     if (!html) {
@@ -142,7 +156,7 @@ async function getGodData(URL, message) {
         return(null);
     }
 
-    const rx_gravatar = /(?:img alt="Gravatar)[\s\S]*?src="([\s\S]*?)\?/;
+    const rx_avatar = /(?:img alt="Gravatar)[\s\S]*?src="([\s\S]*?)\?/;
     const rx_level = /(?:class="level">)[\s\S]*?(\d+)/;
     const rx_name = /og:title[\s\S]*?hero[\w]* ([\s\S]*?)"/;
     const rx_gender = /heroine/i;
@@ -159,16 +173,10 @@ async function getGodData(URL, message) {
     const rx_guild_url = /name guild[\s\S]+?href="([\s\S]+?)"/;
     const rx_age = /label">Age(?:[\s\S]+?>){2}([\s\S]+?)</;
 
-    const gravatar_regex = rx_gravatar.exec(html);
-    if (!gravatar_regex) {
-        return(null);
-    }
-
     let motto = rx_motto.exec(html)[1];
     const level = rx_level.exec(html)[1];
     const name = decodeURI(rx_name.exec(html)[1]);
     const age = rx_age.exec(html)[1];
-    const gravatar_url = gravatar_regex[1];
     const gender_res = rx_gender.exec(html);
     const god_gender_res = rx_god_gender.exec(html);
     const temple = rx_temple.exec(html);
@@ -179,6 +187,13 @@ async function getGodData(URL, message) {
     const pet_type_res = rx_pet_type.exec(html);
     const guild_url_res = rx_guild_url.exec(html);
 
+    let avatar_url = '';
+    const avatar_url_res = rx_avatar.exec(html);
+    if (!avatar_url_res) {
+        avatar_url = 'https://godvillegame.com/images/avatar.png';
+    } else {
+        avatar_url = avatar_url_res[1];
+    }
     let guild_name = 'No guild.';
     let guild_url = '';
     if (guild_url_res) {
@@ -216,5 +231,6 @@ async function getGodData(URL, message) {
     if (trader) { achievements += `${trader.slice(1)}\n`; }
     if (CM) { achievements += `${CM.slice(1)}\n`; }
 
-    return([gender, gravatar_url, name, level, god_gender, achievements, pet_type, pet_name, motto, guild_name, guild_url, age]);
+    console.log([gender, avatar_url, name, level, god_gender, achievements, pet_type, pet_name, motto, guild_name, guild_url, age]);
+    return([gender, avatar_url, name, level, god_gender, achievements, pet_type, pet_name, motto, guild_name, guild_url, age]);
 }

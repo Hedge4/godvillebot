@@ -33,7 +33,8 @@ function constructHelp(message, Discord, client) {
         .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
         .setTimestamp()
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL);
-    message.channel.send(helpEmbed);
+    console.log(`${message.author.tag} requested the help message in ${message.channel.name}.`);
+    return message.channel.send(helpEmbed);
 }
 
 exports.helpMessage = constructHelp;

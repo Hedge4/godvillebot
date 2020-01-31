@@ -30,7 +30,7 @@ async function accept(message, client) {
     }
     args = args.join(' ');
     if (!args || !args.length) {
-        args = 'No reason provided.';
+        args = 'No comment provided.';
     }
     const author = message.author.tag;
     message.delete();
@@ -39,7 +39,7 @@ async function accept(message, client) {
     const old_msg = await old_channel.fetchMessage(ID);
     const contents = old_msg.content;
     old_msg.delete();
-    new_channel.send(`${author} accepted :white_check_mark: a suggestion with reason:\n"${args}"\n\`\`\`Suggestion: ${contents.slice(4, -1).replace(/`/g, '\n')}\`\`\``);
+    new_channel.send(`${author} accepted :white_check_mark: a suggestion with comment:\n"${args}"\n\`\`\`Suggestion: ${contents.slice(4, -1).replace(/`/g, '\n')}\`\`\``);
 }
 
 async function reject(message, client) {
@@ -53,7 +53,7 @@ async function reject(message, client) {
     }
     args = args.join(' ');
     if (!args || !args.length) {
-        args = 'No reason provided.';
+        args = 'No comment provided.';
     }
     const author = message.author.tag;
     message.delete();
@@ -62,7 +62,7 @@ async function reject(message, client) {
     const old_msg = await old_channel.fetchMessage(ID);
     const contents = old_msg.content;
     old_msg.delete();
-    new_channel.send(`${author} rejected :x: a suggestion with reason:\n"${args}"\n\`\`\`Suggestion: ${contents.slice(4, -1).replace(/`/g, '\n')}\`\`\``);
+    new_channel.send(`${author} rejected :x: a suggestion with comment:\n"${args}"\n\`\`\`Suggestion: ${contents.slice(4, -1).replace(/`/g, '\n')}\`\`\``);
 }
 
 exports.suggestion = suggest;

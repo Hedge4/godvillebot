@@ -1,13 +1,13 @@
-const { owner } = require('../config.json');
+const { owner, purge_channels, admin_role } = require('../config.json');
 
 
 async function purge(message) {
-    if (message.member.roles.has('313448657540349962') || owner.includes(message.author.id)) {
-        if (message.channel.id === '671046033291345943') {
+    if (message.member.roles.has(admin_role) || owner.includes(message.author.id)) {
+        if (purge_channels.includes(message.channel.id)) {
             message.delete();
             message.channel.bulkDelete(100)
             .then(messages => {
-                console.log(`Bulk deleted ${messages.size} messages. Command used by ${message.author.tag}.`);
+                console.log(`Purged ${messages.size} messages in ${message.channel.name}. Command used by ${message.author.tag}.`);
                 message.reply(`purged ${messages.size} messages.`);
             })
             .catch(console.error);

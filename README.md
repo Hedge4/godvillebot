@@ -1,5 +1,5 @@
 # GodBot
-Version: 2.11.8
+Version: 2.12
 
 ## What's new in version 2?
 Version 2 entails a major rewrite of all the code.
@@ -17,6 +17,7 @@ There's now a 'commands' folder with separate files for each function/command.
 * 2.9 For >link, the bot now accepts god names as well and has a 100% working checking system.
 * 2.10 Bot owner can now use 'accept message_ID' or 'reject message_ID' in the suggestions channel to move messages to the accepted or rejected channel.
 * 2.11 accept and reject in the suggestion channel now accept reasons as well.
+* 2.12 Added logging for all commands except for >suggest. Admin role and purge channels are now defined in config.json.
 
 ## What's new in version 1?
 Version 0 was only about creating the XP and gold system, but version 1 focusses on making the bot work online. The bot now uses a database to store userdata instead of a local file, and the bot is now hosted on Heroku. All userdata is reset.

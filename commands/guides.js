@@ -18,6 +18,7 @@ const guides_list = [
 ];
 
 function show_guides_list(message) {
+    console.log(`${message.author.tag} requested the list of guides in channel ${message.channel.name}`);
     let text = '```\n';
     for (let i = 0; i < guides_list.length; i++) {
         text += ` {${i + 1}}   ${guides_list[i][0]}\n`;
@@ -42,6 +43,7 @@ function list_or_guide(message, Discord) {
     if (!number.length) {
         show_guides_list(message);
     } else {
+        console.log(`${message.author.tag} requested guide ${number} in channel ${message.channel.name}.`);
         if (isNaN(number)) {
             return message.reply('you need to enter the number of the guide you want to view.');
         }
