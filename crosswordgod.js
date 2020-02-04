@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { newspaper_channels, newspaper_updates, prefix, owner } = require('../config.json');
+const { newspaper_channels, newspaper_updates, prefix, owner } = require('./config.json');
 const fs = require('fs');
 const find = require('find');
 const { PythonShell } = require('python-shell');
@@ -84,7 +84,7 @@ async function getSolution() {
         filename += path[i];
     }
 //    console.log(filename + ' was found.');
-    const load = await require('./' + filename);
+    const load = await require('./crosswordgod_functions/' + filename);
     const rand = new Date().getTime();
     const filename_new = ('solution' + rand + '.json');
     fs.rename('crosswordgod_functions\\' + filename, 'crosswordgod_functions\\' + filename_new, function(err) {
