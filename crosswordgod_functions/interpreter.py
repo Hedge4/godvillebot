@@ -77,7 +77,7 @@ for root, dirs, files in os.walk(mypath):
         os.remove(os.path.join(root, file))
 
 # schrijf de oplossing naar het .json bestand in de juiste indeling
-f= open("./crosswordgod_functions/solution"+str(random.randint(0, 1000000000))+".json","w+")
+f= open("./solution"+str(random.randint(0, 1000000000))+".json","w+")
 f.write('{\n    "embedTitle1": "Daily crossword solution and news:",\n    "embedBody1": "')
 f.write(r"**=== Horizontal words ===**||\n")
 for word in words_hor:

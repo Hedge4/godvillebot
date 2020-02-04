@@ -84,10 +84,10 @@ async function getSolution() {
         filename += path[i];
     }
 //    console.log(filename + ' was found.');
-    const load = await require('./crosswordgod_functions/' + filename);
+    const load = await require('./' + filename);
     const rand = new Date().getTime();
     const filename_new = ('solution' + rand + '.json');
-    fs.rename('crosswordgod_functions\\' + filename, 'crosswordgod_functions\\' + filename_new, function(err) {
+    fs.rename(filename, filename_new, function(err) {
         if (err) console.log('ERROR:' + err);
     });
 //    console.log('It was changed to ' + filename_new);
