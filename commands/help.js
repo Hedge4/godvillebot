@@ -19,17 +19,19 @@ const commands_list = [
     'Searches the godwiki.'],
     [`${prefix}guides [number]`,
     'Shows a list of useful Godville guides saved in the bot.'],
+    [`${prefix}daily`,
+    ''],
 ];
 
 function constructHelp(message, Discord, client) {
-    let text = '';
+    let text = '**__List of commands:__**\n';
     for (let i = 0; i < commands_list.length; i++) {
         text += `\`${commands_list[i][0]}\` ${commands_list[i][1]}\n`;
     }
     const helpEmbed = new Discord.RichEmbed()
         .setTitle('GodBot commands')
         .setColor(0x63CCBE) // Soft blue
-        .setDescription('GodBot gives server members XP, or \'godpower\' for talking in channels that aren\'t <#313398792588099604> or <#315874239779569666>. After reaching a specific amount of godpower, you\'ll level up.\n\n' + text)
+        .setDescription('GodBot allows server members by talking and gaining godpower. It also automatically sends the crossword solutions in <#> every day at 22:20 UTC.\n\n' + text)
         .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
         .setTimestamp()
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL);

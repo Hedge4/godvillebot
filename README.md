@@ -1,5 +1,14 @@
 # GodBot
-Version: 2.13.1
+Version: 3.2
+
+## What's new in version 3?
+Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.
+It means rewriting some of CrosswordGod's code so it can be run as a function instead of the worker file,
+adding python libraries and the packages find, fs and python-shell to take over all functionality.
+
+### What has been added since?
+* 3.1 Added structure for commands that can only be used once a day.
+* 3.2 Added a >daily command for 7-19 gold every day.
 
 ## What's new in version 2?
 Version 2 entails a major rewrite of all the code.

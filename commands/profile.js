@@ -231,6 +231,5 @@ async function getGodData(URL, message) {
     if (trader) { achievements += `${trader.slice(1)}\n`; }
     if (CM) { achievements += `${CM.slice(1)}\n`; }
 
-    console.log([gender, avatar_url, name, level, god_gender, achievements, pet_type, pet_name, motto, guild_name, guild_url, age]);
     return([gender, avatar_url, name, level, god_gender, achievements, pet_type, pet_name, motto, guild_name, guild_url, age]);
 }

@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, suggestion_channel } = require('./config.json');
+const { prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, suggestion_channel, newspaper_channels } = require('./config.json');
 const version = (require('./package.json')).version;
 
 const mentions = require('./commands/togglementions');
@@ -14,6 +14,8 @@ const help = require('./commands/help');
 const purge = require('./commands/purge');
 const profile = require('./commands/profile');
 const godville = require('./commands/godville_interaction');
+const crosswordgod = require('./crosswordgod_functions/crosswordgod');
+const limitedCommands = require('./commands/limited_commands');
 
 const admin = require('firebase-admin');
 const serviceAccount = require('./serviceAccountKey.json');
@@ -23,10 +25,15 @@ admin.initializeApp({
 const db = admin.firestore();
 const userData = db.collection('data').doc('users');
 const godData = db.collection('data').doc('gods');
+const limitedCommandsData = db.collection('data').doc('limited uses');
 global.totalGodpower = 0;
 userData.get()
     .then (doc => {
         totalGodpower = doc.data()[1];
+    });
+limitedCommandsData.get()
+    .then (doc => {
+        global.usedDaily = doc.data()['daily'];
     });
 
 client.on('ready', () => {
@@ -40,7 +47,7 @@ client.on('ready', () => {
 //            channel.send('something');
         }
     });
-    client.user.setActivity(`${prefix}help | I like bot stuff | By Wawajabba`);
+    client.user.setActivity(`${prefix}help | Crossword solution updates 22:20 UTC | By Wawajabba`);
     if (totalGodpower === undefined) {
         totalGodpower = 0;
     }
@@ -51,6 +58,10 @@ client.on('ready', () => {
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL)
         .setTimestamp();
     client.channels.get(levelup_channel).send(startEmbed);
+    const delay = crosswordgod.getCrosswordDelay();
+    const delay2 = limitedCommands.resetDelay()[0];
+    setTimeout(crosswordgod.dailyCrosswordRenew, delay, client);
+    setTimeout(limitedCommands.reset, delay2, limitedCommandsData);
 });
 
 client.on('message', message => {
@@ -89,6 +100,12 @@ client.on('message', message => {
                     if (message.content.toLowerCase().startsWith(`${prefix}link`)) {
                         profile.link(message, godData);
                     }
+                    if (message.content.toLowerCase().startsWith(`${prefix}daily`)) {
+                        limitedCommands.daily(message, limitedCommandsData, userData);
+                    }
+                }
+                if (newspaper_channels.includes(message.channel.id)) {
+                    crosswordgod.crosswordgod(message);
                 }
                 if (message.content.toLowerCase().startsWith(`${prefix}profile`)) {
                     profile.show(message, client, Discord, godData);
@@ -103,7 +120,7 @@ client.on('message', message => {
                     suggest.suggestion(client, message);
                 }
                 if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
-                        purge.purge(message);
+                    purge.purge(message);
                 }
             }
         }
