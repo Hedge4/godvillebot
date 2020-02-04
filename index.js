@@ -2,6 +2,9 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const { prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, suggestion_channel, newspaper_channels } = require('./config.json');
 const version = (require('./package.json')).version;
+const fs = require('../fs');
+const find = require('../find');
+const { PythonShell } = require('../python-shell');
 
 const mentions = require('./commands/togglementions');
 const giveXP = require('./commands/givexp');

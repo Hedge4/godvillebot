@@ -1,10 +1,11 @@
 {
   "name": "godbot",
-  "version": "3.2",
+  "version": "3.2.2",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": { "postinstall": "cd crosswordgod_functions && npm install find && npm install fs && npm install python-shell" }
   },
   "keywords": [],
   "author": "Wawajabba#6917",
