@@ -19,46 +19,38 @@ function crosswordgod(message) {
             renew(message.channel, message.guild.name);
         }
         if (message.content.toLowerCase().includes(`${prefix}update`)) {
-            const currentDate = new Date();
-            console.log(`${currentDate} - User ${message.author.tag} requested current delay for automatic update.`);
+            console.log(`User ${message.author.tag} requested current delay for automatic update.`);
             getUpdate(message);
         }
         if (message.content.toLowerCase().includes(`${prefix}both`)) {
             sendAll(message.channel);
-            const currentDate = new Date();
-            console.log(currentDate + ' - Crossword and forecast sent to "' + message.channel.name + '" channel in "' + message.guild.name + '" guild.');
+            console.log('Crossword and forecast sent to "' + message.channel.name + '" channel in "' + message.guild.name + '" guild.');
         } else if (message.content.toLowerCase().includes(`${prefix}crossword`)) {
             if (message.content.toLowerCase().includes(`${prefix}forecast`)) {
                 sendAll(message.channel);
-                const currentDate = new Date();
-                console.log(currentDate + ' - Crossword and forecast sent to "' + message.channel.name + '" channel in "' + message.guild.name + '" guild.');
+                console.log('Crossword and forecast sent to "' + message.channel.name + '" channel in "' + message.guild.name + '" guild.');
             } else {
                 crosswordSend(message.channel);
-                const currentDate = new Date();
-                console.log(currentDate + ' - Crossword sent to "' + message.channel.name + '" channel in "' + message.guild.name + '" guild.');
+                console.log('Crossword sent to "' + message.channel.name + '" channel in "' + message.guild.name + '" guild.');
             }
         } else if (message.content.toLowerCase().includes(`${prefix}forecast`)) {
             forecastSend(message.channel);
         }
     } else if (newspaper_channels.includes(message.channel.id) === true) {
         if (message.content.toLowerCase().includes(`${prefix}update`)) {
-            const currentDate = new Date();
-            console.log(`${currentDate} - User ${message.author.tag} requested current delay for automatic update.`);
+            console.log(`User ${message.author.tag} requested current delay for automatic update.`);
             getUpdate(message);
         }
         if (message.content.toLowerCase().includes(`${prefix}both`)) {
             sendAll(message.channel);
-            const currentDate = new Date();
-            console.log(currentDate + ' - Crossword and forecast sent to "' + message.channel.name + '" channel in "' + message.guild.name + '" guild.');
+            console.log('Crossword and forecast sent to "' + message.channel.name + '" channel in "' + message.guild.name + '" guild.');
         } else if (message.content.toLowerCase().includes(`${prefix}crossword`)) {
             if (message.content.toLowerCase().includes(`${prefix}forecast`)) {
                 sendAll(message.channel);
-                const currentDate = new Date();
-                console.log(currentDate + ' - Crossword and forecast sent to "' + message.channel.name + '" channel in "' + message.guild.name + '" guild.');
+                console.log('Crossword and forecast sent to "' + message.channel.name + '" channel in "' + message.guild.name + '" guild.');
             } else {
                 crosswordSend(message.channel);
-                const currentDate = new Date();
-                console.log(currentDate + ' - Crossword sent to "' + message.channel.name + '" channel in "' + message.guild.name + '" guild.');
+                console.log('Crossword sent to "' + message.channel.name + '" channel in "' + message.guild.name + '" guild.');
             }
         } else if (message.content.toLowerCase().includes(`${prefix}forecast`)) {
             forecastSend(message.channel);
@@ -129,7 +121,7 @@ function getDelay() {
     const delay = then_UTC_milsec - now_milsec;
     const delayHours = Math.floor(delay / 1000 / 3600);
     const delayMins = Math.ceil((delay % (1000 * 3600)) / (60 * 1000));
-    console.log('--------------------------------------------------------\nAUTOBOT: ' + Date() + ' - Next automatic crossword update scheduled for ' + then + ', which is in ' + delayHours + ' hours and ' + delayMins + ' minutes.\n--------------------------------------------------------');
+    console.log('--------------------------------------------------------\nAUTOBOT: Next automatic crossword update scheduled for ' + then + ', which is in ' + delayHours + ' hours and ' + delayMins + ' minutes.\n--------------------------------------------------------');
     return delay;
 }
 
@@ -190,8 +182,7 @@ async function renew(channel, guildName) {
 }
 
 function renewMessageDelay(channel, guildName) {
-    const currentDate = new Date();
-    console.log(currentDate + ' - Renewed and sent to "' + channel.name + '" channel in "' + guildName + '" guild.');
+    console.log('Renewed newspaper and sent to "' + channel.name + '" channel in "' + guildName + '" guild.');
     channel.send('Succesfully renewed. New solution and forecast:');
 }
 

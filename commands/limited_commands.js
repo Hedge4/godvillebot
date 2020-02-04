@@ -26,13 +26,13 @@ async function checkDaily(message, limitedCommandsData, userData) {
 
         message.reply(`you received **${goldAdd}** daily gold. You now have **${gold}** gold total. <:stat_gold:401414686651711498>`);
     } else {
-        const delay = getResetTimer();
+        const delay = getResetTimer(false);
         console.log(`${message.author.tag} tried to use their daily in ${message.channel.name}, but had already used it.`);
         message.reply(`you already used your daily! Dailies reset in ${delay[1]} hours and ${delay[2]} minutes.`);
     }
 }
 
-function getResetTimer() {
+function getResetTimer(show) {
     const now = new Date();
     const timezoneOffset = now.getTimezoneOffset();
     let yrs = now.getFullYear();
@@ -55,12 +55,14 @@ function getResetTimer() {
     const delay = then_UTC_milsec - now_milsec;
     const delayHours = Math.floor(delay / 1000 / 3600);
     const delayMins = Math.ceil((delay % (1000 * 3600)) / (60 * 1000));
-    console.log('--------------------------------------------------------\nAUTOBOT: ' + Date() + ' - Next daily reset scheduled for ' + then + ', which is in ' + delayHours + ' hours and ' + delayMins + ' minutes.\n--------------------------------------------------------');
+    if (show === true) {
+        console.log('--------------------------------------------------------\nAUTOBOT: Next daily reset scheduled for ' + then + ', which is in ' + delayHours + ' hours and ' + delayMins + ' minutes.\n--------------------------------------------------------');
+    }
     return [delay, delayHours, delayMins, then];
 }
 
 function dailyReset(limitedCommandsData) {
-    const delay = getResetTimer();
+    const delay = getResetTimer(true);
     usedDaily = [];
     limitedCommandsData.set({ daily: usedDaily });
     setTimeout(dailyReset, delay[0], limitedCommandsData);
