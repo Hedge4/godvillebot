@@ -9,6 +9,10 @@
   "keywords": [],
   "author": "Wawajabba#6917",
   "license": "ISC",
+  "engines": {
+    "node": "12.14.1",
+    "npm": "6.13.4"
+  },
   "dependencies": {
     "discord.js": "^11.5.1",
     "find": "^0.3.0",
