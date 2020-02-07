@@ -1,5 +1,8 @@
 # GodBot
-Version: 3.7
+Version: 3.6.4
+
+| WARNING: Currently working via "Temp" branch until I can restore the original commits at master, which were deleted in a freak --force accident... |
+| --- |
 
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.
@@ -13,7 +16,6 @@ adding python libraries and the packages find, fs and python-shell to take over 
 * 3.4 Restructured some of the chaotic code in crosswordgod.js
 * 3.5 The forecast is now also automatically sent to MK when it updates.
 * 3.6 Moved some file locations, ordered config files in configurations folder and fixed require references in an effort to keep the main folder tidier.
-* 3.7 A change of devices, inexperience and a `git push --force` caused all of the commits before version 3.3 to be lost. Those old commits have been restored and the new commits after version 3.2 have all been compiled in this commit.
 
 ## What's new in version 2?
 Version 2 entails a major rewrite of all the code.

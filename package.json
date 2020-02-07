@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "3.7",
+  "version": "3.6.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,10 +9,6 @@
   "keywords": [],
   "author": "Wawajabba#6917",
   "license": "ISC",
-  "engines": {
-    "node": "12.14.1",
-    "npm": "6.13.4"
-  },
   "dependencies": {
     "discord.js": "^11.5.1",
     "find": "^0.3.0",
