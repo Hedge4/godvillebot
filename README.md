@@ -1,9 +1,6 @@
 # GodBot
 Version: 3.7
 
-| WARNING: Currently working via "Temp" branch until I can restore the original commits at master, which were deleted in a freak --force accident... |
-| --- |
-
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.
 It means rewriting some of CrosswordGod's code so it can be run as a function instead of the worker file,
