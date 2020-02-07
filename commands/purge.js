@@ -1,4 +1,4 @@
-const { owner, purge_channels, admin_role } = require('../config.json');
+const { owner, purge_channels, admin_role } = require('../configurations/config.json');
 
 
 async function purge(message) {

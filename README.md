@@ -1,7 +1,7 @@
 # GodBot
-Version: 3.2.5
+Version: 3.7
 
-| Edit: hopefully this commit restores the lost history by an accidental --force push... |
+| WARNING: Currently working via "Temp" branch until I can restore the original commits at master, which were deleted in a freak --force accident... |
 | --- |
 
 ## What's new in version 3?
@@ -12,6 +12,11 @@ adding python libraries and the packages find, fs and python-shell to take over 
 ### What has been added since?
 * 3.1 Added structure for commands that can only be used once a day.
 * 3.2 Added a >daily command for 7-19 gold every day.
+* 3.3 Completely changed the >help command and added help functions for specific commands.
+* 3.4 Restructured some of the chaotic code in crosswordgod.js
+* 3.5 The forecast is now also automatically sent to MK when it updates.
+* 3.6 Moved some file locations, ordered config files in configurations folder and fixed require references in an effort to keep the main folder tidier.
+* 3.7 A change of devices, inexperience and a `git push --force` caused all of the commits before version 3.3 to be lost. Those old commits have been restored and the new commits after version 3.2 have all been compiled in this commit.
 
 ## What's new in version 2?
 Version 2 entails a major rewrite of all the code.

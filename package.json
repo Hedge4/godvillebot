@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "3.2.5",
+  "version": "3.7",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   "dependencies": {
     "discord.js": "^11.5.1",
     "find": "^0.3.0",
-    "firebase-admin": "^8.9.1",
+    "firebase-admin": "^8.9.2",
     "fs": "0.0.1-security",
     "python-shell": "^1.0.8"
   }

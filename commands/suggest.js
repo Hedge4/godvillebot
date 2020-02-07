@@ -1,4 +1,4 @@
-const { suggest_blocked, suggestion_channel } = require('../config.json');
+const { suggest_blocked, suggestion_channel } = require('../configurations/config.json');
 
 async function suggest(client, message) {
     if (!suggest_blocked.includes(message.author.id)) {

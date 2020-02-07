@@ -1,5 +1,5 @@
 const https = require('https');
-const { prefix } = require('../config.json');
+const { prefix } = require('../configurations/config.json');
 
 async function show_profile(message, client, Discord, godData) {
 

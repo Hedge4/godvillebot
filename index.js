@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, suggestion_channel, newspaper_channels } = require('./config.json');
+const { prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, suggestion_channel, newspaper_channels } = require('./configurations/config.json');
 const version = (require('./package.json')).version;
 
 const mentions = require('./commands/togglementions');
@@ -18,7 +18,7 @@ const crosswordgod = require('./crosswordgod');
 const limitedCommands = require('./commands/limited_commands');
 
 const admin = require('firebase-admin');
-const serviceAccount = require('./serviceAccountKey.json');
+const serviceAccount = require('./configurations/serviceAccountKey.json');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
@@ -95,7 +95,7 @@ client.on('message', message => {
                         getRanking.getRanking(message, userData);
                     }
                     if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
-                        help.helpMessage(message, Discord, client);
+                        help.getHelp(message, Discord, client);
                     }
                     if (message.content.toLowerCase().startsWith(`${prefix}link`)) {
                         profile.link(message, godData);

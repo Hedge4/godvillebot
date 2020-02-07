@@ -5,7 +5,7 @@ def omnibus_get():
     if omnibus != None:
         print("Nieuwste versie van de omnibus lijst aan het ophalen...")
         omnibus = BeautifulSoup(omnibus,'html.parser')
-        f= open("omnibus.txt","w+")
+        f= open("python/omnibus.txt","w+")
         data = []
         for li in omnibus.select('li'):
             try:
@@ -18,7 +18,7 @@ def omnibus_get():
     else:
         print("Omnibus lijst online niet gevonden, backup gebruiken...")
         try:
-            with open('omnibus.txt', 'r') as f:
+            with open('python/omnibus.txt', 'r') as f:
                 data = [line.strip() for line in f]
             print("Klaar."+'\n')
         except FileNotFoundError:

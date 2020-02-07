@@ -1,4 +1,4 @@
-const { prefix, levelup_channel, no_xp_prefixes, cdSeconds, xp_blocked } = require('../config.json');
+const { prefix, levelup_channel, no_xp_prefixes, cdSeconds, xp_blocked } = require('../configurations/config.json');
 const godpowerCooldown = new Set();
 
 async function giveGodpower(message, userData, Discord, client) {

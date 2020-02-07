@@ -56,7 +56,7 @@ function getResetTimer(show) {
     const delayHours = Math.floor(delay / 1000 / 3600);
     const delayMins = Math.ceil((delay % (1000 * 3600)) / (60 * 1000));
     if (show === true) {
-        console.log('--------------------------------------------------------\nAUTOBOT: Next daily reset scheduled for ' + then + ', which is in ' + delayHours + ' hours and ' + delayMins + ' minutes.\n--------------------------------------------------------');
+        console.log(`--------------------------------------------------------\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
     }
     return [delay, delayHours, delayMins, then];
 }

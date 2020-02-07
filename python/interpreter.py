@@ -71,13 +71,13 @@ words_vert = searchwords.find(words_vert, omnibus)
 
 # delete old solution[rand_int].json files
 pattern = "^solution[0-9]*.json$"
-mypath = str(os.getcwd())
+mypath = str(os.getcwd()) + '\\python'
 for root, dirs, files in os.walk(mypath):
     for file in filter(lambda x: re.match(pattern, x), files):
         os.remove(os.path.join(root, file))
 
 # schrijf de oplossing naar het .json bestand in de juiste indeling
-f= open("./solution"+str(random.randint(0, 1000000000))+".json","w+")
+f= open("./python/solution"+str(random.randint(0, 1000000000))+".json","w+")
 f.write('{\n    "embedTitle1": "Daily crossword solution and news:",\n    "embedBody1": "')
 f.write(r"**=== Horizontal words ===**||\n")
 for word in words_hor:
