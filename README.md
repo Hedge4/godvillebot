@@ -1,6 +1,9 @@
 # GodBot
 Version: 3.2.5
 
+| Edit: hopefully this commit restores the lost history by an accidental --force push... |
+| --- |
+
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.
 It means rewriting some of CrosswordGod's code so it can be run as a function instead of the worker file,
