@@ -44,7 +44,7 @@ function crosswordgod(message) {
 async function findSolution() {
     // eslint-disable-next-line no-unused-vars
     return new Promise(function(ok, fail) {
-      find.file(/solution[0-9]*\.json/, __dirname + '\\python', function(files) {
+      find.file(/solution[0-9]*\.json/, __dirname + '/python', function(files) {
           // eslint-disable-next-line no-unused-vars
           ok(files.find(_ => true)); // resolve promise and return the first element
       });
