@@ -199,6 +199,7 @@ Bertrand's teapot
 Beryllium sphere
 "Best of the Rest" award
 Beta carrot
+Beta artifact
 Bi-polar compass
 Bible belt
 Bicycle of life
@@ -501,6 +502,7 @@ Candy from a stranger
 Candy gram
 Canned bread
 Canned heat
+Capital reward
 Captain's log
 Captain's pipe
 Carbon credit card
@@ -1658,6 +1660,7 @@ Loose tongue
 Lorem Ipsum dictionary
 Lost marble cake
 Lost sole
+Lost will and testament
 Love-hate letter
 Love handle
 Love nest
@@ -2243,6 +2246,7 @@ Prototypewriter
 Prototypo
 Psalm lotion
 Psionic tonic
+Psychotic brake
 Psychotic episode
 Public display of affection
 Public eye
@@ -4141,6 +4145,7 @@ Last Hairbender
 Late Knight
 Lava Lamb
 Law Avoiding Citizen
+Lawn Enforcer
 Leader of the Banned
 Leechinda
 Leeroy Jenkins
@@ -6655,7 +6660,7 @@ Special pages
 Printable version
 Permanent link
 Page information
- This page was last edited on 5 February 2020, at 09:55.
+ This page was last edited on 7 February 2020, at 15:38.
 Content is available under Creative Commons License unless otherwise noted.
 Privacy policy
 About GodWiki

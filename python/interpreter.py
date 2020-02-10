@@ -71,7 +71,7 @@ words_vert = searchwords.find(words_vert, omnibus)
 
 # delete old solution[rand_int].json files
 pattern = "^solution[0-9]*.json$"
-mypath = str(os.getcwd()) + '\\python'
+mypath = str(os.getcwd()) + '/python'
 for root, dirs, files in os.walk(mypath):
     for file in filter(lambda x: re.match(pattern, x), files):
         os.remove(os.path.join(root, file))
@@ -85,7 +85,11 @@ for word in words_hor:
 f.write(r"||\n\n**=== Vertical words ===**||\n")
 for word in words_vert:
     f.write(r"\n*"+word+"*")
-f.write('||",\n    "embedTitle2": "Daily Forecast",\n    "embedBody2": "')
+if ("No words found." in words_hor) or ("No words found." in words_vert):
+    f.write(r'||\n\nCrosswordSolver.py couldn\'t find one or more solutions. Add the solutions to the omnibus list so I can find them for future crosswords.')
+else:
+    f.write('||') 
+f.write('",\n    "embedTitle2": "Daily Forecast",\n    "embedBody2": "')
 if len(news) == 1:
     s = news[0]
 if len(news) == 2:
