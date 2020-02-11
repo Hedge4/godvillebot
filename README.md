@@ -1,5 +1,5 @@
 # GodBot
-Version: 3.8.0
+Version: 3.8.2
 
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.

@@ -86,7 +86,7 @@ f.write(r"||\n\n**=== Vertical words ===**||\n")
 for word in words_vert:
     f.write(r"\n*"+word+"*")
 if ("No words found." in words_hor) or ("No words found." in words_vert):
-    f.write(r'||\n\nCrosswordSolver.py couldn\'t find one or more solutions. Add the solutions to the omnibus list so I can find them for future crosswords.')
+    f.write(r'||\n\nCrosswordSolver.py could not find one or more solutions. Add the solutions to the omnibus list so I can find them next time.')
 else:
     f.write('||') 
 f.write('",\n    "embedTitle2": "Daily Forecast",\n    "embedBody2": "')

@@ -40,13 +40,9 @@ client.on('ready', () => {
     const currentDate = new Date();
     console.log('\n' + currentDate + ` - Logged in as ${client.user.tag}!`);
     console.log('Logged in to the following guilds: ' + client.guilds.array().sort());
-    client.channels.forEach((channel) => {
-//        console.log(` -- "${channel.name}" (${channel.type}) - ${channel.id}`)
-        if (channel.id === '313450639583739904') {
-            console.log(`Logged in to ${channel.name} as well *smirk* - Channel ID: ${channel.id}\n`);
-//            channel.send('something');
-        }
-    });
+/*    client.channels.forEach((channel) => {
+        console.log(` -- "${channel.name}" (${channel.type}) - ${channel.id}`)
+    });*/
     client.user.setActivity(`${prefix}help | Crossword solution updates 22:20 UTC | By Wawajabba`);
     if (totalGodpower === undefined) {
         totalGodpower = 0;
