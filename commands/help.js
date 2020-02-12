@@ -17,6 +17,7 @@ const commands_list = [
     [`${prefix}forecast`, 'Send the locally stored forecast in the current channel.'],
     [`${prefix}both`, 'Sends both the locally stored crossword solution and forecast in the current channel.'],
     [`${prefix}update`, 'Shows the time remaining before GodBot automatically updates its crossword solution and forecast.'],
+    ['?rank newsping', 'Toggles whether you\'ll be mentioned to complete the bingo and crossword an hour before the newspaper updates.'],
     [`${prefix}renew`, 'Bot-owner only. Force renews the stored crossword solution and forecast to the most up to date version.']]],
     ['suggest',
     `${prefix}suggest <suggestion>`,

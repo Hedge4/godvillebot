@@ -56,8 +56,13 @@ client.on('ready', () => {
     client.channels.get(levelup_channel).send(startEmbed);
     const delay = crosswordgod.getCrosswordDelay();
     const delay2 = limitedCommands.resetDelay(true)[0];
+    let delay3 = delay - 4500000;
+    if (delay3 < 0) {
+        delay3 = delay3 + 86400000;
+    }
     setTimeout(crosswordgod.dailyCrosswordRenew, delay, client);
     setTimeout(limitedCommands.reset, delay2, limitedCommandsData);
+    setTimeout(crosswordgod.newsping, delay, client);
 });
 
 client.on('message', message => {
