@@ -28,7 +28,7 @@ async function checkDaily(message, limitedCommandsData, userData) {
     } else {
         const delay = getResetTimer(false);
         console.log(`${message.author.tag} tried to use their daily in ${message.channel.name}, but had already used it.`);
-        message.reply(`you already used your daily! Dailies reset in ${delay[1]} hours and ${delay[2]} minutes.`);
+        message.reply(`you already used your daily! Dailies reset in ${delay[1]} hours, ${delay[2]} minutes and ${delay[4]} seconds.`);
     }
 }
 
@@ -54,11 +54,12 @@ function getResetTimer(show) {
     const then_UTC_milsec = then_UTC.getTime();
     const delay = then_UTC_milsec - now_milsec;
     const delayHours = Math.floor(delay / 1000 / 3600);
-    const delayMins = Math.ceil((delay % (1000 * 3600)) / (60 * 1000));
+    const delayMins = Math.floor((delay % (1000 * 3600)) / (60 * 1000));
+    const delaySecs = Math.ceil((delay % (60 * 1000) / 1000));
     if (show === true) {
         console.log(`--------------------------------------------------------\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
     }
-    return [delay, delayHours, delayMins, then];
+    return [delay, delayHours, delayMins, then, delaySecs];
 }
 
 function dailyReset(limitedCommandsData) {

@@ -216,6 +216,7 @@ function embedForecast(embedTitle2, embedBody2) {
 }
 
 function newsPing(client) {
+    console.log('anything');
     const channel = client.channels.get(newspaper_updates[0]);
     const guildName = channel.guild.name;
     channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator! <https://godvillegame.com/news>');

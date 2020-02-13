@@ -62,7 +62,7 @@ client.on('ready', () => {
     }
     setTimeout(crosswordgod.dailyCrosswordRenew, delay, client);
     setTimeout(limitedCommands.reset, delay2, limitedCommandsData);
-    setTimeout(crosswordgod.newsping, delay, client);
+    setTimeout(crosswordgod.newsping, delay3, client);
 });
 
 client.on('message', message => {
