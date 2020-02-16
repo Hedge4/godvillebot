@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, suggestion_channel, newspaper_channels } = require('./configurations/config.json');
+const { bot_server_channels, prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, newspaper_channels, admin_role } = require('./configurations/config.json');
 const version = (require('./package.json')).version;
 
 const mentions = require('./commands/togglementions');
@@ -11,7 +11,7 @@ const getRanking = require('./commands/ranking');
 const suggest = require('./commands/suggest');
 const guide = require('./commands/guides');
 const help = require('./commands/help');
-const purge = require('./commands/purge');
+const admin_only = require('./commands/admin_commands');
 const profile = require('./commands/profile');
 const godville = require('./commands/godville_interaction');
 const crosswordgod = require('./crosswordgod');
@@ -54,6 +54,7 @@ client.on('ready', () => {
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL)
         .setTimestamp();
     client.channels.get(levelup_channel).send(startEmbed);
+    client.channels.get(bot_server_channels[3]).send(startEmbed);
     const delay = crosswordgod.getCrosswordDelay();
     const delay2 = limitedCommands.resetDelay(true)[0];
     let delay3 = delay - 4500000;
@@ -120,12 +121,17 @@ client.on('message', message => {
                 if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
                     suggest.suggestion(client, message);
                 }
-                if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
-                    purge.purge(message);
+                if (message.member.roles.has(admin_role) || owner.includes(message.author.id)) {
+                    if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
+                        admin_only.purge(message);
+                    }
+                    if (message.content.toLowerCase().startsWith(`${prefix}break`)) {
+                        admin_only.break(message, client);
+                    }
                 }
             }
         }
-    } else if (message.channel.id === suggestion_channel[0]) {
+    } else if (message.channel.id === bot_server_channels[0]) {
         if (owner.includes(message.author.id)) {
             if (message.content.toLowerCase().startsWith('accept')) {
                 suggest.accept(message, client);

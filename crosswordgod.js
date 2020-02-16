@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { newspaper_channels, newspaper_updates, prefix, owner } = require('./configurations/config.json');
+const { newspaper_channels, newspaper_updates, prefix, owner, admin_role } = require('./configurations/config.json');
 const fs = require('fs');
 const find = require('find');
 const { PythonShell } = require('python-shell');
@@ -15,7 +15,7 @@ runPython();
 
 function crosswordgod(message) {
     if (owner.includes(message.author.id) === true) {
-        if (message.content.toLowerCase().startsWith(`${prefix}renew`)) {
+        if (message.member.roles.has(admin_role) || owner.includes(message.author.id)) {
             renew(message.channel, message.guild.name);
         }
     }
@@ -189,7 +189,7 @@ async function sendAll(channel) {
 async function sendMK(client) {
     const { embedTitle2, embedBody2 } = await getSolution();
     client.users.get('534068471156178974').send(embedForecast(embedTitle2, embedBody2)); // MK's ID
-    client.users.get('346301339548123136').send(embedForecast(embedTitle2, embedBody2)); // MK's ID
+    //client.users.get('346301339548123136').send(embedForecast(embedTitle2, embedBody2)); // Wawa's ID
 }
 
 function embedCrossword(embedTitle1, embedBody1) {
@@ -216,14 +216,13 @@ function embedForecast(embedTitle2, embedBody2) {
 }
 
 function newsPing(client) {
-    console.log('anything');
     const channel = client.channels.get(newspaper_updates[0]);
     const guildName = channel.guild.name;
     channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator! <https://godvillegame.com/news>');
     console.log(`Sent newspaper reminder to ${channel.name} in ${guildName} guild.`);
     let delay = getDelay();
     delay = delay - 4500000;
-    if (delay < 0) {
+    if (delay <= 5000) {
         delay = delay + 86400000;
     }
     setTimeout(newsPing, delay, client);

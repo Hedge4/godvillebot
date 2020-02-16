@@ -3,20 +3,21 @@ const godpowerCooldown = new Set();
 
 async function giveGodpower(message, userData, Discord, client) {
 
+    if (godpowerCooldown.has(message.author.id)) {return;}
     if (xp_blocked.includes(message.author.id)) {return;}
     no_xp_prefixes.forEach(element => {
         if (message.content.startsWith(element)) {return;}
     });
-    let valid_size = message.content.trim().replace(/<:([^:]+):([0-9]{18})>/g, '');
-    const rx_emoji = emoji_regex();
-    const rx_uri1 = /(ht|f)tp(s?):\/\/[^\s]+/gi;
-    const rx_uri2 = /www.[^\s]+/gi;
+    let valid_size = message.content.trim().replace(/<:([^:]+):([0-9]+)>/g, ''); // filter out custom emojis
+    valid_size = message.content.trim().replace(/<(@&?|#)[0-9]+>/g, ''); // filter out member, person and channel mentions
+    const rx_emoji = emoji_regex(); // filter out emojis
+    const rx_uri1 = /<?(ht|f)tp(s?):\/\/[^\s]+/gi; // filter out most urls starting with http(s) or ftp(s)
+    const rx_uri2 = /<?www.[^\s]+/gi; // filter out urls starting with www.
     valid_size = valid_size.replace(rx_emoji, '');
     valid_size = valid_size.replace(rx_uri1, '');
     valid_size = valid_size.replace(rx_uri2, '');
-    valid_size = valid_size.replace(/ +/, ' ');
+    valid_size = valid_size.replace(/[\s]+/g, ' ');
     if (valid_size.trim().length < 7) {return;}
-    if (godpowerCooldown.has(message.author.id)) {return;}
 
     const userDoc = await userData.get();
     const User = {};
@@ -34,7 +35,7 @@ async function giveGodpower(message, userData, Discord, client) {
         User[message.author.id] = userDoc.data()[message.author.id];
     }
 
-    console.log(godpowerAdd + ' godpower added for user ' + message.author.tag + ' in channel ' + message.channel.name);
+    console.log(`${godpowerAdd} godpower added for user ${message.author.tag} in channel ${message.channel.name}.`);
     godpowerCooldown.add(message.author.id);
 
     const curGodpower = User[message.author.id].godpower;

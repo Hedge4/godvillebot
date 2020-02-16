@@ -1,5 +1,5 @@
 # GodBot
-Version: 3.10.3
+Version: 3.11.7
 
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.
@@ -17,6 +17,7 @@ adding python libraries and the packages find, fs and python-shell to take over 
 * 3.8 The crossword solutions now tell you to add the solutions to the omnibus if they weren't found, for future crosswords.
 * 3.9 Added a daily timeout to mention everyone with the 'newsping' role an hour before the newspaper updates.
 * 3.10 Added explanations for all help commands.
+* 3.11 Added a >break command for admins only, to pause the bot for a short while.
 
 ## What's new in version 2?
 Version 2 entails a major rewrite of all the code.

@@ -540,6 +540,7 @@ Chain of events
 Chain reactor
 Chained crate
 Chainmail towel
+Chakra realigner
 Champignon
 Change of heart
 Change of plan
@@ -1155,6 +1156,7 @@ Fruit of labor
 Full-size scale model
 Full color blueprint
 Fully automatic manual
+Fun-sized health potion
 Funeral home loyalty card
 Funky beets
 Fur of the %monster%
@@ -2307,6 +2309,7 @@ Reality check
 Really long meter
 Really priceless gift
 Really quick sand
+Realtime machine
 Reason to live
 Rebirth certificate
 Recalculator
@@ -4218,6 +4221,7 @@ Major Buzzkill
 Major Disappointment
 Major Problem
 ManBearPig
+Maniacrobat
 Margarine Fly
 Marital Artist
 Marquis de Sad
@@ -6664,7 +6668,7 @@ Special pages
 Printable version
 Permanent link
 Page information
- This page was last edited on 12 February 2020, at 22:37.
+ This page was last edited on 15 February 2020, at 19:55.
 Content is available under Creative Commons License unless otherwise noted.
 Privacy policy
 About GodWiki
