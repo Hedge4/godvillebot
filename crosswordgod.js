@@ -14,10 +14,10 @@ function runPython() {
 runPython();
 
 function crosswordgod(message) {
-    if (owner.includes(message.author.id) === true) {
+    if (message.content.toLowerCase().startsWith(`${prefix}renew`)) {
         if (message.member.roles.has(admin_role) || owner.includes(message.author.id)) {
             renew(message.channel, message.guild.name);
-        }
+        } else { return message.reply('you do not have access to this command.'); }
     }
     if (newspaper_channels.includes(message.channel.id) === true || owner.includes(message.author.id) === true) {
         if (message.content.toLowerCase().startsWith(`${prefix}update`)) {
