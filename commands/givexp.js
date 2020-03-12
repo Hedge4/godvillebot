@@ -8,7 +8,7 @@ async function giveGodpower(message, userData, Discord, client) {
     no_xp_prefixes.forEach(element => {
         if (message.content.startsWith(element)) {return;}
     });
-    let valid_size = message.content.trim().replace(/<:([^:]+):([0-9]+)>/g, ''); // filter out custom emojis
+    let valid_size = message.content.trim().replace(/<([^:]*):([^:]+):([0-9]+)>/g, ''); // filter out custom emojis
     valid_size = message.content.trim().replace(/<(@&?|#)[0-9]+>/g, ''); // filter out member, person and channel mentions
     const rx_emoji = emoji_regex(); // filter out emojis
     const rx_uri1 = /<?(ht|f)tp(s?):\/\/[^\s]+/gi; // filter out most urls starting with http(s) or ftp(s)

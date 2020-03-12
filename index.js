@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { bot_server_channels, prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, newspaper_channels, admin_role } = require('./configurations/config.json');
+const { bot_server_channels, prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, newspaper_channels, admin_role, fun_commands } = require('./configurations/config.json');
 const version = (require('./package.json')).version;
 
 const mentions = require('./commands/togglementions');
@@ -16,6 +16,7 @@ const profile = require('./commands/profile');
 const godville = require('./commands/godville_interaction');
 const crosswordgod = require('./crosswordgod');
 const limitedCommands = require('./commands/limited_commands');
+const fun = require('./commands/fun/fun.js');
 
 const admin = require('firebase-admin');
 const serviceAccount = require('./configurations/serviceAccountKey.json');
@@ -69,12 +70,11 @@ client.on('ready', () => {
 client.on('message', message => {
     if (message.author.bot) {return;}
     if (bot_blocked.includes(message.author.id)) {return;}
-
     if (message.channel.type === 'dm') {
-        if (message.author.id !== bot_id) {
-            console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
-        }
-    } else if (message.guild.id === server) {
+        return console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
+    }
+
+    if (message.guild.id === server) {
         if (message.author.id != bot_id) {
             /*if (message.channel.id === '313450639583739904') {
                 console.log(message.content);
@@ -85,61 +85,68 @@ client.on('message', message => {
             if (message.content.toLowerCase().startsWith(prefix)) {
                 if (command_channels.includes(message.channel.id)) {
                     if (message.content.toLowerCase().startsWith(`${prefix}level`)) {
-                        displayLevel.displayLevel(message, userData, Discord, client);
+                        return displayLevel.displayLevel(message, userData, Discord, client);
                     }
                     if (message.content.toLowerCase().startsWith(`${prefix}gold`)) {
-                        displayGold.displayGold(message, userData, Discord, client);
+                        return displayGold.displayGold(message, userData, Discord, client);
                     }
                     if (message.content.toLowerCase().startsWith(`${prefix}toggle-mentions`)) {
-                        mentions.toggleMentions(message, userData);
+                        return mentions.toggleMentions(message, userData);
                     }
                     if (message.content.toLowerCase().startsWith(`${prefix}ranking`)) {
-                        getRanking.getRanking(message, userData);
+                        return getRanking.getRanking(message, userData);
                     }
                     if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
-                        help.getHelp(message, Discord, client);
+                        return help.getHelp(message, Discord, client);
                     }
                     if (message.content.toLowerCase().startsWith(`${prefix}link`)) {
-                        profile.link(message, godData);
+                        return profile.link(message, godData);
                     }
                     if (message.content.toLowerCase().startsWith(`${prefix}daily`)) {
-                        limitedCommands.daily(message, limitedCommandsData, userData);
+                        return limitedCommands.daily(message, limitedCommandsData, userData);
+                    }
+                    fun_commands.forEach(cmd => {
+                        if (message.content.toLowerCase().startsWith(`${prefix}${cmd}`)) {
+                            return fun(message, Discord, client, cmd);
+                        }
+                    });
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}profile`)) {
+                    return profile.show(message, client, Discord, godData);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}godwiki`)) {
+                    return godville.search(message);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}guides`)) {
+                    return guide.guides(message, Discord);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
+                    return suggest.suggestion(client, message);
+                }
+                if (message.member.roles.has(admin_role) || owner.includes(message.author.id)) {
+                    if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
+                        return admin_only.purge(message);
+                    }
+                    if (message.content.toLowerCase().startsWith(`${prefix}break`)) {
+                        return admin_only.break(message, client);
                     }
                 }
                 if (newspaper_channels.includes(message.channel.id)) {
                     crosswordgod.crosswordgod(message);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}profile`)) {
-                    profile.show(message, client, Discord, godData);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}godwiki`)) {
-                    godville.search(message);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}guides`)) {
-                    guide.guides(message, Discord);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
-                    suggest.suggestion(client, message);
-                }
-                if (message.member.roles.has(admin_role) || owner.includes(message.author.id)) {
-                    if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
-                        admin_only.purge(message);
-                    }
-                    if (message.content.toLowerCase().startsWith(`${prefix}break`)) {
-                        admin_only.break(message, client);
-                    }
                 }
             }
         }
     } else if (message.channel.id === bot_server_channels[0]) {
         if (owner.includes(message.author.id)) {
             if (message.content.toLowerCase().startsWith('accept')) {
-                suggest.accept(message, client);
+                return suggest.accept(message, client);
             }
             if (message.content.toLowerCase().startsWith('reject')) {
-                suggest.reject(message, client);
+                return suggest.reject(message, client);
             }
         }
+    } else {
+        message.reply('this bot is not created for this server. Please remove me from this server.');
     }
 });
 

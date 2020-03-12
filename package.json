@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "3.11.8",
+  "version": "3.12.9",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,8 +9,11 @@
   "keywords": [],
   "author": "Wawajabba#6917",
   "license": "ISC",
+  "engines": {
+    "node": "12.16.x"
+  },
   "dependencies": {
-    "discord.js": "^11.5.1",
+    "discord.js": "^11.6.x",
     "find": "^0.3.0",
     "firebase-admin": "^8.9.2",
     "fs": "0.0.1-security",
