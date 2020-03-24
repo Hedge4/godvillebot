@@ -11,7 +11,7 @@ function runPython() {
     });
 }
 
-runPython();
+//runPython();
 
 function crosswordgod(message) {
     if (message.content.toLowerCase().startsWith(`${prefix}renew`)) {
@@ -152,17 +152,18 @@ function dailyRenew(client) {
         const channel = client.channels.get(newspaper_updates[i]);
         const GuildName = channel.guild.name;
         renew(channel, GuildName);
-        setTimeout(sendMK, 15000, client);
+        //setTimeout(sendMK, 15000, client);
     const delay = getDelay();
     setTimeout(dailyRenew, delay, client);
     }
 }
 
 async function renew(channel, guildName) {
-    channel.send('Renewing crossword solution and forecast... This will take at least ten seconds.');
+    channel.send('Due to an unfixed bug, crossword solving has been disabled for now.');
+    /*channel.send('Renewing crossword solution and forecast... This will take at least ten seconds.');
     runPython();
     setTimeout(sendAll, 10000, channel);
-    setTimeout(renewMessageDelay.bind(null, channel, guildName), 10000);
+    setTimeout(renewMessageDelay.bind(null, channel, guildName), 10000);*/
 }
 
 function renewMessageDelay(channel, guildName) {
