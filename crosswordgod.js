@@ -1,4 +1,5 @@
-const Discord = require('discord.js');
+const { newspaper_updates, prefix } = require('./configurations/config.json');
+/*const Discord = require('discord.js');
 const { newspaper_channels, newspaper_updates, prefix, owner, admin_role } = require('./configurations/config.json');
 const fs = require('fs');
 const find = require('find');
@@ -11,10 +12,13 @@ function runPython() {
     });
 }
 
-//runPython();
+runPython();*/
 
 function crosswordgod(message) {
-    if (message.content.toLowerCase().startsWith(`${prefix}renew`)) {
+    if (message.content.toLowerCase().startsWith(`${prefix}renew`) || message.content.toLowerCase().startsWith(`${prefix}update`) || message.content.toLowerCase().startsWith(`${prefix}both`) || message.content.toLowerCase().startsWith(`${prefix}forecast`) || message.content.toLowerCase().startsWith(`${prefix}crossword`)) {
+        message.channel.send('Due to the bot no longer being able to fetch the crossword, crossword functions have been disabled for now.');
+    }
+    /*if (message.content.toLowerCase().startsWith(`${prefix}renew`)) {
         if (message.member.roles.has(admin_role) || owner.includes(message.author.id)) {
             renew(message.channel, message.guild.name);
         } else { return message.reply('you do not have access to this command.'); }
@@ -38,10 +42,10 @@ function crosswordgod(message) {
         } else if (message.content.toLowerCase().includes(`${prefix}forecast`)) {
             forecastSend(message.channel);
         }
-    }
+    }*/
 }
 
-async function findSolution() {
+/*async function findSolution() {
     // eslint-disable-next-line no-unused-vars
     return new Promise(function(ok, fail) {
       find.file(/solution[0-9]*\.json/, __dirname + '/python', function(files) {
@@ -67,7 +71,7 @@ async function getSolution() {
     });
 //    console.log('It was changed to ' + filename_new);
     return load;
-}
+}*/
 
 function getDelay() {
     const now = new Date();
@@ -108,7 +112,7 @@ function getDelay() {
     return delay;
 }
 
-function getUpdate(message) {
+/*function getUpdate(message) {
     const now = new Date();
     const timezoneOffset = now.getTimezoneOffset();
     let yrs = now.getFullYear();
@@ -152,18 +156,17 @@ function dailyRenew(client) {
         const channel = client.channels.get(newspaper_updates[i]);
         const GuildName = channel.guild.name;
         renew(channel, GuildName);
-        //setTimeout(sendMK, 15000, client);
+        setTimeout(sendMK, 15000, client);
     const delay = getDelay();
     setTimeout(dailyRenew, delay, client);
     }
 }
 
 async function renew(channel, guildName) {
-    channel.send('Due to an unfixed bug, crossword solving has been disabled for now.');
-    /*channel.send('Renewing crossword solution and forecast... This will take at least ten seconds.');
+    channel.send('Renewing crossword solution and forecast... This will take at least ten seconds.');
     runPython();
     setTimeout(sendAll, 10000, channel);
-    setTimeout(renewMessageDelay.bind(null, channel, guildName), 10000);*/
+    setTimeout(renewMessageDelay.bind(null, channel, guildName), 10000);
 }
 
 function renewMessageDelay(channel, guildName) {
@@ -214,7 +217,7 @@ function embedForecast(embedTitle2, embedBody2) {
         .setTimestamp()
         .setFooter('Brought to you by Wawajabba', 'https://i.imgur.com/TyGn2ch.jpg');
     return embed;
-}
+}*/
 
 function newsPing(client) {
     const channel = client.channels.get(newspaper_updates[0]);
@@ -231,5 +234,5 @@ function newsPing(client) {
 
 exports.crosswordgod = crosswordgod;
 exports.getCrosswordDelay = getDelay;
-exports.dailyCrosswordRenew = dailyRenew;
+//exports.dailyCrosswordRenew = dailyRenew;
 exports.newsping = newsPing;
