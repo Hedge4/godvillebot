@@ -37,7 +37,9 @@ def find(words, data):
         for element in data:
             result = re.match(str(word), element, re.IGNORECASE)
             if result:
-                results.append(result.group(0))
+                result = result.group(0)
+                if result.lower() not in [x.lower() for x in results]:
+                    results.append(result)
         if len(results) == 0:
             results = "No words found."
         if len(results) == 1:

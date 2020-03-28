@@ -3,6 +3,7 @@ async function main(message, client) {
     let tobewrapped = message.content.slice(11).trim();
 
     tobewrapped = tobewrapped.replace(/<([^:]*):([^:]+):([0-9]+)>/g, ''); // filter out custom emojis
+    tobewrapped = tobewrapped.replace(/\|\|/g, ''); // filter out spoiler marks
     while (/<(@&?|#)[0-9]+>/.test(tobewrapped)) {
         const rx_role = /<@&([0-9]+)>/.exec(tobewrapped);
         const rx_member = /<@([0-9]+)>/.exec(tobewrapped);

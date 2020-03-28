@@ -15,6 +15,10 @@ const guides_list = [
     'A basic guide for new players and a reference to many useful pages in the wiki.',
     'https://godvillegame.com/gods/Hairplug4men#chronicle',
     'Hairplug4men'],
+    ['Ursina’s very basic dungeon guide for the true beginner',
+    'A short but very complete dungeon guide which should contain all the information a beginning dungeoneer should know.',
+    'https://godvillegame.com/gods/Ursina#chronicle',
+    'Ursina'],
 ];
 
 function show_guides_list(message) {
