@@ -17,5 +17,6 @@
     "purge_channels": ["671046033291345943", "668141457474846786"],
     "newspaper_channels": ["431305701021974539", "315874239779569666", "313398792588099604"],
     "newspaper_updates": ["431305701021974539"],
-    "fun_commands": ["bubblewrap"]
+    "fun_commands": ["bubblewrap"],
+    "useful_commands": ["spoiler"]
 }

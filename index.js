@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { bot_server_channels, prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, newspaper_channels, admin_role, fun_commands } = require('./configurations/config.json');
+const { bot_server_channels, prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, newspaper_channels, admin_role, fun_commands, useful_commands } = require('./configurations/config.json');
 const version = (require('./package.json')).version;
 
 const mentions = require('./commands/togglementions');
@@ -17,6 +17,7 @@ const godville = require('./commands/godville_interaction');
 const crosswordgod = require('./crosswordgod');
 const limitedCommands = require('./commands/limited_commands');
 const fun = require('./commands/fun/fun.js');
+const useful = require('./commands/useful/useful.js');
 
 const admin = require('firebase-admin');
 const serviceAccount = require('./configurations/serviceAccountKey.json');
@@ -123,6 +124,11 @@ client.on('message', message => {
                 if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
                     return suggest.suggestion(client, message);
                 }
+                useful_commands.forEach(cmd => {
+                    if (message.content.toLowerCase().startsWith(`${prefix}${cmd}`)) {
+                        return useful(message, Discord, client, cmd);
+                    }
+                });
                 if (message.member.roles.has(admin_role) || owner.includes(message.author.id)) {
                     if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
                         return admin_only.purge(message);
