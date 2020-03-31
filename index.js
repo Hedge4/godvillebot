@@ -105,7 +105,7 @@ client.on('message', message => {
     if (bot_blocked.includes(message.author.id)) {return;}
     if (message.channel.type === 'dm') {
         if (message.content.includes('🥚')) {
-            message.channel.send('🥚');
+            message.channel.send('https://youtu.be/GbNqVNWydZg');
         }
         return console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
     }
