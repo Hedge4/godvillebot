@@ -66,20 +66,52 @@ client.on('ready', () => {
     //setTimeout(crosswordgod.dailyCrosswordRenew, delay, client);
     setTimeout(limitedCommands.reset, delay2, limitedCommandsData);
     setTimeout(crosswordgod.newsping, delay3, client);
+    client.guilds.get(server).me.setNickname('GodBot');
 });
 
+let eggstatus = 0;
+function egg() {
+    if (eggstatus > 0) {
+        eggstatus -= 1;
+        setTimeout(egg, 1000);
+    } else {client.user.setActivity(`${prefix}help | Crossword solution updates 22:20 UTC | By Wawajabba`);}
+}
+
 client.on('message', message => {
+    if (message.content.toLowerCase().startsWith('?rank egg')) {
+        message.delete(500);
+    }
+    if (message.author.id === '155149108183695360') {
+        if (message.content.toLowerCase().includes(', you joined **egg**.')) {
+            message.delete();
+        }
+        if (message.content.toLowerCase().includes(', you left **egg**.')) {
+            message.delete();
+        }
+    }
+    if (message.channel.id === '694197607777566791') {
+        if (message.content.toLowerCase().trim() === (`${prefix}egg`)) {
+            setTimeout(() => {
+                message.react('🥚');
+                message.delete(10000);
+            }, 3000);
+
+            if (eggstatus === 0) {setTimeout(egg, 1000);}
+            eggstatus = 30;
+            client.user.setActivity(`🥚 | ${prefix}help | Crossword solution updates 22:20 UTC | By Wawajabba`);
+        }
+    }
     if (message.author.bot) {return;}
     if (bot_blocked.includes(message.author.id)) {return;}
     if (message.channel.type === 'dm') {
+        if (message.content.includes('🥚')) {
+            message.channel.send('🥚');
+        }
         return console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
     }
 
     if (message.guild.id === server) {
         if (message.author.id != bot_id) {
-            /*if (message.channel.id === '313450639583739904') {
-                console.log(message.content);
-            }*/
             if (!no_xp_channels.includes(message.channel.id)) {
                 giveXP.giveGodpower(message, userData, Discord, client);
             }

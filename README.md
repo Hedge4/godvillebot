@@ -1,5 +1,5 @@
 # GodBot
-Version: 3.13.8
+Version: 3.13.9
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.
 It means rewriting some of CrosswordGod's code so it can be run as a function instead of the worker file,
