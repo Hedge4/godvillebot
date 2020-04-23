@@ -38,9 +38,6 @@ limitedCommandsData.get()
         global.usedDaily = doc.data()['daily'];
     });
 
-    let rolkleur = 0;
-    const kleuren = ['#ff0000', '#ea0015', '#d4002b', '#bf0040', '#aa0055', '#95006a', '#800080', '#6a0095', '#5500aa', '#4000bf', '#2b00d4', '#1500ea', '#0000ff', '#0015ea', '#002bd4', '#0040bf', '#0055aa', '#006a95', '#008080', '#00956a', '#00aa55', '#00bf40', '#00d42b', '#00ea15', '#00ff00', '#2bff00', '#55ff00', '#80ff00', '#aaff00', '#d4ff00', '#ffff00', '#fff30f', '#ffe61e', '#ffda2d', '#ffcd3c', '#ffc14b', '#ffb45a', '#ffa769', '#ff9b78', '#ff8e87', '#ff8296', '#ff75a5', '#ff69b4', '#ff5896', '#ff4678', '#ff355a', '#ff233c', '#ff121e'];
-
 
 client.on('ready', () => {
     client.guilds.get(server).me.setNickname('GodBot');
@@ -72,16 +69,6 @@ client.on('ready', () => {
     //setTimeout(crosswordgod.dailyCrosswordRenew, delay, client);
     setTimeout(limitedCommands.reset, delay2, limitedCommandsData);
     setTimeout(crosswordgod.newsping, delay3, client);
-    const guild = client.guilds.get(server);
-    //const adminrole = guild.roles.find(roleVal => roleVal.name === 'Moderators');
-    const adminrole = guild.roles.get(admin_role);
-    setInterval(() => {
-        if (rolkleur >= kleuren.length) {rolkleur = 0;}
-        adminrole.edit({
-            color: kleuren[rolkleur],
-        });
-        rolkleur += 1;
-    }, 8000);
 });
 
 client.on('message', message => {
