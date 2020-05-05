@@ -3,20 +3,20 @@ function main(message) {
     let bomb = 15;
     message.content.toLowerCase().slice(12).trim().split('-').forEach(arg => {
         if (arg.startsWith('s')) {
-            const num = arg.slice(1).trim();
-            if (!isNaN(num) && Number.isInteger(num)) {
+            const num = parseInt(arg.slice(1));
+            if (!isNaN(num)) {
                 if (num >= 2 && num <= 13) {
                     size = num;
                 } else { message.reply(`size should 2-13. Using previous value ${size}.`); }
             } else { message.reply(`size input should be an integer, not ${num}. Using previous value (${size}).`); }
         }
         if (arg.startsWith('b')) {
-            const num = arg.slice(1).trim();
+            const num = parseFloat(arg.slice(1));
             if (!isNaN(num)) {
                 if (num >= 0 && num <= 60) {
                     bomb = num;
-                } else { message.reply(`bomb percentage should be 0-60. Using previous value ${bomb}.`); }
-            } else { message.reply(`bomb input should be a number, not ${num}. Using previous value (${bomb}).`); }
+                } else { message.reply(`bomb percentage should be 0-60. Using previous value ${bomb}%.`); }
+            } else { message.reply(`bomb input should be a number, not ${num}. Using previous value (${bomb})%.`); }
         }
     });
     console.log(`${message.author.tag} requested a minesweeper game in ${message.channel.name}.`);
