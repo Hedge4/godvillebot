@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { bot_server_channels, prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, newspaper_channels, admin_role, fun_commands, useful_commands } = require('./configurations/config.json');
+const { suggestion_server, bot_server_channels, prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, newspaper_channels, admin_role, fun_commands, useful_commands } = require('./configurations/config.json');
 const version = (require('./package.json')).version;
 
 const mentions = require('./commands/togglementions');
@@ -142,13 +142,15 @@ client.on('message', message => {
                 }
             }
         }
-    } else if (message.channel.id === bot_server_channels[0]) {
-        if (owner.includes(message.author.id)) {
-            if (message.content.toLowerCase().startsWith('accept')) {
-                return suggest.accept(message, client);
-            }
-            if (message.content.toLowerCase().startsWith('reject')) {
-                return suggest.reject(message, client);
+    } else if (message.guild.id == suggestion_server) {
+        if (message.channel.id === bot_server_channels[0]) {
+            if (owner.includes(message.author.id)) {
+                if (message.content.toLowerCase().startsWith('accept')) {
+                    return suggest.accept(message, client);
+                }
+                if (message.content.toLowerCase().startsWith('reject')) {
+                    return suggest.reject(message, client);
+                }
             }
         }
     } else {
