@@ -74,7 +74,7 @@ client.on('ready', () => {
 client.on('message', message => {
     if (message.author.bot) {return;}
     if (message.content.toLowerCase().startsWith('?rank') || message.content.toLowerCase().startsWith('?ranks')) {
-        if (!message.member.roles.has('313453649315495946')) {
+        if (!message.member.roles.has('313453649315495946') && !message.member.roles.has(admin_role)) {
             message.reply('use the `?ireadtherules` command to unlock core server functionality before adding any extra channels!');
         }
     }
