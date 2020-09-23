@@ -73,6 +73,11 @@ client.on('ready', () => {
 
 client.on('message', message => {
     if (message.author.bot) {return;}
+    if (message.content.toLowerCase.startsWith('?rank') | message.content.toLowerCase.startsWith('?ranks')) {
+        if (!message.member.roles.has('313453649315495946')) {
+            message.reply('use the `?ireadtherules` command to unlock core server functionality before adding any extra channels!');
+        }
+    }
     if (bot_blocked.includes(message.author.id)) {return;}
     if (message.channel.type === 'dm') {
         return console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
