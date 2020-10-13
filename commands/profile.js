@@ -173,10 +173,6 @@ async function getGodData(URL, message) {
     const rx_guild_url = /name guild[\s\S]+?href="([\s\S]+?)"/;
     const rx_age = /label">Age(?:[\s\S]+?>){2}([\s\S]+?)</;
 
-    /*let motto = '';
-    try {
-        motto = rx_motto.exec(html)[1];
-    } catch { /* continue regardless of error * }*/
     const motto_res = rx_motto.exec(html);
     const level = rx_level.exec(html)[1];
     const name = decodeURI(rx_name.exec(html)[1]);
@@ -204,17 +200,10 @@ async function getGodData(URL, message) {
         guild_name = (decodeURI(rx_guild.exec(html)[1].trim())).replace(/&#39;/g, '\'');
         guild_url = guild_url_res[1];
     }
-
     let motto = 'No motto set.';
     if (motto_res) {
         motto = (decodeURI(motto_res[1].trim())).replace(/&#39;/g, '\'');
     }
-
-    /*motto = (decodeURI(motto.trim())).replace(/&#39;/g, '\'');
-    if (!motto.length) {
-        motto = 'No motto set.';
-    }*/
-
     let pet_name = '';
     let pet_type = '';
     if (pet_type_res) {
