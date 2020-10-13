@@ -50,7 +50,7 @@ async function show_profile(message, client, Discord, godData) {
     try {
         godvilleData = await getGodData(godURL, message);
     } catch(err) {
-        console.log('Error while getting god data for ${godURL}! Error: \n' + err);
+        console.log(`Error while getting god data for ${godURL}! Error: \n` + err);
         godvilleData = null;
     }
 
@@ -173,7 +173,10 @@ async function getGodData(URL, message) {
     const rx_guild_url = /name guild[\s\S]+?href="([\s\S]+?)"/;
     const rx_age = /label">Age(?:[\s\S]+?>){2}([\s\S]+?)</;
 
-    let motto = rx_motto.exec(html)[1];
+    let motto = '';
+    try {
+        motto = rx_motto.exec(html)[1];
+    } catch { /* continue regardless of error */ }
     const level = rx_level.exec(html)[1];
     const name = decodeURI(rx_name.exec(html)[1]);
     const age = rx_age.exec(html)[1];
