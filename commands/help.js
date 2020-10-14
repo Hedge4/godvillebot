@@ -138,13 +138,10 @@ function chooseHelp(message, Discord, client, correct_channel) {
     let helpEmbed = '';
     if (!arg || !arg.length) {
         helpEmbed = constructHelp(message, Discord, client);
+    } else if (commands_list.some(function(e) { return arg === e[0]; })) {
+        helpEmbed = constructSpecificHelp(message, Discord, client, arg);
     } else {
-        commands_list.forEach(element => {
-            if (arg === element[0]) {
-                helpEmbed = constructSpecificHelp(message, Discord, client, element);
-            }
-        });
-        return message.reply(`I don't know the command \`${prefix}${arg}!\``);
+        return message.reply(`I don't know the command \`${prefix}${arg}\`!`);
     }
     if (correct_channel) {
         return message.channel.send(helpEmbed);
