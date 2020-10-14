@@ -143,13 +143,13 @@ function chooseHelp(message, Discord, client, correct_channel) {
             if (arg === element[0]) {
                 helpEmbed = constructSpecificHelp(message, Discord, client, element);
             }
-            return message.channel.reply(`I don't know the command \`${prefix}${arg}!\``);
+            return message.reply(`I don't know the command \`${prefix}${arg}!\``);
         });
     }
     if (correct_channel) {
         return message.channel.send(helpEmbed);
     } else {
-        message.channel.reply(`I've sent my help message in <#${levelup_channel}>!`);
+        message.reply(`I've sent my help message in <#${levelup_channel}>!`);
         return client.channels.get(levelup_channel).send(helpEmbed);
     }
 }

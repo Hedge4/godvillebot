@@ -19,6 +19,10 @@ const guides_list = [
     'A short but very complete dungeon guide which should contain all the information a beginning dungeoneer should know.',
     'https://godvillegame.com/gods/Ursina#chronicle',
     'Ursina'],
+    ['Help! The ideabox sucks!',
+    'A very thorough and complete guide to writing content for the ideabox, as well as a FAQ.',
+    'https://drive.google.com/file/d/0B1w4BOl9Za2RcElGZkdsUVNjNjQ/view',
+    'Brinjal'],
 ];
 
 function show_guides_list(message) {
