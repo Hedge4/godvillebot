@@ -103,7 +103,7 @@ client.on('message', message => {
                         return getRanking.getRanking(message, userData);
                     }
                     if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
-                        return help.getHelp(message, Discord, client);
+                        return help.getHelp(message, Discord, client, true);
                     }
                     if (message.content.toLowerCase().startsWith(`${prefix}link`)) {
                         return profile.link(message, godData);
@@ -128,6 +128,9 @@ client.on('message', message => {
                 }
                 if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
                     return suggest.suggestion(client, message);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
+                    return help.getHelp(message, Discord, client, false);
                 }
                 useful_commands.forEach(cmd => {
                     if (message.content.toLowerCase().startsWith(`${prefix}${cmd}`)) {

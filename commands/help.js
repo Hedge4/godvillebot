@@ -1,4 +1,4 @@
-const { prefix } = require('../configurations/config.json');
+const { prefix, levelup_channel } = require('../configurations/config.json');
 
 const commands_list = [
     ['help',
@@ -101,7 +101,7 @@ function constructHelp(message, Discord, client) {
         .setTimestamp()
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL);
     console.log(`${message.author.tag} requested the help message in ${message.channel.name}.`);
-    return message.channel.send(helpEmbed);
+    return helpEmbed;
 }
 
 function constructSpecificHelp(message, Discord, client, element) {
@@ -114,7 +114,7 @@ function constructSpecificHelp(message, Discord, client, element) {
             .setTimestamp()
             .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL);
         console.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
-        return message.channel.send(specificHelpEmbed);
+        return specificHelpEmbed;
     } else {
         let examples = '';
         for (let i = 0; i < element[4].length; i++) {
@@ -129,20 +129,28 @@ function constructSpecificHelp(message, Discord, client, element) {
             .setTimestamp()
             .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL);
         console.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
-        return message.channel.send(specificHelpEmbed);
+        return specificHelpEmbed;
     }
 }
 
-function chooseHelp(message, Discord, client) {
+function chooseHelp(message, Discord, client, correct_channel) {
     const arg = message.content.toLowerCase().slice(5).trim();
+    let helpEmbed = '';
     if (!arg || !arg.length) {
-        constructHelp(message, Discord, client);
+        return helpEmbed = constructHelp(message, Discord, client);
     } else {
         commands_list.forEach(element => {
             if (arg === element[0]) {
-                return constructSpecificHelp(message, Discord, client, element);
+                helpEmbed = constructSpecificHelp(message, Discord, client, element);
             }
+            return message.channel.reply(`I don't know the command \`${prefix}${arg}!\``);
         });
+    }
+    if (correct_channel) {
+        return message.channel.send(helpEmbed);
+    } else {
+        message.channel.reply(`I've sent my help message in <#${levelup_channel}>!`);
+        return client.channels.get(levelup_channel).send(helpEmbed);
     }
 }
 
