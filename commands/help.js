@@ -138,9 +138,12 @@ function chooseHelp(message, Discord, client, correct_channel) {
     let helpEmbed = '';
     if (!arg || !arg.length) {
         helpEmbed = constructHelp(message, Discord, client);
-    } else if (commands_list.some(function(e) { return arg === e[0]; })) {
-        helpEmbed = constructSpecificHelp(message, Discord, client, arg);
-    } else {
+    } else if (!commands_list.some(function(e) {
+        if (arg === e[0]) {
+            helpEmbed = constructSpecificHelp(message, Discord, client, e);
+            return true;
+        }
+    })) {
         return message.reply(`I don't know the command \`${prefix}${arg}\`!`);
     }
     if (correct_channel) {
