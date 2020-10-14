@@ -1,6 +1,6 @@
 async function checkDaily(message, limitedCommandsData, userData) {
     if (!usedDaily.includes(message.author.id)) {
-        const goldAdd = Math.floor(Math.random() * 13) + 7;
+        const goldAdd = Math.floor(Math.random() * 21) + 22;
         console.log(`${message.author.tag} used their daily in ${message.channel.name}.`);
         usedDaily.push(message.author.id);
         limitedCommandsData.set({ daily: usedDaily });

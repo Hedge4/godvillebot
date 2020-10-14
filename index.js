@@ -52,7 +52,7 @@ client.on('ready', () => {
         totalGodpower = 0;
     }
     const startEmbed = new Discord.RichEmbed()
-        .setTitle('**Succesfully restarted!**')
+        .setTitle('**Successfully restarted!**')
         .setColor('ffffff')
         .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '>help'.`)
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL)

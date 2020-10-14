@@ -70,8 +70,8 @@ async function show_profile(message, client, Discord, godData) {
         .setTitle(god)
         .setURL(godURL)
         .setThumbnail(godvilleData[1])
-        .setDescription(` - Age: ${godvilleData[11]}`)
-        .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}`, true)
+        .setDescription('Coming soon: Badges!')
+        .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}\n- ${godvilleData[11]} old`, true)
         .addField('Motto', godvilleData[8], true)
         .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
         .addField('Medals', godvilleData[5], false)
@@ -83,8 +83,8 @@ async function show_profile(message, client, Discord, godData) {
         .setTitle(god)
         .setURL(godURL)
         .setThumbnail(godvilleData[1])
-        .setDescription(` - Age: ${godvilleData[11]}`)
-        .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}`, true)
+        .setDescription('Coming soon: Badges!')
+        .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}\n- ${godvilleData[11]} old`, true)
         .addField('Motto', godvilleData[8], true)
         .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
         .addField('Pet type', godvilleData[6], true)
@@ -101,18 +101,18 @@ function link_profile(message, godData) {
     link = link.replace(/%20/g, ' ');
     console.log(`${message.author.tag} tried to link their account to '${link}'.`);
     if (link.startsWith('https://godvillegame.com/gods/')) {
-        if (/^[a-z0-9- ]{3,30}$/i.test(link.slice(30))) {
+        if (/^[A-Z][a-z0-9- ]{2,29}$/.test(link.slice(30))) {
             link = link.replace(/ /g, '%20');
             const user = {};
             user[message.author.id] = link;
             godData.set(user, { merge: true });
-            return message.reply('I have set or updated the link to your Godville account.');
+            return message.reply('I have set or updated the link to your Godville account. Check it out with `>profile`!');
         } else {
             message.reply(`The start of your link seems correct, but '${link.slice(30)}' doesn't look like a correct god name.`);
-            return message.channel.send('God names can only contain letters, numbers, hyphens and spaces. Using %20 to encode spaces is okay too.');
+            return message.channel.send('God names start with a capital letter, and can only contain lowercase letters, numbers, hyphens and spaces. Using %20 to encode spaces is okay too.');
         }
-    } else if (/^[a-z0-9- ]{3,30}$/i.test(link)) {
-        message.reply(`'${link}' looks like a god name. I have set or updated the link to your Godville account.`);
+    } else if (/^[A-Z][a-z0-9- ]{2,29}$/.test(link)) {
+        message.reply(`'${link}' looks like a god name. I have set or updated the link to your Godville account. Check it out with \`>profile\`!`);
         link = 'https://godvillegame.com/gods/' + link.replace(/ /g, '%20');
         const user = {};
         user[message.author.id] = link;
@@ -121,7 +121,7 @@ function link_profile(message, godData) {
     } else {
         message.reply(`your link doesn't start with '<https://godvillegame.com/gods/>' or you made a typo in your god name: "${link}".`);
         message.channel.send('Please format the link exactly like this:\n\'<https://godvillegame.com/gods/YOUR-GOD-NAME>\'');
-        return message.channel.send('God names can only contain letters, numbers, hyphens and spaces. Using %20 to encode spaces is okay too.');
+        return message.channel.send('God names start with a capital letter, and can only contain lowercase letters, numbers, hyphens and spaces. Using %20 to encode spaces is okay too.');
     }
 }
 

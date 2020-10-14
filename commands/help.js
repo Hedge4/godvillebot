@@ -26,7 +26,7 @@ const commands_list = [
     'Get a list of all commands that are just for fun, and explanations on how to use them.',
     'These commands are not useful in any way, but they could theoretically be considered entertaining.',
     [[`${prefix}minesweeper [-s size] [-b bomb_percentage]`, 'Generates a minesweeper game. Default size: 6. Default % of bombs: 15.'],
-    [`${prefix}bubblewrap [text]`, 'Returns your message in bubblewrap style.']]],
+    [`${prefix}bubblewrap <text>`, 'Returns your message in bubblewrap style.']]],
     ['suggest',
     `${prefix}suggest <suggestion>`,
     'Sends a feature request for the bot to me. I need ideas!',
