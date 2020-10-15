@@ -39,9 +39,6 @@ async function show_profile(message, client, Discord, godData) {
         } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#315874239779569666>: \`${prefix}link GOD_NAME\` or \`${prefix}link <https://godvillegame.com/gods/GOD_NAME>\``); }
     }
     const godURL = godDoc.data()[user.id];
-    if (!godURL || godURL.length <= 33) {
-        return message.reply('Somehow, the URL to your page doesn\'t seem correct. Please correct it before using this command. Your URL: ' + godURL);
-    }
     let god = godURL.slice(30);
     god = decodeURI(god);
     console.log(`${message.author.tag} requested profile page for ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
@@ -101,7 +98,7 @@ function link_profile(message, godData) {
     link = link.replace(/%20/g, ' ');
     console.log(`${message.author.tag} tried to link their account to '${link}'.`);
     if (link.startsWith('https://godvillegame.com/gods/')) {
-        if (/^[A-Z][a-z0-9- ]{2,29}$/.test(link.slice(30))) {
+        if (/^[A-Z][a-zA-Z0-9- ]{2,29}$/.test(link.slice(30))) {
             link = link.replace(/ /g, '%20');
             const user = {};
             user[message.author.id] = link;
@@ -111,7 +108,7 @@ function link_profile(message, godData) {
             message.reply(`The start of your link seems correct, but '${link.slice(30)}' doesn't look like a correct god name.`);
             return message.channel.send('God names start with a capital letter, and can only contain lowercase letters, numbers, hyphens and spaces. Using %20 to encode spaces is okay too.');
         }
-    } else if (/^[A-Z][a-z0-9- ]{2,29}$/.test(link)) {
+    } else if (/^[A-Z][a-zA-Z0-9- ]{2,29}$/.test(link)) {
         message.reply(`'${link}' looks like a god name. I have set or updated the link to your Godville account. Check it out with \`>profile\`!`);
         link = 'https://godvillegame.com/gods/' + link.replace(/ /g, '%20');
         const user = {};
