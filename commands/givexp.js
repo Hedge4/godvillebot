@@ -40,7 +40,8 @@ async function giveGodpower(message, userData, Discord, client) {
 
     const curGodpower = User[message.author.id].godpower;
     const curLevel = User[message.author.id].level;
-    const nextLevel = Math.floor(100 * 1.2 ** (curLevel ** (4 / 5)));
+    let nextLevel = Math.floor(100 * 1.2 ** (curLevel ** (4 / 5)));
+    if (curLevel >= 50) nextLevel = 6666;
     const newGodpower = curGodpower + godpowerAdd;
     User[message.author.id].godpower = newGodpower;
     User[message.author.id].total_godpower = User[message.author.id].total_godpower + godpowerAdd;

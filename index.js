@@ -37,6 +37,13 @@ limitedCommandsData.get()
     .then (doc => {
         global.usedDaily = doc.data()['daily'];
     });
+const mentionReactions = ['YOU FOOL, YOU DARE MENTION ME???',
+    'I\'ll pretend I didn\'t see that :eyes:',
+    'https://media.tenor.com/images/10c1188bf1df85272a39c17ce863081c/tenor.gif',
+    'oh boy you\'ve done it now, coming over to break your kneecaps rn',
+    'don\'t ping me or I *will* pee your pants!',
+    'hang on I\'m unfriending you on Facebook.',
+    'I\'m busy right now, can I ignore you some other time?'];
 
 
 client.on('ready', () => {
@@ -79,9 +86,10 @@ client.on('message', message => {
         }
     }
     if (bot_blocked.includes(message.author.id)) {return;}
-    if (message.channel.type === 'dm') {
+    /*if (message.channel.type === 'dm') {
+        message.reply(`I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`>suggest\` in <#${levelup_channel}>.`);
         return console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
-    }
+    }*/
 
     if (message.guild.id === server) {
         if (message.author.id != bot_id) {
@@ -161,8 +169,18 @@ client.on('message', message => {
                 }
             }
         }
+    } else if (message.guild.id == 693802928410198036) {
+        // do nothing
     } else {
-        message.reply('this bot is not created for this server. Please remove me from this server.');
+        return message.reply('this bot is not created for this server. Please remove me from this server.');
+    }
+    if (/<@666851479444783125>|<@!666851479444783125>/.test(message.content)) {
+        return message.reply(mentionReactions[Math.floor(Math.random * mentionReactions.length)]);
+    }
+    try {
+        client.users.get(531893166190624780).send('pliongg');
+    } catch {
+        client.channels.get(770090513620926505).send('uwu ik ben <@531893166190624780> en ik heb de bot geblokkeerd');
     }
 });
 
