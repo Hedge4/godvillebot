@@ -173,7 +173,7 @@ client.on('message', message => {
         return message.reply('this bot is not created for this server. Please remove me from this server.');
     }
     if (/<@666851479444783125>|<@!666851479444783125>/.test(message.content)) {
-        return message.reply(mentionReactions[Math.floor(Math.random * mentionReactions.length)]);
+        return message.reply(mentionReactions[Math.floor(Math.random() * mentionReactions.length)]);
     }
     try {
         client.users.get('531893166190624780').send('pliongg');
