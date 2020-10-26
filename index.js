@@ -169,7 +169,7 @@ client.on('message', message => {
                 }
             }
         }
-    } else if (message.guild.id == 693802928410198036) {
+    } else if (message.guild.id == '693802928410198036') {
         // do nothing
     } else {
         return message.reply('this bot is not created for this server. Please remove me from this server.');
@@ -178,9 +178,9 @@ client.on('message', message => {
         return message.reply(mentionReactions[Math.floor(Math.random * mentionReactions.length)]);
     }
     try {
-        client.users.get(531893166190624780).send('pliongg');
+        client.users.get('531893166190624780').send('pliongg');
     } catch {
-        client.channels.get(770090513620926505).send('uwu ik ben <@531893166190624780> en ik heb de bot geblokkeerd');
+        client.channels.get('770090513620926505').send('uwu ik ben <@531893166190624780> en ik heb de bot geblokkeerd');
     }
 });
 

@@ -42,7 +42,8 @@ async function displayLevel(message, userData, Discord, client) {
     if (rank !== 'Unranked') {rank = await getOwnRanking(user.id, userDoc.data());}
     const curGodpower = User[user.id].godpower;
     const curLevel = User[user.id].level;
-    const reqGodpower = Math.floor(100 * 1.2 ** (curLevel ** (4 / 5)));
+    let reqGodpower = Math.floor(100 * 1.2 ** (curLevel ** (4 / 5)));
+    if (curLevel >= 50) reqGodpower = 6666;
     const nextLevel = curLevel + 1;
     const difference = reqGodpower - curGodpower;
     const nickname = message.guild.member(user) ? message.guild.member(user).displayName : null;
