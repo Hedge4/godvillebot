@@ -89,9 +89,7 @@ client.on('message', message => {
     if (message.channel.type === 'dm') {
         //message.reply(`I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`>suggest\` in <#${levelup_channel}>.`);
         console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
-    }
-
-    if (message.guild.id === server) {
+    } else if (message.guild.id === server) {
         if (message.author.id != bot_id) {
             if (!no_xp_channels.includes(message.channel.id)) {
                 giveXP.giveGodpower(message, userData, Discord, client);
