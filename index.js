@@ -87,7 +87,7 @@ client.on('message', message => {
     }
     if (bot_blocked.includes(message.author.id)) {return;}
     if (message.channel.type === 'dm') {
-        //message.reply(`I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`>suggest\` in <#${levelup_channel}>.`);
+        message.reply(`I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`>suggest\` in <#${levelup_channel}>.`);
         console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
     } else if (message.guild.id === server) {
         if (message.author.id != bot_id) {
@@ -167,18 +167,11 @@ client.on('message', message => {
                 }
             }
         }
-    } else if (message.guild.id == '693802928410198036') {
-        // do nothing
     } else {
         return message.reply('this bot is not created for this server. Please remove me from this server.');
     }
     if (/<@666851479444783125>|<@!666851479444783125>/.test(message.content)) {
         return message.reply(mentionReactions[Math.floor(Math.random() * mentionReactions.length)]);
-    }
-    try {
-        client.users.get('531893166190624780').send('pliongg');
-    } catch {
-        client.channels.get('770090513620926505').send('uwu ik ben <@531893166190624780> en ik heb de bot geblokkeerd');
     }
 });
 
