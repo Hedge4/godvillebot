@@ -72,6 +72,7 @@ client.on('ready', () => {
     if (delay3 < 0) {
         delay3 = delay3 + 86400000;
     }
+    global.newsSent = false;
 
     //setTimeout(crosswordgod.dailyCrosswordRenew, delay, client);
     setTimeout(limitedCommands.reset, delay2, limitedCommandsData);

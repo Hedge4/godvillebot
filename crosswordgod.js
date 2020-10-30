@@ -220,16 +220,19 @@ function embedForecast(embedTitle2, embedBody2) {
 }*/
 
 function newsPing(client) {
-    const channel = client.channels.get(newspaper_updates[0]);
-    const guildName = channel.guild.name;
-    channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator! <https://godvillegame.com/news>');
-    console.log(`Sent newspaper reminder to ${channel.name} in ${guildName} guild.`);
-    let delay = getDelay();
-    delay = delay - 4500000;
-    if (delay <= 5000) {
-        delay = delay + 86400000;
+    if (!newsSent) {
+        newsSent = true;
+        const channel = client.channels.get(newspaper_updates[0]);
+        const guildName = channel.guild.name;
+        channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator!\nDaily coupon: <https://godvillegame.com/news#cpn_name>');
+        console.log(`Sent newspaper reminder to ${channel.name} in ${guildName} guild.`);
+        let delay = getDelay();
+        delay = delay - 4500000;
+        if (delay <= 5000) {
+            delay = delay + 86400000;
+        }
+        setTimeout(newsPing, delay, client);
     }
-    setTimeout(newsPing, delay, client);
 }
 
 exports.crosswordgod = crosswordgod;

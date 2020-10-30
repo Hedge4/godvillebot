@@ -66,6 +66,7 @@ function dailyReset(limitedCommandsData) {
     const delay = getResetTimer(true);
     usedDaily = [];
     limitedCommandsData.set({ daily: usedDaily });
+    newsSent = false;
     setTimeout(dailyReset, delay[0], limitedCommandsData);
 }
 
