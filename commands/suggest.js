@@ -1,8 +1,9 @@
-const { suggest_blocked, bot_server_channels } = require('../configurations/config.json');
+const { bot_server_channels } = require('../configurations/config.json');
 
 async function suggest(client, message) {
-    if (!suggest_blocked.includes(message.author.id)) {
+    if (!suggestBlocked.includes(message.author.id)) {
         let suggestion = message.content.slice(8).trim();
+        if (suggestion.toLowerCase().startsWith('ion')) suggestion = suggestion.slice(3).trim();
         suggestion = suggestion.split('`');
         suggestion = suggestion.join('');
         if (suggestion.length <= 20) {return message.reply('please add enough detail and make the description of your suggestion at least 20 characters!');}

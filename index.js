@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { suggestion_server, bot_server_channels, prefix, token, server, owner, bot_id, no_xp_channels, levelup_channel, command_channels, bot_blocked, newspaper_channels, admin_role, fun_commands, useful_commands } = require('./configurations/config.json');
+const { suggestion_server, bot_server_channels, prefix, token, server, owner, no_xp_channels, levelup_channel, command_channels, newspaper_channels, admin_role, fun_commands, useful_commands, bot_dms } = require('./configurations/config.json');
 const version = (require('./package.json')).version;
 
 const mentions = require('./commands/togglementions');
@@ -18,6 +18,7 @@ const crosswordgod = require('./crosswordgod');
 const limitedCommands = require('./commands/limited_commands');
 const fun = require('./commands/fun/fun.js');
 const useful = require('./commands/useful/useful.js');
+const block = require('./commands/block.js');
 
 const admin = require('firebase-admin');
 const serviceAccount = require('./configurations/serviceAccountKey.json');
@@ -28,15 +29,24 @@ const db = admin.firestore();
 const userData = db.collection('data').doc('users');
 const godData = db.collection('data').doc('gods');
 const limitedCommandsData = db.collection('data').doc('limited uses');
-global.totalGodpower = 0;
+const blockedData = db.collection('data').doc('blocked');
+//global.totalGodpower = 0;
 userData.get()
     .then (doc => {
-        totalGodpower = doc.data()[1];
+        global.totalGodpower = doc.data()[1];
     });
 limitedCommandsData.get()
     .then (doc => {
         global.usedDaily = doc.data()['daily'];
     });
+blockedData.get()
+    .then (doc => {
+        global.imageBlocked = doc.data()['image'];
+        global.botBlocked = doc.data()['bot'];
+        global.suggestBlocked = doc.data()['suggest'];
+        global.xpBlocked = doc.data()['xp'];
+    });
+
 const mentionReactions = ['YOU FOOL, YOU DARE MENTION ME???',
     'I\'ll pretend I didn\'t see that :eyes:',
     'https://media.tenor.com/images/10c1188bf1df85272a39c17ce863081c/tenor.gif',
@@ -81,80 +91,97 @@ client.on('ready', () => {
 
 client.on('message', message => {
     if (message.author.bot) {return;}
-    if (message.content.toLowerCase().startsWith('?rank') || message.content.toLowerCase().startsWith('?ranks')) {
+    if (message.content.toLowerCase().startsWith('?rank')) {
         if (!message.member.roles.has('313453649315495946') && !message.member.roles.has(admin_role)) {
             message.reply('use the `?ireadtherules` command to unlock core server functionality before adding any extra channels!');
         }
     }
-    if (bot_blocked.includes(message.author.id)) {return;}
     if (message.channel.type === 'dm') {
         message.reply(`I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`>suggest\` in <#${levelup_channel}>.`);
         console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
+        client.channels.get(bot_dms).send(`*${message.author.tag} sent the following message in my DMs:*`);
+        const attachments = [];
+        message.attachments.forEach(element => {
+            attachments.push(element.url);
+        });
+        client.channels.get(bot_dms).send(message.content, { files: attachments })
+            .catch(client.channels.get(bot_dms).send('Failed to forward.'));
     } else if (message.guild.id === server) {
-        if (message.author.id != bot_id) {
-            if (!no_xp_channels.includes(message.channel.id)) {
-                giveXP.giveGodpower(message, userData, Discord, client);
-            }
-            if (message.content.toLowerCase().startsWith(prefix)) {
-                if (command_channels.includes(message.channel.id)) {
-                    if (message.content.toLowerCase().startsWith(`${prefix}level`)) {
-                        return displayLevel.displayLevel(message, userData, Discord, client);
-                    }
-                    if (message.content.toLowerCase().startsWith(`${prefix}gold`)) {
-                        return displayGold.displayGold(message, userData, Discord, client);
-                    }
-                    if (message.content.toLowerCase().startsWith(`${prefix}toggle-mentions`)) {
-                        return mentions.toggleMentions(message, userData);
-                    }
-                    if (message.content.toLowerCase().startsWith(`${prefix}ranking`)) {
-                        return getRanking.getRanking(message, userData);
-                    }
-                    if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
-                        return help.getHelp(message, Discord, client, true);
-                    }
-                    if (message.content.toLowerCase().startsWith(`${prefix}link`)) {
-                        return profile.link(message, godData);
-                    }
-                    if (message.content.toLowerCase().startsWith(`${prefix}daily`)) {
-                        return limitedCommands.daily(message, limitedCommandsData, userData);
-                    }
-                    fun_commands.forEach(cmd => {
-                        if (message.content.toLowerCase().startsWith(`${prefix}${cmd}`)) {
-                            return fun(message, Discord, client, cmd);
-                        }
-                    });
+        if (imageBlocked.includes(message.author.id) && message.attachments.size > 0 && block.hasImage(message.attachments)) {
+            return block.blockImage(message);
+        }
+        if (botBlocked.includes(message.author.id)) {return;}
+        if (!no_xp_channels.includes(message.channel.id)) {
+            giveXP.giveGodpower(message, userData, Discord, client);
+        }
+        if (message.content.toLowerCase().startsWith(prefix)) {
+            if (command_channels.includes(message.channel.id)) {
+                if (message.content.toLowerCase().startsWith(`${prefix}level`)) {
+                    return displayLevel.displayLevel(message, userData, Discord, client);
                 }
-                if (message.content.toLowerCase().startsWith(`${prefix}profile`)) {
-                    return profile.show(message, client, Discord, godData);
+                if (message.content.toLowerCase().startsWith(`${prefix}gold`)) {
+                    return displayGold.displayGold(message, userData, Discord, client);
                 }
-                if (message.content.toLowerCase().startsWith(`${prefix}godwiki`)) {
-                    return godville.search(message);
+                if (message.content.toLowerCase().startsWith(`${prefix}toggle-mentions`)) {
+                    return mentions.toggleMentions(message, userData);
                 }
-                if (message.content.toLowerCase().startsWith(`${prefix}guides`)) {
-                    return guide.guides(message, Discord);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
-                    return suggest.suggestion(client, message);
+                if (message.content.toLowerCase().startsWith(`${prefix}ranking`)) {
+                    return getRanking.getRanking(message, userData);
                 }
                 if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
-                    return help.getHelp(message, Discord, client, false);
+                    return help.getHelp(message, Discord, client, true);
                 }
-                useful_commands.forEach(cmd => {
+                if (message.content.toLowerCase().startsWith(`${prefix}link`)) {
+                    return profile.link(message, godData);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}daily`)) {
+                    return limitedCommands.daily(message, limitedCommandsData, userData);
+                }
+                fun_commands.forEach(cmd => {
                     if (message.content.toLowerCase().startsWith(`${prefix}${cmd}`)) {
-                        return useful(message, Discord, client, cmd);
+                        return fun(message, Discord, client, cmd);
                     }
                 });
-                if (message.member.roles.has(admin_role) || owner.includes(message.author.id)) {
-                    if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
-                        return admin_only.purge(message);
-                    }
-                    if (message.content.toLowerCase().startsWith(`${prefix}break`)) {
-                        return admin_only.break(message, client);
-                    }
+            }
+            if (message.content.toLowerCase().startsWith(`${prefix}profile`)) {
+                return profile.show(message, client, Discord, godData);
+            }
+            if (message.content.toLowerCase().startsWith(`${prefix}godwiki`)) {
+                return godville.search(message);
+            }
+            if (message.content.toLowerCase().startsWith(`${prefix}guides`)) {
+                return guide.guides(message, Discord);
+            }
+            if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
+                return suggest.suggestion(client, message);
+            }
+            if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
+                return help.getHelp(message, Discord, client, false);
+            }
+            useful_commands.forEach(cmd => {
+                if (message.content.toLowerCase().startsWith(`${prefix}${cmd}`)) {
+                    return useful(message, Discord, client, cmd);
                 }
-                if (newspaper_channels.includes(message.channel.id)) {
-                    crosswordgod.crosswordgod(message);
+            });
+            if (message.member.roles.has(admin_role) || owner.includes(message.author.id)) {
+                if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
+                    return admin_only.purge(message);
                 }
+                if (message.content.toLowerCase().startsWith(`${prefix}break`)) {
+                    return admin_only.break(message, client);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}block `)) {
+                    return block.block(message, client, blockedData);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}unblock `)) {
+                    return block.unblock(message, client, blockedData);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}blocklist`)) {
+                    return block.blockList(message, client);
+                }
+            }
+            if (newspaper_channels.includes(message.channel.id)) {
+                crosswordgod.crosswordgod(message);
             }
         }
     } else if (message.guild.id == suggestion_server) {

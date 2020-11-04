@@ -1,5 +1,5 @@
 # GodBot
-Version: 3.15.1
+Version: 3.16.0
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.
 It means rewriting some of CrosswordGod's code so it can be run as a function instead of the worker file,
@@ -21,6 +21,7 @@ adding python libraries and the packages find, fs and python-shell to take over 
 * 3.13 Added 'useful' commands folder and command detector, and the >spoiler command.
 * 3.14 Added the >minesweeper command to the list of fun commands.
 * 3.15 GodBot now reacts when mentioned, and from level 50 onward the godpower required for the next level is fixed at 6666.
+* 3.16 Users blocked for various actions are now stored in the database, and can be added/removed with >block.
 
 ## What's new in version 2?
 Version 2 entails a major rewrite of all the code.

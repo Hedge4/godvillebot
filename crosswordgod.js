@@ -224,7 +224,7 @@ function newsPing(client) {
         newsSent = true;
         const channel = client.channels.get(newspaper_updates[0]);
         const guildName = channel.guild.name;
-        channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator!\nDaily coupon: <https://godvillegame.com/news#cpn_name>');
+        channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator! Daily coupon: <https://godvillegame.com/news#cpn_name>');
         console.log(`Sent newspaper reminder to ${channel.name} in ${guildName} guild.`);
         let delay = getDelay();
         delay = delay - 4500000;
