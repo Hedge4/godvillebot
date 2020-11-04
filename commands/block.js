@@ -53,7 +53,7 @@ const correctFormat = `Correct format: \`>block|unblock|blocklist ${blockLists.j
 
 function blockList(message, client) {
     const args = message.content.slice(10).trim().split(' ');
-    if (!args) {
+    if (!args[0].length) {
         message.reply('please specify which list of blocked users you want to view!');
         return message.channel.send(correctFormat);
     }
@@ -118,7 +118,8 @@ function blockList(message, client) {
 
 function block(message, client, blockedData) {
     const args = message.content.slice(6).trim().split(' ');
-    if (!args || args.length < 2) {
+    console.log(args, args.length);
+    if (args.length < 2) {
         message.reply('please specify what you want to block and for which user!');
         return message.channel.send(correctFormat);
     }
@@ -169,7 +170,7 @@ function block(message, client, blockedData) {
 
 function unblock(message, client, blockedData) {
     const args = message.content.slice(8).trim().split(' ');
-    if (!args || args.length < 2) {
+    if (args.length < 2) {
         message.reply('please specify what you want to unblock and for which user!');
         return message.channel.send(correctFormat);
     }

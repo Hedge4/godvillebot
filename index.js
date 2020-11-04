@@ -170,14 +170,14 @@ client.on('message', message => {
                 if (message.content.toLowerCase().startsWith(`${prefix}break`)) {
                     return admin_only.break(message, client);
                 }
-                if (message.content.toLowerCase().startsWith(`${prefix}block `)) {
-                    return block.block(message, client, blockedData);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}unblock `)) {
-                    return block.unblock(message, client, blockedData);
-                }
                 if (message.content.toLowerCase().startsWith(`${prefix}blocklist`)) {
                     return block.blockList(message, client);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}block`)) {
+                    return block.block(message, client, blockedData);
+                }
+                if (message.content.toLowerCase().startsWith(`${prefix}unblock`)) {
+                    return block.unblock(message, client, blockedData);
                 }
             }
             if (newspaper_channels.includes(message.channel.id)) {
