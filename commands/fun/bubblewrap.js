@@ -1,5 +1,9 @@
-async function main(message, client) {
+const { logs } = require('../../configurations/config.json');
+
+async function main(client, message) {
+    const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} used the bubblewrap command in ${message.channel.name}.`);
+    logsChannel.send(`${message.author.tag} used the bubblewrap command in ${message.channel.name}.`);
     let tobewrapped = message.content.slice(11).trim();
 
     tobewrapped = tobewrapped.replace(/<([^:]*):([^:]+):([0-9]+)>/g, ''); // filter out custom emojis
@@ -9,7 +13,7 @@ async function main(message, client) {
         const rx_member = /<@([0-9]+)>/.exec(tobewrapped);
         const rx_channel = /<#([0-9]+)>/.exec(tobewrapped);
         if (rx_channel) {
-            const channel = client.channels.get(rx_channel[1]);
+            const channel = client.channels.cache.get(rx_channel[1]);
             if (channel) {
                 tobewrapped = tobewrapped.replace(/<#[0-9]+>/, '#' + channel.name);
             } else {
@@ -18,13 +22,13 @@ async function main(message, client) {
         }
         if (rx_member) {
             try {
-                const member = await message.guild.fetchMember(rx_member[1]);
+                const member = await message.guild.members.fetch(rx_member[1]);
                 tobewrapped = tobewrapped.replace(rx_member[0], '@' + member.displayName);
             } catch (err) { tobewrapped = tobewrapped.replace(rx_member[0], '@invalid-user'); }
         }
         if (rx_role) {
             try {
-                const role = message.guild.roles.get(rx_role[1]);
+                const role = message.guild.roles.cache.get(rx_role[1]);
                 tobewrapped = tobewrapped.replace(rx_role[0], '@' + role.name);
             } catch (err) { tobewrapped = tobewrapped.replace(rx_role[0], '@invalid-role'); }
         }

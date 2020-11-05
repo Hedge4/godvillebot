@@ -3,10 +3,10 @@ const minesweeper = require('./minesweeper.js');
 
 function redirect(message, Discord, client, cmd) {
     if (cmd === 'bubblewrap') {
-        bubblewrap(message, client);
+        bubblewrap(client, message);
     }
     if (cmd === 'minesweeper') {
-        minesweeper(message);
+        minesweeper(client, message);
     }
 }
 

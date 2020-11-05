@@ -1,3 +1,5 @@
+const { logs } = require('../configurations/config.json');
+
 async function displayGold(message, userData, Discord, client) {
 
     let user = message.mentions.users.first();
@@ -42,13 +44,15 @@ async function displayGold(message, userData, Discord, client) {
         author = author + ' / ' + nickname;
     }
 
-    const goldEmbed = new Discord.RichEmbed()
+    const goldEmbed = new Discord.MessageEmbed()
     .setAuthor(author)
     .setColor('ffd700')
     .addField('Gold <:stat_gold:401414686651711498>', User[user.id].gold, true)
-    .setThumbnail(user.displayAvatarURL);
+    .setThumbnail(user.displayAvatarURL());
 
+    const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} requested the gold amount for ${user.tag}.`);
+    logsChannel.send(`${message.author.tag} requested the gold amount for ${user.tag}.`);
     message.channel.send(goldEmbed);
 }
 

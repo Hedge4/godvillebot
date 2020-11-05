@@ -1,5 +1,5 @@
 const https = require('https');
-const { prefix } = require('../configurations/config.json');
+const { prefix, logs } = require('../configurations/config.json');
 
 async function show_profile(message, client, Discord, godData) {
 
@@ -41,7 +41,9 @@ async function show_profile(message, client, Discord, godData) {
     const godURL = godDoc.data()[user.id];
     let god = godURL.slice(30);
     god = decodeURI(god);
+    const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} requested profile page for ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
+    logsChannel.send(`${message.author.tag} requested profile page for ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
 
     let godvilleData = null;
     try {
@@ -52,18 +54,18 @@ async function show_profile(message, client, Discord, godData) {
     }
 
     if (!godvilleData) {
-        const godEmbed = new Discord.RichEmbed()
+        const godEmbed = new Discord.MessageEmbed()
         .setTitle(god)
         .setURL(godURL)
         .setDescription('Click the god(dess)\'s username to open their Godville page.')
         .addField('ERROR', 'Extra data such as their (gr)avatar and level could not be found for this god; either the bot can\'t acces this page or it was linked incorrectly. In case of the former, the link above will still work.')
         .setColor('006600')
-        .setFooter(author, user.displayAvatarURL);
+        .setFooter(author, user.displayAvatarURL());
         return message.channel.send(godEmbed);
     }
 
     if (!godvilleData[6]) {
-        const godEmbed = new Discord.RichEmbed()
+        const godEmbed = new Discord.MessageEmbed()
         .setTitle(god)
         .setURL(godURL)
         .setThumbnail(godvilleData[1])
@@ -73,10 +75,10 @@ async function show_profile(message, client, Discord, godData) {
         .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
         .addField('Medals', godvilleData[5], false)
         .setColor('006600')
-        .setFooter(author, user.displayAvatarURL);
+        .setFooter(author, user.displayAvatarURL());
         return message.channel.send(godEmbed);
     } else {
-        const godEmbed = new Discord.RichEmbed()
+        const godEmbed = new Discord.MessageEmbed()
         .setTitle(god)
         .setURL(godURL)
         .setThumbnail(godvilleData[1])
@@ -88,15 +90,17 @@ async function show_profile(message, client, Discord, godData) {
         .addField('Pet name/level', godvilleData[7], true)
         .addField('Medals', godvilleData[5], false)
         .setColor('006600')
-        .setFooter(author, user.displayAvatarURL);
+        .setFooter(author, user.displayAvatarURL());
         return message.channel.send(godEmbed);
     }
 }
 
-function link_profile(message, godData) {
+function link_profile(message, godData, client) {
     let link = message.content.slice(5).trim();
     link = link.replace(/%20/g, ' ');
+    const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} tried to link their account to '${link}'.`);
+    logsChannel.send(`${message.author.tag} tried to link their account to '${link}'.`);
     if (link.startsWith('https://godvillegame.com/gods/')) {
         if (/^[A-Z][a-zA-Z0-9- ]{2,29}$/.test(link.slice(30))) {
             link = link.replace(/ /g, '%20');

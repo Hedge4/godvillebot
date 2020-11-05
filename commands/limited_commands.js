@@ -1,7 +1,11 @@
-async function checkDaily(message, limitedCommandsData, userData) {
-    if (!usedDaily.includes(message.author.id)) {
+const { logs } = require('../configurations/config.json');
+
+async function checkDaily(client, message, limitedCommandsData, userData) {
+    const logsChannel = client.channels.cache.get(logs);
+        if (!usedDaily.includes(message.author.id)) {
         const goldAdd = Math.floor(Math.random() * 21) + 22;
         console.log(`${message.author.tag} used their daily in ${message.channel.name}.`);
+        logsChannel.send(`${message.author.tag} used their daily in ${message.channel.name}.`);
         usedDaily.push(message.author.id);
         limitedCommandsData.set({ daily: usedDaily });
 
@@ -26,13 +30,14 @@ async function checkDaily(message, limitedCommandsData, userData) {
 
         message.reply(`you received **${goldAdd}** daily gold. You now have **${gold}** gold total. <:stat_gold:401414686651711498>`);
     } else {
-        const delay = getResetTimer(false);
+        const delay = getResetTimer(client, false);
         console.log(`${message.author.tag} tried to use their daily in ${message.channel.name}, but had already used it.`);
+        logsChannel.send(`${message.author.tag} tried to use their daily in ${message.channel.name}, but had already used it.`);
         message.reply(`you already used your daily! Dailies reset in ${delay[1]} hours, ${delay[2]} minutes and ${delay[4]} seconds.`);
     }
 }
 
-function getResetTimer(show) {
+function getResetTimer(client, show) {
     const now = new Date();
     const timezoneOffset = now.getTimezoneOffset();
     let yrs = now.getFullYear();
@@ -56,18 +61,20 @@ function getResetTimer(show) {
     const delayHours = Math.floor(delay / 1000 / 3600);
     const delayMins = Math.floor((delay % (1000 * 3600)) / (60 * 1000));
     const delaySecs = Math.ceil((delay % (60 * 1000) / 1000));
+    const logsChannel = client.channels.cache.get(logs);
     if (show === true) {
         console.log(`--------------------------------------------------------\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
+        logsChannel.send(`\`\`\`Next daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
     }
     return [delay, delayHours, delayMins, then, delaySecs];
 }
 
-function dailyReset(limitedCommandsData) {
-    const delay = getResetTimer(true);
+function dailyReset(client, limitedCommandsData) {
+    const delay = getResetTimer(client, true);
     usedDaily = [];
     limitedCommandsData.set({ daily: usedDaily });
     newsSent = false;
-    setTimeout(dailyReset, delay[0], limitedCommandsData);
+    setTimeout(dailyReset, delay[0], client, limitedCommandsData);
 }
 
 exports.daily = checkDaily;

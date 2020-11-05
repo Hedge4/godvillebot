@@ -1,6 +1,7 @@
-const { bot_server_channels } = require('../configurations/config.json');
+const { bot_server_channels, logs } = require('../configurations/config.json');
 
 async function suggest(client, message) {
+    const logsChannel = client.channels.cache.get(logs);
     if (!suggestBlocked.includes(message.author.id)) {
         let suggestion = message.content.slice(8).trim();
         if (suggestion.toLowerCase().startsWith('ion')) suggestion = suggestion.slice(3).trim();
@@ -8,7 +9,7 @@ async function suggest(client, message) {
         suggestion = suggestion.join('');
         if (suggestion.length <= 20) {return message.reply('please add enough detail and make the description of your suggestion at least 20 characters!');}
         if (suggestion.length >= 800) {return message.reply('please be a bit more concise in your description and use less than 800 characters!');}
-        const channel = await client.channels.get(bot_server_channels[0]);
+        const channel = await client.channels.cache.get(bot_server_channels[0]);
         if (channel === undefined) {message.reply('the message couldn\'t be sent.');}
         channel.send(` --- ${message.author.tag} sent the following suggestion from channel ${message.channel.name}:\n` + '`' + suggestion + '`')
         .then(botMessage => {
@@ -16,8 +17,14 @@ async function suggest(client, message) {
             botMessage.react('🤷');
             botMessage.react('👎');
         });
-        message.reply('thank you for your suggestion!');
-    } else { return message.reply('you are not allowed to use that command.'); }
+        console.log(`${message.author.tag} made a bot suggestion in ${message.channel.name} with text: ${suggestion}.`);
+        logsChannel.send(`${message.author.tag} made a bot suggestion in ${message.channel.name} with text: ${suggestion}.`);
+        return message.reply('thank you for your suggestion!');
+    } else {
+        console.log(`${message.author.tag} tried to make a bot suggestion in ${message.channel.name}, but they're blocked from doing so.`);
+        logsChannel.send(`${message.author.tag} tried to make a bot suggestion in ${message.channel.name}, but they're blocked from doing so.`);
+        return message.reply('you are not allowed to use that command.');
+    }
 }
 
 async function accept(message, client) {
@@ -35,9 +42,9 @@ async function accept(message, client) {
     }
     const author = message.author.tag;
     message.delete();
-    const old_channel = await client.channels.get(bot_server_channels[0]);
-    const new_channel = await client.channels.get(bot_server_channels[1]);
-    const old_msg = await old_channel.fetchMessage(ID);
+    const old_channel = await client.channels.cache.get(bot_server_channels[0]);
+    const new_channel = await client.channels.cache.get(bot_server_channels[1]);
+    const old_msg = await old_channel.messages.fetch(ID);
     const contents = old_msg.content;
     old_msg.delete();
     new_channel.send(`${author} accepted :white_check_mark: a suggestion with comment:\n"${args}"\n\`\`\`Suggestion: ${contents.slice(4, -1).replace(/`/g, '\n')}\`\`\``);
@@ -58,9 +65,9 @@ async function reject(message, client) {
     }
     const author = message.author.tag;
     message.delete();
-    const old_channel = await client.channels.get(bot_server_channels[0]);
-    const new_channel = await client.channels.get(bot_server_channels[2]);
-    const old_msg = await old_channel.fetchMessage(ID);
+    const old_channel = await client.channels.cache.get(bot_server_channels[0]);
+    const new_channel = await client.channels.cache.get(bot_server_channels[2]);
+    const old_msg = await old_channel.messages.fetch(ID);
     const contents = old_msg.content;
     old_msg.delete();
     new_channel.send(`${author} rejected :x: a suggestion with comment:\n"${args}"\n\`\`\`Suggestion: ${contents.slice(4, -1).replace(/`/g, '\n')}\`\`\``);

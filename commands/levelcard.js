@@ -1,5 +1,6 @@
-async function displayLevel(message, userData, Discord, client) {
+const { logs } = require('../configurations/config.json');
 
+async function displayLevel(message, userData, Discord, client) {
     let user = message.mentions.users.first();
     if (!user) {
         if (message.content.length >= 7) {
@@ -51,16 +52,18 @@ async function displayLevel(message, userData, Discord, client) {
         author = author + ' / ' + nickname;
     }
 
-    const lvlEmbed = new Discord.RichEmbed()
+    const lvlEmbed = new Discord.MessageEmbed()
     .setAuthor(author)
     .setColor('32cd32')
     .addField('Level', curLevel, true)
     .addField('Godpower <:stat_godpower:401412765232660492>', curGodpower, true)
     .addField('Total godpower', User[user.id].total_godpower, true)
     .addField('Rank', rank, true)
-    .setFooter(`${difference} godpower needed for level ${nextLevel}.`, user.displayAvatarURL);
+    .setFooter(`${difference} godpower needed for level ${nextLevel}.`, user.displayAvatarURL());
 
+    const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} requested the level card for ${user.tag}.`);
+    logsChannel.send(`${message.author.tag} requested the level card for ${user.tag}.`);
     message.channel.send(lvlEmbed);
 }
 

@@ -1,4 +1,4 @@
-const { newspaper_updates, prefix } = require('./configurations/config.json');
+const { newspaper_updates, prefix, logs } = require('./configurations/config.json');
 /*const Discord = require('discord.js');
 const { newspaper_channels, newspaper_updates, prefix, owner, admin_role } = require('./configurations/config.json');
 const fs = require('fs');
@@ -19,7 +19,7 @@ function crosswordgod(message) {
         message.channel.send('Due to the bot no longer being able to fetch the crossword, crossword functions have been disabled for now.');
     }
     /*if (message.content.toLowerCase().startsWith(`${prefix}renew`)) {
-        if (message.member.roles.has(admin_role) || owner.includes(message.author.id)) {
+        if (message.member.roles.cache.has(admin_role) || owner.includes(message.author.id)) {
             renew(message.channel, message.guild.name);
         } else { return message.reply('you do not have access to this command.'); }
     }
@@ -73,7 +73,48 @@ async function getSolution() {
     return load;
 }*/
 
-function getDelay() {
+function getNewsDelay(client) {
+    const now = new Date();
+    const timezoneOffset = now.getTimezoneOffset();
+    let yrs = now.getFullYear();
+    let mos = now.getMonth();
+    let days = now.getDate();
+    let hrs = now.getHours();
+    let mins = now.getMinutes();
+    let secs = now.getSeconds();
+    mins = mins + timezoneOffset;
+    const now_UTC = new Date(yrs, mos, days, hrs, mins, secs);
+    yrs = now_UTC.getFullYear();
+    mos = now_UTC.getMonth();
+    days = now_UTC.getDate();
+    hrs = now_UTC.getHours();
+    mins = now_UTC.getMinutes();
+    secs = now_UTC.getSeconds();
+    if (hrs === 21) {
+        if (mins >= 5) {
+            days += 1;
+        }
+    }
+    if (hrs > 21) {
+        days += 1;
+    }
+    hrs = 21;
+    mins = 5;
+    const now_milsec = now_UTC.getTime();
+    const then_UTC = new Date(yrs, mos, days, hrs, mins);
+    mins = mins - timezoneOffset;
+    const then = new Date(yrs, mos, days, hrs, mins);
+    const then_UTC_milsec = then_UTC.getTime();
+    const delay = then_UTC_milsec - now_milsec;
+    const delayHours = Math.floor(delay / 1000 / 3600);
+    const delayMins = Math.ceil((delay % (1000 * 3600)) / (60 * 1000));
+    const logsChannel = client.channels.cache.get(logs);
+    console.log(`--------------------------------------------------------\nNext newsping update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
+    logsChannel.send(`\`\`\`Next newsping update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
+    return delay;
+}
+
+/*function getCrosswordDelay(client) {
     const now = new Date();
     const timezoneOffset = now.getTimezoneOffset();
     let yrs = now.getFullYear();
@@ -108,11 +149,13 @@ function getDelay() {
     const delay = then_UTC_milsec - now_milsec;
     const delayHours = Math.floor(delay / 1000 / 3600);
     const delayMins = Math.ceil((delay % (1000 * 3600)) / (60 * 1000));
+    const logsChannel = client.channels.cache.get(logs);
     console.log(`--------------------------------------------------------\nNext crossword update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
+    logsChannel.send(`\`\`\`Next crossword update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
     return delay;
 }
 
-/*function getUpdate(message) {
+function getUpdate(message) {
     const now = new Date();
     const timezoneOffset = now.getTimezoneOffset();
     let yrs = now.getFullYear();
@@ -153,11 +196,11 @@ function getDelay() {
 
 function dailyRenew(client) {
     for (let i = 0; i < newspaper_updates.length; i++) {
-        const channel = client.channels.get(newspaper_updates[i]);
+        const channel = client.channels.cache.get(newspaper_updates[i]);
         const GuildName = channel.guild.name;
         renew(channel, GuildName);
         setTimeout(sendMK, 15000, client);
-    const delay = getDelay();
+    const delay = getCrosswordDelay();
     setTimeout(dailyRenew, delay, client);
     }
 }
@@ -192,12 +235,12 @@ async function sendAll(channel) {
 
 async function sendMK(client) {
     const { embedTitle2, embedBody2 } = await getSolution();
-    client.users.get('534068471156178974').send(embedForecast(embedTitle2, embedBody2)); // MK's ID
-    //client.users.get('346301339548123136').send(embedForecast(embedTitle2, embedBody2)); // Wawa's ID
+    client.users.cache.get('534068471156178974').send(embedForecast(embedTitle2, embedBody2)); // MK's ID
+    //client.users.cache.get('346301339548123136').send(embedForecast(embedTitle2, embedBody2)); // Wawa's ID
 }
 
 function embedCrossword(embedTitle1, embedBody1) {
-    const embed = new Discord.RichEmbed()
+    const embed = new Discord.MessageEmbed()
         .setTitle(embedTitle1)
         .setColor(0x1405BD) // Blue
         .setDescription(embedBody1)
@@ -209,7 +252,7 @@ function embedCrossword(embedTitle1, embedBody1) {
 }
 
 function embedForecast(embedTitle2, embedBody2) {
-    const embed = new Discord.RichEmbed()
+    const embed = new Discord.MessageEmbed()
         .setTitle(embedTitle2)
         .setColor(0xFF0000) // Red
         .setDescription(embedBody2)
@@ -222,20 +265,19 @@ function embedForecast(embedTitle2, embedBody2) {
 function newsPing(client) {
     if (!newsSent) {
         newsSent = true;
-        const channel = client.channels.get(newspaper_updates[0]);
+        const channel = client.channels.cache.get(newspaper_updates[0]);
         const guildName = channel.guild.name;
         channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator! Daily coupon: <https://godvillegame.com/news#cpn_name>');
+        const logsChannel = client.channels.cache.get(logs);
         console.log(`Sent newspaper reminder to ${channel.name} in ${guildName} guild.`);
-        let delay = getDelay();
-        delay = delay - 4500000;
-        if (delay <= 5000) {
-            delay = delay + 86400000;
-        }
+        logsChannel.send(`Sent newspaper reminder to ${channel.name} in ${guildName} guild.`);
+        const delay = getNewsDelay();
         setTimeout(newsPing, delay, client);
     }
 }
 
 exports.crosswordgod = crosswordgod;
-exports.getCrosswordDelay = getDelay;
+//exports.getCrosswordDelay = getCrosswordDelay;
 //exports.dailyCrosswordRenew = dailyRenew;
+exports.getNewsDelay = getNewsDelay;
 exports.newsping = newsPing;

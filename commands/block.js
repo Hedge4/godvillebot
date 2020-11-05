@@ -1,11 +1,11 @@
-const { logs } = require('../configurations/config.json');
+const { modlogs, logs } = require('../configurations/config.json');
 
 function hasImage(attachments) {
     const imgFormats = ['.png', '.jpeg', '.jpg', '.gif'];
     let imageFound = false;
     for (let i = 0; i < attachments.size; i++) {
         try {
-            const format = /^[\s\S]+(\.[^.]+$)/.exec(attachments.array()[i].filename)[1];
+            const format = /^[\s\S]+(\.[^.]+$)/.exec(attachments.array()[i].name)[1];
             if (imgFormats.includes(format)) {
                 imageFound = true;
                 break;
@@ -18,13 +18,16 @@ function hasImage(attachments) {
     return false;
 }
 
-function blockImage(message) {
+async function blockImage(client, message) {
+    const logsChannel = client.channels.cache.get(logs);
     message.delete();
+    console.log(`Blocked ${message.author.tag} from sending an image with filename "${message.attachments.first().name}" in ${message.channel.name}.`);
+    logsChannel.send(`Blocked ${message.author.tag} from sending an image with filename "${message.attachments.first().name}" in ${message.channel.name}.`);
     message.reply('you are currently not allowed to post images in the server.')
         .then(msg => {
-            msg.delete(5000);
+            msg.delete({ timeout: 5000 });
         })
-        .catch();
+        .catch(console.error);
 }
 
 function getUser(mentions, username, client) {
@@ -32,7 +35,7 @@ function getUser(mentions, username, client) {
     if (!user) {
         if (/^<@!?[0-9]+>$/.test(username)) {
             const userID = /^<@!?([0-9]+)>$/.exec(username)[1];
-            user = client.users.get(userID);
+            user = client.users.cache.get(userID);
         } else if (username.includes('#')) {
             const args = username.split('#');
             username = args[0];
@@ -62,6 +65,7 @@ function blockList(message, client) {
         return message.channel.send(correctFormat);
     }
 
+    const logsChannel = client.channels.cache.get(logs);
     args[0] = args[0].toLowerCase();
     let msg = `here is the list of users blocked from "${args[0]}":\n\`\`\``;
     if (args[0] == 'bot') {
@@ -69,48 +73,56 @@ function blockList(message, client) {
         for (let i = 0; i < botBlocked.length; i++) {
             let user = '';
             try {
-                user = client.users.get(botBlocked[i]).tag;
+                user = client.users.cache.get(botBlocked[i]).tag;
             } catch {
                 user = botBlocked[i];
             }
             msg += (` ${i}. ${user}\n`);
         }
+        logsChannel.send(`${message.author.tag} requested the list of users blocked from using the bot.`);
+        console.log(`${message.author.tag} requested the list of users blocked from using the bot.`);
     }
     if (args[0] == 'xp') {
         if (!xpBlocked.length) msg += ('No users blocked.');
         for (let i = 0; i < xpBlocked.length; i++) {
             let user = '';
             try {
-                user = client.users.get(xpBlocked[i]).tag;
+                user = client.users.cache.get(xpBlocked[i]).tag;
             } catch {
                 user = xpBlocked[i];
             }
             msg += (` ${i}. ${user}\n`);
         }
+        logsChannel.send(`${message.author.tag} requested the list of users blocked from gaining xp (godpower).`);
+        console.log(`${message.author.tag} requested the list of users blocked from gaining xp (godpower).`);
     }
     if (args[0] == 'image') {
         if (!imageBlocked.length) msg += ('No users blocked.');
         for (let i = 0; i < imageBlocked.length; i++) {
             let user = '';
             try {
-                user = client.users.get(imageBlocked[i]).tag;
+                user = client.users.cache.get(imageBlocked[i]).tag;
             } catch {
                 user = imageBlocked[i];
             }
             msg += (` ${i}. ${user}\n`);
         }
+        logsChannel.send(`${message.author.tag} requested the list of users blocked from sending images.`);
+        console.log(`${message.author.tag} requested the list of users blocked from sending images.`);
     }
     if (args[0] == 'suggest') {
         if (!suggestBlocked.length) msg += ('No users blocked.');
         for (let i = 0; i < suggestBlocked.length; i++) {
             let user = '';
             try {
-                user = client.users.get(suggestBlocked[i]).tag;
+                user = client.users.cache.get(suggestBlocked[i]).tag;
             } catch {
                 user = suggestBlocked[i];
             }
             msg += (` ${i}. ${user}\n`);
         }
+        logsChannel.send(`${message.author.tag} requested the list of users blocked from making suggestions.`);
+        console.log(`${message.author.tag} requested the list of users blocked from making suggestions.`);
     }
     msg += ('```');
     return message.reply(msg);
@@ -118,7 +130,6 @@ function blockList(message, client) {
 
 function block(message, client, blockedData) {
     const args = message.content.slice(6).trim().split(' ');
-    console.log(args, args.length);
     if (args.length < 2) {
         message.reply('please specify what you want to block and for which user!');
         return message.channel.send(correctFormat);
@@ -139,7 +150,8 @@ function block(message, client, blockedData) {
         botBlocked.push(user.id);
         blockedData.set({ bot: botBlocked }, { merge: true });
         console.log(`${message.author.tag} blocked ${user.tag} from using the bot.`);
-        client.channels.get(logs).send(`${message.author.tag} blocked ${user.tag} from using the bot.`);
+        console.log(`${message.author.tag} blocked ${user.tag} from using the bot.`);
+        client.channels.cache.get(modlogs).send(`${message.author.tag} blocked ${user.tag} from using the bot.`);
         return message.reply(`succesfully blocked ${user.tag} from using the bot.`);
     }
     if (args[0] == 'xp') {
@@ -147,7 +159,7 @@ function block(message, client, blockedData) {
         xpBlocked.push(user.id);
         blockedData.set({ xp: xpBlocked }, { merge: true });
         console.log(`${message.author.tag} blocked ${user.tag} from gaining xp (godpower).`);
-        client.channels.get(logs).send(`${message.author.tag} blocked ${user.tag} from gaining xp (godpower).`);
+        client.channels.cache.get(modlogs).send(`${message.author.tag} blocked ${user.tag} from gaining xp (godpower).`);
         return message.reply(`succesfully blocked ${user.tag} from gaining xp (godpower).`);
     }
     if (args[0] == 'suggest') {
@@ -155,7 +167,7 @@ function block(message, client, blockedData) {
         suggestBlocked.push(user.id);
         blockedData.set({ suggest: suggestBlocked }, { merge: true });
         console.log(`${message.author.tag} blocked ${user.tag} from making suggestions for the bot.`);
-        client.channels.get(logs).send(`${message.author.tag} blocked ${user.tag} from making suggestions for the bot.`);
+        client.channels.cache.get(modlogs).send(`${message.author.tag} blocked ${user.tag} from making suggestions for the bot.`);
         return message.reply(`succesfully blocked ${user.tag} from making suggestions for the bot.`);
     }
     if (args[0] == 'image') {
@@ -163,7 +175,7 @@ function block(message, client, blockedData) {
         imageBlocked.push(user.id);
         blockedData.set({ image: imageBlocked }, { merge: true });
         console.log(`${message.author.tag} blocked ${user.tag} from sending images in the server.`);
-        client.channels.get(logs).send(`${message.author.tag} blocked ${user.tag} from sending images in the server.`);
+        client.channels.cache.get(modlogs).send(`${message.author.tag} blocked ${user.tag} from sending images in the server.`);
         return message.reply(`succesfully blocked ${user.tag} from sending images in the server.`);
     }
 }
@@ -190,7 +202,7 @@ function unblock(message, client, blockedData) {
         botBlocked.splice(botBlocked.indexOf(user.id), 1);
         blockedData.set({ bot: botBlocked }, { merge: true });
         console.log(`${message.author.tag} unblocked ${user.tag} from using the bot.`);
-        client.channels.get(logs).send(`${message.author.tag} unblocked ${user.tag} from using the bot.`);
+        client.channels.cache.get(modlogs).send(`${message.author.tag} unblocked ${user.tag} from using the bot.`);
         return message.reply(`succesfully unblocked ${user.tag} from using the bot.`);
     }
     if (args[0] == 'xp') {
@@ -198,7 +210,7 @@ function unblock(message, client, blockedData) {
         xpBlocked.splice(xpBlocked.indexOf(user.id), 1);
         blockedData.set({ xp: xpBlocked }, { merge: true });
         console.log(`${message.author.tag} unblocked ${user.tag} from gaining xp (godpower).`);
-        client.channels.get(logs).send(`${message.author.tag} unblocked ${user.tag} from gaining xp (godpower).`);
+        client.channels.cache.get(modlogs).send(`${message.author.tag} unblocked ${user.tag} from gaining xp (godpower).`);
         return message.reply(`succesfully unblocked ${user.tag} from gaining xp (godpower).`);
     }
     if (args[0] == 'suggest') {
@@ -206,7 +218,7 @@ function unblock(message, client, blockedData) {
         suggestBlocked.splice(suggestBlocked.indexOf(user.id), 1);
         blockedData.set({ suggest: suggestBlocked }, { merge: true });
         console.log(`${message.author.tag} unblocked ${user.tag} from making suggestions for the bot.`);
-        client.channels.get(logs).send(`${message.author.tag} unblocked ${user.tag} from making suggestions for the bot.`);
+        client.channels.cache.get(modlogs).send(`${message.author.tag} unblocked ${user.tag} from making suggestions for the bot.`);
         return message.reply(`succesfully unblocked ${user.tag} from making suggestions for the bot.`);
     }
     if (args[0] == 'image') {
@@ -214,7 +226,7 @@ function unblock(message, client, blockedData) {
         imageBlocked.splice(imageBlocked.indexOf(user.id), 1);
         blockedData.set({ image: imageBlocked }, { merge: true });
         console.log(`${message.author.tag} unblocked ${user.tag} from sending images in the server.`);
-        client.channels.get(logs).send(`${message.author.tag} unblocked ${user.tag} from sending images in the server.`);
+        client.channels.cache.get(modlogs).send(`${message.author.tag} unblocked ${user.tag} from sending images in the server.`);
         return message.reply(`succesfully unblocked ${user.tag} from sending images in the server.`);
     }
 }

@@ -1,7 +1,8 @@
 {
   "name": "godbot",
-  "version": "3.16.0",
-  "description": "",
+  "version": "4.0.0",
+  "private": "true",
+  "description": "The 'GodBot' bot code, created for web and mobile game Godville's unofficial Discord server.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,10 +14,9 @@
     "node": "12.16.x"
   },
   "dependencies": {
-    "discord.js": "^11.6.x",
+    "discord.js": "^12.4.1",
     "find": "^0.3.0",
-    "firebase-admin": "^8.9.2",
-    "fs": "0.0.1-security",
+    "firebase-admin": "^9.3.0",
     "python-shell": "^1.0.8"
   }
 }

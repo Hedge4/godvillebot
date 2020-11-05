@@ -1,4 +1,4 @@
-const { prefix, levelup_channel } = require('../configurations/config.json');
+const { prefix, levelup_channel, logs } = require('../configurations/config.json');
 
 const commands_list = [
     ['help',
@@ -93,42 +93,48 @@ function constructHelp(message, Discord, client) {
     for (let i = 0; i < commands_list.length; i++) {
         text += `\`${commands_list[i][1]}\` ${commands_list[i][2]}\n`;
     }
-    const helpEmbed = new Discord.RichEmbed()
+    const helpEmbed = new Discord.MessageEmbed()
         .setTitle('GodBot commands')
         .setColor(0x63CCBE) // Soft blue
         .setDescription('GodBot gives XP, or \'godpower\' for talking, and provides several other Godville related functions, such as linking your profile and daily crossword solutions. Use `>help [command]` for more information on a specific command/function.\n\n' + text)
         .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
         .setTimestamp()
-        .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL);
+        .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL());
+    const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} requested the help message in ${message.channel.name}.`);
+    logsChannel.send(`${message.author.tag} requested the help message in ${message.channel.name}.`);
     return helpEmbed;
 }
 
 function constructSpecificHelp(message, Discord, client, element) {
     if (!element[4]) {
-        const specificHelpEmbed = new Discord.RichEmbed()
+        const specificHelpEmbed = new Discord.MessageEmbed()
             .setTitle(`Help for ${element[1]}`)
             .setColor(0x63CCBE) // Soft blue
             .setDescription(element[3])
             .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
             .setTimestamp()
-            .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL);
+            .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL());
+        const logsChannel = client.channels.cache.get(logs);
         console.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
+        logsChannel.send(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
         return specificHelpEmbed;
     } else {
         let examples = '';
         for (let i = 0; i < element[4].length; i++) {
             examples += `\`${element[4][i][0]}\` ${element[4][i][1]}\n`;
         }
-        const specificHelpEmbed = new Discord.RichEmbed()
+        const specificHelpEmbed = new Discord.MessageEmbed()
             .setTitle(`Help for ${element[1]}`)
             .setColor(0x63CCBE) // Soft blue
             .setDescription(element[3] + '\n\u200B')
             .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
             .addField('__Usage examples:__', `${examples}`)
             .setTimestamp()
-            .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL);
+            .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL());
+        const logsChannel = client.channels.cache.get(logs);
         console.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
+        logsChannel.send(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
         return specificHelpEmbed;
     }
 }
@@ -150,7 +156,7 @@ function chooseHelp(message, Discord, client, correct_channel) {
         return message.channel.send(helpEmbed);
     } else {
         message.reply(`I've sent my help message in <#${levelup_channel}>!`);
-        return client.channels.get(levelup_channel).send(helpEmbed);
+        return client.channels.cache.get(levelup_channel).send(helpEmbed);
     }
 }
 

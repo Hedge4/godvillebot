@@ -1,4 +1,6 @@
-function main(message) {
+const { logs } = require('../../configurations/config.json');
+
+function main(client, message) {
     let size = 6;
     let bomb = 15;
     message.content.toLowerCase().slice(12).trim().split('-').forEach(arg => {
@@ -19,7 +21,9 @@ function main(message) {
             } else { message.reply(`bomb input should be a number, not ${num}. Using previous value (${bomb})%.`); }
         }
     });
+    const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} requested a minesweeper game in ${message.channel.name}.`);
+    logsChannel.send(`${message.author.tag} requested a minesweeper game in ${message.channel.name}.`);
     const bombs = [];
     while (bombs.length < Math.round(size * size * bomb / 100)) {
         const coord = `${Math.floor(Math.random() * size)}, ${Math.floor(Math.random() * size)}`;
