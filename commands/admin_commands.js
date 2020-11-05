@@ -21,7 +21,7 @@ async function pause_bot(message, client) {
     args = Math.ceil(args);
     if (args < 1 || args > 60) { return message.reply('the number of minutes should be in the range 1-60.'); }
     await message.channel.send(`Got it. I will be offline for ${args} minutes, or until the hosting service resets.`);
-    await client.channels.cache.get(bot_server_channels[3]).send(`${message.author.tag} paused the bot for ${args} minutes.`);
+    await client.channels.cache.get(modlogs).send(`${message.author.tag} paused the bot for ${args} minutes.`);
     await client.destroy();
     setTimeout(resume_bot, args * 60000, client, message);
 }

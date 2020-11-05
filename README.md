@@ -3,10 +3,9 @@ Version: 4.0.0*
 * version 4 isn't completely online yet, crossword functions will receive a rewrite as well.
 
 ## What's new in version 4?
-Version 4 is updated to work with discord.js version 12, and several other dependency updates.
-The finished version 4 will also have crosswordgod.js rewritten to deal with the crossword no longer being public anymore,
-and replacements method will be added to still send newspings, coupons, and provide a single word solving function.
-Lastly, modlogs to a logging channel in the bot's own server will be added.
+Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.
+I've added more logging lines for commands that weren't (completely) logged yet, and for each log to the console
+the bot now also sends a message to its dedicated logging channel on Discord, for a more permanent logging solution.
 
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.

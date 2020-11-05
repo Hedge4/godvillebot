@@ -81,7 +81,6 @@ client.on('ready', () => {
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
         .setTimestamp();
     client.channels.cache.get(levelup_channel).send(startEmbed);
-    client.channels.cache.get(bot_server_channels[3]).send(startEmbed);
     //const delay1 = crosswordgod.getCrosswordDelay(client);
     const delay2 = limitedCommands.resetDelay(client, true)[0];
     const delay3 = crosswordgod.getNewsDelay(client);
