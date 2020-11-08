@@ -71,9 +71,13 @@ function getResetTimer(client, show) {
 
 function dailyReset(client, limitedCommandsData) {
     const delay = getResetTimer(client, true);
+    const dailiesUsed = usedDaily.length;
     usedDaily = [];
     limitedCommandsData.set({ daily: usedDaily });
     newsSent = false;
+    const logsChannel = client.channels.cache.get(logs);
+    console.log(`Succesfully reset use of the >daily command! ${dailiesUsed} were used yesterday.`);
+    logsChannel.send(`Succesfully reset use of the >daily command! ${dailiesUsed} were used yesterday.`);
     setTimeout(dailyReset, delay[0], client, limitedCommandsData);
 }
 
