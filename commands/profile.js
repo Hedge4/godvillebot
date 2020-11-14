@@ -194,6 +194,8 @@ async function getGodData(URL, message) {
         avatar_url = 'https://godvillegame.com/images/avatar.png';
     } else {
         avatar_url = avatar_url_res[1];
+        const rand = Date.now();
+        avatar_url += rand;
     }
     let guild_name = 'No guild.';
     let guild_url = '';

@@ -1,5 +1,5 @@
 # GodBot
-Version: 4.0.1
+Version: 4.0.2
 * version 4 isn't completely online yet, crossword functions will receive a rewrite as well.
 
 ## What's new in version 4?
