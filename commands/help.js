@@ -23,7 +23,7 @@ const commands_list = [
     [`${prefix}renew`, 'Admin only. Force renews the stored crossword solution and forecast to the most up to date version.']]],
     ['fun',
     'fun',
-    'Get a list of all commands that are just for fun, and explanations on how to use them.',
+    `Get a list of all commands that are just for fun, and explanations on how to use them with \`${prefix}help fun\`.`,
     'These commands are not useful in any way, but they could theoretically be considered entertaining.',
     [[`${prefix}minesweeper [-s size] [-b bomb_percentage]`, 'Generates a minesweeper game. Default size: 6. Default % of bombs: 15.'],
     [`${prefix}bubblewrap <text>`, 'Returns your message in bubblewrap style.']]],
@@ -96,7 +96,7 @@ function constructHelp(message, Discord, client) {
     const helpEmbed = new Discord.MessageEmbed()
         .setTitle('GodBot commands')
         .setColor(0x63CCBE) // Soft blue
-        .setDescription('GodBot gives XP, or \'godpower\' for talking, and provides several other Godville related functions, such as linking your profile and daily crossword solutions. Use `>help [command]` for more information on a specific command/function.\n\n' + text)
+        .setDescription(`GodBot gives XP, or 'godpower' for talking, and provides several other Godville related functions, such as linking your profile and daily crossword solutions. Use \`${prefix}help [command]\` for more information on a specific command/function.\n\n` + text)
         .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
         .setTimestamp()
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL());

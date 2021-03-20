@@ -77,7 +77,7 @@ client.on('ready', () => {
     const startEmbed = new Discord.MessageEmbed()
         .setTitle('**Successfully restarted!**')
         .setColor('ffffff')
-        .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '>help'.`)
+        .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.`)
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
         .setTimestamp();
     client.channels.cache.get(levelup_channel).send(startEmbed);
@@ -99,7 +99,7 @@ client.on('message', async (message) => {
         }
     }
     if (message.channel.type === 'dm') {
-        message.reply(`I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`>suggest\` in <#${levelup_channel}>.`);
+        message.reply(`I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`${prefix}suggest\` in <#${levelup_channel}>.`);
         console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
         client.channels.cache.get(bot_dms).send(`*${message.author.tag} sent the following message in my DMs:*`);
         const attachments = [];

@@ -1,4 +1,4 @@
-const { purge_channels, token, bot_server_channels, modlogs } = require('../configurations/config.json');
+const { purge_channels, token, modlogs } = require('../configurations/config.json');
 
 
 async function purge(client, message) {
