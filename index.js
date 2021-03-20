@@ -93,11 +93,7 @@ client.on('ready', () => {
 
 client.on('message', async (message) => {
     if (message.author.bot) {return;}
-    if (message.content.toLowerCase().startsWith('?rank')) {
-        if (!message.member.roles.cache.has('313453649315495946') && !message.member.roles.cache.has(admin_role)) {
-            message.reply('use the `?ireadtherules` command to unlock core server functionality before adding any extra channels!');
-        }
-    }
+    if (botBlocked.includes(message.author.id)) {return;}
     if (message.channel.type === 'dm') {
         message.reply(`I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`${prefix}suggest\` in <#${levelup_channel}>.`);
         console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
@@ -112,7 +108,11 @@ client.on('message', async (message) => {
         if (imageBlocked.includes(message.author.id) && message.attachments.size > 0 && block.hasImage(message.attachments)) {
             return block.blockImage(client, message);
         }
-        if (botBlocked.includes(message.author.id)) {return;}
+        if (message.content.toLowerCase().startsWith('?rank')) {
+            if (!message.member.roles.cache.has('313453649315495946') && !message.member.roles.cache.has(admin_role)) {
+                return message.reply('use the `?ireadtherules` command to unlock core server functionality before adding any extra channels!');
+            }
+        }
         if (!no_xp_channels.includes(message.channel.id)) {
             giveXP.giveGodpower(message, userData, Discord, client);
         }
