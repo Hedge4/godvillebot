@@ -82,7 +82,7 @@ const commands_list = [
     `${prefix}spoiler [URL]`,
     'Have the bot post an image/file as a spoiler.',
     'Easily mark an image or file as a spoiler, even using the mobile app. You can post the file/image as an attachment in your message, or as a URL after the command. If you add an attachment a URL will be ignored.'],
-    ['spoiler',
+    ['code',
     `${prefix}code`,
     'View the bot\'s code.',
     'yeah idk I kinda added this command as an example, you know? It\'s not really useful or anything...'],
