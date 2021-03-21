@@ -1,4 +1,4 @@
-const { logs } = require('../configurations/config.json');
+const { logs } = require('../../configurations/config.json');
 
 async function displayGold(message, userData, Discord, client) {
 
@@ -56,4 +56,4 @@ async function displayGold(message, userData, Discord, client) {
     message.channel.send(goldEmbed);
 }
 
-exports.displayGold = displayGold;
+module.exports = displayGold;

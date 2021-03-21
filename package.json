@@ -1,9 +1,9 @@
 {
   "name": "godbot",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "updateMsg": "GodBot now shows what was added in its last update on startup!",
   "private": "true",
-  "description": "The 'GodBot' bot code, created for web and mobile game Godville's unofficial Discord server.",
+  "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

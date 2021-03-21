@@ -1,13 +1,16 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { logs, suggestion_server, bot_server_channels, prefix, token, server, owner, no_xp_channels, levelup_channel, command_channels, newspaper_channels, admin_role, fun_commands, useful_commands, bot_dms } = require('./configurations/config.json');
 const { version, updateMsg } = require('./package.json');
+const { logs, suggestion_server, bot_server_channels, prefix, token, server, owner, no_xp_channels,
+    levelup_channel, command_channels, newspaper_channels, admin_role, fun_commands,
+    useful_commands, bot_dms } = require('./configurations/config.json');
+const { godpower } = require('./configurations/commands.json');
 
-const mentions = require('./commands/togglementions');
+const godpowerModule = require('./commands/godpower/godpower.js');
+const fun = require('./commands/fun/fun.js');
+const useful = require('./commands/useful/useful.js');
+
 const giveXP = require('./commands/givexp');
-const displayLevel = require('./commands/levelcard');
-const displayGold = require('./commands/goldcard');
-const getRanking = require('./commands/ranking');
 const suggest = require('./commands/suggest');
 const guide = require('./commands/guides');
 const help = require('./commands/help');
@@ -16,8 +19,6 @@ const profile = require('./commands/profile');
 const godville = require('./commands/godville_interaction');
 const crosswordgod = require('./crosswordgod');
 const limitedCommands = require('./commands/limited_commands');
-const fun = require('./commands/fun/fun.js');
-const useful = require('./commands/useful/useful.js');
 const block = require('./commands/block.js');
 
 const admin = require('firebase-admin');
@@ -30,7 +31,6 @@ const userData = db.collection('data').doc('users');
 const godData = db.collection('data').doc('gods');
 const limitedCommandsData = db.collection('data').doc('limited uses');
 const blockedData = db.collection('data').doc('blocked');
-//global.totalGodpower = 0;
 userData.get()
     .then (doc => {
         global.totalGodpower = doc.data()[1];
@@ -64,10 +64,9 @@ client.on('ready', () => {
     const logsChannel = client.channels.cache.get(logs);
     console.log(`\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!`);
     console.log(`Logged in to the following guilds: ${client.guilds.cache.array().sort()}`);
-    console.log(`Last update: ${updateMsg}`);
+    console.log(`New: ${updateMsg}`);
     logsChannel.send(`\`\`\`${currentDate} - Logged in as ${client.user.tag}, version ${version}!
-        \nLogged in to the following guilds: ${client.guilds.cache.array().sort()}
-        Last update: ${updateMsg}\`\`\``);
+        \nLogged in to the following guilds: ${client.guilds.cache.array().sort()}\nNew: ${updateMsg}\`\`\``);
 /*    client.channels.cache.forEach((channel) => {
         console.log(` -- "${channel.name}" (${channel.type}) - ${channel.id}`)
         logsChannel.send(` -- "${channel.name}" (${channel.type}) - ${channel.id}`)
@@ -80,7 +79,7 @@ client.on('ready', () => {
         .setTitle('**Successfully restarted!**')
         .setColor('ffffff')
         .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.\n
-            Last update: ${updateMsg}`)
+            New: ${updateMsg}`)
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
         .setTimestamp();
     client.channels.cache.get(levelup_channel).send(startEmbed);
@@ -119,28 +118,43 @@ client.on('message', async (message) => {
         if (!no_xp_channels.includes(message.channel.id)) {
             giveXP.giveGodpower(message, userData, Discord, client);
         }
+
+
+        if (message.content.toLowerCase().startsWith(prefix)) {
+            if (message.content.length.trim() <= prefix.length) return; // only prefix
+            const cmd = message.content.toLowerCase().slice(prefix.length).split()[0];
+            const content = message.content.toLowerCase().slice(prefix.length + cmd.length).trim();
+
+            if (command_channels.includes(message.channel.id)) {
+                //redirect godpower-related commands
+                for (let i = 0; i < godpower.length; i++) {
+                    if (cmd == godpower[i][0]) {return godpowerModule(cmd, content, message, userData, Discord, client);}
+                    for (let j = 0; j < godpower[i][1].length; j++) {
+                        if (cmd == godpower[i][1][j]) {return godpowerModule(godpower[i][0], content, message, userData, Discord, client);}
+                    }
+                }
+                //fun
+                return;
+            }
+            //godville
+            //useful
+            if (message.member.roles.cache.has(admin_role) || owner.includes(message.author.id)) {
+                //admin
+            }
+            if (newspaper_channels.includes(message.channel.id)) {
+                crosswordgod.crosswordgod(message);
+                // command detection changes pending until crosswordgod functions are rewritten
+            }
+        }
+
+
         if (message.content.toLowerCase().startsWith(prefix)) {
             if (command_channels.includes(message.channel.id)) {
-                if (message.content.toLowerCase().startsWith(`${prefix}level`)) {
-                    return displayLevel.displayLevel(message, userData, Discord, client);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}gold`)) {
-                    return displayGold.displayGold(message, userData, Discord, client);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}toggle-mentions`)) {
-                    return mentions.toggleMentions(message, userData, client);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}ranking`)) {
-                    return getRanking.getRanking(message, userData, client);
-                }
                 if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
                     return help.getHelp(message, Discord, client, true);
                 }
                 if (message.content.toLowerCase().startsWith(`${prefix}link`)) {
                     return profile.link(message, godData, client);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}daily`)) {
-                    return limitedCommands.daily(client, message, limitedCommandsData, userData);
                 }
                 fun_commands.forEach(cmd => {
                     if (message.content.toLowerCase().startsWith(`${prefix}${cmd}`)) {

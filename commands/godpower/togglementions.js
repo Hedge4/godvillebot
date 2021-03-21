@@ -1,4 +1,4 @@
-const { logs } = require('../configurations/config.json');
+const { logs } = require('../../configurations/config.json');
 
 async function toggleMentions(message, userData, client) {
     const userDoc = await userData.get();
@@ -35,4 +35,4 @@ async function toggleMentions(message, userData, client) {
     }
 }
 
-exports.toggleMentions = toggleMentions;
+module.exports = toggleMentions;

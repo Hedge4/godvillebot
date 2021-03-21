@@ -1,4 +1,4 @@
-const { logs } = require('../configurations/config.json');
+const { logs } = require('../../configurations/config.json');
 
 async function getRanking(message, userData, client) {
     const args = message.content.slice(8).trim().split(' ');
@@ -52,4 +52,4 @@ async function getRanking(message, userData, client) {
     return message.reply('here is page ' + page + ' of the godpower rankings:\n```\n' + ranking + '\n```');
 }
 
-exports.getRanking = getRanking;
+module.exports = getRanking;

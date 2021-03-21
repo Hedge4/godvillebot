@@ -1,4 +1,4 @@
-const { logs } = require('../configurations/config.json');
+const { logs } = require('../../configurations/config.json');
 
 async function displayLevel(message, userData, Discord, client) {
     let user = message.mentions.users.first();
@@ -80,4 +80,4 @@ async function getOwnRanking(userID, userDocData) {
     return rank;
 }
 
-exports.displayLevel = displayLevel;
+module.exports = displayLevel;

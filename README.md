@@ -1,15 +1,17 @@
 # GodBot
-Version: 4.1.0
+Version: 4.2.0
 
-I should probably sometime include some sort of description here.
+I should probably include some sort of description here. Meh, I'll add it later.
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.
 I've added more logging lines for commands that weren't (completely) logged yet, and for each log to the console
 the bot now also sends a message to its dedicated logging channel on Discord, for a more permanent logging solution.
+Lastly, commands now support aliases and are sorted into modules (as of version 4.2).
 
 ### What has been added since?
-* Nothing!
+* 4.1 GodBot now shows the last update's changes on startup.
+* 4.2 Commands now support aliases and all commands/files have been ordered in four different modules.
 
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.
