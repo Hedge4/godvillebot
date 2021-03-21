@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const { logs, suggestion_server, bot_server_channels, prefix, token, server, owner, no_xp_channels, levelup_channel, command_channels, newspaper_channels, admin_role, fun_commands, useful_commands, bot_dms } = require('./configurations/config.json');
-const version = (require('./package.json')).version;
+const { version, updateMsg } = require('./package.json');
 
 const mentions = require('./commands/togglementions');
 const giveXP = require('./commands/givexp');
@@ -64,8 +64,10 @@ client.on('ready', () => {
     const logsChannel = client.channels.cache.get(logs);
     console.log(`\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!`);
     console.log(`Logged in to the following guilds: ${client.guilds.cache.array().sort()}`);
+    console.log(`Last update: ${updateMsg}`);
     logsChannel.send(`\`\`\`${currentDate} - Logged in as ${client.user.tag}, version ${version}!
-        \nLogged in to the following guilds: ${client.guilds.cache.array().sort()}\`\`\``);
+        \nLogged in to the following guilds: ${client.guilds.cache.array().sort()}
+        Last update: ${updateMsg}\`\`\``);
 /*    client.channels.cache.forEach((channel) => {
         console.log(` -- "${channel.name}" (${channel.type}) - ${channel.id}`)
         logsChannel.send(` -- "${channel.name}" (${channel.type}) - ${channel.id}`)
@@ -77,7 +79,8 @@ client.on('ready', () => {
     const startEmbed = new Discord.MessageEmbed()
         .setTitle('**Successfully restarted!**')
         .setColor('ffffff')
-        .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.`)
+        .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.\n
+            Last update: ${updateMsg}`)
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
         .setTimestamp();
     client.channels.cache.get(levelup_channel).send(startEmbed);
