@@ -8,7 +8,7 @@ function redirect(cmd, content, message, Discord, client) {
         case 'minesweeper':
             return minesweeper(client, message);
         default:
-            return message.reply(`${cmd} command does not seem to be correctly set up.`);
+            return message.reply(`the '${cmd}' command does not seem to be correctly set up.`);
     }
 }
 

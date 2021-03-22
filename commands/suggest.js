@@ -1,11 +1,9 @@
 const { bot_server_channels, logs } = require('../configurations/config.json');
 
-async function suggest(client, message) {
+async function suggest(client, message, content) {
     const logsChannel = client.channels.cache.get(logs);
     if (!suggestBlocked.includes(message.author.id)) {
-        let suggestion = message.content.slice(8).trim();
-        if (suggestion.toLowerCase().startsWith('ion')) suggestion = suggestion.slice(3).trim();
-        suggestion = suggestion.split('`');
+        let suggestion = content.split('`');
         suggestion = suggestion.join('');
         if (suggestion.length <= 20) {return message.reply('please add enough detail and make the description of your suggestion at least 20 characters!');}
         if (suggestion.length >= 800) {return message.reply('please be a bit more concise in your description and use less than 800 characters!');}

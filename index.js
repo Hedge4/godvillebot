@@ -117,8 +117,8 @@ client.on('message', async (message) => {
         }
 
         if (message.content.toLowerCase().startsWith(prefix)) {
-            if (message.content.length.trim() <= prefix.length) return; // only prefix
-            const cmd = message.content.toLowerCase().slice(prefix.length).split()[0];
+            if (message.content.trim().length <= prefix.length) return; // only prefix
+            const cmd = message.content.toLowerCase().slice(prefix.length).split(/\s+/)[0];
             const content = message.content.toLowerCase().slice(prefix.length + cmd.length).trim();
 
             if (command_channels.includes(message.channel.id)) {
@@ -173,12 +173,7 @@ client.on('message', async (message) => {
 
             // the help command
             if (cmd == 'help') {
-                return help.getHelp(message, Discord, client);
-            }
-
-            // the suggest command
-            if (cmd == 'suggest') {
-                return suggest.suggestion(client, message);
+                return help(message, Discord, client);
             }
 
             if (message.member.roles.cache.has(admin_role) || owner.includes(message.author.id)) {

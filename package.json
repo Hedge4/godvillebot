@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "updateMsg": "Commands are now tidily structured into different modules.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",

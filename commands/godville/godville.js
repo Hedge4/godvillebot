@@ -13,7 +13,7 @@ function redirect(cmd, content, message, client, Discord, godData) {
         case 'link':
             return profile.link(message, godData, client);
         default:
-            return message.reply(`${cmd} command does not seem to be correctly set up.`);
+            return message.reply(`the '${cmd}' command does not seem to be correctly set up.`);
     }
 }
 

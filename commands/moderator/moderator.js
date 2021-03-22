@@ -1,5 +1,5 @@
 const block = require('./block.js');
-const admin_only = require('./commands/admin_commands');
+const admin_only = require('./admin_commands');
 
 function redirect(cmd, content, message, client, blockedData) {
     switch (cmd) {
@@ -13,8 +13,8 @@ function redirect(cmd, content, message, client, blockedData) {
             return block.blockList(message, client);
         case 'purge':
             return admin_only.purge(client, message);
-    default:
-            return message.reply(`${cmd} command does not seem to be correctly set up.`);
+        default:
+            return message.reply(`the '${cmd}' command does not seem to be correctly set up.`);
     }
 }
 
