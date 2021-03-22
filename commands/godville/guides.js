@@ -1,4 +1,4 @@
-const { logs } = require('../configurations/config.json');
+const { logs } = require('../../configurations/config.json');
 
 const guides_list = [
     ['Extensive sailing guide by Blue Feather',
@@ -72,4 +72,4 @@ function list_or_guide(message, client, Discord) {
     }
 }
 
-exports.guides = list_or_guide;
+module.exports = list_or_guide;

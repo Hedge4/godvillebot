@@ -1,5 +1,5 @@
 const https = require('https');
-const { prefix, logs } = require('../configurations/config.json');
+const { prefix, logs, command_channels } = require('../../configurations/config.json');
 
 async function show_profile(message, client, Discord, godData) {
 
@@ -96,6 +96,9 @@ async function show_profile(message, client, Discord, godData) {
 }
 
 function link_profile(message, godData, client) {
+    if (!command_channels.includes(message.channel.id)) {
+        message.reply('please only use this command in <#315874239779569666> to avoid spam.');
+    }
     let link = message.content.slice(5).trim();
     link = link.replace(/%20/g, ' ');
     const logsChannel = client.channels.cache.get(logs);
@@ -125,9 +128,6 @@ function link_profile(message, godData, client) {
         return message.channel.send('God names start with a capital letter, and can only contain letters, numbers, hyphens and spaces. Using %20 to encode spaces is okay too.');
     }
 }
-
-exports.show = show_profile;
-exports.link = link_profile;
 
 async function getGodData(URL, message) {
     const myFirstPromise = new Promise((resolve, reject) => {
@@ -236,3 +236,6 @@ async function getGodData(URL, message) {
 
     return([gender, avatar_url, name, level, god_gender, achievements, pet_type, pet_name, motto, guild_name, guild_url, age]);
 }
+
+exports.show = show_profile;
+exports.link = link_profile;

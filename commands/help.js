@@ -164,4 +164,4 @@ function chooseHelp(message, Discord, client, correct_channel) {
     }
 }
 
-exports.getHelp = chooseHelp;
+module.exports = chooseHelp;

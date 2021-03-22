@@ -1,3 +1,7 @@
 {
-	"godpower": [["level", []], ["gold", []], ["daily", []], ["toggle-mentions", []], ["ranking", []]]
+	"godville": [["level", []], ["ranking", []], ["gold", []], ["daily", []], ["toggle-mentions", []]],
+	"godpower": [["level", []], ["ranking", []], ["gold", []], ["daily", []], ["toggle-mentions", []]],
+    "useful": [["spoiler", []], ["code", []]],
+    "fun": [["minesweeper", []], ["bubblewrap", []]],
+    "moderator": [["break", []], ["block", []], ["unblock", []], ["blocklist", []], ["purge", []]]
 }

@@ -1,4 +1,4 @@
-const { modlogs, logs } = require('../configurations/config.json');
+const { modlogs, logs } = require('../../configurations/config.json');
 
 function hasImage(attachments) {
     const imgFormats = ['.png', '.jpeg', '.jpg', '.gif'];

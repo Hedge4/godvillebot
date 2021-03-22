@@ -17,7 +17,7 @@ function redirect(cmd, content, message, Discord, client, userData, limitedComma
         case 'daily':
             return limitedCommands.daily(client, message, limitedCommandsData, userData);
         default:
-            return;
+            return message.reply(`${cmd} command does not seem to be correctly set up.`);
     }
 }
 

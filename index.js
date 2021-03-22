@@ -1,26 +1,26 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const { version, updateMsg } = require('./package.json');
-const { logs, suggestion_server, bot_server_channels, prefix, token, server, owner, no_xp_channels,
-    levelup_channel, command_channels, newspaper_channels, admin_role, fun_commands,
-    useful_commands, bot_dms } = require('./configurations/config.json');
-const { godpower } = require('./configurations/commands.json');
+const { logs, suggestion_server, bot_server_channels, prefix, token, server, owner, no_xp_channels, levelup_channel,
+    command_channels, newspaper_channels, admin_role, bot_dms } = require('./configurations/config.json');
+const { godville, godpower, fun, useful, moderator } = require('./configurations/commands.json');
 
+// the different command modules
+const godvilleModule = require('./commands/godville/godville.js');
 const godpowerModule = require('./commands/godpower/godpower.js');
-const fun = require('./commands/fun/fun.js');
-const useful = require('./commands/useful/useful.js');
+const funModule = require('./commands/fun/fun.js');
+const usefulModule = require('./commands/useful/useful.js');
+const moderatorModule = require('./commands/moderator/moderator.js');
+const crosswordgod = require('./crosswordgod');
 
+// functions/commands (partly) separate from the main modules
+const help = require('./commands/help');
 const giveXP = require('./commands/givexp');
 const suggest = require('./commands/suggest');
-const guide = require('./commands/guides');
-const help = require('./commands/help');
-const admin_only = require('./commands/admin_commands');
-const profile = require('./commands/profile');
-const godville = require('./commands/godville_interaction');
-const crosswordgod = require('./crosswordgod');
 const limitedCommands = require('./commands/limited_commands');
-const block = require('./commands/block.js');
+const block = require('./commands/moderator/block.js');
 
+// database login and current data retrieval
 const admin = require('firebase-admin');
 const serviceAccount = require('./configurations/serviceAccountKey.json');
 admin.initializeApp({
@@ -47,6 +47,7 @@ blockedData.get()
         global.xpBlocked = doc.data()['xp'];
     });
 
+// how the bot can react when you ping it
 const mentionReactions = ['YOU FOOL, YOU DARE MENTION ME???',
     'I\'ll pretend I didn\'t see that :eyes:',
     'https://media.tenor.com/images/10c1188bf1df85272a39c17ce863081c/tenor.gif',
@@ -67,10 +68,6 @@ client.on('ready', () => {
     console.log(`New: ${updateMsg}`);
     logsChannel.send(`\`\`\`${currentDate} - Logged in as ${client.user.tag}, version ${version}!
         \nLogged in to the following guilds: ${client.guilds.cache.array().sort()}\nNew: ${updateMsg}\`\`\``);
-/*    client.channels.cache.forEach((channel) => {
-        console.log(` -- "${channel.name}" (${channel.type}) - ${channel.id}`)
-        logsChannel.send(` -- "${channel.name}" (${channel.type}) - ${channel.id}`)
-    });*/
     client.user.setActivity(`${prefix}help | By Wawajabba`);
     if (totalGodpower === undefined) {
         totalGodpower = 0;
@@ -119,87 +116,91 @@ client.on('message', async (message) => {
             giveXP.giveGodpower(message, userData, Discord, client);
         }
 
-
         if (message.content.toLowerCase().startsWith(prefix)) {
             if (message.content.length.trim() <= prefix.length) return; // only prefix
             const cmd = message.content.toLowerCase().slice(prefix.length).split()[0];
             const content = message.content.toLowerCase().slice(prefix.length + cmd.length).trim();
 
             if (command_channels.includes(message.channel.id)) {
-                //redirect godpower-related commands
+                // redirect godpower module commands
                 for (let i = 0; i < godpower.length; i++) {
-                    if (cmd == godpower[i][0]) {return godpowerModule(cmd, content, message, userData, Discord, client);}
+                    if (cmd == godpower[i][0]) {
+                        return godpowerModule(cmd, content, message, Discord, client, userData, limitedCommandsData);
+                    }
                     for (let j = 0; j < godpower[i][1].length; j++) {
-                        if (cmd == godpower[i][1][j]) {return godpowerModule(godpower[i][0], content, message, userData, Discord, client);}
+                        if (cmd == godpower[i][1][j]) {
+                            return godpowerModule(godpower[i][0], content, message, Discord, client, userData, limitedCommandsData);
+                        }
                     }
                 }
-                //fun
-                return;
-            }
-            //godville
-            //useful
-            if (message.member.roles.cache.has(admin_role) || owner.includes(message.author.id)) {
-                //admin
-            }
-            if (newspaper_channels.includes(message.channel.id)) {
-                crosswordgod.crosswordgod(message);
-                // command detection changes pending until crosswordgod functions are rewritten
-            }
-        }
 
+                // redirect fun module commands
+                for (let i = 0; i < fun.length; i++) {
+                    if (cmd == fun[i][0]) {
+                        return funModule(cmd, content, message, Discord, client);
+                    }
+                    for (let j = 0; j < fun[i][1].length; j++) {
+                        if (cmd == fun[i][1][j]) {
+                            return funModule(fun[i][0], content, message, Discord, client);
+                        }
+                    }
+                }
 
-        if (message.content.toLowerCase().startsWith(prefix)) {
-            if (command_channels.includes(message.channel.id)) {
-                if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
+                // the help command
+                if (cmd == 'help') {
                     return help.getHelp(message, Discord, client, true);
                 }
-                if (message.content.toLowerCase().startsWith(`${prefix}link`)) {
-                    return profile.link(message, godData, client);
+            }
+
+            // redirect godville module commands
+            for (let i = 0; i < godville.length; i++) {
+                if (cmd == godville[i][0]) {
+                    return godvilleModule(cmd, content, message, client, Discord, godData);
                 }
-                fun_commands.forEach(cmd => {
-                    if (message.content.toLowerCase().startsWith(`${prefix}${cmd}`)) {
-                        return fun(message, Discord, client, cmd);
+                for (let j = 0; j < godville[i][1].length; j++) {
+                    if (cmd == godville[i][1][j]) {
+                        return godvilleModule(godville[i][0], content, message, client, Discord, godData);
                     }
-                });
+                }
             }
-            if (message.content.toLowerCase().startsWith(`${prefix}profile`)) {
-                return profile.show(message, client, Discord, godData);
+
+            // redirect useful module commands
+            for (let i = 0; i < useful.length; i++) {
+                if (cmd == useful[i][0]) {
+                    return usefulModule(cmd, content, message, Discord, client);
+                }
+                for (let j = 0; j < useful[i][1].length; j++) {
+                    if (cmd == useful[i][1][j]) {
+                        return usefulModule(useful[i][0], content, message, Discord, client);
+                    }
+                }
             }
-            if (message.content.toLowerCase().startsWith(`${prefix}godwiki`)) {
-                return godville.search(client, message);
-            }
-            if (message.content.toLowerCase().startsWith(`${prefix}guides`)) {
-                return guide.guides(message, client, Discord);
-            }
-            if (message.content.toLowerCase().startsWith(`${prefix}suggest`)) {
-                return suggest.suggestion(client, message);
-            }
-            if (message.content.toLowerCase().startsWith(`${prefix}help`)) {
+
+            // the help command, in the wrong channel
+            if (cmd == 'help') {
                 return help.getHelp(message, Discord, client, false);
             }
-            useful_commands.forEach(cmd => {
-                if (message.content.toLowerCase().startsWith(`${prefix}${cmd}`)) {
-                    return useful(message, Discord, client, cmd);
-                }
-            });
+
+            // the suggest command
+            if (cmd == 'suggest') {
+                return suggest.suggestion(client, message);
+            }
+
             if (message.member.roles.cache.has(admin_role) || owner.includes(message.author.id)) {
-                if (message.content.toLowerCase().startsWith(`${prefix}purge`)) {
-                    return admin_only.purge(client, message);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}break`)) {
-                    return admin_only.break(message, client);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}blocklist`)) {
-                    return block.blockList(message, client);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}block`)) {
-                    return block.block(message, client, blockedData);
-                }
-                if (message.content.toLowerCase().startsWith(`${prefix}unblock`)) {
-                    return block.unblock(message, client, blockedData);
+                // redirect moderator module commands
+                for (let i = 0; i < moderator.length; i++) {
+                    if (cmd == moderator[i][0]) {
+                        return moderatorModule(cmd, content, message, client, blockedData);
+                    }
+                    for (let j = 0; j < moderator[i][1].length; j++) {
+                        if (cmd == moderator[i][1][j]) {
+                            return moderatorModule(moderator[i][0], content, message, client, blockedData);
+                        }
+                    }
                 }
             }
             if (newspaper_channels.includes(message.channel.id)) {
+                // command detection changes pending until crosswordgod functions are rewritten
                 crosswordgod.crosswordgod(message);
             }
         }
@@ -215,8 +216,10 @@ client.on('message', async (message) => {
             }
         }
     } else {
-        return message.reply('this bot is not created for this server. Please remove me from this server.');
+        // response when the bot is in a server it shouldn't be in
+        return message.reply('this bot is not created for this server. Please kick me from this server.');
     }
+    // respond with a randomly selected reaction when the bot is pinged
     if (/<@666851479444783125>|<@!666851479444783125>/.test(message.content)) {
         return message.reply(mentionReactions[Math.floor(Math.random() * mentionReactions.length)]);
     }

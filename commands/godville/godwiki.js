@@ -1,4 +1,4 @@
-const { logs } = require('../configurations/config.json');
+const { logs } = require('../../configurations/config.json');
 
 function searchWiki(client, message) {
     let search = message.content.slice(8).trim();
@@ -10,4 +10,4 @@ function searchWiki(client, message) {
     return message.channel.send(`<https://wiki.godvillegame.com/index.php?search=${search}>`);
 }
 
-exports.search = searchWiki;
+module.exports = searchWiki;
