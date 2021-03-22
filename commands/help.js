@@ -1,4 +1,4 @@
-const { prefix, levelup_channel, logs } = require('../configurations/config.json');
+const { prefix, levelup_channel, logs, command_channels } = require('../configurations/config.json');
 
 const commands_list = [
     ['help',
@@ -143,7 +143,7 @@ function constructSpecificHelp(message, Discord, client, element) {
     }
 }
 
-function chooseHelp(message, Discord, client, correct_channel) {
+function chooseHelp(message, Discord, client) {
     const arg = message.content.toLowerCase().slice(5).trim();
     let helpEmbed = '';
     if (!arg || !arg.length) {
@@ -156,7 +156,7 @@ function chooseHelp(message, Discord, client, correct_channel) {
     })) {
         return message.reply(`I don't know the command \`${prefix}${arg}\`!`);
     }
-    if (correct_channel) {
+    if (command_channels.includes(message.channel.id)) {
         return message.channel.send(helpEmbed);
     } else {
         message.reply(`I've sent my help message in <#${levelup_channel}>!`);

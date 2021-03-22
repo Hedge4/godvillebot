@@ -1,5 +1,5 @@
 {
-	"godville": [["level", []], ["ranking", []], ["gold", []], ["daily", []], ["toggle-mentions", []]],
+	"godville": [["profile", []], ["guides", []], ["godwiki", []], ["link", []]],
 	"godpower": [["level", []], ["ranking", []], ["gold", []], ["daily", []], ["toggle-mentions", []]],
     "useful": [["spoiler", []], ["code", []]],
     "fun": [["minesweeper", []], ["bubblewrap", []]],

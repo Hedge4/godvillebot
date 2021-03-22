@@ -145,11 +145,6 @@ client.on('message', async (message) => {
                         }
                     }
                 }
-
-                // the help command
-                if (cmd == 'help') {
-                    return help.getHelp(message, Discord, client, true);
-                }
             }
 
             // redirect godville module commands
@@ -176,9 +171,9 @@ client.on('message', async (message) => {
                 }
             }
 
-            // the help command, in the wrong channel
+            // the help command
             if (cmd == 'help') {
-                return help.getHelp(message, Discord, client, false);
+                return help.getHelp(message, Discord, client);
             }
 
             // the suggest command
