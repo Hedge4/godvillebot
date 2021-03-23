@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const { version, updateMsg } = require('./package.json');
@@ -75,8 +76,7 @@ client.on('ready', () => {
     const startEmbed = new Discord.MessageEmbed()
         .setTitle('**Successfully restarted!**')
         .setColor('ffffff')
-        .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.\n
-            New: ${updateMsg}`)
+        .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.\n\nNew: ${updateMsg}`)
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
         .setTimestamp();
     client.channels.cache.get(levelup_channel).send(startEmbed);
@@ -88,21 +88,51 @@ client.on('ready', () => {
     //setTimeout(crosswordgod.dailyCrosswordRenew, delay1, client);
     setTimeout(limitedCommands.reset, delay2, client, limitedCommandsData);
     setTimeout(crosswordgod.newsping, delay3, client);
+    llamaStuff('824031951911649330'); // llama stuff
 });
+
+let llamaAuthors = '', llamaTotal = 0; // llama stuff
 
 client.on('message', async (message) => {
     if (message.author.bot) {return;}
     if (botBlocked.includes(message.author.id)) {return;}
     if (message.channel.type === 'dm') {
-        message.reply(`I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`${prefix}suggest\` in <#${levelup_channel}>.`);
+
+        let msg = message.content; // start of llama stuff
+        if (msg.startsWith('+')) {
+            msg = msg.slice(1).trim();
+            if (msg.length > 25) return message.reply(`Shop names can be 25 characters at most. Your suggestion was ${msg.length} characters long.`);
+            if (msg.length < 1) return message.reply('Your shop name suggestion can\'t be empty.');
+            const id = message.author.id.toString();
+            let count = 0, pos = 0;
+            while (true) {
+                pos = llamaAuthors.indexOf(id, pos);
+                if (pos >= 0) {
+                    count++;
+                    pos += id.length;
+                } else { break; }
+            }
+            if (count >= 5) return message.reply('You can only make 5 suggestions.');
+            llamaAuthors += message.author.id;
+            message.reply(`Your suggestion was accepted. You have ${4 - count} entries left.`);
+            client.channels.cache.get('824031930562773046').send(`${llamaTotal} => ${msg}`);
+            client.channels.cache.get('824031951911649330').send(`${llamaTotal}, ${message.author.tag}, ${message.author.id}`);
+            llamaTotal++;
+            return;
+        } else { // end of llama stuff
+
+        message.reply(`I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`${prefix}suggest\` in <#${levelup_channel}>.\n
+Did you want to submit a suggestion for the sheep's shop name? Then make sure you write '+' as the first character.`);
         console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
-        client.channels.cache.get(bot_dms).send(`*${message.author.tag} sent the following message in my DMs:*`);
+        client.channels.cache.get(bot_dms).send(`*${message.author.tag} / ${message.author.id} sent the following message in my DMs:*`);
         const attachments = [];
         message.attachments.forEach(element => {
             attachments.push(element.url);
         });
         client.channels.cache.get(bot_dms).send(message.content, { files: attachments })
-            .catch(client.channels.cache.get(bot_dms).send('Failed to forward.'));
+            .catch(err => client.channels.cache.get(bot_dms).send(`Failed to forward: ${err}`));
+        return;
+        } // llama stuff
     } else if (message.guild.id === server) {
         if (imageBlocked.includes(message.author.id) && message.attachments.size > 0 && block.hasImage(message.attachments)) {
             return block.blockImage(client, message);
@@ -176,6 +206,11 @@ client.on('message', async (message) => {
                 return help(message, Discord, client);
             }
 
+            if (cmd == 'refresh' && owner.includes(message.author.id)) { // llama stuff
+                llamaAuthors = llamaStuff('824031951911649330'); // llama stuff
+                message.reply('succesfully refreshed.'); // llama stuff
+            } // llama stuff
+
             if (message.member.roles.cache.has(admin_role) || owner.includes(message.author.id)) {
                 // redirect moderator module commands
                 for (let i = 0; i < moderator.length; i++) {
@@ -216,3 +251,27 @@ client.on('message', async (message) => {
 });
 
 client.login(token);
+
+async function llamaStuff(channelID) {
+    const channel = client.channels.cache.get(channelID);
+    let last_id;
+
+    while (true) {
+        const options = { limit: 100 };
+        if (last_id) {
+            options.before = last_id;
+        }
+
+        const messages = await channel.messages.fetch(options);
+        if (messages.size < 1) break;
+        messages.array().forEach(e => {
+            llamaAuthors += e.content;
+            llamaTotal++;
+        });
+        last_id = messages.last().id;
+
+        if (messages.size != 100) {
+            break;
+        }
+    }
+}

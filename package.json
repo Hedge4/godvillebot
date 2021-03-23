@@ -1,7 +1,7 @@
 {
   "name": "godbot",
-  "version": "4.2.2",
-  "updateMsg": "Commands are now tidily structured into different modules.",
+  "version": "4.2.4",
+  "updateMsg": "Added Llama's contest features.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",
