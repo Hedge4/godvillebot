@@ -21,6 +21,11 @@ const suggest = require('./commands/suggest');
 const limitedCommands = require('./commands/limited_commands');
 const block = require('./commands/moderator/block.js');
 
+// basic setup
+let contestAuthors = '', contestTotal = 0;
+const contestRunning = true, contestMaxSubmissions = 5, contestMaxL = 25, contestMinL = 1;
+const contestSubmissions = '824031930562773046', contestTracking = '824031951911649330';
+
 // database login and current data retrieval
 const admin = require('firebase-admin');
 const serviceAccount = require('./configurations/serviceAccountKey.json');
@@ -88,51 +93,23 @@ client.on('ready', () => {
     //setTimeout(crosswordgod.dailyCrosswordRenew, delay1, client);
     setTimeout(limitedCommands.reset, delay2, client, limitedCommandsData);
     setTimeout(crosswordgod.newsping, delay3, client);
-    llamaStuff('824031951911649330'); // llama stuff
+    if (contestRunning) checkContest(contestTracking);
 });
 
-let llamaAuthors = '', llamaTotal = 0; // llama stuff
 
 client.on('message', async (message) => {
     if (message.author.bot) {return;}
     if (botBlocked.includes(message.author.id)) {return;}
+
+    // handle DMs
     if (message.channel.type === 'dm') {
+        if (contestRunning && message.content.startsWith('+')) {
+            enterContest(message);
+        } else {
+            handleDMs(message);
+        }
 
-        let msg = message.content; // start of llama stuff
-        if (msg.startsWith('+')) {
-            msg = msg.slice(1).trim();
-            if (msg.length > 25) return message.reply(`Shop names can be 25 characters at most. Your suggestion was ${msg.length} characters long.`);
-            if (msg.length < 1) return message.reply('Your shop name suggestion can\'t be empty.');
-            const id = message.author.id.toString();
-            let count = 0, pos = 0;
-            while (true) {
-                pos = llamaAuthors.indexOf(id, pos);
-                if (pos >= 0) {
-                    count++;
-                    pos += id.length;
-                } else { break; }
-            }
-            if (count >= 5) return message.reply('You can only make 5 suggestions.');
-            llamaAuthors += message.author.id;
-            message.reply(`Your suggestion was accepted. You have ${4 - count} entries left.`);
-            client.channels.cache.get('824031930562773046').send(`${llamaTotal} => ${msg}`);
-            client.channels.cache.get('824031951911649330').send(`${llamaTotal}, ${message.author.tag}, ${message.author.id}`);
-            llamaTotal++;
-            return;
-        } else { // end of llama stuff
-
-        message.reply(`I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`${prefix}suggest\` in <#${levelup_channel}>.\n
-Did you want to submit a suggestion for the sheep's shop name? Then make sure you write '+' as the first character.`);
-        console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
-        client.channels.cache.get(bot_dms).send(`*${message.author.tag} / ${message.author.id} sent the following message in my DMs:*`);
-        const attachments = [];
-        message.attachments.forEach(element => {
-            attachments.push(element.url);
-        });
-        client.channels.cache.get(bot_dms).send(message.content, { files: attachments })
-            .catch(err => client.channels.cache.get(bot_dms).send(`Failed to forward: ${err}`));
-        return;
-        } // llama stuff
+    // handle messages in GodBot's intended server
     } else if (message.guild.id === server) {
         if (imageBlocked.includes(message.author.id) && message.attachments.size > 0 && block.hasImage(message.attachments)) {
             return block.blockImage(client, message);
@@ -146,10 +123,11 @@ Did you want to submit a suggestion for the sheep's shop name? Then make sure yo
             giveXP.giveGodpower(message, userData, Discord, client);
         }
 
+        // handle commands
         if (message.content.toLowerCase().startsWith(prefix)) {
-            if (message.content.trim().length <= prefix.length) return; // only prefix
-            const cmd = message.content.toLowerCase().slice(prefix.length).split(/\s+/)[0];
-            const content = message.content.toLowerCase().slice(prefix.length + cmd.length).trim();
+            if (message.content.trim().length <= prefix.length) return; // only prefix (and whitespace)
+            const cmd = message.content.toLowerCase().slice(prefix.length).split(/\s+/)[0]; // remove prefix and take first word
+            const content = message.content.toLowerCase().slice(prefix.length + cmd.length).trim(); // remove prefix, command and whitespace
 
             if (command_channels.includes(message.channel.id)) {
                 // redirect godpower module commands
@@ -163,7 +141,6 @@ Did you want to submit a suggestion for the sheep's shop name? Then make sure yo
                         }
                     }
                 }
-
                 // redirect fun module commands
                 for (let i = 0; i < fun.length; i++) {
                     if (cmd == fun[i][0]) {
@@ -176,7 +153,6 @@ Did you want to submit a suggestion for the sheep's shop name? Then make sure yo
                     }
                 }
             }
-
             // redirect godville module commands
             for (let i = 0; i < godville.length; i++) {
                 if (cmd == godville[i][0]) {
@@ -188,7 +164,6 @@ Did you want to submit a suggestion for the sheep's shop name? Then make sure yo
                     }
                 }
             }
-
             // redirect useful module commands
             for (let i = 0; i < useful.length; i++) {
                 if (cmd == useful[i][0]) {
@@ -200,17 +175,11 @@ Did you want to submit a suggestion for the sheep's shop name? Then make sure yo
                     }
                 }
             }
-
             // the help command
             if (cmd == 'help') {
                 return help(message, Discord, client);
             }
-
-            if (cmd == 'refresh' && owner.includes(message.author.id)) { // llama stuff
-                llamaAuthors = llamaStuff('824031951911649330'); // llama stuff
-                message.reply('succesfully refreshed.'); // llama stuff
-            } // llama stuff
-
+            // only for admins or bot owners
             if (message.member.roles.cache.has(admin_role) || owner.includes(message.author.id)) {
                 // redirect moderator module commands
                 for (let i = 0; i < moderator.length; i++) {
@@ -229,6 +198,7 @@ Did you want to submit a suggestion for the sheep's shop name? Then make sure yo
                 crosswordgod.crosswordgod(message);
             }
         }
+    // handle accepting or rejecting suggestions
     } else if (message.guild.id == suggestion_server) {
         if (message.channel.id === bot_server_channels[0]) {
             if (owner.includes(message.author.id)) {
@@ -240,6 +210,7 @@ Did you want to submit a suggestion for the sheep's shop name? Then make sure yo
                 }
             }
         }
+        return;
     } else {
         // response when the bot is in a server it shouldn't be in
         return message.reply('this bot is not created for this server. Please kick me from this server.');
@@ -250,9 +221,21 @@ Did you want to submit a suggestion for the sheep's shop name? Then make sure yo
     }
 });
 
-client.login(token);
+function handleDMs(message) {
+    let msg = `I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`${prefix}suggest\` in <#${levelup_channel}>.`;
+    if (contestRunning) msg += '\n\nDid you want to enter the current contest? Then make sure you type \'+\' before your entry.';
+    message.reply(msg);
+    console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
+    client.channels.cache.get(bot_dms).send(`*${message.author.tag} / ${message.author.id} sent the following message in my DMs:*`);
+    const attachments = [];
+    message.attachments.forEach(element => {
+        attachments.push(element.url);
+    });
+    client.channels.cache.get(bot_dms).send(message.content, { files: attachments })
+        .catch(err => client.channels.cache.get(bot_dms).send(`Failed to forward: ${err}`));
+}
 
-async function llamaStuff(channelID) {
+async function checkContest(channelID) {
     const channel = client.channels.cache.get(channelID);
     let last_id;
 
@@ -265,8 +248,8 @@ async function llamaStuff(channelID) {
         const messages = await channel.messages.fetch(options);
         if (messages.size < 1) break;
         messages.array().forEach(e => {
-            llamaAuthors += e.content;
-            llamaTotal++;
+            contestAuthors += e.content;
+            contestTotal++;
         });
         last_id = messages.last().id;
 
@@ -275,3 +258,26 @@ async function llamaStuff(channelID) {
         }
     }
 }
+
+function enterContest(message) {
+    const msg = message.slice(1).trim();
+    if (msg.length > contestMaxL) return message.reply(`Contest entries can be ${contestMaxL} characters at most. Your entry was ${msg.length} characters long.`);
+    if (msg.length < contestMinL) return message.reply(`Your entry for this contest must be at least ${contestMinL} characters long.`);
+    const id = message.author.id.toString();
+    let count = 0, pos = 0;
+    while (true) {
+        pos = contestAuthors.indexOf(id, pos);
+        if (pos >= 0) {
+            count++;
+            pos += id.length;
+        } else { break; }
+    }
+    if (count >= 5) return message.reply(`You can only have ${contestMaxSubmissions} entries in this contest.`);
+    contestAuthors += message.author.id;
+    message.reply(`Your entry was accepted. You have ${contestMaxSubmissions - 1 - count} entries left.`);
+    client.channels.cache.get(contestSubmissions).send(`${contestTotal} => ${msg}`);
+    client.channels.cache.get(contestTracking).send(`${contestTotal}, ${message.author.tag}, ${message.author.id}`);
+    contestTotal++;
+}
+
+client.login(token);

@@ -1,5 +1,5 @@
 # GodBot
-Version: 4.2.4
+Version: 4.3.0
 
 I should probably include some sort of description here. Meh, I'll add it later.
 
@@ -12,6 +12,7 @@ Lastly, commands now support aliases and are sorted into modules (as of version 
 ### What has been added since?
 * 4.1 GodBot now shows the last update's changes on startup.
 * 4.2 Commands now support aliases and all commands/files have been ordered in four different modules.
+* 4.3 Added code to run contest through the bot's DMs, which can be easily turned on or off.
 
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.
