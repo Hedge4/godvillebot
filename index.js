@@ -260,7 +260,7 @@ async function checkContest(channelID) {
 }
 
 function enterContest(message) {
-    const msg = message.slice(1).trim();
+    const msg = message.content.slice(1).trim();
     if (msg.length > contestMaxL) return message.reply(`Contest entries can be ${contestMaxL} characters at most. Your entry was ${msg.length} characters long.`);
     if (msg.length < contestMinL) return message.reply(`Your entry for this contest must be at least ${contestMinL} characters long.`);
     const id = message.author.id.toString();

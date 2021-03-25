@@ -1,4 +1,4 @@
-const { prefix, levelup_channel, no_xp_prefixes, cdSeconds, logs } = require('../configurations/config.json');
+const { prefix, levelup_channel, no_xp_prefixes, cdSeconds, logs, godpowerLogs } = require('../configurations/config.json');
 const godpowerCooldown = new Set();
 
 async function giveGodpower(message, userData, Discord, client) {
@@ -35,9 +35,9 @@ async function giveGodpower(message, userData, Discord, client) {
         User[message.author.id] = userDoc.data()[message.author.id];
     }
 
-    const logsChannel = client.channels.cache.get(logs);
+    const gpLogsChannel = client.channels.cache.get(godpowerLogs);
     console.log(`${godpowerAdd} godpower added for user ${message.author.tag} in channel ${message.channel.name}.`);
-    logsChannel.send(`${godpowerAdd} godpower added for user ${message.author.tag} in channel ${message.channel.name}.`);
+    gpLogsChannel.send(`${godpowerAdd} godpower added for user ${message.author.tag} in channel ${message.channel.name}.`);
     godpowerCooldown.add(message.author.id);
 
     const curGodpower = User[message.author.id].godpower;
@@ -51,6 +51,7 @@ async function giveGodpower(message, userData, Discord, client) {
 
     if (nextLevel <= newGodpower) {
         const newLevel = curLevel + 1;
+        const logsChannel = client.channels.cache.get(logs);
         console.log('User ' + message.author.tag + ' levelled up from level ' + curLevel + ' to level ' + newLevel);
         logsChannel.send('User ' + message.author.tag + ' levelled up from level ' + curLevel + ' to level ' + newLevel);
         const goldAdd = Math.floor(100 * (Math.sqrt(newLevel)));
