@@ -229,13 +229,18 @@ client.on('message', async (message) => {
 async function mentionReact(message) {
     if (botMentionCooldown.has(message.author.id)) {
         botMentionCooldown.delete(message.author.id);
+        const logsChannel = client.channels.cache.get(logs);
         message.member.roles.add(mutedRole);
         //const reply = await message.reply('don\'t spam mention me.'); // use after new message.reply functionality releases
         message.reply('don\'t spam mention me.');
         setTimeout(() => {
             message.member.roles.remove(mutedRole);
-            message.send(`Unmuted ${message.author}.`);
+            message.channel.send(`Unmuted ${message.author}.`);
+            console.log(`Unmuted ${message.author.tag}.`);
+            logsChannel.send(`Unmuted ${message.author.tag}.`);
         }, 60 * 1000);
+        console.log(`Muted ${message.author.tag} for one minute for spam mentioning the bot.`);
+        logsChannel.send(`Muted ${message.author.tag} for one minute for spam mentioning the bot.`);
     } else {
         botMentionCooldown.add(message.author.id);
         setTimeout(() => {

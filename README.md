@@ -1,5 +1,5 @@
 # GodBot
-Version: 4.3.2
+Version: 4.3.3
 
 I should probably include some sort of description here. Meh, I'll add it later.
 
