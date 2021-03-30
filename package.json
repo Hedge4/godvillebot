@@ -1,7 +1,7 @@
 {
   "name": "godbot",
-  "version": "4.3.4",
-  "updateMsg": "Added four new mention reactions and limited spammy bot mentioning.",
+  "version": "4.4.0",
+  "updateMsg": "Added new moderating functions.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",
