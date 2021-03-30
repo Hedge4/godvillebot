@@ -64,7 +64,7 @@ function getResetTimer(client, show) {
     const logsChannel = client.channels.cache.get(logs);
     if (show === true) {
         console.log(`--------------------------------------------------------\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
-        logsChannel.send(`\`\`\`Next daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
+        logsChannel.send(`\`\`\`fix\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
     }
     return [delay, delayHours, delayMins, then, delaySecs];
 }
@@ -76,8 +76,8 @@ function dailyReset(client, limitedCommandsData) {
     limitedCommandsData.set({ daily: usedDaily });
     newsSent = false;
     const logsChannel = client.channels.cache.get(logs);
-    console.log(`Succesfully reset use of the >daily command! ${dailiesUsed} were used yesterday.`);
-    logsChannel.send(`Succesfully reset use of the >daily command! ${dailiesUsed} were used yesterday.`);
+    console.log(`Succesfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.`);
+    logsChannel.send(`Succesfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.`);
     setTimeout(dailyReset, delay[0], client, limitedCommandsData);
 }
 

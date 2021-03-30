@@ -77,7 +77,7 @@ client.on('ready', () => {
     console.log(`\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!`);
     console.log(`Logged in to the following guilds: ${client.guilds.cache.array().sort()}`);
     console.log(`New: ${updateMsg}`);
-    logsChannel.send(`\`\`\`${currentDate} - Logged in as ${client.user.tag}, version ${version}!
+    logsChannel.send(`\`\`\`fix\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!
         \nLogged in to the following guilds: ${client.guilds.cache.array().sort()}\nNew: ${updateMsg}\`\`\``);
     client.user.setActivity(`${prefix}help | By Wawajabba`);
     if (totalGodpower === undefined) {
