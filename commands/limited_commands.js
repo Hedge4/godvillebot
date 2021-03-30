@@ -2,7 +2,7 @@ const { logs } = require('../configurations/config.json');
 
 async function checkDaily(client, message, limitedCommandsData, userData) {
     const logsChannel = client.channels.cache.get(logs);
-        if (!usedDaily.includes(message.author.id)) {
+    if (!usedDaily.includes(message.author.id)) {
         const goldAdd = Math.floor(Math.random() * 21) + 22;
         console.log(`${message.author.tag} used their daily in ${message.channel.name}.`);
         logsChannel.send(`${message.author.tag} used their daily in ${message.channel.name}.`);
@@ -64,7 +64,7 @@ function getResetTimer(client, show) {
     const logsChannel = client.channels.cache.get(logs);
     if (show === true) {
         console.log(`--------------------------------------------------------\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
-        logsChannel.send(`\`\`\`fix\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
+        logsChannel.send(`\`\`\`\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
     }
     return [delay, delayHours, delayMins, then, delaySecs];
 }

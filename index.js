@@ -203,7 +203,7 @@ client.on('message', async (message) => {
                 crosswordgod.crosswordgod(message);
             }
         }
-        //aprilFools(message);
+        aprilFools(message);
     // handle accepting or rejecting suggestions
     } else if (message.guild.id == suggestion_server) {
         if (message.channel.id === bot_server_channels[0]) {
@@ -313,26 +313,74 @@ function enterContest(message) {
 client.login(token);
 
 
+let lastMessage = null, lastWinner = '';
+const chatContestTime = 10;
 const aprilFoolsCooldown = new Set();
 
 function aprilFools(message) {
-    if (message.channel.id == '313398424911347712' && message.member.manageable) {
-        if (!aprilFoolsCooldown.has(message.author.id)) {
-            aprilFoolsCooldown.add(message.author.id);
+    // april fools functions only work in #general
+    if (message.channel.id == '313398424911347712') {
 
-            const oldNick = message.member.nickname;
-            let newNick = oldNick;
-            while (newNick == oldNick) {
-                newNick = randomNick();
-            }
-            message.member.setNickname(newNick, 'April fools event');
-
+        // run contest for the last message in general chat
+        if (lastMessage == null || lastMessage.author.id !== message.author.id) {
+            lastMessage = message;
             setTimeout(() => {
-                aprilFoolsCooldown.delete(message.author.id);
-            }, 30 * 1000);
+                chatContest(message);
+            }, chatContestTime * 60 * 1000);
+        }
 
-            console.log(`${message.author.tag} / ${message.author.id}: Changed nickname from ${oldNick} to ${newNick}.`);
-            client.channels.cache.get(logs).send(`**${message.author.tag} / ${message.author.id}**: Changed nickname from **${oldNick}** to **${newNick}**.`);
+        // set nickname to something random
+        if (message.member.manageable) {
+            if (!aprilFoolsCooldown.has(message.author.id)) {
+                aprilFoolsCooldown.add(message.author.id);
+
+                const oldNick = message.member.nickname;
+                let newNick = oldNick;
+                while (newNick == oldNick) {
+                    newNick = randomNick();
+                }
+                message.member.setNickname(newNick, 'April fools event');
+
+                setTimeout(() => {
+                    aprilFoolsCooldown.delete(message.author.id);
+                }, 30 * 1000);
+
+                console.log(`${message.author.tag} / ${message.author.id}: Changed nickname from ${oldNick} to ${newNick}.`);
+                client.channels.cache.get(logs).send(`**${message.author.tag} / ${message.author.id}**: Changed nickname from **${oldNick}** to **${newNick}**.`);
+            }
+        }
+    }
+}
+
+async function chatContest(message) {
+    if (message.id == lastMessage.id) {
+        lastMessage = null;
+        if (message.author.id == lastWinner) {
+            message.reply(`you were the last person to talk for ${chatContestTime} minutes, but you already won the last chat-killing contest! :skull:`);
+        } else {
+            lastWinner = message.author.id;
+            const gold = Math.floor(Math.random() * 14) + 6;
+            message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won ${gold} gold <:r_gold:401414686651711498> for succesfully killing chat! Hooray :tada:`);
+            console.log(`${message.author.tag} / ${message.author.id} won ${gold} for being the last to talk in general chat for ${chatContestTime} minutes.`);
+            client.channels.cache.get(logs).send(`${message.author.tag} / ${message.author.id} won ${gold} for being the last to talk in general chat for ${chatContestTime} minutes.`);
+
+            const userDoc = await userData.get();
+            const User = {};
+            if(userDoc.data()[message.author.id] === undefined) {
+                User[message.author.id] = {
+                    godpower: 0,
+                    gold: 0,
+                    total_godpower: 0,
+                    level: 0,
+                };
+                User[message.author.id].last_username = message.author.tag;
+                await userData.set(User, { merge: true });
+            } else {
+                User[message.author.id] = userDoc.data()[message.author.id];
+            }
+            User[message.author.id].gold += gold;
+            User[message.author.id].last_username = message.author.tag;
+            userData.set(User, { merge: true });
         }
     }
 }

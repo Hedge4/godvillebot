@@ -110,7 +110,7 @@ function getNewsDelay(client) {
     const delayMins = Math.ceil((delay % (1000 * 3600)) / (60 * 1000));
     const logsChannel = client.channels.cache.get(logs);
     console.log(`--------------------------------------------------------\nNext newsping update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
-    logsChannel.send(`\`\`\`fix\nNext newsping update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
+    logsChannel.send(`\`\`\`\nNext newsping update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
     return delay;
 }
 
