@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const { version, updateMsg } = require('./package.json');
 const { logs, suggestion_server, bot_server_channels, prefix, token, server, owner, no_xp_channels, levelup_channel,
-    command_channels, newspaper_channels, admin_role, bot_dms } = require('./configurations/config.json');
+    command_channels, newspaper_channels, admin_role, bot_dms, mutedRole } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator } = require('./configurations/commands.json');
 
 // the different command modules
@@ -25,6 +25,7 @@ const block = require('./commands/moderator/block.js');
 let contestAuthors = '', contestTotal = 0;
 const contestRunning = true, contestMaxSubmissions = 5, contestMaxL = 25, contestMinL = 1;
 const contestSubmissions = '824031930562773046', contestTracking = '824031951911649330';
+const botMentionCooldown = new Set();
 
 // database login and current data retrieval
 const admin = require('firebase-admin');
@@ -60,7 +61,11 @@ const mentionReactions = ['YOU FOOL, YOU DARE MENTION ME???',
     'oh boy you\'ve done it now, coming over to break your kneecaps rn',
     'don\'t ping me or I *will* pee your pants!',
     'hang on I\'m unfriending you on Facebook.',
-    'I\'m busy right now, can I ignore you some other time?'];
+    'I\'m busy right now, can I ignore you some other time?',
+    'initiating **DISCNAME** extermination process...',
+    'your inability to talk with an actual human is concerning :no_mouth:',
+    'wow, is that the sound of nothing interesting?',
+    'stand still while I tie your shoelaces together!'];
 
 
 client.on('ready', () => {
@@ -217,9 +222,28 @@ client.on('message', async (message) => {
     }
     // respond with a randomly selected reaction when the bot is pinged
     if (/<@666851479444783125>|<@!666851479444783125>/.test(message.content)) {
-        return message.reply(mentionReactions[Math.floor(Math.random() * mentionReactions.length)]);
+        return mentionReact(message);
     }
 });
+
+async function mentionReact(message) {
+    if (botMentionCooldown.has(message.author.id)) {
+        botMentionCooldown.delete(message.author.id);
+        message.member.roles.add(mutedRole);
+        //const reply = await message.reply('don\'t spam mention me.'); // use after new message.reply functionality releases
+        message.reply('don\'t spam mention me.');
+        setTimeout(() => {
+            message.member.roles.remove(mutedRole);
+            message.send(`Unmuted ${message.author}.`);
+        }, 60 * 1000);
+    } else {
+        botMentionCooldown.add(message.author.id);
+        setTimeout(() => {
+            botMentionCooldown.delete(message.author.id);
+        }, 20 * 1000);
+        message.reply(mentionReactions[Math.floor(Math.random() * mentionReactions.length)].replace('DISCNAME', `${message.author.tag}`));
+    }
+}
 
 function handleDMs(message) {
     let msg = `I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`${prefix}suggest\` in <#${levelup_channel}>.`;
