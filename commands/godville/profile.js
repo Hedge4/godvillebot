@@ -35,8 +35,8 @@ async function show_profile(message, client, Discord, godData) {
     const godDoc = await godData.get();
     if(godDoc.data()[user.id] === undefined) {
         if (self === false) {
-            return message.reply(`${user} hasn't linked their Godville account yet.`);
-        } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#315874239779569666>: \`${prefix}link GOD_NAME\` or \`${prefix}link <https://godvillegame.com/gods/GOD_NAME>\``); }
+            return message.reply(`${user} hasn't linked their Godville account yet.\nThey can do so using \`>link\` in <#315874239779569666>.`);
+        } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#315874239779569666>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
     }
     const godURL = godDoc.data()[user.id];
     let god = godURL.slice(30);
@@ -97,7 +97,7 @@ async function show_profile(message, client, Discord, godData) {
 
 function link_profile(message, godData, client) {
     if (!command_channels.includes(message.channel.id)) {
-        message.reply('please only use this command in <#315874239779569666> to avoid spam.');
+        return message.reply('please only use this command in <#315874239779569666> to avoid spam.');
     }
     let link = message.content.slice(5).trim();
     link = link.replace(/%20/g, ' ');
