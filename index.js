@@ -359,8 +359,21 @@ async function chatContest(message) {
             message.reply(`you were the last person to talk for ${chatContestTime} minutes, but you already won the last chat-killing contest! :skull:`);
         } else {
             lastWinner = message.author.id;
-            const gold = Math.floor(Math.random() * 14) + 6;
-            message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won ${gold} gold <:r_gold:401414686651711498> for succesfully killing chat! Hooray :tada:`);
+            let gold;
+            switch (Math.floor(Math.random() * 3)) {
+                case 0:
+                    gold = Math.floor(Math.random() * 14) + 6;
+                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a small amount of gold <:t_gold:668200334933622794> for succesfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+                    break;
+                case 1:
+                    gold = Math.floor(Math.random() * 21) + 22;
+                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a moderate bag of gold <:t_goldbag:668202265777274890> for succesfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+                    break;
+                case 2:
+                    gold = Math.floor(Math.random() * 39) + 50;
+                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a big crate of gold <:t_treasure:668203286330998787> for succesfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+                    break;
+            }
             console.log(`${message.author.tag} / ${message.author.id} won ${gold} for being the last to talk in general chat for ${chatContestTime} minutes.`);
             client.channels.cache.get(logs).send(`${message.author.tag} / ${message.author.id} won ${gold} for being the last to talk in general chat for ${chatContestTime} minutes.`);
 
