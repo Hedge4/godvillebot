@@ -1,5 +1,5 @@
 # GodBot
-Version: 4.5.2
+Version: 4.5.3
 
 I should probably include some sort of description here. Meh, I'll add it later.
 
@@ -14,7 +14,7 @@ Lastly, commands now support aliases and are sorted into modules (as of version 
 * 4.2 Commands now support aliases and all commands/files have been ordered in four different modules.
 * 4.3 Added code to run contests through the bot's DMs, which can be easily turned on or off.
 * 4.4 Added randomly changing nickname when someone talks in #general for April Fools. This will become a >randomnick command.
-* 4.5 Added chat contests, that reward a small amount of gold if someone is the last to talk in #general for xxx minutes.
+* 4.5 Added chat contests that reward a small or big amount of gold if someone is the last to talk in #general for 10 minutes.
 
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.

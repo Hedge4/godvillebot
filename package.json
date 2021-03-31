@@ -1,7 +1,7 @@
 {
   "name": "godbot",
-  "version": "4.5.2",
-  "updateMsg": "Increased the amount of gold that can be won by killing chat.",
+  "version": "4.5.3",
+  "updateMsg": "Made >randomnick a separate command.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",

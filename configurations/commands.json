@@ -1,7 +1,7 @@
 {
 	"godville": [["profile", []], ["guides", []], ["godwiki", []], ["link", []]],
 	"godpower": [["level", []], ["ranking", []], ["gold", []], ["daily", []], ["toggle-mentions", []]],
-    "useful": [["suggest", ["suggestion"]], ["spoiler", []], ["code", []]],
+    "useful": [["suggest", ["suggestion"]], ["spoiler", []], ["code", []], ["randomnick", []]],
     "fun": [["minesweeper", []], ["bubblewrap", []]],
     "moderator": [["break", []], ["block", []], ["unblock", []], ["blocklist", []], ["purge", []]]
 }
