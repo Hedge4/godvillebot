@@ -93,7 +93,8 @@ client.on('ready', () => {
     //setTimeout(crosswordgod.dailyCrosswordRenew, delay1, client);
     setTimeout(limitedCommands.reset, delay2, client, limitedCommandsData);
     setTimeout(crosswordgod.newsping, delay3, client);
-    checkDMContest(contestTracking);
+    checkDMContest();
+    checkChatContest();
 });
 
 
@@ -129,10 +130,8 @@ client.on('message', async (message) => {
             giveXP.giveGodpower(message, userData, Discord, client);
         }
 
-        // enter the user into the chat contest if they're talking in general chat
-        if (message.channel.id == '313398424911347712') {
-            chatContest(message);
-        }
+        // see if a message applies for the chat contest
+        chatContest(message);
 
         // handle commands
         if (message.content.toLowerCase().startsWith(prefix)) {
@@ -292,9 +291,9 @@ const contestRunning = true, contestMaxSubmissions = 5, contestMaxL = 25, contes
 const contestSubmissions = '824031930562773046', contestTracking = '824031951911649330';
 
 // in case there's a bot DM contest running, check how many submissions were submitted already
-async function checkDMContest(channelID) {
+async function checkDMContest() {
     if (!contestRunning) return;
-    const channel = client.channels.cache.get(channelID);
+    const channel = client.channels.cache.get(contestTracking);
     let last_id;
 
     while (true) {
@@ -341,44 +340,77 @@ function enterDMContest(message) {
 
 
 // basic setup for chat contests
-let lastMessage = null, lastWinner = '';
-const chatContestTime = 10;
+let lastMessage = null, lastWinner = '', chatCombo = 0;
+const chatContestChannel = '313398424911347712';
+const chatContestTime = 15;
+
+// get the latest message applying for the chat contest
+function checkChatContest() {
+    const channel = client.channels.cache.get(chatContestChannel);
+    // get latest few messages of the channel
+    channel.messages.fetch()
+        .then(messages => {
+            // loop through messages until one not sent by a bot is found
+            for (const message of messages) {
+                if (message.author.bot) continue;
+                const elapsed = message.createdTimestamp - Date.now();
+                // get the time remaining until they would've won
+                const timeRemaining = (chatContestTime * 60 * 1000) - elapsed;
+                if (timeRemaining >= 0) {
+                    // set timer, message and author if the message isn't too old
+                    lastMessage = message;
+                    chatCombo = 1; // sadly combo has to reset because lazy (jk but keeping combo is too much effort)
+                    setTimeout(() => {
+                        winningChatContest(message);
+                    }, timeRemaining);
+                }
+                return;
+            }
+        })
+        .catch(console.error);
+}
 
 // run contest for the last message in general chat
 function chatContest(message) {
-    if (lastMessage == null || lastMessage.author.id !== message.author.id) {
-        lastMessage = message;
-        setTimeout(() => {
-            checkChatContest(message);
-        }, chatContestTime * 60 * 1000);
+    if (message.channel.id == chatContestChannel) {
+        if (lastMessage == null || lastMessage.author.id !== message.author.id) {
+            chatCombo++;
+            lastMessage = message;
+            setTimeout(() => {
+                winningChatContest(message);
+            }, chatContestTime * 60 * 1000);
+        }
     }
 }
 
 // check if this message is still the last message in general chat, and reward the author if it is
-async function checkChatContest(message) {
+async function winningChatContest(message) {
     if (message.id == lastMessage.id) {
         lastMessage = null;
         if (message.author.id == lastWinner) {
             message.reply(`you were the last person to talk for ${chatContestTime} minutes, but you already won the last chat-killing contest! :skull:`);
         } else {
             lastWinner = message.author.id;
+            const chatMultiplier = (chatCombo / 100) + 0.5;
+            if (chatCombo > 3) chatCombo = 3;
             let gold;
-            switch (Math.floor(Math.random() * 3)) {
+            switch (Math.floor(Math.random() * chatMultiplier)) {
                 case 0:
                     gold = Math.floor(Math.random() * 14) + 6;
-                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a small amount of gold <:t_gold:668200334933622794> for succesfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a small amount of gold <:t_gold:668200334933622794> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
                 case 1:
                     gold = Math.floor(Math.random() * 21) + 22;
-                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a moderate bag of gold <:t_goldbag:668202265777274890> for succesfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a normal bag of gold <:t_goldbag:668202265777274890> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
                 case 2:
-                    gold = Math.floor(Math.random() * 39) + 50;
-                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a big crate of gold <:t_treasure:668203286330998787> for succesfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+                    gold = Math.floor(Math.random() * 50) + 50;
+                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a big crate of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
             }
-            console.log(`${message.author.tag} / ${message.author.id} won ${gold} for being the last to talk in general chat for ${chatContestTime} minutes.`);
-            client.channels.cache.get(logs).send(`${message.author.tag} / ${message.author.id} won ${gold} for being the last to talk in general chat for ${chatContestTime} minutes.`);
+            console.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo}.`);
+            client.channels.cache.get(logs).send(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo}.`);
+            chatCombo = 0;
 
             const userDoc = await userData.get();
             const User = {};
