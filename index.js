@@ -386,13 +386,15 @@ function chatContest(message) {
 // check if this message is still the last message in general chat, and reward the author if it is
 async function winningChatContest(message) {
     if (message.id == lastMessage.id) {
-        lastMessage = null;
+        const logsChannel = client.channels.cache.get(logs);
         if (message.author.id == lastWinner) {
             message.reply(`you were the last person to talk for ${chatContestTime} minutes, but you already won the last chat-killing contest! :skull:`);
+            console.log(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} minutes, but they had already won the previous contest.`);
+            logsChannel.send(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} minutes, but they had already won the previous contest.`);
         } else {
             lastWinner = message.author.id;
-            const chatMultiplier = (chatCombo / 100) + 0.5;
-            if (chatCombo > 3) chatCombo = 3;
+            let chatMultiplier = (chatCombo / 100) + 0.5;
+            if (chatMultiplier > 3) chatMultiplier = 3;
             let gold;
             switch (Math.floor(Math.random() * chatMultiplier)) {
                 case 0:
@@ -408,9 +410,8 @@ async function winningChatContest(message) {
                     message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a big crate of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
             }
-            console.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo}.`);
-            client.channels.cache.get(logs).send(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo}.`);
-            chatCombo = 0;
+            console.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo} and tier multiplier ${chatMultiplier}.`);
+            logsChannel.send(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo} and tier multiplier ${chatMultiplier}.`);
 
             const userDoc = await userData.get();
             const User = {};
@@ -430,6 +431,8 @@ async function winningChatContest(message) {
             User[message.author.id].last_username = message.author.tag;
             userData.set(User, { merge: true });
         }
+        lastMessage = null;
+        chatCombo = 0;
     }
 }
 

@@ -1,7 +1,7 @@
 {
   "name": "godbot",
-  "version": "4.5.4",
-  "updateMsg": "Made >randomnick a separate command, chat contests now persist if the bot restarts, and the length of the conversation not partly determines reward size.",
+  "version": "4.5.5",
+  "updateMsg": "Added >randomnick to >help, and fixed chat combos (higher rewards for longer conversations killed).",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",

@@ -1,6 +1,6 @@
 const spoiler = require('./spoiler.js');
 const code = require('./code.js');
-const randomnickname = require('./randomnickname.js');
+//const ping = require('./ping.js');
 const suggest = require('../suggest');
 
 function redirect(cmd, content, message, Discord, client) {
@@ -11,8 +11,8 @@ function redirect(cmd, content, message, Discord, client) {
             return spoiler(client, message);
         case 'code':
             return code(message);
-        case 'randomnick':
-            return randomnickname(message, client);
+        // case 'ping':
+        //     return ping(message);
         default:
             return message.reply(`the '${cmd}' command does not seem to be correctly set up.`);
     }
