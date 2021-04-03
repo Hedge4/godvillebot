@@ -1,7 +1,7 @@
 {
   "name": "godbot",
-  "version": "4.5.5",
-  "updateMsg": "Added >randomnick to >help, and fixed chat combos (higher rewards for longer conversations killed).",
+  "version": "4.6.0",
+  "updateMsg": "Added >ping command which no one will use, and performed a large restructuring on unorganised bot features, for more but much tidier files.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",

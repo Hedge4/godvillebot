@@ -1,4 +1,4 @@
-const { logs } = require('../configurations/config.json');
+const { logs } = require('../../configurations/config.json');
 
 async function checkDaily(client, message, limitedCommandsData, userData) {
     const logsChannel = client.channels.cache.get(logs);
@@ -76,8 +76,8 @@ function dailyReset(client, limitedCommandsData) {
     limitedCommandsData.set({ daily: usedDaily });
     newsSent = false;
     const logsChannel = client.channels.cache.get(logs);
-    console.log(`Succesfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.`);
-    logsChannel.send(`Succesfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.`);
+    console.log(`Successfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.`);
+    logsChannel.send(`**Successfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.**`);
     setTimeout(dailyReset, delay[0], client, limitedCommandsData);
 }
 

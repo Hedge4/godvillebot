@@ -1,9 +1,8 @@
-/* eslint-disable no-constant-condition */
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const { version, updateMsg } = require('./package.json');
-const { logs, suggestion_server, bot_server_channels, prefix, token, server, owner, no_xp_channels, levelup_channel,
-    command_channels, newspaper_channels, admin_role, bot_dms, mutedRole } = require('./configurations/config.json');
+const { logs, suggestion_server, prefix, token, server, owner, no_xp_channels, levelup_channel,
+    command_channels, newspaper_channels, admin_role } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator } = require('./configurations/commands.json');
 
 // the different command modules
@@ -15,11 +14,14 @@ const moderatorModule = require('./commands/moderator/moderator.js');
 const crosswordgod = require('./crosswordgod');
 
 // functions/commands (partly) separate from the main modules
-const help = require('./commands/help');
-const giveXP = require('./commands/givexp');
-const suggest = require('./commands/suggest');
-const limitedCommands = require('./commands/limited_commands');
+const giveXP = require('./commands/features/givexp');
+const onMention = require('./commands/features/botMentions');
+const botDMs = require('./commands/features/botDMs');
+const chatContest = require('./commands/features/chatContest');
+const limitedCommands = require('./commands/features/limited_commands');
+const suggest = require('./commands/useful/suggest');
 const block = require('./commands/moderator/block.js');
+const help = require('./commands/help');
 
 // database login and current data retrieval
 const admin = require('firebase-admin');
@@ -47,19 +49,6 @@ blockedData.get()
         global.suggestBlocked = doc.data()['suggest'];
         global.xpBlocked = doc.data()['xp'];
     });
-
-// how the bot can react when you ping it
-const mentionReactions = ['YOU FOOL, YOU DARE MENTION ME???',
-    'I\'ll pretend I didn\'t see that :eyes:',
-    'https://media.tenor.com/images/10c1188bf1df85272a39c17ce863081c/tenor.gif',
-    'oh boy you\'ve done it now, coming over to break your kneecaps rn',
-    'don\'t ping me or I *will* pee your pants!',
-    'hang on I\'m unfriending you on Facebook.',
-    'I\'m busy right now, can I ignore you some other time?',
-    'initiating **DISCNAME** extermination process...',
-    'your inability to talk with an actual human is concerning :no_mouth:',
-    'wow, is that the sound of nothing interesting?',
-    'stand still while I tie your shoelaces together!'];
 
 
 // setup done as soon as the bot has a connection with Discord
@@ -93,8 +82,8 @@ client.on('ready', () => {
     //setTimeout(crosswordgod.dailyCrosswordRenew, delay1, client);
     setTimeout(limitedCommands.reset, delay2, client, limitedCommandsData);
     setTimeout(crosswordgod.newsping, delay3, client);
-    checkDMContest();
-    checkChatContest();
+    botDMs.checkDMContest(client);
+    chatContest.check(client, userData);
 });
 
 
@@ -106,11 +95,7 @@ client.on('message', async (message) => {
 
     // handle DMs
     if (message.channel.type === 'dm') {
-        if (contestRunning && message.content.startsWith('+')) {
-            enterDMContest(message);
-        } else {
-            handleDMs(message);
-        }
+        return botDMs.handleDMs(message, client);
 
     // handle messages in the Godville community server
     } else if (message.guild.id === server) {
@@ -127,11 +112,11 @@ client.on('message', async (message) => {
 
         // give a user xp/godpower if they're talking in the right channel
         if (!no_xp_channels.includes(message.channel.id)) {
-            giveXP.giveGodpower(message, userData, Discord, client);
+            giveXP(message, userData, Discord, client);
         }
 
         // see if a message applies for the chat contest
-        chatContest(message);
+        chatContest.newMessage(message, client, userData);
 
         // handle commands
         if (message.content.toLowerCase().startsWith(prefix)) {
@@ -216,19 +201,9 @@ client.on('message', async (message) => {
             }
         }
 
-    // handle accepting or rejecting suggestions in the bot's log server
+    // handle accepting or rejecting suggestions in the bot's suggestion/log server
     } else if (message.guild.id == suggestion_server) {
-        if (message.channel.id === bot_server_channels[0]) {
-            if (owner.includes(message.author.id)) {
-                if (message.content.toLowerCase().startsWith('accept')) {
-                    return suggest.accept(message, client);
-                }
-                if (message.content.toLowerCase().startsWith('reject')) {
-                    return suggest.reject(message, client);
-                }
-            }
-        }
-        return;
+        return suggest.handleMessage(message, client);
 
     // respond when the bot is in a server it shouldn't be in
     } else {
@@ -237,204 +212,10 @@ client.on('message', async (message) => {
 
     // respond with a randomly selected reaction when the bot is pinged
     if (/<@666851479444783125>|<@!666851479444783125>/.test(message.content)) {
-        return mentionReact(message);
+        return onMention(message, client);
     }
 });
 
-
-// setup for reacting to bot mentions in the godville server
-const botMentionCooldown = new Set();
-
-// react when someoene mentions the bot
-async function mentionReact(message) {
-    if (botMentionCooldown.has(message.author.id)) {
-        botMentionCooldown.delete(message.author.id);
-        const logsChannel = client.channels.cache.get(logs);
-        message.member.roles.add(mutedRole);
-        //const reply = await message.reply('don\'t spam mention me.'); // use after new message.reply functionality releases
-        message.reply('don\'t spam mention me.');
-        setTimeout(() => {
-            message.member.roles.remove(mutedRole);
-            message.channel.send(`Unmuted ${message.author}.`);
-            console.log(`Unmuted ${message.author.tag}.`);
-            logsChannel.send(`Unmuted ${message.author.tag}.`);
-        }, 60 * 1000);
-        console.log(`Muted ${message.author.tag} for one minute for spam mentioning the bot.`);
-        logsChannel.send(`Muted ${message.author.tag} for one minute for spam mentioning the bot.`);
-    } else {
-        botMentionCooldown.add(message.author.id);
-        setTimeout(() => {
-            botMentionCooldown.delete(message.author.id);
-        }, 20 * 1000);
-        message.reply(mentionReactions[Math.floor(Math.random() * mentionReactions.length)].replace('DISCNAME', `${message.author.tag}`));
-    }
-}
-
-// function to handle any received DMs
-function handleDMs(message) {
-    let msg = `I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`${prefix}suggest\` in <#${levelup_channel}>.`;
-    if (contestRunning) msg += '\n\nDid you want to enter the current contest? Then make sure you type \'+\' before your entry.';
-    message.reply(msg);
-    console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
-    client.channels.cache.get(bot_dms).send(`*${message.author.tag} / ${message.author.id} sent the following message in my DMs:*`);
-    const attachments = [];
-    message.attachments.forEach(element => {
-        attachments.push(element.url);
-    });
-    client.channels.cache.get(bot_dms).send(message.content, { files: attachments })
-        .catch(err => client.channels.cache.get(bot_dms).send(`Failed to forward: ${err}`));
-}
-
-// basic setup for contests through the bot's DMs
-let contestAuthors = '', contestTotal = 0;
-const contestRunning = true, contestMaxSubmissions = 5, contestMaxL = 25, contestMinL = 1;
-const contestSubmissions = '824031930562773046', contestTracking = '824031951911649330';
-
-// in case there's a bot DM contest running, check how many submissions were submitted already
-async function checkDMContest() {
-    if (!contestRunning) return;
-    const channel = client.channels.cache.get(contestTracking);
-    let last_id;
-
-    while (true) {
-        const options = { limit: 100 };
-        if (last_id) {
-            options.before = last_id;
-        }
-
-        const messages = await channel.messages.fetch(options);
-        if (messages.size < 1) break;
-        messages.array().forEach(e => {
-            contestAuthors += e.content;
-            contestTotal++;
-        });
-        last_id = messages.last().id;
-
-        if (messages.size != 100) {
-            break;
-        }
-    }
-}
-
-// logic to determine if someone's submission is valid and add it to the previous submissions
-function enterDMContest(message) {
-    const msg = message.content.slice(1).trim();
-    if (msg.length > contestMaxL) return message.reply(`Contest entries can be ${contestMaxL} characters at most. Your entry was ${msg.length} characters long.`);
-    if (msg.length < contestMinL) return message.reply(`Your entry for this contest must be at least ${contestMinL} characters long.`);
-    const id = message.author.id.toString();
-    let count = 0, pos = 0;
-    while (true) {
-        pos = contestAuthors.indexOf(id, pos);
-        if (pos >= 0) {
-            count++;
-            pos += id.length;
-        } else { break; }
-    }
-    if (count >= 5) return message.reply(`You can only have ${contestMaxSubmissions} entries in this contest.`);
-    contestAuthors += message.author.id;
-    message.reply(`Your entry was accepted. You have ${contestMaxSubmissions - 1 - count} entries left.`);
-    client.channels.cache.get(contestSubmissions).send(`${contestTotal} => ${msg}`);
-    client.channels.cache.get(contestTracking).send(`${contestTotal}, ${message.author.tag}, ${message.author.id}`);
-    contestTotal++;
-}
-
-
-// basic setup for chat contests
-let lastMessage = null, lastWinner = '', chatCombo = 0;
-const chatContestChannel = '313398424911347712';
-const chatContestTime = 15;
-
-// get the latest message applying for the chat contest
-function checkChatContest() {
-    const channel = client.channels.cache.get(chatContestChannel);
-    // get latest few messages of the channel
-    channel.messages.fetch()
-        .then(messages => {
-            // loop through messages until one not sent by a bot is found
-            for (const message of messages) {
-                if (message.author.bot) continue;
-                const elapsed = message.createdTimestamp - Date.now();
-                // get the time remaining until they would've won
-                const timeRemaining = (chatContestTime * 60 * 1000) - elapsed;
-                if (timeRemaining >= 0) {
-                    // set timer, message and author if the message isn't too old
-                    lastMessage = message;
-                    chatCombo = 1; // sadly combo has to reset because lazy (jk but keeping combo is too much effort)
-                    setTimeout(() => {
-                        winningChatContest(message);
-                    }, timeRemaining);
-                }
-                return;
-            }
-        })
-        .catch(console.error);
-}
-
-// run contest for the last message in general chat
-function chatContest(message) {
-    if (message.channel.id == chatContestChannel) {
-        if (lastMessage == null || lastMessage.author.id !== message.author.id) {
-            chatCombo++;
-            lastMessage = message;
-            setTimeout(() => {
-                winningChatContest(message);
-            }, chatContestTime * 60 * 1000);
-        }
-    }
-}
-
-// check if this message is still the last message in general chat, and reward the author if it is
-async function winningChatContest(message) {
-    if (message.id == lastMessage.id) {
-        const logsChannel = client.channels.cache.get(logs);
-        if (message.author.id == lastWinner) {
-            message.reply(`you were the last person to talk for ${chatContestTime} minutes, but you already won the last chat-killing contest! :skull:`);
-            console.log(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} minutes, but they had already won the previous contest.`);
-            logsChannel.send(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} minutes, but they had already won the previous contest.`);
-        } else {
-            lastWinner = message.author.id;
-            let chatMultiplier = (chatCombo / 100) + 0.5;
-            if (chatMultiplier > 3) chatMultiplier = 3;
-            let gold;
-            switch (Math.floor(Math.random() * chatMultiplier)) {
-                case 0:
-                    gold = Math.floor(Math.random() * 14) + 6;
-                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a small amount of gold <:t_gold:668200334933622794> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
-                    break;
-                case 1:
-                    gold = Math.floor(Math.random() * 21) + 22;
-                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a normal bag of gold <:t_goldbag:668202265777274890> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
-                    break;
-                case 2:
-                    gold = Math.floor(Math.random() * 50) + 50;
-                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a big crate of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
-                    break;
-            }
-            console.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo} and tier multiplier ${chatMultiplier}.`);
-            logsChannel.send(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo} and tier multiplier ${chatMultiplier}.`);
-
-            const userDoc = await userData.get();
-            const User = {};
-            if(userDoc.data()[message.author.id] === undefined) {
-                User[message.author.id] = {
-                    godpower: 0,
-                    gold: 0,
-                    total_godpower: 0,
-                    level: 0,
-                };
-                User[message.author.id].last_username = message.author.tag;
-                await userData.set(User, { merge: true });
-            } else {
-                User[message.author.id] = userDoc.data()[message.author.id];
-            }
-            User[message.author.id].gold += gold;
-            User[message.author.id].last_username = message.author.tag;
-            userData.set(User, { merge: true });
-        }
-        lastMessage = null;
-        chatCombo = 0;
-    }
-}
 
 // log in to Discord after any setup is done
 client.login(token);

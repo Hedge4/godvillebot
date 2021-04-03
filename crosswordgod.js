@@ -214,7 +214,7 @@ async function renew(channel, guildName) {
 
 function renewMessageDelay(channel, guildName) {
     console.log('Renewed newspaper and sent to "' + channel.name + '" channel in "' + guildName + '" guild.');
-    channel.send('Succesfully renewed. New solution and forecast:');
+    channel.send('Successfully renewed. New solution and forecast:');
 }
 
 async function crosswordSend(channel) {

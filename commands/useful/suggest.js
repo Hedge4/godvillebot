@@ -1,4 +1,4 @@
-const { bot_server_channels, logs } = require('../configurations/config.json');
+const { bot_server_channels, owner, logs } = require('../../configurations/config.json');
 
 async function suggest(client, message, content) {
     const logsChannel = client.channels.cache.get(logs);
@@ -22,6 +22,20 @@ async function suggest(client, message, content) {
         console.log(`${message.author.tag} tried to make a bot suggestion in ${message.channel.name}, but they're blocked from doing so.`);
         logsChannel.send(`${message.author.tag} tried to make a bot suggestion in ${message.channel.name}, but they're blocked from doing so.`);
         return message.reply('you are not allowed to use that command.');
+    }
+}
+
+// detect a message in the suggestion/log server
+function onMessage(message, client) {
+    if (message.channel.id === bot_server_channels[0]) {
+        if (owner.includes(message.author.id)) {
+            if (message.content.toLowerCase().startsWith('accept')) {
+                return accept(message, client);
+            }
+            if (message.content.toLowerCase().startsWith('reject')) {
+                return reject(message, client);
+            }
+        }
     }
 }
 
@@ -72,5 +86,4 @@ async function reject(message, client) {
 }
 
 exports.suggestion = suggest;
-exports.accept = accept;
-exports.reject = reject;
+exports.handleMessage = onMessage;

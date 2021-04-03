@@ -1,4 +1,4 @@
-const { prefix, levelup_channel, no_xp_prefixes, cdSeconds, logs, godpowerLogs } = require('../configurations/config.json');
+const { prefix, levelup_channel, no_xp_prefixes, cdSeconds, logs, godpowerLogs } = require('../../configurations/config.json');
 const godpowerCooldown = new Set();
 
 async function giveGodpower(message, userData, Discord, client) {
@@ -81,7 +81,7 @@ async function giveGodpower(message, userData, Discord, client) {
     }, cdSeconds * 1000);
 }
 
-exports.giveGodpower = giveGodpower;
+module.exports = giveGodpower;
 
 function emoji_regex() {
     // Source: https://mths.be/emoji-regex
