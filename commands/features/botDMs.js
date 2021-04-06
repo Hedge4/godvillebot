@@ -3,7 +3,7 @@ const { prefix, levelup_channel, bot_dms } = require('../../configurations/confi
 
 // basic setup for contests through the bot's DMs
 let contestAuthors = '', contestTotal = 0;
-const contestRunning = true, contestMaxSubmissions = 5, contestMaxL = 25, contestMinL = 1;
+const contestRunning = false, contestMaxSubmissions = 5, contestMaxL = 25, contestMinL = 1;
 const contestSubmissions = '824031930562773046', contestTracking = '824031951911649330';
 
 // function to handle any received DMs

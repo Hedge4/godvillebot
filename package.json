@@ -1,7 +1,7 @@
 {
   "name": "godbot",
-  "version": "4.6.0",
-  "updateMsg": "Added >ping command which no one will use, and performed a large restructuring on unorganised bot features, for more but much tidier files.",
+  "version": "4.6.1",
+  "updateMsg": "Fixed chat contest detection when the bot restarts, and increased required time to 30 minutes.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",

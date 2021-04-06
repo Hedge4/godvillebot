@@ -3,7 +3,7 @@ const { logs } = require('../../configurations/config.json');
 // basic setup for chat contests
 let lastMessage = null, lastWinner = '', chatCombo = 0;
 const chatContestChannel = '313398424911347712';
-const chatContestTime = 15;
+const chatContestTime = 30;
 
 // get the latest message applying for the chat contest
 function checkChatContest(client, userData) {
@@ -14,7 +14,7 @@ function checkChatContest(client, userData) {
             // loop through messages until one not sent by a bot is found
             for (const message of messages.array()) {
                 if (message.author.bot) continue;
-                const elapsed = message.createdTimestamp - Date.now();
+                const elapsed = Date.now() - message.createdTimestamp;
                 // get the time remaining until they would've won
                 const timeRemaining = (chatContestTime * 60 * 1000) - elapsed;
                 if (timeRemaining >= 0) {
@@ -25,6 +25,9 @@ function checkChatContest(client, userData) {
                         winningChatContest(message, client, userData);
                     }, timeRemaining);
                 }
+                const logsChannel = client.channels.cache.get(logs);
+                console.log(`Last chat contest elligible message was sent ${elapsed} milliseconds ago, ${timeRemaining} seconds remaining until chat is ded.`);
+                logsChannel.send(`Last chat contest elligible message was sent ${elapsed} milliseconds ago, ${timeRemaining} seconds remaining until chat is ded.`);
                 return;
             }
         })
