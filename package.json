@@ -1,7 +1,7 @@
 {
   "name": "godbot",
-  "version": "4.6.2",
-  "updateMsg": "Decreased chance of small gold rewards for higher chat combos.",
+  "version": "4.7.0",
+  "updateMsg": "Added >react command.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",

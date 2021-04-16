@@ -1,7 +1,7 @@
 {
-	"godville": [["profile", []], ["guides", []], ["godwiki", []], ["link", []]],
-	"godpower": [["level", []], ["ranking", []], ["gold", []], ["daily", []], ["toggle-mentions", []]],
-    "useful": [["suggest", ["suggestion"]], ["spoiler", []], ["code", []], ["ping", ["pong", "latency"]]],
-    "fun": [["minesweeper", []], ["bubblewrap", []], ["randomnick", []]],
+	"godville": [["profile", ["god", "goddess"]], ["guides", []], ["godwiki", []], ["link", []]],
+	"godpower": [["level", ["rank"]], ["ranking", []], ["gold", []], ["daily", []], ["toggle-mentions", []]],
+    "useful": [["suggest", ["suggestion"]], ["spoiler", []], ["code", ["github"]], ["ping", ["pong", "latency"]], ["react", []]],
+    "fun": [["minesweeper", []], ["bubblewrap", []], ["randomnick", ["nickname"]]],
     "moderator": [["break", []], ["block", []], ["unblock", []], ["blocklist", []], ["purge", []]]
 }
