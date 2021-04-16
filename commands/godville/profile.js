@@ -1,5 +1,5 @@
 const https = require('https');
-const { prefix, logs, command_channels } = require('../../configurations/config.json');
+const { prefix, logs, commandChannels } = require('../../configurations/config.json');
 
 async function show_profile(message, client, Discord, godData) {
 
@@ -96,7 +96,7 @@ async function show_profile(message, client, Discord, godData) {
 }
 
 function link_profile(message, godData, client) {
-    if (!command_channels.includes(message.channel.id)) {
+    if (!commandChannels.includes(message.channel.id)) {
         return message.reply('please only use this command in <#315874239779569666> to avoid spam.');
     }
     let link = message.content.slice(5).trim();

@@ -1,4 +1,4 @@
-const { bot_server_channels, owner, logs } = require('../../configurations/config.json');
+const { botServerChannels, owner, logs } = require('../../configurations/config.json');
 
 async function suggest(client, message, content) {
     const logsChannel = client.channels.cache.get(logs);
@@ -7,7 +7,7 @@ async function suggest(client, message, content) {
         suggestion = suggestion.join('');
         if (suggestion.length <= 20) {return message.reply('please add enough detail and make the description of your suggestion at least 20 characters!');}
         if (suggestion.length >= 800) {return message.reply('please be a bit more concise in your description and use less than 800 characters!');}
-        const channel = await client.channels.cache.get(bot_server_channels[0]);
+        const channel = await client.channels.cache.get(botServerChannels[0]);
         if (channel === undefined) {message.reply('the message couldn\'t be sent.');}
         channel.send(` --- ${message.author.tag} sent the following suggestion from channel ${message.channel.name}:\n` + '`' + suggestion + '`')
         .then(botMessage => {
@@ -27,7 +27,7 @@ async function suggest(client, message, content) {
 
 // detect a message in the suggestion/log server
 function onMessage(message, client) {
-    if (message.channel.id === bot_server_channels[0]) {
+    if (message.channel.id === botServerChannels[0]) {
         if (owner.includes(message.author.id)) {
             if (message.content.toLowerCase().startsWith('accept')) {
                 return accept(message, client);
@@ -54,8 +54,8 @@ async function accept(message, client) {
     }
     const author = message.author.tag;
     message.delete();
-    const old_channel = await client.channels.cache.get(bot_server_channels[0]);
-    const new_channel = await client.channels.cache.get(bot_server_channels[1]);
+    const old_channel = await client.channels.cache.get(botServerChannels[0]);
+    const new_channel = await client.channels.cache.get(botServerChannels[1]);
     const old_msg = await old_channel.messages.fetch(ID);
     const contents = old_msg.content;
     old_msg.delete();
@@ -77,8 +77,8 @@ async function reject(message, client) {
     }
     const author = message.author.tag;
     message.delete();
-    const old_channel = await client.channels.cache.get(bot_server_channels[0]);
-    const new_channel = await client.channels.cache.get(bot_server_channels[2]);
+    const old_channel = await client.channels.cache.get(botServerChannels[0]);
+    const new_channel = await client.channels.cache.get(botServerChannels[2]);
     const old_msg = await old_channel.messages.fetch(ID);
     const contents = old_msg.content;
     old_msg.delete();

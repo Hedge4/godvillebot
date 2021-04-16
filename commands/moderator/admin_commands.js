@@ -1,8 +1,8 @@
-const { purge_channels, token, modlogs } = require('../../configurations/config.json');
+const { purgeChannels, token, modlogs } = require('../../configurations/config.json');
 
 
 async function purge(client, message) {
-        if (purge_channels.includes(message.channel.id)) {
+        if (purgeChannels.includes(message.channel.id)) {
             message.delete();
             message.channel.bulkDelete(100, true)
             .then(messages => {

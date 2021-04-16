@@ -2,7 +2,7 @@ const toggleMentions = require('./togglementions');
 const displayLevel = require('./levelcard');
 const displayGold = require('./goldcard');
 const getRanking = require('./ranking');
-const limitedCommands = require('../features/limited_commands');
+const limitedCommands = require('./daily');
 
 function redirect(cmd, content, message, Discord, client, userData, limitedCommandsData) {
     switch (cmd) {

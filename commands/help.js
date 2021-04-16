@@ -1,4 +1,4 @@
-const { prefix, levelup_channel, logs, command_channels } = require('../configurations/config.json');
+const { prefix, botvilleChannel, logs, commandChannels } = require('../configurations/config.json');
 
 const commands_list = [
     ['help',
@@ -164,11 +164,11 @@ function chooseHelp(message, Discord, client) {
     })) {
         return message.reply(`I don't know the command \`${prefix}${arg}\`!`);
     }
-    if (command_channels.includes(message.channel.id)) {
+    if (commandChannels.includes(message.channel.id)) {
         return message.channel.send(helpEmbed);
     } else {
-        message.reply(`I've sent my help message in <#${levelup_channel}>!`);
-        return client.channels.cache.get(levelup_channel).send(helpEmbed);
+        message.reply(`I've sent my help message in <#${botvilleChannel}>!`);
+        return client.channels.cache.get(botvilleChannel).send(helpEmbed);
     }
 }
 

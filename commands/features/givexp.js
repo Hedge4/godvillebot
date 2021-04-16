@@ -1,11 +1,11 @@
-const { prefix, levelup_channel, no_xp_prefixes, cdSeconds, logs, godpowerLogs } = require('../../configurations/config.json');
+const { prefix, botvilleChannel, noXpPrefixes, cdSeconds, logs, godpowerLogs } = require('../../configurations/config.json');
 const godpowerCooldown = new Set();
 
 async function giveGodpower(message, userData, Discord, client) {
 
     if (godpowerCooldown.has(message.author.id)) {return;}
     if (xpBlocked.includes(message.author.id)) {return;}
-    no_xp_prefixes.forEach(element => {
+    noXpPrefixes.forEach(element => {
         if (message.content.startsWith(element)) {return;}
     });
     let valid_size = message.content.trim().replace(/<([^:]*):([^:]+):([0-9]+)>/g, ''); // filter out custom emojis
@@ -68,8 +68,8 @@ async function giveGodpower(message, userData, Discord, client) {
             .setDescription('You gathered ' + nextLevel + ' godpower <:stat_godpower:401412765232660492> and levelled up to level ' + User[message.author.id].level + '! :tada: - You now have ' + User[message.author.id].total_godpower + ' godpower total.')
             .addField('Gold rewarded', `You earned ${goldAdd} <:stat_gold:401414686651711498> for reaching level ` + User[message.author.id].level + '. You now have ' + User[message.author.id].gold + ' gold total.')
             .setFooter(`You'll need ${newNextLevel} godpower for level ${newLevel + 1}. Use ${prefix}toggle-mentions to enable/disable being mentioned on level-up.`, message.author.displayAvatarURL());
-        if (User[message.author.id].mention !== false) { client.channels.cache.get(levelup_channel).send(`Congratulations on reaching level ${User[message.author.id].level}, ${message.author}!`);}
-        client.channels.cache.get(levelup_channel).send(lvlUpEmbed);
+        if (User[message.author.id].mention !== false) { client.channels.cache.get(botvilleChannel).send(`Congratulations on reaching level ${User[message.author.id].level}, ${message.author}!`);}
+        client.channels.cache.get(botvilleChannel).send(lvlUpEmbed);
     }
 
     User[message.author.id].last_username = message.author.tag;

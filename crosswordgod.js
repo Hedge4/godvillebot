@@ -1,6 +1,6 @@
-const { newspaper_updates, prefix, logs } = require('./configurations/config.json');
+const { newspaperUpdates, prefix, logs } = require('./configurations/config.json');
 /*const Discord = require('discord.js');
-const { newspaper_channels, newspaper_updates, prefix, owner, admin_role } = require('./configurations/config.json');
+const { newspaperChannels, newspaperUpdates, prefix, owner, adminRole } = require('./configurations/config.json');
 const fs = require('fs');
 const find = require('find');
 const { PythonShell } = require('python-shell');
@@ -19,11 +19,11 @@ function crosswordgod(message) {
         message.channel.send('Due to the bot no longer being able to fetch the crossword, crossword functions have been disabled for now.');
     }
     /*if (message.content.toLowerCase().startsWith(`${prefix}renew`)) {
-        if (message.member.roles.cache.has(admin_role) || owner.includes(message.author.id)) {
+        if (message.member.roles.cache.has(adminRole) || owner.includes(message.author.id)) {
             renew(message.channel, message.guild.name);
         } else { return message.reply('you do not have access to this command.'); }
     }
-    if (newspaper_channels.includes(message.channel.id) === true || owner.includes(message.author.id) === true) {
+    if (newspaperChannels.includes(message.channel.id) === true || owner.includes(message.author.id) === true) {
         if (message.content.toLowerCase().startsWith(`${prefix}update`)) {
             console.log(`User ${message.author.tag} requested current delay for automatic update.`);
             getUpdate(message);
@@ -195,14 +195,12 @@ function getUpdate(message) {
 }
 
 function dailyRenew(client) {
-    for (let i = 0; i < newspaper_updates.length; i++) {
-        const channel = client.channels.cache.get(newspaper_updates[i]);
-        const GuildName = channel.guild.name;
-        renew(channel, GuildName);
-        setTimeout(sendMK, 15000, client);
+    const channel = client.channels.cache.get(newspaperUpdates);
+    const GuildName = channel.guild.name;
+    renew(channel, GuildName);
+    setTimeout(sendMK, 15000, client);
     const delay = getCrosswordDelay();
     setTimeout(dailyRenew, delay, client);
-    }
 }
 
 async function renew(channel, guildName) {
@@ -265,7 +263,7 @@ function embedForecast(embedTitle2, embedBody2) {
 function newsPing(client) {
     if (!newsSent) {
         newsSent = true;
-        const channel = client.channels.cache.get(newspaper_updates[0]);
+        const channel = client.channels.cache.get(newspaperUpdates);
         const guildName = channel.guild.name;
         channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator! Daily coupon: <https://godvillegame.com/news#cpn_name>');
         const logsChannel = client.channels.cache.get(logs);

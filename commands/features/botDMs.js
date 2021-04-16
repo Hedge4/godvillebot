@@ -1,5 +1,5 @@
 /* eslint-disable no-constant-condition */
-const { prefix, levelup_channel, bot_dms } = require('../../configurations/config.json');
+const { prefix, botvilleChannel, botDmLogs } = require('../../configurations/config.json');
 
 // basic setup for contests through the bot's DMs
 let contestAuthors = '', contestTotal = 0;
@@ -11,17 +11,17 @@ function handleDMs(message, client) {
     if (contestRunning && message.content.startsWith('+')) {
         return enterDMContest(message, client);
     }
-    let msg = `I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`${prefix}suggest\` in <#${levelup_channel}>.`;
+    let msg = `I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`${prefix}suggest\` in <#${botvilleChannel}>.`;
     if (contestRunning) msg += '\n\nDid you want to enter the current contest? Then make sure you type \'+\' before your entry.';
     message.reply(msg);
     console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
-    client.channels.cache.get(bot_dms).send(`*${message.author.tag} / ${message.author.id} sent the following message in my DMs:*`);
+    client.channels.cache.get(botDmLogs).send(`*${message.author.tag} / ${message.author.id} sent the following message in my DMs:*`);
     const attachments = [];
     message.attachments.forEach(element => {
         attachments.push(element.url);
     });
-    client.channels.cache.get(bot_dms).send(message.content, { files: attachments })
-        .catch(err => client.channels.cache.get(bot_dms).send(`Failed to forward: ${err}`));
+    client.channels.cache.get(botDmLogs).send(message.content, { files: attachments })
+        .catch(err => client.channels.cache.get(botDmLogs).send(`Failed to forward: ${err}`));
 }
 
 // in case there's a bot DM contest running, check how many submissions were submitted already

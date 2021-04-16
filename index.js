@@ -1,8 +1,8 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const { version, updateMsg } = require('./package.json');
-const { logs, suggestion_server, prefix, token, server, owner, no_xp_channels, levelup_channel,
-    command_channels, newspaper_channels, admin_role } = require('./configurations/config.json');
+const { logs, botServer, prefix, token, server, owner, noXpChannels, botvilleChannel,
+    commandChannels, newspaperChannels, adminRole } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator } = require('./configurations/commands.json');
 
 // the different command modules
@@ -18,7 +18,7 @@ const giveXP = require('./commands/features/givexp');
 const onMention = require('./commands/features/botMentions');
 const botDMs = require('./commands/features/botDMs');
 const chatContest = require('./commands/features/chatContest');
-const limitedCommands = require('./commands/features/limited_commands');
+const daily = require('./commands/godpower/daily');
 const suggest = require('./commands/useful/suggest');
 const block = require('./commands/moderator/block.js');
 const help = require('./commands/help');
@@ -73,14 +73,14 @@ client.on('ready', () => {
         .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.\n\nNew: ${updateMsg}`)
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
         .setTimestamp();
-    client.channels.cache.get(levelup_channel).send(startEmbed);
+    client.channels.cache.get(botvilleChannel).send(startEmbed);
     //const delay1 = crosswordgod.getCrosswordDelay(client);
-    const delay2 = limitedCommands.resetDelay(client, true)[0];
+    const delay2 = daily.resetDelay(client, true)[0];
     const delay3 = crosswordgod.getNewsDelay(client);
     global.newsSent = false;
 
     //setTimeout(crosswordgod.dailyCrosswordRenew, delay1, client);
-    setTimeout(limitedCommands.reset, delay2, client, limitedCommandsData);
+    setTimeout(daily.reset, delay2, client, limitedCommandsData);
     setTimeout(crosswordgod.newsping, delay3, client);
     botDMs.checkDMContest(client);
     chatContest.check(client, userData);
@@ -105,13 +105,13 @@ client.on('message', async (message) => {
 
         // people without Admin or Deities role need to activate their access to the server first
         if (message.content.toLowerCase().startsWith('?rank')) {
-            if (!message.member.roles.cache.has('313453649315495946') && !message.member.roles.cache.has(admin_role)) {
+            if (!message.member.roles.cache.has('313453649315495946') && !message.member.roles.cache.has(adminRole)) {
                 return message.reply('use the `?ireadtherules` command to unlock core server functionality before adding any extra channels!');
             }
         }
 
         // give a user xp/godpower if they're talking in the right channel
-        if (!no_xp_channels.includes(message.channel.id)) {
+        if (!noXpChannels.includes(message.channel.id)) {
             giveXP(message, userData, Discord, client);
         }
 
@@ -124,7 +124,7 @@ client.on('message', async (message) => {
             const cmd = message.content.toLowerCase().slice(prefix.length).split(/\s+/)[0]; // remove prefix and take first word
             const content = message.content.toLowerCase().slice(prefix.length + cmd.length).trim(); // remove prefix, command and whitespace
 
-            if (command_channels.includes(message.channel.id)) {
+            if (commandChannels.includes(message.channel.id)) {
                 // redirect godpower module commands
                 for (let i = 0; i < godpower.length; i++) {
                     if (cmd == godpower[i][0]) {
@@ -180,7 +180,7 @@ client.on('message', async (message) => {
             }
 
             // only for admins or bot owners
-            if (message.member.roles.cache.has(admin_role) || owner.includes(message.author.id)) {
+            if (message.member.roles.cache.has(adminRole) || owner.includes(message.author.id)) {
                 // redirect moderator module commands
                 for (let i = 0; i < moderator.length; i++) {
                     if (cmd == moderator[i][0]) {
@@ -195,14 +195,14 @@ client.on('message', async (message) => {
             }
 
             // detect commands that work only in bot and newspaper related channels
-            if (newspaper_channels.includes(message.channel.id)) {
+            if (newspaperChannels.includes(message.channel.id)) {
                 // command detection changes pending until crosswordgod functions are rewritten
                 crosswordgod.crosswordgod(message);
             }
         }
 
     // handle accepting or rejecting suggestions in the bot's suggestion/log server
-    } else if (message.guild.id == suggestion_server) {
+    } else if (message.guild.id == botServer) {
         return suggest.handleMessage(message, client);
 
     // respond when the bot is in a server it shouldn't be in
