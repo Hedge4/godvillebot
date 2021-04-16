@@ -1,7 +1,7 @@
 {
   "name": "godbot",
-  "version": "4.6.1",
-  "updateMsg": "Fixed chat contest detection when the bot restarts, and increased required time to 30 minutes.",
+  "version": "4.6.2",
+  "updateMsg": "Decreased chance of small gold rewards for higher chat combos.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",

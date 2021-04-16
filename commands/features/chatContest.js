@@ -57,8 +57,8 @@ async function winningChatContest(message, client, userData) {
             logsChannel.send(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} minutes, but they had already won the previous contest.`);
         } else {
             lastWinner = message.author.id;
-            let chatMultiplier = (chatCombo / 100) + 0.5;
-            if (chatMultiplier > 3) chatMultiplier = 3;
+            let chatMultiplier = (chatCombo / 75) + 0.5;
+            if (chatMultiplier > 4.5) chatMultiplier = 4.5;
             let gold;
             switch (Math.floor(Math.random() * chatMultiplier)) {
                 case 0:
@@ -66,10 +66,12 @@ async function winningChatContest(message, client, userData) {
                     message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a small amount of gold <:t_gold:668200334933622794> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
                 case 1:
+                case 2:
                     gold = Math.floor(Math.random() * 21) + 22;
                     message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a normal bag of gold <:t_goldbag:668202265777274890> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
-                case 2:
+                case 3:
+                case 4:
                     gold = Math.floor(Math.random() * 50) + 50;
                     message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a big crate of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
