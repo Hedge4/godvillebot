@@ -93,7 +93,7 @@ const commands_list = [
     ['react',
     `${prefix}react <message ID> <reaction>`,
     'Add letter emojis as a reaction to a message.',
-    'I am too tired to explain this right now so just try it, lol. A reaction can only consist of characters from a-z, and you get the ID of the message you want to react to by right clicking on it and copying the ID (developer mode) or copying the link and only using the last number of the url.'],
+    'I am too tired to explain this right now so just try it, lol. A reaction can only consist of characters from a-z, 0-9, and some special characters. You get the ID of the message you want to react to by right clicking on it and copying the ID (developer mode) or copying the link and only using the last number of the url.'],
     ['ping',
     `${prefix}ping`,
     'Check the bot\'s ping!',

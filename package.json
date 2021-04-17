@@ -1,7 +1,7 @@
 {
   "name": "godbot",
-  "version": "4.7.0",
-  "updateMsg": "Added >react command.",
+  "version": "4.7.1",
+  "updateMsg": "Added numbers and some special symbols to the >react command.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",
