@@ -1,5 +1,6 @@
 const { logs } = require('../../configurations/config.json');
 let reacting = false;
+const maxReactions = 20;
 
 async function main(message, content, client) {
     if (reacting) {
@@ -18,10 +19,6 @@ async function main(message, content, client) {
 
     const reactionList = [];
     const reactionArray = reaction.replace(/\s/g, '').split('');
-    if (reactionArray.length > 20) {
-        return message.reply('your reaction can be 20 characters at most - keep in mind duplicate letters will be removed!');
-    }
-
     for (let i = 0; i < reactionArray.length; i++) {
         const e = reactionArray[i];
 
@@ -29,22 +26,33 @@ async function main(message, content, client) {
             return message.reply(`'${e}' isn't in my dictionary, so I can't react with that emoji. Please use only letters.`);
         }
 
-        if (alphabet[e] in reactionList) continue;
+        if (reactionList.includes(alphabet[e])) continue;
         reactionList.push(alphabet[e]);
 
         if (reactionList.length >= 20) break;
     }
 
+    let targetMsg;
+    try {
+        targetMsg = await message.channel.messages.fetch(messageID);
+    } catch (error) {
+        return message.reply('I couldn\'t find a message with that ID in this channel.');
+    }
+    const reactionCount = targetMsg.reactions.cache.array().length;
+    if (reactionCount >= maxReactions) {
+        return message.reply('this message already has the maximum amount of reactions.');
+    }
+
+    if (reactionList.length > maxReactions - reactionCount) {
+        return message.reply(`your reaction can be ${maxReactions - reactionCount} different characters at most - keep in mind duplicate letters will be removed!`);
+    }
+
     const logsChannel = client.channels.cache.get(logs);
-    message.channel.messages.fetch(messageID)
-        .then(msg => {
-            logsChannel.send(`${message.author.tag} reacted '${reaction}' to a message in ${message.channel.name}.`);
-            console.log(`${message.author.tag} reacted '${reaction}' to a message in ${message.channel.name}.`);
-            react(msg, reactionList);
-            reacting = true;
-            message.delete();
-        })
-        .catch(() => { message.reply('I couldn\'t find a message with that ID in this channel.'); });
+    logsChannel.send(`${message.author.tag} reacted '${reaction}' to a message from ${targetMsg.author.tag} in ${message.channel.name}.`);
+    console.log(`${message.author.tag} reacted '${reaction}' to a message from ${targetMsg.author.tag} in ${message.channel.name}.`);
+    reacting = true;
+    message.delete();
+    react(targetMsg, reactionList);
 }
 
 function react(message, reactionList) {
