@@ -54,7 +54,8 @@ async function giveGodpower(message, userData, Discord, client) {
         const logsChannel = client.channels.cache.get(logs);
         console.log('User ' + message.author.tag + ' levelled up from level ' + curLevel + ' to level ' + newLevel);
         logsChannel.send('User ' + message.author.tag + ' levelled up from level ' + curLevel + ' to level ' + newLevel);
-        const goldAdd = Math.floor(100 * (Math.sqrt(newLevel)));
+        let goldAdd = Math.floor(100 * newLevel ** 0.412);
+        if (goldAdd > 500) { goldAdd = 500; }
         User[message.author.id].godpower = newGodpower - nextLevel;
         User[message.author.id].level = newLevel;
         User[message.author.id].gold = User[message.author.id].gold + goldAdd;
