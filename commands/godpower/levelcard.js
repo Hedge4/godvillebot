@@ -1,26 +1,17 @@
 const { logs } = require('../../configurations/config.json');
+const getUsers = require('../features/getUsers');
 
 async function displayLevel(message, userData, Discord, client) {
 
-    let user = message.mentions.users.first();
-    if (!user) {
-        if (message.content.length >= 7) {
-            let username = message.content.slice(6).trim();
-            if (message.content.includes('#')) {
-                const args = username.split('#');
-                username = args[0];
-                const discriminator = args[1];
-                user = client.users.cache.find(foundUser => foundUser.tag == (username + '#' + discriminator));
-            } else {
-                user = client.users.cache.find(foundUser => foundUser.username == username);
-            }
-            if (!user) {
-                message.reply('mention a valid user or use a valid username!');
-                return;
-            }
-        } else {
-            user = message.author;
+    let user;
+    if (message.content.length > 7) {
+        const username = message.content.slice(7).trim();
+        user = getUsers.One(username, client);
+        if (!user) {
+            return message.reply('mention a valid user or use a valid username/ID!');
         }
+    } else {
+        user = message.author;
     }
 
     let rank = '';

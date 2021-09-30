@@ -1,4 +1,5 @@
 const { modlogs, logs, owner } = require('../../configurations/config.json');
+const getUsers = require('../features/getUsers');
 
 function hasImage(attachments) {
     const imgFormats = ['.png', '.jpeg', '.jpg', '.gif'];
@@ -28,27 +29,6 @@ async function blockImage(client, message) {
             msg.delete({ timeout: 5000 });
         })
         .catch(console.error);
-}
-
-function getUser(mentions, username, client) {
-    let user;
-    //let user = mentions.users.first(); // check mentions
-    if (!user) {
-        if (/^<@!?[0-9]+>$/.test(username)) { // check mentions through regex
-            const userID = /^<@!?([0-9]+)>$/.exec(username)[1];
-            user = client.users.cache.get(userID);
-        } else if (username.includes('#')) { // check discord username
-            const args = username.split('#');
-            username = args[0];
-            const discriminator = args[1];
-            user = client.users.cache.find(foundUser => foundUser.tag == (username + '#' + discriminator));
-        } else if (!isNaN(username) && !isNaN(parseInt(username)) && username % 1 == 0) { // check id
-            user = client.users.cache.get(username);
-        } else { // find by username
-            user = client.users.find(foundUser => foundUser.username == username);
-        }
-    }
-    return user;
 }
 
 const blockLists = ['bot', 'xp', 'image', 'suggest'];
@@ -141,13 +121,13 @@ function block(message, client, blockedData) {
         return message.channel.send(correctFormat);
     }
 
-    const user = getUser(message.mentions, args[1], client);
+    const user = getUsers.One(args[1], client);
     if (!user) {
-        message.reply(`user "${args[1]}" could not be found.`);
+        message.reply(`user "${args[1]}" could not be found. Mention a valid user or use a valid username/ID!`);
         return message.channel.send(correctFormat);
     }
     if (user.id == owner) {
-        message.reply(`nuh uh I'm not blocking "${user.username} you dummy!`);
+        return message.reply(`nuh uh I'm not blocking ${user.username} you dummy!`);
     }
 
     args[0] = args[0].toLowerCase();
@@ -198,9 +178,9 @@ function unblock(message, client, blockedData) {
         message.reply(`${args[0]} is not one of the things users can be blocked from.`);
         return message.channel.send(correctFormat);
     }
-    const user = getUser(message.mentions, args[1], client);
+    const user = getUsers.One(args[1], client);
     if (!user) {
-        message.reply(`user "${args[1]} could not be found."`);
+        message.reply(`user "${args[1]}" could not be found. Mention a valid user or use a valid username/ID!`);
         return message.channel.send(correctFormat);
     }
 

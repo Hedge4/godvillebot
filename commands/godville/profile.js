@@ -1,30 +1,22 @@
 const https = require('https');
 const { prefix, logs, commandChannels } = require('../../configurations/config.json');
+const getUsers = require('../features/getUsers');
 
 async function show_profile(message, client, Discord, godData) {
 
-    let self = false;
-    let user = message.mentions.users.first();
-    if (!user) {
-        if (message.content.length >= 10) {
-            let username = message.content.slice(8).trim();
-            if (message.content.includes('#')) {
-                const args = username.split('#');
-                username = args[0];
-                const discriminator = args[1];
-                user = client.users.cache.find(foundUser => foundUser.tag == (username + '#' + discriminator));
-            } else {
-                user = client.users.cache.find(foundUser => foundUser.username == username);
-            }
-            if (!user) {
-                message.reply('mention a valid user or use a valid username!');
-                return;
-            }
-        } else {
-            user = message.author;
-            self = true;
+    let self;
+    let user;
+    if (message.content.length > 9) {
+        const username = message.content.slice(9).trim();
+        user = getUsers.One(username, client);
+        if (!user) {
+            return message.reply('mention a valid user or use a valid username/ID!');
         }
+    } else {
+        user = message.author;
+        self = true;
     }
+
 
     let author = user.tag;
     const nickname = message.guild.member(user) ? message.guild.member(user).displayName : null;

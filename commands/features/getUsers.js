@@ -1,0 +1,27 @@
+// returns a user object (or undefined)
+// username should be selected beforehand, so no additional arguments get in
+function getOneUser(username, client) {
+    username = username.trim();
+    let user;
+
+    if (!user) {
+        if (/^<@!?[0-9]+>$/.test(username)) { // check mentions through regex
+            const userID = /^<@!?([0-9]+)>$/.exec(username)[1];
+            user = client.users.cache.get(userID);
+        } else if (username.includes('#')) { // check discord username
+            const args = username.split('#');
+            username = args[0];
+            const discriminator = args[1];
+            user = client.users.cache.find(foundUser => foundUser.tag == (username + '#' + discriminator));
+        } else if (!isNaN(username) && !isNaN(parseInt(username)) && username % 1 == 0) { // check id
+            user = client.users.cache.get(username);
+        } else { // find by username
+            user = client.users.cache.find(foundUser => foundUser.username == username);
+        }
+    }
+    return user;
+}
+
+// add method to find multiple users later??
+
+exports.One = getOneUser;
