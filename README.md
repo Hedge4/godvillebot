@@ -1,5 +1,5 @@
 # GodBot
-Version: 4.7.3
+Version: 4.8.0
 
 I should probably include some sort of description here. Meh, I'll add it later.
 
@@ -17,6 +17,7 @@ Lastly, commands now support aliases and are sorted into modules (as of version 
 * 4.5 Added chat contests that reward a small or big amount of gold if someone is the last to talk in #general for 10 minutes.
 * 4.6 Restructured bot functions into a 'features' folder for much tidier files, and added a >ping command.
 * 4.7 Added >react command, which can react with alphabetical emojis to messages with a specific message.
+* 4.8 Added a message reaction function that can randomly react to certain words in messages, and added and enabled spookmode.
 
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.

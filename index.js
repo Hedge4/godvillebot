@@ -1,8 +1,8 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const { version, updateMsg } = require('./package.json');
-const { logs, botServer, prefix, token, server, owner, noXpChannels, botvilleChannel,
-    commandChannels, newspaperChannels, adminRole } = require('./configurations/config.json');
+const { logs, botServer, prefix, token, server, owner, noXpChannels, botvilleChannel, commandChannels,
+    newspaperChannels, adminRole, ignoredChannels } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator } = require('./configurations/commands.json');
 
 // the different command modules
@@ -16,6 +16,7 @@ const crosswordgod = require('./crosswordgod');
 // functions/commands (partly) separate from the main modules
 const giveXP = require('./commands/features/givexp');
 const onMention = require('./commands/features/botMentions');
+const messageReactions = require('./commands/features/messageReactions');
 const botDMs = require('./commands/features/botDMs');
 const chatContest = require('./commands/features/chatContest');
 const daily = require('./commands/godpower/daily');
@@ -92,6 +93,7 @@ client.on('message', async (message) => {
     // ignore any messages from bots or people blocked from interacting with the bot
     if (message.author.bot) {return;}
     if (botBlocked.includes(message.author.id)) {return;}
+    if (ignoredChannels.includes(message.channel.id)) {return;}
 
     // handle DMs
     if (message.channel.type === 'dm') {
@@ -117,6 +119,9 @@ client.on('message', async (message) => {
 
         // see if a message applies for the chat contest
         chatContest.newMessage(message, client, userData);
+
+        // react to a message if it contains a certain (active) trigger
+        messageReactions(message);
 
         // handle commands
         if (message.content.toLowerCase().startsWith(prefix)) {

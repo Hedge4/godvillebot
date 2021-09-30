@@ -1,7 +1,7 @@
 {
   "name": "godbot",
-  "version": "4.7.3",
-  "updateMsg": "Added a cap of 500 gold to be earned for a level-up.",
+  "version": "4.8.0",
+  "updateMsg": "Enabled spookmode! :ghost:",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",
