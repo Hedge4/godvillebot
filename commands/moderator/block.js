@@ -1,4 +1,4 @@
-const { modlogs, logs } = require('../../configurations/config.json');
+const { modlogs, logs, owner } = require('../../configurations/config.json');
 
 function hasImage(attachments) {
     const imgFormats = ['.png', '.jpeg', '.jpg', '.gif'];
@@ -31,21 +31,21 @@ async function blockImage(client, message) {
 }
 
 function getUser(mentions, username, client) {
-    let user = mentions.users.first();
+    let user;
+    //let user = mentions.users.first(); // check mentions
     if (!user) {
-        if (/^<@!?[0-9]+>$/.test(username)) {
+        if (/^<@!?[0-9]+>$/.test(username)) { // check mentions through regex
             const userID = /^<@!?([0-9]+)>$/.exec(username)[1];
             user = client.users.cache.get(userID);
-        } else if (username.includes('#')) {
+        } else if (username.includes('#')) { // check discord username
             const args = username.split('#');
             username = args[0];
-            const discriminator = args[1].slice(0, 4);
-            user = client.users.find(foundUser => foundUser.tag == (username + '#' + discriminator));
-        } else if (!isNaN(username) && !isNaN(parseInt(username)) && username % 1 == 0) {
-            user = {
-                tag: username,
-                id: username,
-            };
+            const discriminator = args[1];
+            user = client.users.cache.find(foundUser => foundUser.tag == (username + '#' + discriminator));
+        } else if (!isNaN(username) && !isNaN(parseInt(username)) && username % 1 == 0) { // check id
+            user = client.users.cache.get(username);
+        } else { // find by username
+            user = client.users.find(foundUser => foundUser.username == username);
         }
     }
     return user;
@@ -130,7 +130,9 @@ function blockList(message, client) {
 
 function block(message, client, blockedData) {
     const args = message.content.slice(6).trim().split(' ');
-    if (args.length < 2) {
+    if (args.length > 2) {
+        args[1] = args.slice(1).join(' ');
+    } else if (args.length < 2) {
         message.reply('please specify what you want to block and for which user!');
         return message.channel.send(correctFormat);
     }
@@ -138,10 +140,14 @@ function block(message, client, blockedData) {
         message.reply(`${args[0]} is not one of the things users can be blocked from.`);
         return message.channel.send(correctFormat);
     }
+
     const user = getUser(message.mentions, args[1], client);
     if (!user) {
-        message.reply(`User "${args[1]} could not be found."`);
+        message.reply(`user "${args[1]}" could not be found.`);
         return message.channel.send(correctFormat);
+    }
+    if (user.id == owner) {
+        message.reply(`nuh uh I'm not blocking "${user.username} you dummy!`);
     }
 
     args[0] = args[0].toLowerCase();
@@ -182,7 +188,9 @@ function block(message, client, blockedData) {
 
 function unblock(message, client, blockedData) {
     const args = message.content.slice(8).trim().split(' ');
-    if (args.length < 2) {
+    if (args.length > 2) {
+        args[1] = args.slice(1).join(' ');
+    } else if (args.length < 2) {
         message.reply('please specify what you want to unblock and for which user!');
         return message.channel.send(correctFormat);
     }
@@ -192,7 +200,7 @@ function unblock(message, client, blockedData) {
     }
     const user = getUser(message.mentions, args[1], client);
     if (!user) {
-        message.reply(`User "${args[1]} could not be found."`);
+        message.reply(`user "${args[1]} could not be found."`);
         return message.channel.send(correctFormat);
     }
 

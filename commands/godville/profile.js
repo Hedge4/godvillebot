@@ -11,10 +11,10 @@ async function show_profile(message, client, Discord, godData) {
             if (message.content.includes('#')) {
                 const args = username.split('#');
                 username = args[0];
-                const discriminator = args[1].slice(0, 4);
-                user = client.users.find(foundUser => foundUser.tag == (username + '#' + discriminator));
+                const discriminator = args[1];
+                user = client.users.cache.find(foundUser => foundUser.tag == (username + '#' + discriminator));
             } else {
-                user = client.users.find(foundUser => foundUser.username == username);
+                user = client.users.cache.find(foundUser => foundUser.username == username);
             }
             if (!user) {
                 message.reply('mention a valid user or use a valid username!');

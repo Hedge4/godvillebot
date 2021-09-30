@@ -93,7 +93,6 @@ client.on('message', async (message) => {
     // ignore any messages from bots or people blocked from interacting with the bot
     if (message.author.bot) {return;}
     if (botBlocked.includes(message.author.id)) {return;}
-    if (ignoredChannels.includes(message.channel.id)) {return;}
 
     // handle DMs
     if (message.channel.type === 'dm') {
@@ -104,6 +103,9 @@ client.on('message', async (message) => {
         if (imageBlocked.includes(message.author.id) && message.attachments.size > 0 && block.hasImage(message.attachments)) {
             return block.blockImage(client, message);
         }
+
+        // Ignore any channels in which the bot should not react to anything
+        if (ignoredChannels.includes(message.channel.id)) {return;}
 
         // people without Admin or Deities role need to activate their access to the server first
         if (message.content.toLowerCase().startsWith('?rank')) {

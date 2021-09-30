@@ -1,6 +1,7 @@
 const { logs } = require('../../configurations/config.json');
 
 async function displayLevel(message, userData, Discord, client) {
+
     let user = message.mentions.users.first();
     if (!user) {
         if (message.content.length >= 7) {
@@ -8,10 +9,10 @@ async function displayLevel(message, userData, Discord, client) {
             if (message.content.includes('#')) {
                 const args = username.split('#');
                 username = args[0];
-                const discriminator = args[1].slice(0, 4);
-                user = client.users.find(foundUser => foundUser.tag == (username + '#' + discriminator));
+                const discriminator = args[1];
+                user = client.users.cache.find(foundUser => foundUser.tag == (username + '#' + discriminator));
             } else {
-                user = client.users.find(foundUser => foundUser.username == username);
+                user = client.users.cache.find(foundUser => foundUser.username == username);
             }
             if (!user) {
                 message.reply('mention a valid user or use a valid username!');
