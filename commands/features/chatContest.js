@@ -57,21 +57,24 @@ async function winningChatContest(message, client, userData) {
             logsChannel.send(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} minutes, but they had already won the previous contest.`);
         } else {
             lastWinner = message.author.id;
-            let chatMultiplier = (chatCombo / 75) + 0.5;
+            let chatMultiplier = (chatCombo / 75) + 0.5; // increases messages 0-300
             if (chatMultiplier > 4.5) chatMultiplier = 4.5;
+            let chatMultiplier2 = (chatCombo - 300) / 200; // increases messages 300-500
+            if (chatMultiplier2 > 1) chatMultiplier2 = 1;
             let gold;
-            switch (Math.floor(Math.random() * chatMultiplier)) {
+            switch (Math.floor(Math.random() * chatMultiplier) + chatMultiplier2) {
                 case 0:
                     gold = Math.floor(Math.random() * 14) + 6;
                     message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a small amount of gold <:t_gold:668200334933622794> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
                 case 1:
                 case 2:
+                case 4:
                     gold = Math.floor(Math.random() * 21) + 22;
                     message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a normal bag of gold <:t_goldbag:668202265777274890> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
                 case 3:
-                case 4:
+                case 5:
                     gold = Math.floor(Math.random() * 50) + 50;
                     message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a big crate of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
