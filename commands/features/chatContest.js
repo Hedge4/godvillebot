@@ -61,6 +61,7 @@ async function winningChatContest(message, client, userData) {
             if (chatMultiplier > 4.5) chatMultiplier = 4.5;
             let chatMultiplier2 = (chatCombo - 300) / 200; // increases messages 300-500
             if (chatMultiplier2 > 1) chatMultiplier2 = 1;
+            if (chatMultiplier2 < 0) chatMultiplier2 = 0;
             let gold;
             switch (Math.floor(Math.random() * chatMultiplier) + chatMultiplier2) {
                 case 0:
