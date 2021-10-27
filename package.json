@@ -1,7 +1,7 @@
 {
   "name": "godbot",
-  "version": "4.9.0",
-  "updateMsg": "Enabled spookmode! :ghost:",
+  "version": "4.9.1",
+  "updateMsg": "Upgraded chat-killing contests' handling of deleted messages, and made it impossible to win twice in a row in case of a bot restart.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",

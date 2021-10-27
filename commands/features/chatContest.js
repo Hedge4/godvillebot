@@ -1,4 +1,4 @@
-const { logs } = require('../../configurations/config.json');
+const { logs, botID } = require('../../configurations/config.json');
 
 // basic setup for chat contests
 let lastMessage = null, lastWinner = '', chatCombo = 0;
@@ -6,32 +6,84 @@ const chatContestChannel = '313398424911347712';
 const chatContestTime = 30;
 
 // get the latest message applying for the chat contest
-function checkChatContest(client, userData) {
+async function checkChatContest(client, userData) {
+    const logsChannel = client.channels.cache.get(logs);
+    const message = await getLastMessage(client); // get last message in the channel sent by a normal user
+
+    if (!message) {
+        console.log('The last 20 messages were either retrieved incorrectly, were too old, or were all sent by bots. No chat killing timers were set.');
+        logsChannel.send('The last 20 messages were either retrieved incorrectly, were too old, or were all sent by bots. No chat killing timers were set.');
+        setLastWinner(client);
+        return;
+    }
+
+    let elapsed = Date.now() - message.createdTimestamp;
+    // get the time remaining until they would've won (in seconds)
+    let timeRemaining = chatContestTime * 60 * 1000 - elapsed;
+    elapsed = ~~(elapsed / 1000); // change elapsed to seconds for the logs at the end of the function
+    if (timeRemaining >= 0) {
+        // set timer, message and author if the message isn't too old
+        lastMessage = message;
+        chatCombo = 1; // sadly combo has to reset because lazy (jk but keeping combo is too much effort)
+        setTimeout(() => {
+            winningChatContest(message, client, userData);
+        }, timeRemaining);
+
+        timeRemaining = ~~(timeRemaining / 1000); // change timeremaining to seconds for the logs
+        console.log(`Last chat contest elligible message was sent ${elapsed} seconds ago, ${timeRemaining / 60} minutes and ${timeRemaining % 60} seconds remaining until chat is ded.`);
+        logsChannel.send(`Last chat contest elligible message was sent ${elapsed} seconds ago, ${timeRemaining / 60} minutes and ${timeRemaining % 60} seconds remaining until chat is ded.`);
+    } else {
+    timeRemaining *= -1; // timeRemaining is negative in this case
+    timeRemaining = ~~(timeRemaining / 1000); // change timeremaining to seconds for the logs
+    console.log(`Last chat contest elligible message was sent ${elapsed} seconds ago, which means chat has been dead for ${timeRemaining / 60} minutes and ${timeRemaining % 60} seconds.`);
+    logsChannel.send(`Last chat contest elligible message was sent ${elapsed} seconds ago, which means chat has been dead for ${timeRemaining / 60} minutes and ${timeRemaining % 60} seconds.`);
+    }
+
+    setLastWinner(client);
+    return;
+}
+
+// get the most recent message sent in the chatContestChannel by a normal user
+async function getLastMessage(client) {
+    const amount = 20; // amount of messages to fetch (max 100)
     const channel = client.channels.cache.get(chatContestChannel);
-    // get latest few messages of the channel
-    channel.messages.fetch()
-        .then(messages => {
-            // loop through messages until one not sent by a bot is found
-            for (const message of messages.array()) {
-                if (message.author.bot) continue;
-                const elapsed = Date.now() - message.createdTimestamp;
-                // get the time remaining until they would've won
-                const timeRemaining = (chatContestTime * 60 * 1000) - elapsed;
-                if (timeRemaining >= 0) {
-                    // set timer, message and author if the message isn't too old
-                    lastMessage = message;
-                    chatCombo = 1; // sadly combo has to reset because lazy (jk but keeping combo is too much effort)
-                    setTimeout(() => {
-                        winningChatContest(message, client, userData);
-                    }, timeRemaining);
-                }
-                const logsChannel = client.channels.cache.get(logs);
-                console.log(`Last chat contest elligible message was sent ${elapsed} milliseconds ago, ${timeRemaining} seconds remaining until chat is ded.`);
-                logsChannel.send(`Last chat contest elligible message was sent ${elapsed} milliseconds ago, ${timeRemaining} seconds remaining until chat is ded.`);
-                return;
-            }
-        })
+    const messages = await channel.messages.fetch({ limit: amount })
         .catch(console.error);
+
+    // loop through messages until one not sent by a bot is found
+    for (const message of messages.array()) {
+        if (message.author.bot) continue;
+        return message;
+    }
+    return null; // if no suitable messages were found in the fetched collection
+}
+
+async function setLastWinner(client) {
+    const channel = client.channels.cache.get(chatContestChannel);
+    const logsChannel = client.channels.cache.get(logs);
+
+    let user;
+    let messages = await channel.messages.fetch({ limit: 100 });
+
+    // search back 1000 messages at most
+    for (let i = 0; i < 10; i++) {
+
+        for (const msg of messages.array()) {
+            if (!msg.author.bot) continue;
+            if (!msg.author.id == botID) continue; // check if author is the bot
+            if (!msg.content.includes('for successfully killing chat!')) continue;
+
+            user = msg.mentions.users.first();
+            lastWinner = user.id;
+            return;
+        }
+
+        // get the next 100 messages to check
+        messages = await channel.messages.fetch({ limit: 100, before: messages.last().id });
+    }
+
+    console.log(`${user.tag} was found and set as the last chat-killer.`);
+    logsChannel.send(`${user.tag} was found and set as the last chat-killer.`);
 }
 
 // run contest for the last message in general chat
@@ -43,6 +95,20 @@ function checkMessage(message, client, userData) {
             setTimeout(() => {
                 winningChatContest(message, client, userData);
             }, chatContestTime * 60 * 1000);
+        }
+    }
+}
+
+async function deleteMessage(message, client) {
+    if (message.channel.id == chatContestChannel) {
+        if (message.id == lastMessage.id) {
+            const newLastMessage = await getLastMessage(client);
+            if (message) {
+                chatCombo -= 1;
+                lastMessage = newLastMessage;
+            } else {
+                lastMessage = null;
+            }
         }
     }
 }
@@ -108,3 +174,4 @@ async function winningChatContest(message, client, userData) {
 
 exports.check = checkChatContest;
 exports.newMessage = checkMessage;
+exports.deleteMessage = deleteMessage;

@@ -223,6 +223,12 @@ client.on('message', async (message) => {
     }
 });
 
+client.on('messageDelete', deletedMessage => {
+    if (deletedMessage.author.bot) {return;}
+
+    chatContest.deleteMessage(deletedMessage, client);
+});
+
 
 // log in to Discord after any setup is done
 client.login(token);
