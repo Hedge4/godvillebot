@@ -58,7 +58,7 @@ async function accept(message, client, Discord, userData) {
     const old_channel = await client.channels.cache.get(botServerChannels[0]);
     const old_msg = await old_channel.messages.fetch(ID);
     const contents = old_msg.content;
-    let suggestion = contents.slice(0, contents.indexOf('\n'));
+    let suggestion = contents.slice(contents.indexOf('\n'));
     let username = /--- (.*?#[0-9]*?) /.exec(contents)[1];
     const user = getUsers.One(username, client);
     const userFound = user != undefined;
@@ -150,7 +150,7 @@ async function reject(message, client, Discord) {
     const old_channel = await client.channels.cache.get(botServerChannels[0]);
     const old_msg = await old_channel.messages.fetch(ID);
     const contents = old_msg.content;
-    let suggestion = contents.slice(0, contents.indexOf('\n'));
+    let suggestion = contents.slice(contents.indexOf('\n'));
     let username = /--- (.*?#[0-9]*?) /.exec(contents)[1];
     const user = getUsers.One(username, client);
     const userFound = user != undefined;
