@@ -17,9 +17,7 @@ async function checkDaily(client, message, limitedCommandsData, userData) {
                 gold: 0,
                 total_godpower: 0,
                 level: 0,
-            };
-            User[message.author.id].last_username = message.author.tag;
-            await userData.set(User, { merge: true });
+            }; // last_username is set later, but is also part of a User object
         } else {
             User[message.author.id] = userDoc.data()[message.author.id];
         }

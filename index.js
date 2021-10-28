@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { version, updateMsg } = require('./package.json');
+const { version, updateMsg1, updateMsg2, updateMsg3 } = require('./package.json');
 const { logs, botServer, prefix, token, server, owner, noXpChannels, botvilleChannel, commandChannels,
     newspaperChannels, adminRole, ignoredChannels } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator } = require('./configurations/commands.json');
@@ -61,9 +61,10 @@ client.on('ready', () => {
     const logsChannel = client.channels.cache.get(logs);
     console.log(`\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!`);
     console.log(`Logged in to the following guilds: ${client.guilds.cache.array().sort()}`);
-    console.log(`New: ${updateMsg}`);
+    console.log(`Newly added:\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}`);
     logsChannel.send(`\`\`\`fix\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!
-        \nLogged in to the following guilds: ${client.guilds.cache.array().sort()}\nNew: ${updateMsg}\`\`\``);
+        \nLogged in to the following guilds: ${client.guilds.cache.array().sort()}\n
+        __Newly added:__\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}\`\`\``);
     client.user.setActivity(`${prefix}help | By Wawajabba`);
     if (totalGodpower === undefined) {
         totalGodpower = 0;
@@ -71,7 +72,8 @@ client.on('ready', () => {
     const startEmbed = new Discord.MessageEmbed()
         .setTitle('**Successfully restarted!**')
         .setColor('ffffff')
-        .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.\n\nNew: ${updateMsg}`)
+        .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.
+            \n__Newly added:__\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}`)
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
         .setTimestamp();
     client.channels.cache.get(botvilleChannel).send(startEmbed);
@@ -210,7 +212,7 @@ client.on('message', async (message) => {
 
     // handle accepting or rejecting suggestions in the bot's suggestion/log server
     } else if (message.guild.id == botServer) {
-        return suggest.handleMessage(message, client);
+        return suggest.handleMessage(message, client, Discord, userData);
 
     // respond when the bot is in a server it shouldn't be in
     } else {

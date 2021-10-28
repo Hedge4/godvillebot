@@ -1,7 +1,9 @@
 {
   "name": "godbot",
-  "version": "4.9.1",
-  "updateMsg": "Upgraded chat-killing contests' handling of deleted messages, and made it impossible to win twice in a row in case of a bot restart.",
+  "version": "4.10.0",
+  "updateMsg1": "4.10.0 Accepting/rejecting suggestions now sends a message in botville, and accepted suggestions reward gold!",
+  "updateMsg2": "4.10.0  Startup messages now display the three latest features instead of only the most recent one.",
+  "updateMsg3": "4.9.1  Upgraded chat-killing contests' handling of deleted messages, and made it impossible to win twice in a row in case of a bot restart.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",

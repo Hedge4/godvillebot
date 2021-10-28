@@ -75,6 +75,8 @@ async function setLastWinner(client) {
 
             user = msg.mentions.users.first();
             lastWinner = user.id;
+            console.log(`${user.tag} was found and set as the last chat-killer.`);
+            logsChannel.send(`${user.tag} was found and set as the last chat-killer.`);
             return;
         }
 
@@ -82,8 +84,8 @@ async function setLastWinner(client) {
         messages = await channel.messages.fetch({ limit: 100, before: messages.last().id });
     }
 
-    console.log(`${user.tag} was found and set as the last chat-killer.`);
-    logsChannel.send(`${user.tag} was found and set as the last chat-killer.`);
+    console.log('ERROR: No succesful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code?');
+    logsChannel.send('ERROR: No succesful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code?');
 }
 
 // run contest for the last message in general chat
