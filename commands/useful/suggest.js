@@ -166,7 +166,7 @@ async function reject(message, client, Discord) {
     .setTitle('<:i_rejected:700766050345549884> Suggestion content:')
     .setColor(0xce4321) // dark orange
     .setDescription(suggestion)
-    .addField('Thank you! <:stat_gold:401414686651711498>', 'Although your suggestion was rejected, thank you for coming up with new suggestions for the bot!', true)
+    .addField('Thank you! <:stat_gold:401414686651711498>', 'Although your suggestion was rejected, thank you for coming up with new ideas for the bot!', true)
     .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/whatsapp/302/cross-mark_274c.png')
     .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
     .setTimestamp();
