@@ -60,7 +60,7 @@ async function accept(message, client, Discord, userData) {
     const contents = old_msg.content;
     let suggestion = contents.slice(0, contents.indexOf('\n'));
     let username = /--- (.*?#[0-9]*?) /.exec(contents)[1];
-    const user = getUsers.One(username);
+    const user = getUsers.One(username, client);
     const userFound = user != undefined;
     if (userFound) username = `<@${user.id}>`;
 
@@ -152,7 +152,7 @@ async function reject(message, client, Discord) {
     const contents = old_msg.content;
     let suggestion = contents.slice(0, contents.indexOf('\n'));
     let username = /--- (.*?#[0-9]*?) /.exec(contents)[1];
-    const user = getUsers.One(username);
+    const user = getUsers.One(username, client);
     const userFound = user != undefined;
     if (userFound) username = `<@${user.id}>`;
 
