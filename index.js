@@ -55,16 +55,16 @@ blockedData.get()
 // setup done as soon as the bot has a connection with Discord
 client.on('ready', () => {
     const guild = client.guilds.cache.get(server);
-    guild.me.setNickname('GodBot');
+    guild.me.setNickname('GoddessBot');
     guild.members.fetch();
     const currentDate = new Date();
     const logsChannel = client.channels.cache.get(logs);
     console.log(`\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!`);
-    console.log(`Logged in to the following guilds: ${client.guilds.cache.array().sort()}`);
-    console.log(`Newly added:\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}`);
+    console.log(`Logged in to the following guilds: ${client.guilds.cache.array().sort().join(', ')}`);
+    console.log(`\nNewly added:\n• ${updateMsg1}\n• ${updateMsg2}\n• ${updateMsg3}`);
     logsChannel.send(`\`\`\`fix\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!
-        \nLogged in to the following guilds: ${client.guilds.cache.array().sort()}\n
-        __Newly added:__\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}\`\`\``);
+        \nLogged in to the following guilds: ${client.guilds.cache.array().sort().join(', ')}
+        \nNewly added:\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}\`\`\``);
     client.user.setActivity(`${prefix}help | By Wawajabba`);
     if (totalGodpower === undefined) {
         totalGodpower = 0;
@@ -73,7 +73,7 @@ client.on('ready', () => {
         .setTitle('**Successfully restarted!**')
         .setColor('ffffff')
         .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.
-            \n__Newly added:__\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}`)
+            \n**Newly added:**\n• ${updateMsg1}\n• ${updateMsg2}\n• ${updateMsg3}`)
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
         .setTimestamp();
     client.channels.cache.get(botvilleChannel).send(startEmbed);

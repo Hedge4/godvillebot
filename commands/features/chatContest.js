@@ -30,13 +30,13 @@ async function checkChatContest(client, userData) {
         }, timeRemaining);
 
         timeRemaining = ~~(timeRemaining / 1000); // change timeremaining to seconds for the logs
-        console.log(`Last chat contest elligible message was sent ${elapsed} seconds ago, ${timeRemaining / 60} minutes and ${timeRemaining % 60} seconds remaining until chat is ded.`);
-        logsChannel.send(`Last chat contest elligible message was sent ${elapsed} seconds ago, ${timeRemaining / 60} minutes and ${timeRemaining % 60} seconds remaining until chat is ded.`);
+        console.log(`Last chat contest elligible message was sent ${elapsed} seconds ago, ${~~(timeRemaining / 60)} minutes and ${timeRemaining % 60} seconds remaining until chat is ded.`);
+        logsChannel.send(`Last chat contest elligible message was sent ${elapsed} seconds ago, ${~~(timeRemaining / 60)} minutes and ${timeRemaining % 60} seconds remaining until chat is ded.`);
     } else {
     timeRemaining *= -1; // timeRemaining is negative in this case
     timeRemaining = ~~(timeRemaining / 1000); // change timeremaining to seconds for the logs
-    console.log(`Last chat contest elligible message was sent ${elapsed} seconds ago, which means chat has been dead for ${timeRemaining / 60} minutes and ${timeRemaining % 60} seconds.`);
-    logsChannel.send(`Last chat contest elligible message was sent ${elapsed} seconds ago, which means chat has been dead for ${timeRemaining / 60} minutes and ${timeRemaining % 60} seconds.`);
+    console.log(`Last chat contest elligible message was sent ${elapsed} seconds ago, which means chat has been dead for ${~~(timeRemaining / 60)} minutes and ${timeRemaining % 60} seconds.`);
+    logsChannel.send(`Last chat contest elligible message was sent ${elapsed} seconds ago, which means chat has been dead for ${~~(timeRemaining / 60)} minutes and ${timeRemaining % 60} seconds.`);
     }
 
     setLastWinner(client);
