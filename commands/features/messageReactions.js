@@ -3,9 +3,9 @@ const reactionEvents = [
 
 {
     name: 'Spookmode',
-    active: true,
+    active: false,
     triggers: ['spook', 'scare', 'scary', 'horror', 'horrify', 'terror', 'terrify', 'scream', 'skeleton',
-    'creepy', 'pumpkin', 'ghost', 'vampire', 'nito', 'werewolf', 'zombie', 'fright', 'halloween', 'racism',
+    'creepy', 'pumpkin', 'ghost', 'vampire', 'werewolf', 'zombie', 'fright', 'halloween', 'racism',
     'witch', 'spider', 'skull', 'fear', 'mummy', 'trick or treat'],
     reactions: ['https://c.tenor.com/EaQlLgHY9dwAAAAM/pumpkins-pumpkin.gif',
     'https://c.tenor.com/uDCPw_UdZOoAAAAM/skeleton-dance.gif',

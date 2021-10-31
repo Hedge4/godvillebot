@@ -85,15 +85,15 @@ async function accept(message, client, Discord, userData) {
         case 1:
         default:
             goldEarned = 50;
-            goldEarnedMsg = `You earned ${goldEarned} for making a small suggestion for the bot!`;
+            goldEarnedMsg = `You earned ${goldEarned} gold for making a small suggestion for the bot!`;
             break;
         case 2:
             goldEarned = 150;
-            goldEarnedMsg = `You earned ${goldEarned} for making a suggestion for the bot!`;
+            goldEarnedMsg = `You earned ${goldEarned} gold for making a suggestion for the bot!`;
             break;
         case 3:
             goldEarned = 500;
-            goldEarnedMsg = `You earned ${goldEarned} for making a big suggestion for the bot!`;
+            goldEarnedMsg = `You earned ${goldEarned} gold for making a big suggestion for the bot!`;
             break;
     }
     if (userFound) {
