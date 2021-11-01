@@ -91,12 +91,16 @@ async function showGodvilleProfile(message, godURL, client, Discord) {
 
     godURL = godURL.replace(/%20/g, ' ');
     if (!godURL.startsWith('https://godvillegame.com/gods/')) {
+        if (!(/^[A-Z][a-zA-Z0-9- ]{2,29}$/.test(godURL))) {
 
-        return message.reply('this URL doesn\'t seem to start with "<https://godvillegame.com/gods/>". Please try again with a correctly formatted URL.');
+            return message.reply(`this god(dess) name, ${godURL.slice(30)}, seems to be illegal. Make sure it only includes letters, numbers, hypens and spaces, and starts with a capital letter.`);
+        } else {
+            godURL = 'https://godvillegame.com/gods/' + godURL;
+        }
 
     } else if (!(/^[A-Z][a-zA-Z0-9- ]{2,29}$/.test(godURL.slice(30)))) {
 
-        return message.reply(`the god name at the end of the URL, ${godURL.slice(30)}, seems to be illegal. Make sure it only includes letters, numbers, hypens and spaces, and starts with a capital letter.`);
+        return message.reply(`the god(dess) name at the end of the URL, ${godURL.slice(30)}, seems to be illegal. Make sure it only includes letters, numbers, hypens and spaces, and starts with a capital letter.`);
     }
 
     let god = godURL.slice(30);
@@ -186,8 +190,8 @@ async function showLink(message, username, client, godData) {
     message.reply(`this is the god(dess) linked to ${fetchedUser}: **${god}** <${godURL}>`);
 
     const logsChannel = client.channels.cache.get(logs);
-    console.log(`${message.author.tag} requested the profile URL for ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
-    logsChannel.send(`${message.author.tag} requested the profile URL for ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
+    console.log(`${message.author.tag} requested the profile URL for god(dess) ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
+    logsChannel.send(`${message.author.tag} requested the profile URL for god(dess) ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
 }
 
 async function getGodData(URL, message, client) {
