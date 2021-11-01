@@ -2,12 +2,11 @@ const https = require('https');
 const { prefix, logs, botvilleChannel } = require('../../configurations/config.json');
 const getUsers = require('../features/getUsers');
 
-async function show_profile(message, client, Discord, godData) {
+async function showProfile(message, username, client, Discord, godData) {
 
     let self;
     let user;
-    if (message.content.length > 9) {
-        const username = message.content.slice(9).trim();
+    if (username.length > 0) {
         user = getUsers.One(username, client);
         if (!user) {
             return message.reply('mention a valid user or use a valid username/ID!');
@@ -27,7 +26,7 @@ async function show_profile(message, client, Discord, godData) {
     const godDoc = await godData.get();
     if(godDoc.data()[user.id] === undefined) {
         if (!self) {
-            return message.reply(`<@${user.id}> hasn't linked their Godville account yet.\nThey can do so using the \`>link\` command in <#${botvilleChannel}>.`);
+            return message.reply(`<@${user.id}> hasn't linked their Godville account yet.\nThey can do so using the \`${prefix}link\` command in <#${botvilleChannel}>.`);
         } else { return message.reply(`you haven't linked your Godville account yet. You can do that with the following command in <#${botvilleChannel}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
     }
     const godURL = godDoc.data()[user.id];
@@ -42,6 +41,7 @@ async function show_profile(message, client, Discord, godData) {
         godvilleData = await getGodData(godURL, message);
     } catch(err) {
         console.log(`Error while getting god data for ${godURL}! Error: \n` + err);
+        logsChannel.send(`Error while getting god data for ${godURL}! Error: \n` + err);
         godvilleData = null;
     }
 
@@ -85,6 +85,42 @@ async function show_profile(message, client, Discord, godData) {
         .setFooter(author, user.displayAvatarURL());
         return message.channel.send(godEmbed);
     }
+}
+
+async function showLink(message, username, client, godData) {
+    let self;
+    let user;
+    if (username.length > 0) {
+        user = getUsers.One(username, client);
+        if (!user) {
+            return message.reply('mention a valid user or use a valid username/ID!');
+        }
+    } else {
+        user = message.author;
+        self = true;
+    }
+
+    let fetchedUser = user.tag;
+    const nickname = message.guild.member(user) ? message.guild.member(user).displayName : null;
+    if (nickname !== user.username) {
+        fetchedUser += '/' + nickname;
+    }
+
+    const godDoc = await godData.get();
+    if(godDoc.data()[user.id] === undefined) {
+        if (!self) {
+            return message.reply(`<@${user.id}> hasn't linked their Godville account yet.\nThey can do so using the \`${prefix}link\` command in <#${botvilleChannel}>.`);
+        } else { return message.reply(`you haven't linked your Godville account yet. You can do that with the following command in <#${botvilleChannel}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
+    }
+
+    const godURL = godDoc.data()[user.id];
+    let god = godURL.slice(30);
+    god = decodeURI(god);
+    message.reply(`this is the god(dess) linked to ${fetchedUser}: **${god}** <${godURL}>`);
+
+    const logsChannel = client.channels.cache.get(logs);
+    console.log(`${message.author.tag} requested the profile URL for ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
+    logsChannel.send(`${message.author.tag} requested the profile URL for ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
 }
 
 async function getGodData(URL, message) {
@@ -195,4 +231,6 @@ async function getGodData(URL, message) {
     return([gender, avatar_url, name, level, god_gender, achievements, pet_type, pet_name, motto, guild_name, guild_url, age]);
 }
 
-exports.show = show_profile;
+exports.showProfile = showProfile;
+//exports.showGodvilleProfile = showGodvilleProfile;
+exports.showLink = showLink;

@@ -1,7 +1,29 @@
 {
-	"godville": [["profile", ["god", "goddess"]], ["guides", []], ["godwiki", []], ["link", []]],
-	"godpower": [["level", ["rank"]], ["ranking", []], ["gold", []], ["daily", []], ["toggle-mentions", []]],
-    "useful": [["suggest", ["suggestion"]], ["spoiler", []], ["code", ["github"]], ["ping", ["pong", "latency"]], ["react", []]],
-    "fun": [["minesweeper", []], ["bubblewrap", []], ["randomnick", ["nickname"]]],
-    "moderator": [["break", []], ["block", []], ["unblock", []], ["blocklist", []], ["purge", []]]
+	"godville": [["profile", ["god", "goddess", "showprofile"]],
+        ["guides", []],
+        ["godwiki", []],
+        ["link", []],
+        ["showlink", ["showurl"]]],
+
+	"godpower": [["level", ["rank"]],
+        ["ranking", []],
+        ["gold", []],
+        ["daily", []],
+        ["toggle-mentions", ["togglementions"]]],
+
+    "useful": [["suggest", ["suggestion"]],
+        ["spoiler", []],
+        ["code", ["github"]],
+        ["ping", ["pong", "latency"]],
+        ["react", []]],
+
+    "fun": [["minesweeper", []],
+        ["bubblewrap", []],
+        ["randomnick", ["nickname", "changenick", "changenickname"]]],
+
+    "moderator": [["break", []],
+        ["block", []],
+        ["unblock", []],
+        ["blocklist", []],
+        ["purge", []]]
 }

@@ -6,7 +6,9 @@ const profile = require('./profile');
 function redirect(cmd, content, message, client, Discord, godData) {
     switch (cmd) {
         case 'profile':
-            return profile.show(message, client, Discord, godData);
+            return profile.showProfile(message, content, client, Discord, godData);
+        case 'showLink':
+            return profile.showLink(message, content, client, godData);
         case 'guides':
             return guide(message, client, Discord);
         case 'godwiki':
