@@ -131,7 +131,7 @@ client.on('message', async (message) => {
         if (message.content.toLowerCase().startsWith(prefix)) {
             if (message.content.trim().length <= prefix.length) return; // only prefix (and whitespace)
             const cmd = message.content.toLowerCase().slice(prefix.length).split(/\s+/)[0]; // remove prefix and take first word
-            const content = message.content.toLowerCase().slice(prefix.length + cmd.length).trim(); // remove prefix, command and whitespace
+            const content = message.content.slice(prefix.length + cmd.length).trim(); // remove prefix, command and whitespace
 
             if (commandChannels.includes(message.channel.id)) {
                 // redirect godpower module commands
