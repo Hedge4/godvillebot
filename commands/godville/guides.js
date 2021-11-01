@@ -31,7 +31,7 @@ function show_guides_list(client, message) {
     const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} requested the list of guides in channel ${message.channel.name}`);
     logsChannel.send(`${message.author.tag} requested the list of guides in channel ${message.channel.name}`);
-    let text = '```\n';
+    let text = '```diff\n';
     for (let i = 0; i < guides_list.length; i++) {
         text += `+ {${i + 1}}  ${guides_list[i][0]}\n`;
     }

@@ -287,8 +287,8 @@ async function getGodData(URL, message, client) {
         gender = 'Hero';
     } else { gender = 'Heroine'; }
     if (!god_gender_res) {
-        god_gender = 'god';
-    } else { god_gender = 'goddess'; }
+        god_gender = 'God';
+    } else { god_gender = 'Goddess'; }
     let achievements = '';
     if (!temple && !animalist) {
         achievements = `This ${god_gender} doesn't have any medals yet.`;
