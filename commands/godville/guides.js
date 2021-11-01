@@ -1,4 +1,4 @@
-const { logs } = require('../../configurations/config.json');
+const { logs, prefix } = require('../../configurations/config.json');
 
 const guides_list = [
     ['Extensive sailing guide by Blue Feather',
@@ -33,9 +33,9 @@ function show_guides_list(client, message) {
     logsChannel.send(`${message.author.tag} requested the list of guides in channel ${message.channel.name}`);
     let text = '```\n';
     for (let i = 0; i < guides_list.length; i++) {
-        text += ` {${i + 1}}  ${guides_list[i][0]}\n`;
+        text += `+ {${i + 1}}  ${guides_list[i][0]}\n`;
     }
-    text += '\nUse ">guides [number]" to get the URL to a specific guide. Contact Wawajabba to include your guide here, or use >suggest. Be sure to include the URL, a short and an extended description and the guide authors.\n```';
+    text += `\nUse "${prefix}guides [number]" to get the URL to a specific guide. Contact Wawajabba to include your guide here, or use ${prefix}suggest. Be sure to include the URL, a short and an extended description and the guide authors.\n\`\`\``;
     message.reply(`here are all ${guides_list.length} currently available guides:\n${text}`);
 }
 
@@ -53,14 +53,14 @@ function show_guide(message, guide_number, client, Discord) {
     logsChannel.send(`${message.author.tag} requested the guide "${guides_list[index_number][0]}" in channel ${message.channel.name}.`);
 }
 
-function list_or_guide(message, client, Discord) {
-    let number = message.content.slice(7).trim();
+function list_or_guide(message, number, client, Discord) {
     if (!number.length) {
         show_guides_list(client, message);
     } else {
         const logsChannel = client.channels.cache.get(logs);
         console.log(`${message.author.tag} requested guide ${number} in channel ${message.channel.name}.`);
         logsChannel.send(`${message.author.tag} requested guide ${number} in channel ${message.channel.name}.`);
+
         if (isNaN(number)) {
             return message.reply('you need to enter the number of the guide you want to view.');
         }

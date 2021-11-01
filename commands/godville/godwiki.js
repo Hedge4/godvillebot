@@ -1,7 +1,6 @@
 const { logs } = require('../../configurations/config.json');
 
-function searchWiki(client, message) {
-    let search = message.content.slice(8).trim();
+function searchWiki(client, search, message) {
     if (!search.length) { return message.reply('you have to input a search term to search the godwiki for.'); }
     search = encodeURI(search);
     const logsChannel = client.channels.cache.get(logs);

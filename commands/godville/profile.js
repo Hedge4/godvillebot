@@ -38,7 +38,7 @@ async function showProfile(message, username, client, Discord, godData) {
 
     let godvilleData = null;
     try {
-        godvilleData = await getGodData(godURL, message);
+        godvilleData = await getGodData(godURL, message, client);
     } catch(err) {
         console.log(`Error while getting god data for ${godURL}! Error: \n` + err);
         logsChannel.send(`Error while getting god data for ${godURL}! Error: \n` + err);
@@ -58,7 +58,7 @@ async function showProfile(message, username, client, Discord, godData) {
 
     if (!godvilleData[6]) {
         const godEmbed = new Discord.MessageEmbed()
-        .setTitle(god)
+        .setTitle(`${godvilleData[4]} ${god}`)
         .setURL(godURL)
         .setThumbnail(godvilleData[1])
         .setDescription('Coming soon: Badges!')
@@ -71,7 +71,7 @@ async function showProfile(message, username, client, Discord, godData) {
         return message.channel.send(godEmbed);
     } else {
         const godEmbed = new Discord.MessageEmbed()
-        .setTitle(god)
+        .setTitle(`${godvilleData[4]} ${god}`)
         .setURL(godURL)
         .setThumbnail(godvilleData[1])
         .setDescription('Coming soon: Badges!')
@@ -83,6 +83,73 @@ async function showProfile(message, username, client, Discord, godData) {
         .addField('Medals', godvilleData[5], false)
         .setColor('006600')
         .setFooter(author, user.displayAvatarURL());
+        return message.channel.send(godEmbed);
+    }
+}
+
+async function showGodvilleProfile(message, godURL, client, Discord) {
+
+    godURL = godURL.replace(/%20/g, ' ');
+    if (!godURL.startsWith('https://godvillegame.com/gods/')) {
+
+        return message.reply('this URL doesn\'t seem to start with "<https://godvillegame.com/gods/>". Please try again with a correctly formatted URL.');
+
+    } else if (!(/^[A-Z][a-zA-Z0-9- ]{2,29}$/.test(godURL.slice(30)))) {
+
+        return message.reply(`the god name at the end of the URL, ${godURL.slice(30)}, seems to be illegal. Make sure it only includes letters, numbers, hypens and spaces, and starts with a capital letter.`);
+    }
+
+    let god = godURL.slice(30);
+    godURL = godURL.replace(/ /g, '%20');
+    god = decodeURI(god);
+    const logsChannel = client.channels.cache.get(logs);
+    console.log(`${message.author.tag} requested the profile page for URL ${godURL} in channel ${message.channel.name}.`);
+    logsChannel.send(`${message.author.tag} requested the profile page for URL ${godURL} in channel ${message.channel.name}.`);
+
+    let godvilleData = null;
+    try {
+        godvilleData = await getGodData(godURL, message, client);
+    } catch(err) {
+        console.log(`Error while getting god data for ${godURL}! Error: \n` + err);
+        logsChannel.send(`Error while getting god data for ${godURL}! Error: \n` + err);
+        godvilleData = null;
+    }
+
+    if (!godvilleData) {
+        const godEmbed = new Discord.MessageEmbed()
+        .setTitle(god)
+        .setURL(godURL)
+        .setDescription('Click the god(dess)\'s username to open their Godville page.')
+        .addField('ERROR', 'I couldn\'t found any data for this god(dess). Either the bot can\'t acces this page or it was linked incorrectly. In case of the former, the link above will still work.')
+        .setColor('006600');
+        return message.channel.send(godEmbed);
+    }
+
+    if (!godvilleData[6]) {
+        const godEmbed = new Discord.MessageEmbed()
+        .setTitle(`${godvilleData[4]} ${god}`)
+        .setURL(godURL)
+        .setThumbnail(godvilleData[1])
+        .setDescription('Coming soon: Badges!')
+        .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}\n${godvilleData[11]} old`, true)
+        .addField('Motto', godvilleData[8], true)
+        .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
+        .addField('Medals', godvilleData[5], false)
+        .setColor('006600');
+        return message.channel.send(godEmbed);
+    } else {
+        const godEmbed = new Discord.MessageEmbed()
+        .setTitle(`${godvilleData[4]} ${god}`)
+        .setURL(godURL)
+        .setThumbnail(godvilleData[1])
+        .setDescription('Coming soon: Badges!')
+        .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}\n${godvilleData[11]} old`, true)
+        .addField('Motto', godvilleData[8], true)
+        .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
+        .addField('Pet type', godvilleData[6], true)
+        .addField('Pet name/level', godvilleData[7], true)
+        .addField('Medals', godvilleData[5], false)
+        .setColor('006600');
         return message.channel.send(godEmbed);
     }
 }
@@ -123,7 +190,7 @@ async function showLink(message, username, client, godData) {
     logsChannel.send(`${message.author.tag} requested the profile URL for ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
 }
 
-async function getGodData(URL, message) {
+async function getGodData(URL, message, client) {
     const myFirstPromise = new Promise((resolve, reject) => {
         https.get(URL, (res) => {
             res.on('data', (d) => {
@@ -136,17 +203,21 @@ async function getGodData(URL, message) {
         });
     });
 
+    const logsChannel = client.channels.cache.get(logs);
     let html = '';
     await myFirstPromise.then((result) => {
         html = result;
         //console.log(html);
     }).catch((error) => {
-        console.log('Oops! Couldn\'t get this God\'s page!' + error);
-        message.channel.send('Could not obtain online data. This is most likely a connection error, or your URL is incorrect.');
+        console.log(`Oops! Couldn't get god page for url ${URL}!` + error);
+        logsChannel.send(`Oops! Couldn't get god page for url ${URL}!` + error);
+        message.channel.send('Could not obtain online data. This is most likely a connection error, or the linked URL is incorrect.');
         return(null);
     });
 
     if (!html) {
+        console.log(`Failed to get any html for URL ${URL}.`);
+        logsChannel.send(`Failed to get any html for URL ${URL}.`);
         message.channel.send('Could not obtain online data. This is most likely a connection error.');
         return(null);
     }
@@ -232,5 +303,5 @@ async function getGodData(URL, message) {
 }
 
 exports.showProfile = showProfile;
-//exports.showGodvilleProfile = showGodvilleProfile;
+exports.showGodvilleProfile = showGodvilleProfile;
 exports.showLink = showLink;

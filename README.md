@@ -1,5 +1,5 @@
 # GodBot
-Version: 4.10.0
+Version: 4.11.0
 
 I should probably include some sort of description here. Meh, I'll add it later.
 
@@ -20,6 +20,7 @@ Lastly, commands now support aliases and are sorted into modules (as of version 
 * 4.8 Added a message reaction function that can randomly react to certain words in messages, and added and enabled spookmode.
 * 4.9 Added one generic getUser() function that can be accessed from anywhere in the features folder.
 * 4.10 Accepting/rejecting suggestions now sends a message in botville, and accepted suggestions reward gold!
+* 4.11 Added >gvprofile to show any Godville profile, and added >showlink to only show someone's linked URL, without fetching their profile.
 
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.

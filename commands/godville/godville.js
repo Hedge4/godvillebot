@@ -7,14 +7,16 @@ function redirect(cmd, content, message, client, Discord, godData) {
     switch (cmd) {
         case 'profile':
             return profile.showProfile(message, content, client, Discord, godData);
-        case 'showLink':
+        case 'gvprofile':
+            return profile.showGodvilleProfile(message, content, client, Discord);
+        case 'showlink':
             return profile.showLink(message, content, client, godData);
         case 'guides':
-            return guide(message, client, Discord);
+            return guide(message, content, client, Discord);
         case 'godwiki':
-            return godWiki(client, message);
+            return godWiki(client, content, message);
         case 'link':
-            return link(message, godData, client);
+            return link(message, content, godData, client);
         default:
             return message.reply(`the '${cmd}' command does not seem to be correctly set up.`);
     }

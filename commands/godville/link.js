@@ -1,10 +1,10 @@
 const { prefix, logs, commandChannels, botvilleChannel } = require('../../configurations/config.json');
 
-function link_profile(message, godData, client) {
+function link_profile(message, link, godData, client) {
     if (!commandChannels.includes(message.channel.id)) {
         return message.reply(`please only use this command in <#${botvilleChannel}> to avoid spam.`);
     }
-    let link = message.content.slice(5).trim();
+
     link = link.replace(/%20/g, ' ');
     const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} tried to link their account to '${link}'.`);
