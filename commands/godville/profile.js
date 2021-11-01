@@ -93,14 +93,14 @@ async function showGodvilleProfile(message, godURL, client, Discord) {
     if (!godURL.startsWith('https://godvillegame.com/gods/')) {
         if (!(/^[A-Z][a-zA-Z0-9- ]{2,29}$/.test(godURL))) {
 
-            return message.reply(`this god(dess) name, ${godURL.slice(30)}, seems to be illegal. Make sure it only includes letters, numbers, hypens and spaces, and starts with a capital letter.`);
+            return message.reply(`this god(dess) name, '${godURL}', seems to be illegal. Make sure it only includes letters, numbers, hypens and spaces, and starts with a capital letter.`);
         } else {
             godURL = 'https://godvillegame.com/gods/' + godURL;
         }
 
     } else if (!(/^[A-Z][a-zA-Z0-9- ]{2,29}$/.test(godURL.slice(30)))) {
 
-        return message.reply(`the god(dess) name at the end of the URL, ${godURL.slice(30)}, seems to be illegal. Make sure it only includes letters, numbers, hypens and spaces, and starts with a capital letter.`);
+        return message.reply(`the god(dess) name at the end of the URL, '${godURL.slice(30)}', seems to be illegal. Make sure it only includes letters, numbers, hypens and spaces, and starts with a capital letter.`);
     }
 
     let god = godURL.slice(30);
