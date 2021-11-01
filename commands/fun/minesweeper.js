@@ -63,7 +63,24 @@ function main(client, message) {
         spoilers += '\n';
     }
 
-    message.reply(`here is your minesweeper game with size ${size} and ${bombs.length} bombs:\n${spoilers}`);
+    // find all zeroes
+    const find = '||:zero:||';
+    const indices = [];
+    let i = -1;
+    while ((i = spoilers.indexOf(find, i + 1)) >= 0) {
+        indices.push(i);
+        i++;
+    }
+
+    if (!indices.length) {
+        message.reply(`here is your minesweeper game with size ${size} and ${bombs.length} bombs:\n${spoilers}`);
+        message.reply('This minefield does not contain any zeroes, so you do not get a starting position. Good luck.');
+    } else {
+        const index = indices[Math.floor(Math.random() * indices.length)];
+        spoilers = spoilers.substring(0, index) + ':zero:' + spoilers.substring(index + 10);
+        message.reply(`here is your minesweeper game with size ${size} and ${bombs.length} bombs:\n${spoilers}`);
+    }
+
 }
 
 module.exports = main;
