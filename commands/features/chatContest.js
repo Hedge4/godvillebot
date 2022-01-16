@@ -126,19 +126,22 @@ async function winningChatContest(message, client, userData) {
         const logsChannel = client.channels.cache.get(logs);
         if (message.author.id == lastWinner) {
             message.reply(`you were the last person to talk for ${chatContestTime} minutes, but you already won the last chat-killing contest! :skull:`);
-            console.log(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} minutes, but they had already won the previous contest.`);
-            logsChannel.send(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} minutes, but they had already won the previous contest.`);
+            console.log(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} minutes, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
+            logsChannel.send(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} minutes, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
         } else {
             lastWinner = message.author.id;
             if (chatCombo < 0) chatCombo = 0; // in case it's negative for whatever reason
             let chatMultiplier = (chatCombo / 75) + 0.5; // increases messages 0-300
             if (chatMultiplier > 4.5) chatMultiplier = 4.5;
-            let chatMultiplier2 = (chatCombo - 300) / 200; // increases messages 300-500
-            if (chatMultiplier2 > 1) chatMultiplier2 = 1;
-            if (chatMultiplier2 < 0) chatMultiplier2 = 0;
+            let chatMultiplierBonus = (chatCombo - 300) / 200; // increases messages 300-500
+            if (chatMultiplierBonus > 1) chatMultiplierBonus = 1;
+            if (chatMultiplierBonus < 0) chatMultiplierBonus = 0;
+            // round to 2 decimals
+            chatMultiplier = Math.round(chatMultiplier * 100) / 100;
+            chatMultiplierBonus = Math.round(chatMultiplierBonus * 100) / 100;
 
             let gold;
-            switch (Math.floor(Math.random() * chatMultiplier + chatMultiplier2)) {
+            switch (Math.floor(Math.random() * chatMultiplier + chatMultiplierBonus)) {
                 case 0:
                     gold = Math.floor(Math.random() * 14) + 6;
                     message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a small amount of gold <:t_gold:668200334933622794> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
@@ -179,8 +182,8 @@ async function winningChatContest(message, client, userData) {
             User[message.author.id].last_username = message.author.tag;
             userData.set(User, { merge: true });
 
-            console.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo} and tier multiplier ${~~chatMultiplier}. Gold: ${oldGold} -> ${newGold}.`);
-            logsChannel.send(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo} and tier multiplier ${~~chatMultiplier}. Gold: ${oldGold} -> ${newGold}.`);
+            console.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo}, tier multiplier ${chatMultiplier} and multiplier bonus ${chatMultiplierBonus}. Gold: ${oldGold} -> ${newGold}.`);
+            logsChannel.send(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo}, tier multiplier ${chatMultiplier} and multiplier bonus ${chatMultiplierBonus}. Gold: ${oldGold} -> ${newGold}.`);
         }
         lastMessage = null;
         chatCombo = 0;
