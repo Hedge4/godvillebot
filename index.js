@@ -66,7 +66,7 @@ client.on('ready', () => {
         \nLogged in to the following guilds: ${client.guilds.cache.array().sort().join(', ')}
         \nNewly added:\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}\`\`\``);
     client.user.setActivity(`${prefix}help | By Wawajabba`);
-    if (totalGodpower === undefined) {
+    if (!totalGodpower) {
         totalGodpower = 0;
     }
     const startEmbed = new Discord.MessageEmbed()
@@ -86,7 +86,7 @@ client.on('ready', () => {
     setTimeout(daily.reset, delay2, client, limitedCommandsData);
     setTimeout(crosswordgod.newsping, delay3, client);
     botDMs.checkDMContest(client);
-    chatContest.check(client, userData);
+    chatContest.startupCheck(client, userData);
 });
 
 

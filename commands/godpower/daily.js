@@ -4,8 +4,6 @@ async function checkDaily(client, message, limitedCommandsData, userData) {
     const logsChannel = client.channels.cache.get(logs);
     if (!usedDaily.includes(message.author.id)) {
         const goldAdd = Math.floor(Math.random() * 21) + 22;
-        console.log(`${message.author.tag} used their daily in ${message.channel.name}.`);
-        logsChannel.send(`${message.author.tag} used their daily in ${message.channel.name}.`);
         usedDaily.push(message.author.id);
         limitedCommandsData.set({ daily: usedDaily });
 
@@ -21,12 +19,15 @@ async function checkDaily(client, message, limitedCommandsData, userData) {
         } else {
             User[message.author.id] = userDoc.data()[message.author.id];
         }
-        const gold = User[message.author.id].gold + goldAdd;
-        User[message.author.id].gold = gold;
+        const oldGold = User[message.author.id].gold;
+        const newGold = Math.floor(oldGold + goldAdd);
+        User[message.author.id].gold = newGold;
         User[message.author.id].last_username = message.author.tag;
         userData.set(User, { merge: true });
 
-        message.reply(`you received **${goldAdd}** daily gold. You now have **${gold}** gold total. <:stat_gold:401414686651711498>`);
+        message.reply(`you received **${goldAdd}** daily gold. You now have **${newGold}** gold total. <:stat_gold:401414686651711498>`);
+        console.log(`${message.author.tag} used their daily in ${message.channel.name}. Gold: ${oldGold} -> ${newGold}.`);
+        logsChannel.send(`${message.author.tag} used their daily in ${message.channel.name}. Gold: ${oldGold} -> ${newGold}.`);
     } else {
         const delay = getResetTimer(client, false);
         console.log(`${message.author.tag} tried to use their daily in ${message.channel.name}, but had already used it.`);

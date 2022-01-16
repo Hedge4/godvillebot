@@ -24,7 +24,6 @@ async function checkChatContest(client, userData) {
     if (timeRemaining >= 0) {
         // set timer, message and author if the message isn't too old
         lastMessage = message;
-        chatCombo = 1; // sadly combo has to reset because lazy (jk but keeping combo is too much effort)
         setTimeout(() => {
             winningChatContest(message, client, userData);
         }, timeRemaining);
@@ -64,19 +63,21 @@ async function setLastWinner(client) {
 
     let user;
     let messages = await channel.messages.fetch({ limit: 100 });
+    chatCombo = -1;
 
     // search back 1000 messages at most
     for (let i = 0; i < 10; i++) {
 
         for (const msg of messages.array()) {
+            chatCombo++;
             if (!msg.author.bot) continue;
             if (!msg.author.id == botID) continue; // check if author is the bot
             if (!msg.content.includes('for successfully killing chat!')) continue;
 
             user = msg.mentions.users.first();
             lastWinner = user.id;
-            console.log(`${user.tag} was found and set as the last chat-killer.`);
-            logsChannel.send(`${user.tag} was found and set as the last chat-killer.`);
+            console.log(`${user.tag} was found and set as the last chat-killer. ChatCombo is ${chatCombo}.`);
+            logsChannel.send(`${user.tag} was found and set as the last chat-killer. ChatCombo is ${chatCombo}.`);
             return;
         }
 
@@ -84,20 +85,23 @@ async function setLastWinner(client) {
         messages = await channel.messages.fetch({ limit: 100, before: messages.last().id });
     }
 
-    console.log('ERROR: No succesful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code?');
-    logsChannel.send('ERROR: No succesful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code?');
+    chatCombo = 0;
+    console.log('ERROR: No succesful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code? ChatCombo was set to 0.');
+    logsChannel.send('ERROR: No succesful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code? ChatCombo was set to 0.');
 }
 
 // run contest for the last message in general chat
 function checkMessage(message, client, userData) {
     if (message.channel.id == chatContestChannel) {
         if (lastMessage == null || lastMessage.author.id !== message.author.id) {
-            chatCombo++;
-            lastMessage = message;
-            setTimeout(() => {
-                winningChatContest(message, client, userData);
-            }, chatContestTime * 60 * 1000);
+            chatCombo++; // only increase chatCombo for new authors
         }
+
+        // always set new lastMessage - in case messages are deleted
+        lastMessage = message;
+        setTimeout(() => {
+            winningChatContest(message, client, userData);
+        }, chatContestTime * 60 * 1000);
     }
 }
 
@@ -106,12 +110,13 @@ async function deleteMessage(message, client) {
         if (message.id == lastMessage.id) {
             const newLastMessage = await getLastMessage(client);
             if (message) {
-                chatCombo -= 1;
                 lastMessage = newLastMessage;
             } else {
                 lastMessage = null;
             }
         }
+
+        // chatCombo could be decreased here, but I'm not bothering with it.
     }
 }
 
@@ -125,13 +130,15 @@ async function winningChatContest(message, client, userData) {
             logsChannel.send(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} minutes, but they had already won the previous contest.`);
         } else {
             lastWinner = message.author.id;
+            if (chatCombo < 0) chatCombo = 0; // in case it's negative for whatever reason
             let chatMultiplier = (chatCombo / 75) + 0.5; // increases messages 0-300
             if (chatMultiplier > 4.5) chatMultiplier = 4.5;
             let chatMultiplier2 = (chatCombo - 300) / 200; // increases messages 300-500
             if (chatMultiplier2 > 1) chatMultiplier2 = 1;
             if (chatMultiplier2 < 0) chatMultiplier2 = 0;
+
             let gold;
-            switch (Math.floor(Math.random() * chatMultiplier) + chatMultiplier2) {
+            switch (Math.floor(Math.random() * chatMultiplier + chatMultiplier2)) {
                 case 0:
                     gold = Math.floor(Math.random() * 14) + 6;
                     message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a small amount of gold <:t_gold:668200334933622794> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
@@ -147,9 +154,10 @@ async function winningChatContest(message, client, userData) {
                     gold = Math.floor(Math.random() * 50) + 50;
                     message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a big crate of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
+                default:
+                    gold = 100;
+                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, but something went wrong calculating your reward. You were awarded a default amount of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:\n<@346301339548123136>`);
             }
-            console.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo} and tier multiplier ${chatMultiplier}.`);
-            logsChannel.send(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo} and tier multiplier ${chatMultiplier}.`);
 
             const userDoc = await userData.get();
             const User = {};
@@ -165,15 +173,20 @@ async function winningChatContest(message, client, userData) {
             } else {
                 User[message.author.id] = userDoc.data()[message.author.id];
             }
-            User[message.author.id].gold += gold;
+            const oldGold = User[message.author.id].gold;
+            const newGold = Math.floor(oldGold + gold);
+            User[message.author.id].gold = newGold;
             User[message.author.id].last_username = message.author.tag;
             userData.set(User, { merge: true });
+
+            console.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo} and tier multiplier ${~~chatMultiplier}. Gold: ${oldGold} -> ${newGold}.`);
+            logsChannel.send(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo} and tier multiplier ${~~chatMultiplier}. Gold: ${oldGold} -> ${newGold}.`);
         }
         lastMessage = null;
         chatCombo = 0;
     }
 }
 
-exports.check = checkChatContest;
+exports.startupCheck = checkChatContest;
 exports.newMessage = checkMessage;
 exports.deleteMessage = deleteMessage;

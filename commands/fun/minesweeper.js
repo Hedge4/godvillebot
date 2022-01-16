@@ -74,7 +74,7 @@ function main(client, message) {
 
     if (!indices.length) {
         message.reply(`here is your minesweeper game with size ${size} and ${bombs.length} bombs:\n${spoilers}`);
-        message.reply('This minefield does not contain any zeroes, so you do not get a starting position. Good luck.');
+        message.channel.send('This minefield does not contain any zeroes, so you do not get a starting position. Good luck.');
     } else {
         const index = indices[Math.floor(Math.random() * indices.length)];
         spoilers = spoilers.substring(0, index) + ':zero:' + spoilers.substring(index + 10);

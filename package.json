@@ -1,9 +1,9 @@
 {
   "name": "godbot",
   "version": "4.11.3",
-  "updateMsg1": "4.11.3 Games generated with the >minesweeper command will now start with one revealed zero.",
-  "updateMsg2": "4.11.0 Added the >gvprofile and >showlink commands!",
-  "updateMsg3": "4.10.0 Accepting/rejecting suggestions now sends a message in botville, and accepted suggestions reward gold!",
+  "updateMsg1": "4.11.4 Fixed several chatContest bugs and chatCombos now won't reset anymore when the bot restarts. Improved logging for gold updates.",
+  "updateMsg2": "4.11.3 Games generated with the >minesweeper command will now start with one unvealed zero.",
+  "updateMsg3": "4.11.0 Added the >gvprofile and >showlink commands!",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",
