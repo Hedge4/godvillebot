@@ -18,7 +18,7 @@ function redirect(cmd, content, message, Discord, client) {
         case 'react':
             return react(message, content, client);
         case 'makevote':
-            return makevote(message, content, client);
+            return makevote(message, content);
         default:
             return message.reply(`the '${cmd}' command does not seem to be correctly set up.`);
     }

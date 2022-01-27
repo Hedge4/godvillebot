@@ -14,6 +14,7 @@ const moderatorModule = require('./commands/moderator/moderator.js');
 const crosswordgod = require('./crosswordgod');
 
 // functions/commands (partly) separate from the main modules
+const logger = require('./commands/features/logging');
 const giveXP = require('./commands/features/givexp');
 const onMention = require('./commands/features/botMentions');
 const messageReactions = require('./commands/features/messageReactions');
@@ -59,10 +60,11 @@ client.on('ready', () => {
     guild.members.fetch();
     const currentDate = new Date();
     const logsChannel = client.channels.cache.get(logs);
+    logger.start(logsChannel);
     console.log(`\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!`);
     console.log(`Logged in to the following guilds: ${client.guilds.cache.array().sort().join(', ')}`);
     console.log(`\nNewly added:\n• ${updateMsg1}\n• ${updateMsg2}\n• ${updateMsg3}`);
-    logsChannel.send(`\`\`\`fix\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!
+    logger.logInChannel(`\`\`\`fix\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!
         \nLogged in to the following guilds: ${client.guilds.cache.array().sort().join(', ')}
         \nNewly added:\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}\`\`\``);
     client.user.setActivity(`${prefix}help | By Wawajabba`);
