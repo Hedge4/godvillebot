@@ -20,7 +20,7 @@
         ["code", ["github"]],
         ["ping", ["pong", "latency"]],
         ["react", []],
-        ["makevote", ["mv", "vote"]]],
+        ["makevote", ["mv", "vote", "mp", "makepoll", "poll"]]],
 
     "fun":
         [["minesweeper", []],
