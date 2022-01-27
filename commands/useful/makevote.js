@@ -35,19 +35,18 @@ async function main(message, content, client) {
                 return message.reply(`this message already has reactions which I tried to remove, but something went wrong. Error: ${error}`);
             }
             logsText += `${reactionCount} old reactions on the message were removed to do this.`;
-            react(message, reactionList);
+            react(targetMsg, reactionList);
         } else {
             return message.reply('this message already has reactions. This command will clear those, so only a moderator can do this.');
         }
     } else {
-        react(message, reactionList);
+        react(targetMsg, reactionList);
     }
 
     const logsChannel = client.channels.cache.get(logs);
     console.log(logsText);
     logsChannel.send(logsText);
     message.channel.send('Done!');
-    react(targetMsg, reactionList);
 }
 
 function react(message, reactionList) {
