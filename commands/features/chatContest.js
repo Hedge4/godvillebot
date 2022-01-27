@@ -95,10 +95,9 @@ function checkMessage(message, client, userData) {
     if (message.channel.id == chatContestChannel) {
         if (lastMessage == null || lastMessage.author.id !== message.author.id) {
             chatCombo++; // only increase chatCombo for new authors
+            lastMessage = message; // only set for new users - otherwise kills in come late if someone sends multiple messages
         }
 
-        // always set new lastMessage - in case messages are deleted
-        lastMessage = message;
         setTimeout(() => {
             winningChatContest(message, client, userData);
         }, chatContestTime * 60 * 1000);

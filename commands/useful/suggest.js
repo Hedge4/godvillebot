@@ -7,7 +7,7 @@ async function suggest(client, message, content) {
         let suggestion = content.split('`');
         suggestion = suggestion.join('');
         if (suggestion.length <= 20) {return message.reply('please add enough detail and make the description of your suggestion at least 20 characters!');}
-        if (suggestion.length >= 800) {return message.reply('please be a bit more concise in your description and use less than 800 characters!');}
+        if (suggestion.length >= 1000) {return message.reply('please be a bit more concise in your description and use less than 1000 characters!');}
         const channel = await client.channels.cache.get(botServerChannels[0]);
         if (channel === undefined) {message.reply('the message couldn\'t be sent.');}
         channel.send(` --- ${message.author.tag} sent the following suggestion from channel ${message.channel.name}:\n` + '`' + suggestion + '`')
@@ -42,6 +42,11 @@ function onMessage(message, client, Discord, userData) {
 
 async function accept(message, client, Discord, userData) {
     message.delete(); // always delete the accept/reject command
+    if (args > 1000) {
+        message.reply('please use 1000 characters at most.')
+            .then(msg => { setTimeout(() => { msg.delete(); }, 10000); });
+        return; // give error if no ID was provided
+    }
 
     let args = message.content.slice(7).trim().split(' ');
     let ID = 0;

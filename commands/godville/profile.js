@@ -78,8 +78,7 @@ async function showProfile(message, username, client, Discord, godData) {
         .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}\n${godvilleData[11]} old`, true)
         .addField('Motto', godvilleData[8], true)
         .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
-        .addField('Pet type', godvilleData[6], true)
-        .addField('Pet name/level', godvilleData[7], true)
+        .addField('Pet', `${godvilleData[6]}\n${godvilleData[7]}`, true)
         .addField('Medals', godvilleData[5], false)
         .setColor('006600')
         .setFooter(author, user.displayAvatarURL());
@@ -150,8 +149,7 @@ async function showGodvilleProfile(message, godURL, client, Discord) {
         .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}\n${godvilleData[11]} old`, true)
         .addField('Motto', godvilleData[8], true)
         .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
-        .addField('Pet type', godvilleData[6], true)
-        .addField('Pet name/level', godvilleData[7], true)
+        .addField('Pet', `${godvilleData[6]}\n${godvilleData[7]}`, true)
         .addField('Medals', godvilleData[5], false)
         .setColor('006600');
         return message.channel.send(godEmbed);
