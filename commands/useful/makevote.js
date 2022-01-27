@@ -9,7 +9,23 @@ async function main(message, content) {
             + ' Once you\'ve done this, right click/hold the message and a \'Copy ID\' option will appear.');
     }
 
-    const messageID = content.trim();
+    let messageID;
+    let reactionList;
+    const splitIndex = content.indexOf(' ');
+    if (splitIndex < 1) {
+        messageID = content.trim();
+        reactionList = ['313788789787197441', '313798262484107274', '313788834640953346'];
+    } else {
+        messageID = content.substring(0, splitIndex);
+        const numberOfChoices = content.substring(splitIndex).trim();
+        if (isNaN(numberOfChoices) || numberOfChoices < 1 || numberOfChoices > 10) {
+            return message.reply('If you want to create a multiple choice poll, you can pass a number (1-10) into the command as the second argument.')
+                + ` You passed '${numberOfChoices}'. If you don't want a multiple choice poll, only provide a message ID.`;
+        } else if (numberOfChoices == 10) {
+            reactionList = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'];
+        } else { reactionList = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '0️⃣'].slice(0, numberOfChoices + 1); }
+    }
+
     if (isNaN(messageID)) {
         return message.reply(`a message ID has to be a number, which '${messageID}' isn't.`
             + '\n\nTo get the ID of a message, you need to enable Developer Mode in the \'Behavior\' tab of your User Settings.'
@@ -24,7 +40,6 @@ async function main(message, content) {
     }
 
     let logsText = `${message.author.tag} made a message from ${targetMsg.author.tag} in ${message.channel.name} into a vote.`;
-    const reactionList = ['313788789787197441', '313798262484107274', '313788834640953346'];
     const reactionCount = targetMsg.reactions.cache.array().length;
 
     if (reactionCount > 0) {
@@ -46,8 +61,7 @@ async function main(message, content) {
     }
 
     logger.log(logsText);
-    message.channel.send('Done!');
-    setTimeout(() => {
+    setTimeout(() => { // delete command after finishing
         message.delete();
     }, 100);
 }

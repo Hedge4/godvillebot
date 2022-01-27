@@ -9,11 +9,15 @@ async function main(message, content, client) {
 
     const splitContent = content.indexOf(' ');
     if (splitContent < 1) {
-        return message.reply('you need to enter both the ID of a message to react to, and a reaction.');
+        return message.reply('you need to enter both the ID of a message to react to, and a reaction.'
+            + '\n\nTo get the ID of a message, you need to enable Developer Mode in the \'Behavior\' tab of your User Settings.'
+            + ' Once you\'ve done this, right click/hold the message and a \'Copy ID\' option will appear.');
     }
     const messageID = content.substring(0, splitContent);
     if (isNaN(messageID)) {
-        return message.reply(`a message ID has to be a number, which '${messageID}' isn't.`);
+        return message.reply(`a message ID has to be a number, which '${messageID}' isn't.`
+            + '\n\nTo get the ID of a message, you need to enable Developer Mode in the \'Behavior\' tab of your User Settings.'
+            + ' Once you\'ve done this, right click/hold the message and a \'Copy ID\' option will appear.');
     }
     const reaction = content.toLowerCase().substring(splitContent).trim();
 

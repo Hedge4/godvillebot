@@ -106,13 +106,17 @@ const commands_list = [
     `${prefix}react <message ID> <reaction>`,
     'Add letter emojis as a reaction to a message.',
     'I am too tired to explain this right now so just try it, lol. A reaction can only consist of characters from a-z, 0-9, and some special characters. You get the ID of the message you want to react to by right clicking on it and copying the ID (developer mode) or copying the link and only using the last number of the url.'],
+    ['makevote',
+    `${prefix}makevote <message ID> [number]`,
+    'Make a message into a vote. Support multiple choice votes if you specify a number of votes (1 to 10).',
+    'Not even going to write any better instructions here lol. I wonder how long it\'ll be until someone sees this.'],
     ['ping',
     `${prefix}ping`,
     'Check the bot\'s ping!',
     'See how long it takes before your command reaches the bot!\n\nAlso checks another kind of ping, but I\'m not really sure what it means. Please just assume it means something and that it is correct though.'],
     ['break',
     `${prefix}break [minutes]`,
-    'Admin only. Pauses the bot for a while.',
+    'Admin only. Pauses the bot for a while. Currently broken - so don\'t do it.',
     'Admin only. Pauses the bot for [minutes] minutes, 1 minute if no number is specified. The number will be rounded up and has to be in the range 1-60.'],
 ];
 

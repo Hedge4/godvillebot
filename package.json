@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "4.12.1",
+  "version": "4.12.2",
   "updateMsg1": "4.12.0 Small fixes and added the >makevote command.",
   "updateMsg2": "4.11.4 Fixed several chatContest bugs and chatCombos now won't reset anymore when the bot restarts. Improved logging for gold updates.",
   "updateMsg3": "4.11.3 Games generated with the >minesweeper command will now start with one unvealed zero.",
