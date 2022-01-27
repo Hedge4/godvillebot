@@ -1,7 +1,7 @@
-const { logs } = require('../../configurations/config.json');
+const logger = require('../features/logging');
+const timers = require('../features/timers');
 
-async function checkDaily(client, message, limitedCommandsData, userData) {
-    const logsChannel = client.channels.cache.get(logs);
+async function checkDaily(message, limitedCommandsData, userData) {
     if (!usedDaily.includes(message.author.id)) {
         const goldAdd = Math.floor(Math.random() * 21) + 22;
         usedDaily.push(message.author.id);
@@ -26,57 +26,37 @@ async function checkDaily(client, message, limitedCommandsData, userData) {
         userData.set(User, { merge: true });
 
         message.reply(`you received **${goldAdd}** daily gold. You now have **${newGold}** gold total. <:stat_gold:401414686651711498>`);
-        console.log(`${message.author.tag} used their daily in ${message.channel.name}. Gold: ${oldGold} -> ${newGold}.`);
-        logsChannel.send(`${message.author.tag} used their daily in ${message.channel.name}. Gold: ${oldGold} -> ${newGold}.`);
+        logger.log(`${message.author.tag} used their daily in ${message.channel.name}. Gold: ${oldGold} -> ${newGold}.`);
     } else {
-        const delay = getResetTimer(client, false);
-        console.log(`${message.author.tag} tried to use their daily in ${message.channel.name}, but had already used it.`);
-        logsChannel.send(`${message.author.tag} tried to use their daily in ${message.channel.name}, but had already used it.`);
+        const delay = getResetTimer(false);
+        logger.log(`${message.author.tag} tried to use their daily in ${message.channel.name}, but had already used it.`);
         message.reply(`you already used your daily! Dailies reset in ${delay[1]} hours, ${delay[2]} minutes and ${delay[4]} seconds.`);
     }
 }
 
-function getResetTimer(client, show) {
-    const now = new Date();
-    const timezoneOffset = now.getTimezoneOffset();
-    let yrs = now.getFullYear();
-    let mos = now.getMonth();
-    let days = now.getDate();
-    const hrs = now.getHours();
-    let mins = now.getMinutes();
-    const secs = now.getSeconds();
-    mins = mins + timezoneOffset;
-    const now_UTC = new Date(yrs, mos, days, hrs, mins, secs);
-    yrs = now_UTC.getFullYear();
-    mos = now_UTC.getMonth();
-    days = now_UTC.getDate();
-    days += 1;
-    const now_milsec = now_UTC.getTime();
-    const then_UTC = new Date(yrs, mos, days);
-    mins = mins - timezoneOffset;
-    const then = new Date(yrs, mos, days);
-    const then_UTC_milsec = then_UTC.getTime();
-    const delay = then_UTC_milsec - now_milsec;
-    const delayHours = Math.floor(delay / 1000 / 3600);
-    const delayMins = Math.floor((delay % (1000 * 3600)) / (60 * 1000));
-    const delaySecs = Math.ceil((delay % (60 * 1000) / 1000));
-    const logsChannel = client.channels.cache.get(logs);
+function getResetTimer(show) {
+    const output = timers.getDelay(0, 0);
+    const delay = output.delay;
+    const then = output.goalDate;
+    const delayHours = output.hoursFromNow;
+    const delayMins = output.minutesFromNow;
+    const delaySecs = output.secondsFromNow;
+
     if (show === true) {
-        console.log(`--------------------------------------------------------\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
-        logsChannel.send(`\`\`\`\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
+        logger.toConsole(`--------------------------------------------------------\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
+        logger.toChannel(`\`\`\`\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
     }
     return [delay, delayHours, delayMins, then, delaySecs];
 }
 
-function dailyReset(client, limitedCommandsData) {
-    const delay = getResetTimer(client, true);
+function dailyReset(limitedCommandsData) {
+    const delay = getResetTimer(true);
     const dailiesUsed = usedDaily.length;
     usedDaily = [];
     limitedCommandsData.set({ daily: usedDaily });
-    const logsChannel = client.channels.cache.get(logs);
-    console.log(`Successfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.`);
-    logsChannel.send(`**Successfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.**`);
-    setTimeout(dailyReset, delay[0], client, limitedCommandsData);
+    logger.toConsole(`Successfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.`);
+    logger.toChannel(`**Successfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.**`);
+    setTimeout(dailyReset, delay[0], limitedCommandsData);
 }
 
 exports.daily = checkDaily;

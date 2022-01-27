@@ -12,7 +12,7 @@ const funModule = require('./commands/fun/fun.js');
 const usefulModule = require('./commands/useful/useful.js');
 const moderatorModule = require('./commands/moderator/moderator.js');
 const crosswordModule = require('./commands/crosswordgod/crosswordgod.js');
-const crosswordTimers = require('./commands/crosswordgod/timers.js');
+const crosswordTimers = require('./commands/crosswordgod/newsUpdates.js');
 
 // functions/commands (partly) separate from the main modules
 const logger = require('./commands/features/logging');
@@ -81,11 +81,11 @@ client.on('ready', () => {
         .setTimestamp();
     client.channels.cache.get(botvilleChannel).send(startEmbed);
     const delay1 = crosswordTimers.getUpdateDelay();
-    const delay2 = daily.resetDelay(client, true)[0];
+    const delay2 = daily.resetDelay(true)[0];
     const delay3 = crosswordTimers.getNewsDelay();
 
     setTimeout(crosswordTimers.dailyUpdate, delay1, client);
-    setTimeout(daily.reset, delay2, client, limitedCommandsData);
+    setTimeout(daily.reset, delay2, limitedCommandsData);
     setTimeout(crosswordTimers.newsPing, delay3, client);
     botDMs.checkDMContest(client);
     chatContest.startupCheck(client, userData);

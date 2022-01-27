@@ -15,7 +15,7 @@ function redirect(cmd, content, message, Discord, client, userData, limitedComma
         case 'ranking':
             return getRanking(message, userData, client);
         case 'daily':
-            return limitedCommands.daily(client, message, limitedCommandsData, userData);
+            return limitedCommands.daily(message, limitedCommandsData, userData);
         default:
             return message.reply(`the '${cmd}' command does not seem to be correctly set up.`);
     }
