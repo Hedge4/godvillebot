@@ -39,5 +39,6 @@
         ["solvecrosswordhtml", ["solvehtml", "crosswordhtml", "html"]],
         ["newspaper", ["forecast", "news"]],
         ["newspaperupdate", ["update"]],
-        ["renewnewspaper", ["renew"]]]
+        ["renewnewspaper", ["renew", "refreshnewspaper"]],
+        ["renewomnibus", ["refreshomnibus", "omnibus"]]]
 }

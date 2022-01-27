@@ -8,8 +8,8 @@ function startup(input) {
 
 function logBoth(text) {
     console.log(text);
-    logsChannel.send(text)
-        .catch(e => console.log(e + 'ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!!'));
+    //logsChannel.send(text)
+      //  .catch(e => console.log(e + 'ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!!'));
 }
 
 function logChannel(text) {

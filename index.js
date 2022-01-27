@@ -25,6 +25,7 @@ const suggest = require('./commands/useful/suggest');
 const block = require('./commands/moderator/block.js');
 const help = require('./commands/help');
 const newspaper = require('./commands/crosswordgod/newspaperManager.js');
+const omnibus = require('./commands/crosswordgod/omnibusManager.js');
 const crosswordTimers = require('./commands/crosswordgod/newsUpdates.js');
 
 // database login and current data retrieval
@@ -91,6 +92,7 @@ client.on('ready', () => {
     botDMs.checkDMContest(client);
     chatContest.startupCheck(client, userData);
     newspaper.load();
+    if (!omnibus.load()) omnibus.load(); // returns false if failed, so try again.
 });
 
 
@@ -172,11 +174,11 @@ client.on('message', async (message) => {
             if (newspaperChannels.includes(message.channel.id)) {
                 for (let i = 0; i < crossword.length; i++) {
                     if (cmd == crossword[i][0]) {
-                        return crosswordModule(cmd, content, message, client, Discord, godData);
+                        return crosswordModule(cmd, content, message, Discord);
                     }
                     for (let j = 0; j < crossword[i][1].length; j++) {
                         if (cmd == crossword[i][1][j]) {
-                            return crosswordModule(crossword[i][0], content, message, client, Discord, godData);
+                            return crosswordModule(crossword[i][0], content, message, Discord);
                         }
                     }
                 }
