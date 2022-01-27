@@ -32,5 +32,9 @@
         ["block", []],
         ["unblock", []],
         ["blocklist", []],
-        ["purge", []]]
+        ["purge", []]],
+
+    "crossword":
+        [["solvecrossword", ["solve", "crossword"]],
+        ["solvecrosswordhtml", ["solvehtml", "crosswordhtml", "html"]]]
 }

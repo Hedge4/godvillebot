@@ -3,7 +3,7 @@ const client = new Discord.Client();
 const { version, updateMsg1, updateMsg2, updateMsg3 } = require('./package.json');
 const { logs, botServer, prefix, token, server, owner, noXpChannels, botvilleChannel, commandChannels,
     newspaperChannels, adminRole, ignoredChannels } = require('./configurations/config.json');
-const { godville, godpower, fun, useful, moderator } = require('./configurations/commands.json');
+const { godville, godpower, fun, useful, moderator, crossword } = require('./configurations/commands.json');
 
 // the different command modules
 const godvilleModule = require('./commands/godville/godville.js');
@@ -11,6 +11,7 @@ const godpowerModule = require('./commands/godpower/godpower.js');
 const funModule = require('./commands/fun/fun.js');
 const usefulModule = require('./commands/useful/useful.js');
 const moderatorModule = require('./commands/moderator/moderator.js');
+const crosswordModule = require('./commands/crosswordgod/crosswordgod.js');
 const crosswordgod = require('./crosswordgod');
 
 // functions/commands (partly) separate from the main modules
@@ -161,6 +162,25 @@ client.on('message', async (message) => {
                 }
             }
 
+            // the help command
+            if (cmd == 'help') {
+                return help(message, Discord, client);
+            }
+
+            // redirect crossword module commands
+            if (newspaperChannels.includes(message.channel.id)) {
+                for (let i = 0; i < crossword.length; i++) {
+                    if (cmd == crossword[i][0]) {
+                        return crosswordModule(cmd, content, message, client, Discord, godData);
+                    }
+                    for (let j = 0; j < crossword[i][1].length; j++) {
+                        if (cmd == crossword[i][1][j]) {
+                            return crosswordModule(crossword[i][0], content, message, client, Discord, godData);
+                        }
+                    }
+                }
+            }
+
             // redirect godville module commands
             for (let i = 0; i < godville.length; i++) {
                 if (cmd == godville[i][0]) {
@@ -185,11 +205,6 @@ client.on('message', async (message) => {
                 }
             }
 
-            // the help command
-            if (cmd == 'help') {
-                return help(message, Discord, client);
-            }
-
             // only for admins or bot owners
             if (message.member.roles.cache.has(adminRole) || owner.includes(message.author.id)) {
                 // redirect moderator module commands
@@ -203,12 +218,6 @@ client.on('message', async (message) => {
                         }
                     }
                 }
-            }
-
-            // detect commands that work only in bot and newspaper related channels
-            if (newspaperChannels.includes(message.channel.id)) {
-                // command detection changes pending until crosswordgod functions are rewritten
-                crosswordgod.crosswordgod(message);
             }
         }
 
