@@ -1,3 +1,5 @@
+const logger = require('../features/logging');
+
 function solveWords(message, content) {
     // stuff
 }

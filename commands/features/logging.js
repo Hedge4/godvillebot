@@ -25,5 +25,5 @@ function logConsole(text) {
 
 exports.start = startup;
 exports.log = logBoth;
-exports.logInChannel = logChannel;
-exports.logInConsole = logConsole;
+exports.toChannel = logChannel;
+exports.toConsole = logConsole;

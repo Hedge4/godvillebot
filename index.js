@@ -12,7 +12,7 @@ const funModule = require('./commands/fun/fun.js');
 const usefulModule = require('./commands/useful/useful.js');
 const moderatorModule = require('./commands/moderator/moderator.js');
 const crosswordModule = require('./commands/crosswordgod/crosswordgod.js');
-const crosswordgod = require('./crosswordgod');
+const crosswordTimers = require('./commands/crosswordgod/timers.js');
 
 // functions/commands (partly) separate from the main modules
 const logger = require('./commands/features/logging');
@@ -62,10 +62,10 @@ client.on('ready', () => {
     const currentDate = new Date();
     const logsChannel = client.channels.cache.get(logs);
     logger.start(logsChannel);
-    console.log(`\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!`);
-    console.log(`Logged in to the following guilds: ${client.guilds.cache.array().sort().join(', ')}`);
-    console.log(`\nNewly added:\n• ${updateMsg1}\n• ${updateMsg2}\n• ${updateMsg3}`);
-    logger.logInChannel(`\`\`\`fix\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!
+    logger.toConsole(`\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!`);
+    logger.toConsole(`Logged in to the following guilds: ${client.guilds.cache.array().sort().join(', ')}`);
+    logger.toConsole(`\nNewly added:\n• ${updateMsg1}\n• ${updateMsg2}\n• ${updateMsg3}`);
+    logger.toChannel(`\`\`\`fix\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!
         \nLogged in to the following guilds: ${client.guilds.cache.array().sort().join(', ')}
         \nNewly added:\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}\`\`\``);
     client.user.setActivity(`${prefix}help | By Wawajabba`);
@@ -80,14 +80,13 @@ client.on('ready', () => {
         .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
         .setTimestamp();
     client.channels.cache.get(botvilleChannel).send(startEmbed);
-    //const delay1 = crosswordgod.getCrosswordDelay(client);
+    const delay1 = crosswordTimers.getUpdateDelay();
     const delay2 = daily.resetDelay(client, true)[0];
-    const delay3 = crosswordgod.getNewsDelay(client);
-    global.newsSent = false;
+    const delay3 = crosswordTimers.getNewsDelay();
 
-    //setTimeout(crosswordgod.dailyCrosswordRenew, delay1, client);
+    setTimeout(crosswordTimers.dailyUpdate, delay1, client);
     setTimeout(daily.reset, delay2, client, limitedCommandsData);
-    setTimeout(crosswordgod.newsping, delay3, client);
+    setTimeout(crosswordTimers.newsPing, delay3, client);
     botDMs.checkDMContest(client);
     chatContest.startupCheck(client, userData);
 });

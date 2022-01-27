@@ -36,5 +36,6 @@
 
     "crossword":
         [["solvecrossword", ["solve", "crossword"]],
-        ["solvecrosswordhtml", ["solvehtml", "crosswordhtml", "html"]]]
+        ["solvecrosswordhtml", ["solvehtml", "crosswordhtml", "html"]],
+        ["newspaper", ["forecast", "news"]]]
 }

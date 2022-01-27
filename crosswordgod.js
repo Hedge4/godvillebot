@@ -1,6 +1,6 @@
 const { newspaperUpdates, prefix, logs } = require('./configurations/config.json');
-/*const Discord = require('discord.js');
-const { newspaperChannels, newspaperUpdates, prefix, owner, adminRole } = require('./configurations/config.json');
+const Discord = require('discord.js');
+const { newspaperChannels, owner, adminRole } = require('./configurations/config.json');
 const fs = require('fs');
 const find = require('find');
 const { PythonShell } = require('python-shell');
@@ -12,13 +12,13 @@ function runPython() {
     });
 }
 
-runPython();*/
+//runPython();
 
 function crosswordgod(message) {
     if (message.content.toLowerCase().startsWith(`${prefix}renew`) || message.content.toLowerCase().startsWith(`${prefix}update`) || message.content.toLowerCase().startsWith(`${prefix}both`) || message.content.toLowerCase().startsWith(`${prefix}forecast`) || message.content.toLowerCase().startsWith(`${prefix}crossword`)) {
         message.channel.send('Due to the bot no longer being able to fetch the crossword, crossword functions have been disabled for now.');
     }
-    /*if (message.content.toLowerCase().startsWith(`${prefix}renew`)) {
+    if (message.content.toLowerCase().startsWith(`${prefix}renew`)) {
         if (message.member.roles.cache.has(adminRole) || owner.includes(message.author.id)) {
             renew(message.channel, message.guild.name);
         } else { return message.reply('you do not have access to this command.'); }
@@ -42,10 +42,10 @@ function crosswordgod(message) {
         } else if (message.content.toLowerCase().includes(`${prefix}forecast`)) {
             forecastSend(message.channel);
         }
-    }*/
+    }
 }
 
-/*async function findSolution() {
+async function findSolution() {
     // eslint-disable-next-line no-unused-vars
     return new Promise(function(ok, fail) {
       find.file(/solution[0-9]*\.json/, __dirname + '/python', function(files) {
@@ -71,50 +71,9 @@ async function getSolution() {
     });
 //    console.log('It was changed to ' + filename_new);
     return load;
-}*/
-
-function getNewsDelay(client) {
-    const now = new Date();
-    const timezoneOffset = now.getTimezoneOffset();
-    let yrs = now.getFullYear();
-    let mos = now.getMonth();
-    let days = now.getDate();
-    let hrs = now.getHours();
-    let mins = now.getMinutes();
-    let secs = now.getSeconds();
-    mins = mins + timezoneOffset;
-    const now_UTC = new Date(yrs, mos, days, hrs, mins, secs);
-    yrs = now_UTC.getFullYear();
-    mos = now_UTC.getMonth();
-    days = now_UTC.getDate();
-    hrs = now_UTC.getHours();
-    mins = now_UTC.getMinutes();
-    secs = now_UTC.getSeconds();
-    if (hrs === 21) {
-        if (mins >= 5) {
-            days += 1;
-        }
-    }
-    if (hrs > 21) {
-        days += 1;
-    }
-    hrs = 21;
-    mins = 5;
-    const now_milsec = now_UTC.getTime();
-    const then_UTC = new Date(yrs, mos, days, hrs, mins);
-    mins = mins - timezoneOffset;
-    const then = new Date(yrs, mos, days, hrs, mins);
-    const then_UTC_milsec = then_UTC.getTime();
-    const delay = then_UTC_milsec - now_milsec;
-    const delayHours = Math.floor(delay / 1000 / 3600);
-    const delayMins = Math.ceil((delay % (1000 * 3600)) / (60 * 1000));
-    const logsChannel = client.channels.cache.get(logs);
-    console.log(`--------------------------------------------------------\nNext newsping update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
-    logsChannel.send(`\`\`\`\nNext newsping update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
-    return delay;
 }
 
-/*function getCrosswordDelay(client) {
+function getCrosswordDelay(client) {
     const now = new Date();
     const timezoneOffset = now.getTimezoneOffset();
     let yrs = now.getFullYear();
@@ -258,24 +217,8 @@ function embedForecast(embedTitle2, embedBody2) {
         .setTimestamp()
         .setFooter('Brought to you by Wawajabba', 'https://i.imgur.com/TyGn2ch.jpg');
     return embed;
-}*/
-
-function newsPing(client) {
-    if (!newsSent) {
-        newsSent = true;
-        const channel = client.channels.cache.get(newspaperUpdates);
-        const guildName = channel.guild.name;
-        channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator! Daily coupon: <https://godvillegame.com/news#cpn_name>');
-        const logsChannel = client.channels.cache.get(logs);
-        console.log(`Sent newspaper reminder to ${channel.name} in ${guildName} guild.`);
-        logsChannel.send(`Sent newspaper reminder to ${channel.name} in ${guildName} guild.`);
-        const delay = getNewsDelay(client);
-        setTimeout(newsPing, delay, client);
-    }
 }
 
 exports.crosswordgod = crosswordgod;
-//exports.getCrosswordDelay = getCrosswordDelay;
-//exports.dailyCrosswordRenew = dailyRenew;
-exports.getNewsDelay = getNewsDelay;
-exports.newsping = newsPing;
+exports.getCrosswordDelay = getCrosswordDelay;
+exports.dailyCrosswordRenew = dailyRenew;

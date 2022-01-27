@@ -73,7 +73,6 @@ function dailyReset(client, limitedCommandsData) {
     const dailiesUsed = usedDaily.length;
     usedDaily = [];
     limitedCommandsData.set({ daily: usedDaily });
-    newsSent = false;
     const logsChannel = client.channels.cache.get(logs);
     console.log(`Successfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.`);
     logsChannel.send(`**Successfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.**`);
