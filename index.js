@@ -12,7 +12,6 @@ const funModule = require('./commands/fun/fun.js');
 const usefulModule = require('./commands/useful/useful.js');
 const moderatorModule = require('./commands/moderator/moderator.js');
 const crosswordModule = require('./commands/crosswordgod/crosswordgod.js');
-const crosswordTimers = require('./commands/crosswordgod/newsUpdates.js');
 
 // functions/commands (partly) separate from the main modules
 const logger = require('./commands/features/logging');
@@ -25,6 +24,8 @@ const daily = require('./commands/godpower/daily');
 const suggest = require('./commands/useful/suggest');
 const block = require('./commands/moderator/block.js');
 const help = require('./commands/help');
+const newspaper = require('./commands/crosswordgod/newspaperManager.js');
+const crosswordTimers = require('./commands/crosswordgod/newsUpdates.js');
 
 // database login and current data retrieval
 const admin = require('firebase-admin');
@@ -84,11 +85,12 @@ client.on('ready', () => {
     const delay2 = daily.resetDelay(true)[0];
     const delay3 = crosswordTimers.getNewsDelay();
 
-    setTimeout(crosswordTimers.dailyUpdate, delay1, client);
+    setTimeout(crosswordTimers.dailyUpdate, delay1, client, Discord);
     setTimeout(daily.reset, delay2, limitedCommandsData);
     setTimeout(crosswordTimers.newsPing, delay3, client);
     botDMs.checkDMContest(client);
     chatContest.startupCheck(client, userData);
+    newspaper.load();
 });
 
 

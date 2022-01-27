@@ -4,4 +4,14 @@ async function sendNewspaper(message, Discord) {
     //
 }
 
-exports.update = sendNewspaper;
+async function renewNewspaper(channel, Discord) {
+    //
+}
+
+async function loadNewspaper() {
+    //
+}
+
+exports.send = sendNewspaper;
+exports.renew = renewNewspaper;
+exports.load = loadNewspaper;
