@@ -2,6 +2,7 @@ const spoiler = require('./spoiler.js');
 const code = require('./code.js');
 const ping = require('./ping.js');
 const react = require('./react.js');
+const makevote = require('./makevote.js');
 const suggest = require('./suggest');
 
 function redirect(cmd, content, message, Discord, client) {
@@ -16,6 +17,8 @@ function redirect(cmd, content, message, Discord, client) {
             return ping(message, client);
         case 'react':
             return react(message, content, client);
+        case 'makevote':
+            return makevote(message, content, client);
         default:
             return message.reply(`the '${cmd}' command does not seem to be correctly set up.`);
     }

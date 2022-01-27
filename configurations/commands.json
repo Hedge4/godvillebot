@@ -1,28 +1,34 @@
 {
-	"godville": [["profile", ["god", "goddess", "showprofile"]],
+	"godville":
+        [["profile", ["god", "goddess", "showprofile"]],
         ["gvprofile", ["godvilleprofile", "gvgod", "godvillegod", "gvgoddess", "godvillegoddess", "showgodvilleprofile", "showgvprofile"]],
         ["guides", []],
-        ["godwiki", []],
+        ["godwiki", ["gw"]],
         ["link", []],
         ["showlink", ["showurl"]]],
 
-	"godpower": [["level", ["rank"]],
+	"godpower":
+        [["level", ["rank"]],
         ["ranking", []],
         ["gold", []],
         ["daily", []],
         ["toggle-mentions", ["togglementions"]]],
 
-    "useful": [["suggest", ["suggestion"]],
+    "useful":
+        [["suggest", ["suggestion"]],
         ["spoiler", []],
         ["code", ["github"]],
         ["ping", ["pong", "latency"]],
-        ["react", []]],
+        ["react", []],
+        ["makevote", ["mv", "vote"]]],
 
-    "fun": [["minesweeper", []],
+    "fun":
+        [["minesweeper", []],
         ["bubblewrap", []],
         ["randomnick", ["nickname", "changenick", "changenickname"]]],
 
-    "moderator": [["break", []],
+    "moderator":
+        [["break", []],
         ["block", []],
         ["unblock", []],
         ["blocklist", []],

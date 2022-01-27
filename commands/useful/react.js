@@ -51,7 +51,9 @@ async function main(message, content, client) {
     logsChannel.send(`${message.author.tag} reacted '${reaction}' to a message from ${targetMsg.author.tag} in ${message.channel.name}.`);
     console.log(`${message.author.tag} reacted '${reaction}' to a message from ${targetMsg.author.tag} in ${message.channel.name}.`);
     reacting = true;
-    message.delete();
+    setTimeout(() => {
+        message.delete();
+    }, 100);
     react(targetMsg, reactionList);
 }
 
