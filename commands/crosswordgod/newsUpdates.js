@@ -36,7 +36,7 @@ function requestNewspaperUpdateTime(message) {
 }
 
 function getNewspaperUpdateDelay() {
-    const output = timers.getDelay(22, 20);
+    const output = timers.getDelay(22, 10);
     const delay = output.delay;
     const then = output.goalDate;
     const delayHours = output.hoursFromNow;
