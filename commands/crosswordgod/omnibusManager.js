@@ -107,11 +107,10 @@ async function refreshOmnibus(message, Discord, client) {
     omnibus = Array.from(list);
     lastUpdated = Date.now();
 
-    // create noice embed for the update message, which we can add to
+    // create nice embed for the update message, which we can add to
     const updateEmbed = new Discord.MessageEmbed()
     .setTitle(`⏫ Succesfully refreshed online Omnibus list with ${list.length} total entries!`)
     .setColor(0x0092db) // noice blue
-    .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/whatsapp/302/cross-mark_274c.png')
     .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
     .setTimestamp();
     // we also update a message for the logs

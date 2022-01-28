@@ -21,12 +21,59 @@ function sendNewspaperRequest(message, Discord) {
 
 // sends newspaper to specified channel using upper scope variable + formats it nicely as multiple embeds
 function sendNewspaper(channel, Discord) {
-    // send introduction thingy with crosswordgod logo and edition/date no., link to coupon and link to crossword + explain commands
-    // send daily forecast embed
-    // send famous heroes
-    // send guild spotlight
+    const embedsList = [];
+    const missingEmbedsList = [];
 
-    // send all in the same message (.send({ embed: [] });)
+    // create introduction and add it to sendList
+    const introductionEmbed = new Discord.MessageEmbed()
+    .setTitle(`Godville Times issue ${news.edition} on day ${news.date} g.e.`)
+    .setDescription('[Click for a link to the free coupon.](https://godvillegame.com/news#cpn_name)'
+        + '\n\nDid you know I can automatically solve the newspaper\'s crossword for you? You just have to send me the words!'
+        + `you can do so with \`${prefix}solve\` for separate words (type . for unknowns), or just upload the raw html page with \`${prefix}solvehtml\`!`)
+    .setURL('https://godvillegame.com/news')
+    .setColor(0x78de79) // noice green
+    //.setThumbnail('https://i.imgur.com/t5udHzR.jpeg')
+    .setFooter('GodBot is brought to you by Wawajabba', 'https://i.imgur.com/t5udHzR.jpeg')
+    .setTimestamp();
+    embedsList.push(introductionEmbed);
+
+    if (news.forecast) {
+        const forecastEmbed = new Discord.MessageEmbed()
+        .setTitle('Daily Forecast')
+        .setDescription(news.forecast)
+        .setURL('https://godvillegame.com/news')
+        .setColor(0x78de79) // noice green
+        .setFooter('GodBot is brought to you by Wawajabba', 'https://i.imgur.com/t5udHzR.jpeg')
+        .setTimestamp();
+        embedsList.push(forecastEmbed);
+    } else { missingEmbedsList.push('The Daily Forecast couldn\'t be loaded today.'); }
+
+    if (news.famousHeroes) {
+        const famousEmbed = new Discord.MessageEmbed()
+        .setTitle('Famous Heroes')
+        .setDescription(news.famousHeroes)
+        .setURL('https://godvillegame.com/news')
+        .setColor(0x78de79) // noice green
+        .setFooter('GodBot is brought to you by Wawajabba', 'https://i.imgur.com/t5udHzR.jpeg')
+        .setTimestamp();
+        embedsList.push(famousEmbed);
+    } else { missingEmbedsList.push('The Famous Heroes couldn\'t be loaded today.'); }
+
+    if (news.guildSpotlight) {
+        const guildEmbed = new Discord.MessageEmbed()
+        .setTitle('Famous Heroes')
+        .setDescription(news.famousHeroes)
+        .setURL('https://godvillegame.com/news')
+        .setColor(0x78de79) // noice green
+        .setFooter('GodBot is brought to you by Wawajabba', 'https://i.imgur.com/t5udHzR.jpeg')
+        .setTimestamp();
+        embedsList.push(guildEmbed);
+    } else { missingEmbedsList.push('The Guild Spotlight couldn\'t be loaded today.'); }
+
+    // embeds are finished, now send the whole package!
+    channel.send({ embeds: embedsList });
+    if (missingEmbedsList.length) channel.send(missingEmbedsList.join('\n'));
+
     // optional: mention any users who are in the news
 
     // log that the newspaper was successfully sent
@@ -76,7 +123,7 @@ async function renewNewspaperAutomatic(channel, Discord) {
 
 
 // main function, loads the newspaper and stores it in upper scope variable. Called on startup, returns true/false for success
-async function loadNewspaper(sendLogs = false) {
+async function loadNewspaper(sendLogs = true) {
     // start with getting the HTML of the newspaper
     const html = await downloadNewspaper();
     if (!html) {
@@ -89,8 +136,12 @@ async function loadNewspaper(sendLogs = false) {
     }
 
     if (sendLogs) { // send the news to the logs for timed renews
-        //logger.toConsole();
-        //logger.toChannel();
+        logger.log('---===-----===-----===-----===-----===-----===-----===-----===-----===-----===---'
+            + `\n\nUpdated the Godville Times summary to issue ${news.edition} on day ${news.date} g.e.`);
+        if (news.forecast) logger.log('\n • **Daily Forecast**\n' + news.forecast);
+        if (news.famousHeroes) logger.log('\n • **Famous Heroes**\n' + news.famousHeroes);
+        if (news.guildSpotlight) logger.log('\n • **Guild Spotlight**\n' + news.guildSpotlight);
+        logger.log('\n---===-----===-----===-----===-----===-----===-----===-----===-----===-----===---');
     }
     return true;
 }
@@ -177,8 +228,9 @@ function parseNewspaper(html) {
         forecast = forecastRegex.exec(html)[1]; // gives all forecasts (no matter the amount) but with html in between
         forecast = forecast.slice(4, -4).trim(); // remove outer html
         while (pRegex.test(forecast)) {
-            forecast = forecast.replace(pRegex, '\n\n'); // remove inner html
+            forecast = forecast.replace(pRegex, '*\n*'); // remove inner html + add inside italics formatting
         }
+        forecast = '*' + forecast + '*'; // add outside italics formatting
         forecastSuccess = true;
     } catch (error) {
         logger.log('News: Couldn\'t parse newspaper forecast correctly. Error: ' + error);
@@ -214,6 +266,7 @@ function parseNewspaper(html) {
             }
             return hero.trim();
         });
+        heroes = heroes.join('\n\n'); // join the two famous heroes together into one string
         heroesSuccess = true;
     } catch (error) {
         logger.log('News: Couldn\'t parse newspaper famous heroes correctly. Error: ' + error);
@@ -237,6 +290,7 @@ function parseNewspaper(html) {
             }
             return guild.trim();
         });
+        guilds = guilds.join('\n\n'); // join the two guilds together into one string
         guildSuccess = true;
     } catch (error) {
         logger.log('News: Couldn\'t parse newspaper guild spotlight correctly. Error: ' + error);

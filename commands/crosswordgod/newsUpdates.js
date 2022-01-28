@@ -16,7 +16,7 @@ function dailyNewspaperUpdate(client, Discord) {
 
 function newsPing(client) {
     const channel = client.channels.cache.get(newspaperUpdates);
-    channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator! Daily coupon: <https://godvillegame.com/news#cpn_name>');
+    channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator!');
     logger.log(`Sent a newspaper reminder to the ${channel.name} channel. Random number check: ${Math.floor(Math.random() * 1000)}.`);
     let delay = getNewsPingDelay();
     if (delay < 1000 * 60 * 25) { // set delay to a full day if less than 25 minutes
