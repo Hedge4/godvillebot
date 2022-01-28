@@ -59,7 +59,7 @@ async function loadOmnibus(startup = false) {
     if (startup) {
         // get difference between previous backup and new one
         if (!backup || backup.length < expectedAmount) {
-            updateMessage += 'The Omnibus backup file was not loaded in (correctly), so I can\'t give statistics about the differences between the backup and current list.';
+            updateMessage += ' The Omnibus backup file was not loaded in (correctly), so I can\'t give statistics about the differences between the backup and current list.';
         } else {
             const notInOmnibus = backup.filter(x => !omnibus.includes(x));
             const notInBackup = omnibus.filter(x => !backup.includes(x));
@@ -161,9 +161,9 @@ async function downloadOmnibus() {
     const URL = 'https://wiki.godvillegame.com/Omnibus_List';
     const timeout = 10;
 
-    const timeoutPromise = new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(`Omni: Timed out after ${timeout} seconds while getting data from ${URL}.`);
+    const timeoutPromise = new Promise((resolve, reject) => {
+        setTimeout(() => { // this only needs to reject because if it returns in time that means there is an error
+            reject(`Omni: Timed out after ${timeout} seconds while getting data from ${URL}.`);
         }, timeout * 1000);
     });
 

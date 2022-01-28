@@ -1,3 +1,9 @@
+// space for getters, need to be defined before require() is used
+// functions will crash if called before index.js is fully executed (because values won't be declared yet)
+exports.getClient = function() { return client; };
+exports.getDiscord = function() { return Discord; };
+exports.getGodData = function() { return godData; };
+
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const { version, updateMsg1, updateMsg2, updateMsg3 } = require('./package.json');

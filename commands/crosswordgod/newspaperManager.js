@@ -1,4 +1,5 @@
 const { adminRole, prefix } = require('../../configurations/config.json');
+const main = require('../../index');
 const logger = require('../features/logging');
 const https = require('https');
 const news = {
@@ -20,7 +21,7 @@ function sendNewspaperRequest(message, Discord) {
 }
 
 // sends newspaper to specified channel using upper scope variable + formats it nicely as multiple embeds
-function sendNewspaper(channel, Discord) {
+function sendNewspaper(channel, Discord, renewed = false) {
     const embedsList = [];
     const missingEmbedsList = [];
 
@@ -74,7 +75,28 @@ function sendNewspaper(channel, Discord) {
     channel.send({ embeds: embedsList });
     if (missingEmbedsList.length) channel.send(missingEmbedsList.join('\n'));
 
-    // optional: mention any users who are in the news
+    if (renewed) { // mention any gods who are in the news, but only if the newspaper was renewed
+        const gods = ['https://godvillegame.com/gods/Apathanos', 'https://godvillegame.com/gods/Hggames', 'https://godvillegame.com/gods/Hggame', 'https://godvillegame.com/gods/Wawajabba'];
+        const godIDs = [];
+        const godNames = [];
+        const godData = main.getGodData();
+        godData.get().then((godDoc) => {
+            const data = godDoc.data();
+            console.log(data);
+            gods.forEach(god => {
+                const res = Object.keys(data).find(key => data[key] === god);
+                if (res) {
+                    godIDs.push(res);
+                    godNames.push(data[res].slice(data[res].indexOf('gods/') + 5));
+                }
+            });
+
+            for (let i = 0; i < godIDs.length; i++) {
+                channel.send(`<@${godIDs[i]}> ${godNames[i]}, you're in the news!`);
+                logger.log(`News: Sent a ping to ID ${godIDs[i]}, because their god ${godNames[i]} is in the news.`);
+            }
+        });
+    }
 
     // log that the newspaper was successfully sent
     if (news.edition) {
@@ -100,7 +122,7 @@ async function renewNewspaperRequest(message, Discord) {
 
     // we end by sending the newspaper to the channel
     message.reply('done! Here is the renewed Godville Times:');
-    sendNewspaper(message.channel, Discord);
+    sendNewspaper(message.channel, Discord, true);
 }
 
 // method used for timed renewing. Returns true/false for success, and pushes news to the logs
@@ -118,12 +140,12 @@ async function renewNewspaperAutomatic(channel, Discord) {
 
     // we end by sending the newspaper to the channel
     channel.send('Successfully renewed! Here is the new Godville Times edition: 🗞️');
-    sendNewspaper(channel, Discord);
+    sendNewspaper(channel, Discord, true);
 }
 
 
 // main function, loads the newspaper and stores it in upper scope variable. Called on startup, returns true/false for success
-async function loadNewspaper(sendLogs = true) {
+async function loadNewspaper(sendLogs = false) {
     // start with getting the HTML of the newspaper
     const html = await downloadNewspaper();
     if (!html) {
@@ -143,6 +165,7 @@ async function loadNewspaper(sendLogs = true) {
         if (news.guildSpotlight) logger.log('\n • **Guild Spotlight**\n' + news.guildSpotlight);
         logger.log('\n---===-----===-----===-----===-----===-----===-----===-----===-----===-----===---');
     }
+
     return true;
 }
 
@@ -151,9 +174,9 @@ async function downloadNewspaper() {
     const URL = 'https://godvillegame.com/News';
     const timeout = 10;
 
-    const timeoutPromise = new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(`News: Timed out after ${timeout} seconds while getting data from ${URL}.`);
+    const timeoutPromise = new Promise((resolve, reject) => {
+        setTimeout(() => { // this only needs to reject because if it returns in time that means there is an error
+            reject(`News: Timed out after ${timeout} seconds while getting data from ${URL}.`);
         }, timeout * 1000);
     });
 
