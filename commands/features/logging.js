@@ -8,13 +8,21 @@ function startup(input) {
 
 function logBoth(text) {
     console.log(text);
-    //logsChannel.send(text)
-      //  .catch(e => console.log(e + 'ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!!'));
+    if (logsChannel) {
+        logsChannel.send(text)
+        .catch(e => console.log(e + 'ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!!'));
+    } else {
+        // restart or something?
+    }
 }
 
 function logChannel(text) {
-    logsChannel.send(text)
+    if (logsChannel) {
+        logsChannel.send(text)
         .catch(e => console.log(e + 'ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!!'));
+    } else {
+        // restart or something?
+    }
 }
 
 function logConsole(text) {

@@ -56,7 +56,7 @@ blockedData.get()
     });
 
 
-// setup done as soon as the bot has a connection with Discord
+// setup done as soon as the bot has a connection with the Discord API
 client.on('ready', () => {
     const guild = client.guilds.cache.get(server);
     guild.me.setNickname('GoddessBot');
@@ -86,13 +86,29 @@ client.on('ready', () => {
     const delay2 = daily.resetDelay(true)[0];
     const delay3 = crosswordTimers.getNewsDelay();
 
+    // set timeouts and get data such as the last chat kill / ongoing DM contests
     setTimeout(crosswordTimers.dailyUpdate, delay1, client, Discord);
     setTimeout(daily.reset, delay2, limitedCommandsData);
     setTimeout(crosswordTimers.newsPing, delay3, client);
     botDMs.checkDMContest(client);
     chatContest.startupCheck(client, userData);
+
+    // load data such as the newspaper and the omnibus list
+    logger.log('\n'); // linebreak for all of the newspaper/omnibus parsing spam
+    logger.log('Trying to load today\'s Godville Times...');
     newspaper.load();
-    if (!omnibus.load()) omnibus.load(); // returns false if failed, so try again.
+    logger.log('Trying to load the Omnibus backup file...');
+    if (!omnibus.loadBackup()) { // returns false if failed, so try again.
+        logger.log('Attempt 2: Trying to load the Omnibus backup file...');
+        omnibus.loadBackup();
+    }
+    logger.log('Trying to download and parse the Omnibus list from online...');
+    omnibus.loadOnline(true).then((success) => {
+        if (!success) {
+            logger.log('Attempt 2: Trying to download and parse the Omnibus list from online...');
+            omnibus.loadOnline(true); // returns false if failed, so try again.
+        }
+    });
 });
 
 
@@ -174,11 +190,11 @@ client.on('message', async (message) => {
             if (newspaperChannels.includes(message.channel.id)) {
                 for (let i = 0; i < crossword.length; i++) {
                     if (cmd == crossword[i][0]) {
-                        return crosswordModule(cmd, content, message, Discord);
+                        return crosswordModule(cmd, content, message, Discord, client);
                     }
                     for (let j = 0; j < crossword[i][1].length; j++) {
                         if (cmd == crossword[i][1][j]) {
-                            return crosswordModule(crossword[i][0], content, message, Discord);
+                            return crosswordModule(crossword[i][0], content, message, Discord, client);
                         }
                     }
                 }

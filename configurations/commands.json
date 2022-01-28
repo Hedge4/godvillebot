@@ -40,5 +40,6 @@
         ["newspaper", ["forecast", "news"]],
         ["newspaperupdate", ["update"]],
         ["renewnewspaper", ["renew", "refreshnewspaper"]],
-        ["renewomnibus", ["refreshomnibus", "omnibus"]]]
+        ["renewomnibus", ["refreshomnibus", "omnibus"]],
+        ["createomnibusbackup", ["createbackup", "backup"]]]
 }
