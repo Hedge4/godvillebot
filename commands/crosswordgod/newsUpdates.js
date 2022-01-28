@@ -1,9 +1,9 @@
-const { newspaperUpdates } = require('./configurations/config.json');
+const { newspaperUpdates } = require('../../configurations/config.json');
 const newspaper = require('./newspaperManager.js');
 const logger = require('../features/logging');
 const timers = require('../features/timers');
 
-function dailyCrosswordUpdate(client, Discord) {
+function dailyNewspaperUpdate(client, Discord) {
     const channel = client.channels.cache.get(newspaperUpdates);
     newspaper.renew(channel, Discord);
     logger.log(`Automatically renewed the newspaper and sent it to the ${channel.name} channel. Random number check: ${Math.floor(Math.random() * 1000)}.`);
@@ -11,7 +11,7 @@ function dailyCrosswordUpdate(client, Discord) {
     if (delay < 1000 * 60 * 25) { // set delay to a full day if less than 25 minutes
         delay = 1000 * 60 * 60 * 24;
     }
-    setTimeout(dailyCrosswordUpdate, delay, client, Discord);
+    setTimeout(dailyNewspaperUpdate, delay, client, Discord);
 }
 
 function newsPing(client) {
@@ -60,7 +60,7 @@ function getNewsPingDelay() {
 }
 
 exports.newsPing = newsPing;
-exports.dailyUpdate = dailyCrosswordUpdate;
+exports.dailyUpdate = dailyNewspaperUpdate;
 exports.getNewsDelay = getNewsPingDelay;
 exports.getUpdateDelay = getNewspaperUpdateDelay;
 exports.askUpdate = requestNewspaperUpdateTime;

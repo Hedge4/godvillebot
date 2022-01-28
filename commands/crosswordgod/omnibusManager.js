@@ -1,6 +1,7 @@
 /* eslint-disable no-prototype-builtins */
-const https = require('https');
+const { owner } = require('../../configurations/config.json');
 const logger = require('../features/logging');
+const https = require('https');
 const fs = require('fs');
 let backupLastUpdated;
 let lastUpdated;
@@ -25,12 +26,12 @@ function loadBackup() {
         const howLongAgo = Date.now() - backupLastUpdated;
         const days = ~~(howLongAgo / (24 * 60 * 60 * 1000));
         const hours = ~~((howLongAgo % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
-        logger.log(`Succesfully loaded omnibus backup file with ${backup.length} entries, `
+        logger.log(`OmniBackup: Succesfully loaded omnibus backup file with ${backup.length} entries, `
             + `from ${days} ${quantiseWords(days, 'day')} and ${hours} ${quantiseWords(hours, 'hour')} ago.`);
 
         return true; // true means loaded successfully
     } catch (error) {
-        logger.log('Failed to load in omnibus backup file. ' + error);
+        logger.log('OmniBackup: Failed to load in omnibus backup file. ' + error);
         backup = undefined;
 
         return false; // this means the backup failed to load
@@ -44,15 +45,15 @@ async function loadOmnibus(startup = false) {
     // now we get the individual omnibus entries
     const list = parseOmnibusEntries(html);
     if (!list || list.length < expectedAmount) {
-        logger.log('Something went wrong parsing omnibus entries from the html.');
-        if (list) logger.log(`There were only ${list.length} items, expected at least ${expectedAmount}.`);
+        logger.log('Omni: Something went wrong parsing omnibus entries from the html.');
+        if (list) logger.log(`Omni: There were only ${list.length} items, expected at least ${expectedAmount}.`);
         return false;
     }
 
     // actually update the list and the timestamp
     omnibus = Array.from(list);
     lastUpdated = Date.now();
-    let updateMessage = `Succesfully loaded online Omnibus list with ${list.length} entries.`;
+    let updateMessage = `Omni: Succesfully loaded online Omnibus list with ${list.length} entries.`;
 
     // on startup, also send statistics about how far ahead the omnibus list is.
     if (startup) {
@@ -83,9 +84,8 @@ async function refreshOmnibus(message, Discord, client) {
             + ` To make sure the devs don't get mad at me, please wait ${minutesLeft} more ${quantiseWords(minutesLeft, 'minute')}.`);
     }
 
-    // we edit this reply when we're done.
     logger.log(message.author.tag + ' requested the stored Omnibus list to be refreshed.');
-    const reply = await message.reply('I\'m working on it...');
+    const reply = await message.reply('I\'m working on it...'); // we edit this reply when we're done.
     const requester = `<@${message.author.id}>`;
 
     // get html
@@ -164,7 +164,7 @@ async function downloadOmnibus() {
 
     const timeoutPromise = new Promise((resolve) => {
         setTimeout(() => {
-            resolve(`Timed out after ${timeout} seconds while getting data from ${URL}.`);
+            resolve(`Omni: Timed out after ${timeout} seconds while getting data from ${URL}.`);
         }, timeout * 1000);
     });
 
@@ -185,13 +185,13 @@ async function downloadOmnibus() {
     const res = await Promise.race([dataPromise, timeoutPromise])
     .then((result) => {
         if (!result) {
-            logger.log(`Oops! Something went wrong when downloading from url ${URL}! No data was received.`);
+            logger.log(`Omni: Oops! Something went wrong when downloading from url ${URL}! No data was received.`);
             return null;
         }
-        logger.log(`Received html from ${URL} succesfully.`);
+        logger.log(`Omni: Received html from ${URL} succesfully.`);
         return result;
     }).catch((error) => {
-        logger.log(`Oops! Something went wrong when downloading from url ${URL}! Error: ` + error);
+        logger.log(`Omni: Oops! Something went wrong when downloading from url ${URL}! Error: ` + error);
         return null;
     });
 
@@ -225,6 +225,7 @@ function parseOmnibusEntries(omnibusHtml) {
 
 
 async function createBackup(message) {
+    if (!owner.includes(message.author.id)) return message.reply('only the bot owner can create new backups.'); // hehe nope
     logger.log(`${message.author.tag} is trying to create a new omnibus backup file...`);
     const result = await createBackupFile();
     return message.channel.send(`<@${message.author.id}: ${result}`);

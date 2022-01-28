@@ -15,8 +15,7 @@ function redirect(cmd, content, message, Discord, client) {
         case 'newspaperupdate':
             return newsUpdates.askUpdate(message);
         case 'renewnewspaper':
-            logger.log(`${message.author.tag} forcefully renewed the newspaper in ${message.channel}.`);
-            return newspaper.renew(message.channel, Discord);
+            return newspaper.renewRequest(message, Discord);
         case 'renewomnibus':
             return omnibus.refresh(message, Discord, client);
         case 'createomnibusbackup':
