@@ -79,7 +79,7 @@ function react(message, reactionList) {
                 reacting = false;
             }, 1000);
             logger.log(`Error while adding vote options. Error: ${e}`);
-            return message.channel.send(`Oops, something went wrong while I was adding vote options. Error: ${e}`);
+            return message.channel.send(`❗ Oops! ❗ Something went wrong while I was adding vote options. Error: ${e}`);
         });
     if (reactionList.length < 1) {
         setTimeout(() => {

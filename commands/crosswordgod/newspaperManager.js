@@ -1,58 +1,90 @@
-const { adminRole } = require('../../configurations/config.json');
+const { adminRole, prefix } = require('../../configurations/config.json');
 const logger = require('../features/logging');
 const https = require('https');
+const news = {
+    edition: undefined,
+    forecast: undefined,
+    famous: undefined,
+    spotlight: undefined,
+};
 
 
 // used when a user requests the newspaper to send a reply before sending the newspaper
-async function sendNewspaperRequest(message, Discord) {
-    //
+function sendNewspaperRequest(message, Discord) {
+    message.reply('here is today\'s Godville Times summary!');
+    sendNewspaper(message.channel, Discord);
+    logger.log(`${message.author.tag} requested the Godville Times summary in ${message.channel.name}.`);
 }
 
 // sends newspaper to specified channel using upper scope variable + formats it nicely as multiple embeds
-async function sendNewspaper(channel, Discord) {
-    //
+function sendNewspaper(channel, Discord) {
+    // send introduction thingy with crosswordgod logo and edition no.
+    // send daily forecast embed
+    // send famous heroes
+    // send guild spotlight
+
+    // send all in the same message (.send({ embed: [] });)
+    // optional: mention any users who are in the news
+
+    // log saying it was successfully sent with edition no. in it
 }
 
 
-// method used when a user renews the newspaper, not the automatic timer
+// method used when a user renews the newspaper, not the automatic timer. Doesn't send in logs
 async function renewNewspaperRequest(message, Discord) {
     if (!message.member.roles.cache.has(adminRole)) return message.reply('only moderators can forcefully renew the newspaper.');
     logger.log(`${message.author.tag} forcefully started the newspaper renewing process in ${message.channel}.`);
     const reply = await message.reply('I\'m working on it...');
-    const requester = `<@${message.author.id}>`;
 
-    renewNewspaper(message.channel, Discord).then((success) => {
-        if(success) {
-            reply.edit(requester + ', done!'); // we don't need to send the newspaper because renewNewspaper() does that already
-        } else {
+    await loadNewspaper().then((succes) => {
+        if (!succes) { // on fail, just let whoever used the command know. loadNewspaper() does the logging already
             reply.delete();
-            message.reply('something went wrong while trying to renew the newspaper content. You can check the logs to find out what happened.');
+            return message.reply('something went wrong while trying to renew the newspaper content. You can check the logs to find out what happened.');
         }
     });
-}
-
-// method used both when a user or when a timer renews the newspaper. Returns true/false for success + sends in channel
-async function renewNewspaper(channel, Discord) {
-    //
 
     // we end by sending the newspaper to the channel
+    message.reply('done! Here is the renewed Godville Times:');
+    sendNewspaper(message.channel, Discord);
+}
+
+// method used for timed renewing. Returns true/false for success, and pushes news to the logs
+async function renewNewspaperAutomatic(channel, Discord) {
+    channel.send('♻️ Renewing my Godville Times summary... ♻️');
+    // upper method allready logged that this process is starting
+
+    await loadNewspaper(true).then((succes) => {
+        if (!succes) {
+            channel.send('⚠️ Oops! ⚠️ Something went wrong, and I couldn\'t load the new newspaper...'
+                + `You can ask a moderator to force another update with \`${prefix}renew\`.`);
+            return;
+        }
+    });
+
+    // we end by sending the newspaper to the channel
+    channel.send('Succesfully renewed! Here is the new Godville Times edition: 🗞️');
     sendNewspaper(channel, Discord);
 }
 
 
 // main function, loads the newspaper and stores it in upper scope variable. Called on startup, returns true/false for success
-async function loadNewspaper() {
+async function loadNewspaper(sendLogs = false) {
     // start with getting the HTML of the newspaper
     const html = await downloadNewspaper();
     if (!html) {
-        //
-        return false;
+        return false; // only return false, this is already logged in downloadNewspaper()
     }
 
-    const news = parseNewspaper(html);
-    // check for errors here
+    await parseNewspaper(html).then((success) => {
+        if (!success) {
+            return false; // no need to log anything, this is done in parseNewspaper()
+        }
+    });
 
-    // store in upper scope here
+    if (sendLogs) { // send the news to the logs for timed renews
+        //logger.toConsole();
+        //logger.toChannel();
+    }
     return true;
 }
 
@@ -99,10 +131,19 @@ async function downloadNewspaper() {
 
 // parses different newspaper components and returns them as an object, or returns null on error
 async function parseNewspaper(html) {
-    //
+    // parse edition
+    // parse forecast
+    // parse famous heroes
+    // parse guild spotlight
+
+    // check for errors + log them
+
+    // store in upper scope after finding
+
+    // return true/false for success
 }
 
 exports.send = sendNewspaperRequest;
-exports.renew = renewNewspaper;
+exports.renewAuto = renewNewspaperAutomatic;
 exports.renewRequest = renewNewspaperRequest;
 exports.load = loadNewspaper;

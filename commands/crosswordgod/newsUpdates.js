@@ -5,8 +5,8 @@ const timers = require('../features/timers');
 
 function dailyNewspaperUpdate(client, Discord) {
     const channel = client.channels.cache.get(newspaperUpdates);
-    newspaper.renew(channel, Discord);
-    logger.log(`Automatically renewed the newspaper and sent it to the ${channel.name} channel. Random number check: ${Math.floor(Math.random() * 1000)}.`);
+    newspaper.renewAuto(channel, Discord);
+    logger.log(`News: Automatically tried to renew the newspaper and send it to the ${channel.name} channel. Random number check: ${Math.floor(Math.random() * 1000)}.`);
     let delay = getNewspaperUpdateDelay();
     if (delay < 1000 * 60 * 25) { // set delay to a full day if less than 25 minutes
         delay = 1000 * 60 * 60 * 24;

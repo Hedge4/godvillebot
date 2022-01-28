@@ -1,4 +1,3 @@
-const logger = require('../features/logging');
 const solveCrossword = require('./mainSolver.js');
 const newspaper = require('./newspaperManager.js');
 const omnibus = require('./omnibusManager.js');

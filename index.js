@@ -101,10 +101,10 @@ client.on('ready', () => {
         omnibus.loadBackup();
     }
     logger.log('News: Trying to load today\'s Godville Times...');
-    newspaper.load().then((success) => {
+    newspaper.load(false).then((success) => {
         if (!success) { // returns false if failed, so try again.
             logger.log('News, attempt 2: Trying to load today\'s Godville Times...');
-            newspaper.load();
+            newspaper.load(false); // these two parameters are false because we don't want newspaper logs on startup
         }
     });
     logger.log('Omni: Trying to download and parse the Omnibus list from online...');
