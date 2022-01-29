@@ -15,7 +15,7 @@ function loadBackup() {
     try {
         // read backup file
         backup = [];
-        fs.readFileSync('omniBackup.txt', 'utf-8').split(/\r?\n/).forEach(function(line) {
+        fs.readFileSync('./commands/crosswordgod/omniBackup.txt', 'utf-8').split(/\r?\n/).forEach(function(line) {
             backup.push(line);
         });
 
@@ -45,15 +45,15 @@ async function loadOmnibus(startup = false) {
     // now we get the individual omnibus entries
     const list = parseOmnibusEntries(html);
     if (!list || list.length < expectedAmount) {
-        logger.log('Omni: Something went wrong parsing omnibus entries from the html.');
-        if (list) logger.log(`Omni: There were only ${list.length} items, expected at least ${expectedAmount}.`);
+        logger.log('Omnibus: Something went wrong parsing omnibus entries from the html.');
+        if (list) logger.log(`Omnibus: There were only ${list.length} items, expected at least ${expectedAmount}.`);
         return false;
     }
 
     // actually update the list and the timestamp
     omnibus = Array.from(list);
     lastUpdated = Date.now();
-    let updateMessage = `Omni: Succesfully loaded online Omnibus list with ${list.length} entries.`;
+    let updateMessage = `Omnibus: Succesfully loaded online Omnibus list with ${list.length} entries.`;
 
     // on startup, also send statistics about how far ahead the omnibus list is.
     if (startup) {
@@ -63,9 +63,10 @@ async function loadOmnibus(startup = false) {
         } else {
             const notInOmnibus = backup.filter(x => !omnibus.includes(x));
             const notInBackup = omnibus.filter(x => !backup.includes(x));
-            updateMessage += `\nCompared to the backup, ${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
-            if (notInBackup.length !== 0 && notInBackup.length < 50) updateMessage += `\nAdded: ${notInBackup.join(', ')}`;
-            if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) updateMessage += `\nRemoved: ${notInOmnibus.join(', ')}`;
+            updateMessage += `\nOmnibus: Compared to the backup, ${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
+            if (notInBackup.length !== 0 && notInBackup.length < 50) updateMessage += `\n Added: ${notInBackup.join(', ')}`;
+            if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) updateMessage += `\n Removed: ${notInOmnibus.join(', ')}`;
+            updateMessage += '\n';
         }
     }
 
@@ -79,7 +80,7 @@ async function refreshOmnibus(message, Discord, client) {
     if (howLongAgo < refreshBreak * 60 * 1000) {
         const minutes = ~~(howLongAgo / (60 * 1000));
         const minutesLeft = refreshBreak - minutes;
-        logger.log(message.author.tag + ' requested the stored Omnibus list to be refreshed, but the command was on cooldown.');
+        logger.log(`${message.author.tag} requested the Omnibus list to be refreshed, but the command was on cooldown: ${minutesLeft} ${quantiseWords(minutesLeft, 'minute')} left.`);
         return message.reply(`the Omnibus list was last updated ${minutes} ${quantiseWords(minutes, 'minute')} ago.`
             + ` To make sure the devs don't get mad at me, please wait ${minutesLeft} more ${quantiseWords(minutesLeft, 'minute')}.`);
     }
@@ -130,17 +131,16 @@ async function refreshOmnibus(message, Discord, client) {
 
         if (notInOld.length !== 0 && notInOld.length < 50) {
             updateEmbed.addField('Added:', `${notInOld.join(', ')}`);
-            updateMessage += 'Added: ' + `${notInOld.join(', ')}`;
+            updateMessage += '\nAdded: ' + `${notInOld.join(', ')}`;
         }
         if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) {
             updateEmbed.addField('Removed:', `${notInOmnibus.join(', ')}`);
-            updateMessage += 'Removed: ' + `${notInOmnibus.join(', ')}`;
+            updateMessage += '\nRemoved: ' + `${notInOmnibus.join(', ')}`;
         }
     }
 
     logger.log(updateMessage);
-    reply.delete();
-    message.reply('done!', { embeds: [updateEmbed] });
+    reply.edit('done!', { embeds: [updateEmbed] });
 }
 
 function getOmnibus() {
@@ -163,7 +163,7 @@ async function downloadOmnibus() {
 
     const timeoutPromise = new Promise((resolve, reject) => {
         setTimeout(() => { // this only needs to reject because if it returns in time that means there is an error
-            reject(`Omni: Timed out after ${timeout} seconds while getting data from ${URL}.`);
+            reject(`Omnibus: Timed out after ${timeout} seconds while getting data from ${URL}.`);
         }, timeout * 1000);
     });
 
@@ -184,13 +184,14 @@ async function downloadOmnibus() {
     const res = await Promise.race([dataPromise, timeoutPromise])
     .then((result) => {
         if (!result) {
-            logger.log(`Omni: Oops! Something went wrong when downloading from url ${URL}! No data was received.`);
+            logger.log(`Omnibus: Oops! Something went wrong when downloading from url ${URL}! No data was received.`);
             return null;
         }
-        logger.log(`Omni: Received html from ${URL} succesfully.`);
+        logger.toChannel(`Omnibus: Received html from <${URL}> succesfully.`); // need separate log to prevent an embed
+        logger.toConsole(`Omnibus: Received html from ${URL} succesfully.`);
         return result;
     }).catch((error) => {
-        logger.log(`Omni: Oops! Something went wrong when downloading from url ${URL}! Error: ` + error);
+        logger.log(`Omnibus: Oops! Something went wrong when downloading from url ${URL}! Error: ` + error);
         return null;
     });
 
@@ -227,23 +228,23 @@ async function createBackup(message) {
     if (!owner.includes(message.author.id)) return message.reply('only the bot owner can create new backups.'); // hehe nope
     logger.log(`${message.author.tag} is trying to create a new omnibus backup file...`);
     const result = await createBackupFile();
-    return message.channel.send(`<@${message.author.id}: ${result}`);
+    return message.channel.send(`<@${message.author.id}>: ${result}`);
 }
 
 async function createBackupFile() {
     if (!await loadOmnibus()) {
-        logger.log('Something went wrong loading the online omnibus list.');
+        logger.log('Omnibus: Something went wrong loading the online omnibus list.');
         return 'Something went wrong loading the online omnibus list. No new backup file could be made.';
     }
 
     // get difference between previous backup and new one
-    let successMessage = `The Omnibus list was succesfully downloaded and a new backup was made with ${omnibus.length} entries.`;
+    let successMessage = `Omnibus: The list was succesfully downloaded and a new backup was made with ${omnibus.length} entries.`;
     if (!backup || backup.length < expectedAmount) {
-        logger.log('Omnibus backup file was not loaded in correctly - I can\'t compare the new and old backup.');
+        logger.log('Omnibus: Omnibus backup file was not loaded in correctly - I can\'t compare the new and old backup.');
     } else {
         const notInOmnibus = backup.filter(x => !omnibus.includes(x));
         const notInBackup = omnibus.filter(x => !backup.includes(x));
-        successMessage += `\n${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
+        successMessage += `\nOmnibus: ${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
         if (notInBackup.length !== 0 && notInBackup.length < 50) successMessage += `\nAdded: ${notInBackup.join(', ')}`;
         if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) successMessage += `\nRemoved: ${notInOmnibus.join(', ')}`;
     }
@@ -251,7 +252,7 @@ async function createBackupFile() {
     // now we can create a new omniBackup.txt
     try {
         const updateTime = Date.now();
-        const backupFile = fs.createWriteStream('omniBackup.txt', {
+        const backupFile = fs.createWriteStream('./commands/crosswordgod/omniBackup.txt', {
             flags: 'w',
         });
         backupFile.write(`${updateTime}\n`); // record the time backup was last updated on the first line
@@ -266,8 +267,7 @@ async function createBackupFile() {
         return successMessage;
 
     } catch (error) {
-        logger.log('Something went wrong while creating the new omnibus backup file. Try to repair it manually.');
-        logger.log(error);
+        logger.log('Omnibus: Something went wrong while creating the new omnibus backup file. Try to repair it manually. ' + error);
         return 'Something went wrong while creating the new omnibus backup file. Try to repair it manually.\n' + error;
     }
 

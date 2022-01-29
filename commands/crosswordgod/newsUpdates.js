@@ -31,8 +31,9 @@ function requestNewspaperUpdateTime(message) {
     const delayHours = output.hoursFromNow;
     const delayMins = output.minutesFromNow;
 
-    message.reply(`The bot's next newspaper update is scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.`
-        + ' The actual newspaper usually updates 15 minutes before that.');
+    logger.log(`${message.author.tag} wanted to know when the newspaper will next update, which is in ${delayHours} ${quantiseWords(delayHours, 'hour')} and ${delayMins} ${quantiseWords(delayMins, 'minute')}.`);
+    message.reply(`The bot's next newspaper update is scheduled for ${then}, in ${delayHours} ${quantiseWords(delayHours, 'hour')} and ${delayMins} ${quantiseWords(delayMins, 'minute')}.`
+        + ' The actual newspaper usually updates 5 minutes before that.');
 }
 
 function getNewspaperUpdateDelay() {
@@ -42,8 +43,8 @@ function getNewspaperUpdateDelay() {
     const delayHours = output.hoursFromNow;
     const delayMins = output.minutesFromNow;
 
-    logger.toConsole(`--------------------------------------------------------\nNext newspaper update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
-    logger.toChannel(`\`\`\`Next newspaper update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
+    logger.toConsole(`--------------------------------------------------------\nNext newspaper update scheduled for ${then}, in ${delayHours} ${quantiseWords(delayHours, 'hour')} and ${delayMins} ${quantiseWords(delayMins, 'minute')}.\n--------------------------------------------------------`);
+    logger.toChannel(`\`\`\`Next newspaper update scheduled for ${then}, in ${delayHours} ${quantiseWords(delayHours, 'hour')} and ${delayMins} ${quantiseWords(delayMins, 'minute')}.\`\`\``);
     return delay;
 }
 
@@ -54,10 +55,12 @@ function getNewsPingDelay() {
     const delayHours = output.hoursFromNow;
     const delayMins = output.minutesFromNow;
 
-    logger.toConsole(`--------------------------------------------------------\nNext newsping update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
-    logger.toChannel(`\`\`\`\nNext newsping update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
+    logger.toConsole(`--------------------------------------------------------\nNext newsping update scheduled for ${then}, in ${delayHours} ${quantiseWords(delayHours, 'hour')} and ${delayMins} ${quantiseWords(delayMins, 'minute')}.\n--------------------------------------------------------`);
+    logger.toChannel(`\`\`\`\nNext newsping update scheduled for ${then}, in ${delayHours} ${quantiseWords(delayHours, 'hour')} and ${delayMins} ${quantiseWords(delayMins, 'minute')}.\`\`\``);
     return delay;
 }
+
+const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;
 
 exports.newsPing = newsPing;
 exports.dailyUpdate = dailyNewspaperUpdate;

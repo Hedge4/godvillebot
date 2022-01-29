@@ -1,10 +1,11 @@
-const { prefix, botvilleChannel, noXpPrefixes, cdSeconds, logs, godpowerLogs } = require('../../configurations/config.json');
-const godpowerCooldown = new Set();
+const { prefix, botvilleChannel, noXpPrefixes, cdSeconds, logs, godpowerLogs, botServer } = require('../../configurations/config.json');
+const godpowerCooldown = new Set(); // to create a cooldown between each time a user can earn godpower
 
 async function giveGodpower(message, userData, Discord, client) {
 
     if (godpowerCooldown.has(message.author.id)) {return;}
     if (xpBlocked.includes(message.author.id)) {return;}
+    if (message.guild.id === botServer) {return;} // no xp for logs/suggestions server
     noXpPrefixes.forEach(element => {
         if (message.content.startsWith(element)) {return;}
     });

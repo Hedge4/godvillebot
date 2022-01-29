@@ -102,8 +102,7 @@ client.on('ready', () => {
     chatContest.startupCheck(client, userData);
 
     // load data such as the newspaper and the omnibus list
-    logger.log('\n'); // linebreak for all of the newspaper/omnibus parsing spam
-    logger.log('OmniBackup: Trying to load the Omnibus backup file...');
+    logger.log('\nOmniBackup: Trying to load the Omnibus backup file...'); // linebreak for all of the newspaper/omnibus parsing spam
     if (!omnibus.loadBackup()) { // returns false if failed, so try again.
         logger.log('OmniBackup, attempt 2: Trying to load the Omnibus backup file...');
         omnibus.loadBackup();
@@ -115,7 +114,7 @@ client.on('ready', () => {
             newspaper.load(false); // these two parameters are false because we don't want newspaper logs on startup
         }
     });
-    logger.log('Omni: Trying to download and parse the Omnibus list from online...');
+    logger.log('Omnibus: Trying to download and parse the Omnibus list from online...');
     omnibus.loadOnline(true).then((success) => {
         if (!success) { // returns false if failed, so try again.
             logger.log('Omni, attempt 2: Trying to download and parse the Omnibus list from online...');
@@ -252,15 +251,15 @@ client.on('message', async (message) => {
                 }
             }
         }
+
+    // respond when the bot is in a server it shouldn't be in
+    } else {
+        return message.reply('this bot is not created for this server. Please kick me from this server.');
     }
 
     // handle accepting or rejecting suggestions in the bot's suggestion/log server
     if (message.guild.id == botServer) {
         suggest.handleMessage(message, client, Discord, userData);
-
-    // respond when the bot is in a server it shouldn't be in
-    } else {
-        return message.reply('this bot is not created for this server. Please kick me from this server.');
     }
 
     // respond with a randomly selected reaction when the bot is pinged

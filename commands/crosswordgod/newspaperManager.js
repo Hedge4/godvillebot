@@ -1,4 +1,4 @@
-const { adminRole, prefix } = require('../../configurations/config.json');
+const { adminRole, prefix, owner } = require('../../configurations/config.json');
 const main = require('../../index');
 const logger = require('../features/logging');
 const https = require('https');
@@ -11,13 +11,11 @@ const news = {
     guildSpotlight: undefined,
 };
 
-loadNewspaper();
-
 // used when a user requests the newspaper to send a reply before sending the newspaper
 function sendNewspaperRequest(message, Discord) {
     message.reply('here is today\'s Godville Times summary!');
-    sendNewspaper(message.channel, Discord);
     logger.log(`${message.author.tag} requested the Godville Times summary in ${message.channel.name}.`);
+    sendNewspaper(message.channel, Discord);
 }
 
 // sends newspaper to specified channel using upper scope variable + formats it nicely as multiple embeds
@@ -72,18 +70,18 @@ function sendNewspaper(channel, Discord, renewed = false) {
     } else { missingEmbedsList.push('The Guild Spotlight couldn\'t be loaded today.'); }
 
     // embeds are finished, now send the whole package!
-    channel.send({ embeds: embedsList });
+    channel.send({ embeds: embedsList }).catch((err) => {
+        logger.log('News: Error sending newspaper embeds. ' + err);
+    });
     if (missingEmbedsList.length) channel.send(missingEmbedsList.join('\n'));
 
-    if (renewed) { // mention any gods who are in the news, but only if the newspaper was renewed
-        const gods = ['https://godvillegame.com/gods/Apathanos', 'https://godvillegame.com/gods/Hggames', 'https://godvillegame.com/gods/Hggame', 'https://godvillegame.com/gods/Wawajabba'];
+    if (renewed && news.mentionedGods) { // mention any gods who are in the news, but only if the newspaper was renewed
         const godIDs = [];
         const godNames = [];
         const godData = main.getGodData();
         godData.get().then((godDoc) => {
             const data = godDoc.data();
-            console.log(data);
-            gods.forEach(god => {
+            news.mentionedGods.forEach(god => {
                 const res = Object.keys(data).find(key => data[key] === god);
                 if (res) {
                     godIDs.push(res);
@@ -109,7 +107,7 @@ function sendNewspaper(channel, Discord, renewed = false) {
 
 // method used when a user renews the newspaper, not the automatic timer. Doesn't send in logs
 async function renewNewspaperRequest(message, Discord) {
-    if (!message.member.roles.cache.has(adminRole)) return message.reply('only moderators can forcefully renew the newspaper.');
+    if (!message.member.roles.cache.has(adminRole) && !owner.includes(message.author.id)) return message.reply('only moderators can forcefully renew the newspaper.');
     logger.log(`${message.author.tag} forcefully started the newspaper renewing process in ${message.channel}.`);
     const reply = await message.reply('I\'m working on it...');
 
@@ -121,7 +119,7 @@ async function renewNewspaperRequest(message, Discord) {
     });
 
     // we end by sending the newspaper to the channel
-    message.reply('done! Here is the renewed Godville Times:');
+    reply.edit('done! Here is the renewed Godville Times:');
     sendNewspaper(message.channel, Discord, true);
 }
 
@@ -200,7 +198,8 @@ async function downloadNewspaper() {
             logger.log(`News: Oops! Something went wrong when downloading from url ${URL}! No data was received.`);
             return null;
         }
-        logger.log(`News: Received html from ${URL} successfully.`);
+        logger.toChannel(`News: Received html from <${URL}> successfully.`); // need separate log to prevent an embed
+        logger.toConsole(`News: Received html from ${URL} successfully.`);
         return result;
     }).catch((error) => {
         logger.log(`News: Oops! Something went wrong when downloading from url ${URL}! Error: ` + error);

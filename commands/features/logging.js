@@ -10,7 +10,7 @@ function logBoth(text) {
     console.log(text);
     if (logsChannel) {
         logsChannel.send(text)
-        .catch(e => console.log(e + 'ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!!'));
+        .catch(e => console.log('ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!! ' + e));
     } else {
         // restart or something?
     }
@@ -19,7 +19,7 @@ function logBoth(text) {
 function logChannel(text) {
     if (logsChannel) {
         logsChannel.send(text)
-        .catch(e => console.log(e + 'ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!!'));
+        .catch(e => console.log('ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!! ' + e));
     } else {
         // restart or something?
     }
