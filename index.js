@@ -7,8 +7,8 @@ exports.getGodData = function() { return godData; };
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const { version, updateMsg1, updateMsg2, updateMsg3 } = require('./package.json');
-const { logs, botServer, prefix, token, server, owner, noXpChannels, botvilleChannel, commandChannels,
-    newspaperChannels, adminRole, ignoredChannels } = require('./configurations/config.json');
+const { logs, botServer, prefix, token, serversServed, owner, noXpChannels, botvilleChannel, commandChannels,
+    newspaperChannel, adminRole, ignoredChannels } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator, crossword } = require('./configurations/commands.json');
 
 // the different command modules
@@ -64,9 +64,11 @@ blockedData.get()
 
 // setup done as soon as the bot has a connection with the Discord API
 client.on('ready', () => {
-    const guild = client.guilds.cache.get(server);
-    guild.me.setNickname('GoddessBot');
-    guild.members.fetch();
+    serversServed.forEach(guildID => {
+        const guild = client.guilds.cache.get(guildID);
+        guild.me.setNickname('GoddessBot');
+        guild.members.fetch();
+    });
     const currentDate = new Date();
     const logsChannel = client.channels.cache.get(logs);
     logger.start(logsChannel);
@@ -133,8 +135,8 @@ client.on('message', async (message) => {
     if (message.channel.type === 'dm') {
         return botDMs.handleDMs(message, client);
 
-    // handle messages in the Godville community server
-    } else if (message.guild.id === server) {
+    // handle messages in servers the bot is available in
+    } else if (serversServed.includes(message.guild.id)) {
         if (imageBlocked.includes(message.author.id) && message.attachments.size > 0 && block.hasImage(message.attachments)) {
             return block.blockImage(client, message);
         }
@@ -198,7 +200,7 @@ client.on('message', async (message) => {
             }
 
             // redirect crossword module commands
-            if (newspaperChannels.includes(message.channel.id)) {
+            if (commandChannels.concat(newspaperChannel).includes(message.channel.id)) {
                 for (let i = 0; i < crossword.length; i++) {
                     if (cmd == crossword[i][0]) {
                         return crosswordModule(cmd, content, message, Discord, client);
@@ -250,10 +252,11 @@ client.on('message', async (message) => {
                 }
             }
         }
+    }
 
     // handle accepting or rejecting suggestions in the bot's suggestion/log server
-    } else if (message.guild.id == botServer) {
-        return suggest.handleMessage(message, client, Discord, userData);
+    if (message.guild.id == botServer) {
+        suggest.handleMessage(message, client, Discord, userData);
 
     // respond when the bot is in a server it shouldn't be in
     } else {

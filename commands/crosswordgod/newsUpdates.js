@@ -1,10 +1,10 @@
-const { newspaperUpdates } = require('../../configurations/config.json');
+const { newspaperChannel } = require('../../configurations/config.json');
 const newspaper = require('./newspaperManager.js');
 const logger = require('../features/logging');
 const timers = require('../features/timers');
 
 function dailyNewspaperUpdate(client, Discord) {
-    const channel = client.channels.cache.get(newspaperUpdates);
+    const channel = client.channels.cache.get(newspaperChannel);
     newspaper.renewAuto(channel, Discord);
     logger.log(`News: Automatically tried to renew the newspaper and send it to the ${channel.name} channel. Random number check: ${Math.floor(Math.random() * 1000)}.`);
     let delay = getNewspaperUpdateDelay();
@@ -15,7 +15,7 @@ function dailyNewspaperUpdate(client, Discord) {
 }
 
 function newsPing(client) {
-    const channel = client.channels.cache.get(newspaperUpdates);
+    const channel = client.channels.cache.get(newspaperChannel);
     channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator!');
     logger.log(`Sent a newspaper reminder to the ${channel.name} channel. Random number check: ${Math.floor(Math.random() * 1000)}.`);
     let delay = getNewsPingDelay();

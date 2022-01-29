@@ -93,7 +93,7 @@ function sendNewspaper(channel, Discord, renewed = false) {
 
             for (let i = 0; i < godIDs.length; i++) {
                 channel.send(`<@${godIDs[i]}> ${godNames[i]}, you're in the news!`);
-                logger.log(`News: Sent a ping to ID ${godIDs[i]}, because their god ${godNames[i]} is in the news.`);
+                logger.log(`News: Sent a ping to ID ${godIDs[i]} in ${channel.name}, because their god ${godNames[i]} is in the news.`);
             }
         });
     }

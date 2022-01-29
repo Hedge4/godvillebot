@@ -1,6 +1,6 @@
-const { newspaperUpdates, prefix, logs } = require('./configurations/config.json');
+const { newspaperChannel, prefix, logs } = require('./configurations/config.json');
 const Discord = require('discord.js');
-const { newspaperChannels, owner, adminRole } = require('./configurations/config.json');
+const { commandChannels, owner, adminRole } = require('./configurations/config.json');
 const fs = require('fs');
 const find = require('find');
 const { PythonShell } = require('python-shell');
@@ -23,7 +23,7 @@ function crosswordgod(message) {
             renew(message.channel, message.guild.name);
         } else { return message.reply('you do not have access to this command.'); }
     }
-    if (newspaperChannels.includes(message.channel.id) === true || owner.includes(message.author.id) === true) {
+    if (commandChannels.concat(newspaperChannel).includes(message.channel.id) === true || owner.includes(message.author.id) === true) {
         if (message.content.toLowerCase().startsWith(`${prefix}update`)) {
             console.log(`User ${message.author.tag} requested current delay for automatic update.`);
             getUpdate(message);
@@ -154,7 +154,7 @@ function getUpdate(message) {
 }
 
 function dailyRenew(client) {
-    const channel = client.channels.cache.get(newspaperUpdates);
+    const channel = client.channels.cache.get(newspaperChannel);
     const GuildName = channel.guild.name;
     renew(channel, GuildName);
     setTimeout(sendMK, 15000, client);
