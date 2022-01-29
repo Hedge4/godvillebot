@@ -1,4 +1,4 @@
-const { prefix, botvilleChannel, noXpPrefixes, cdSeconds, logs, godpowerLogs, botServer } = require('../../configurations/config.json');
+const { prefix, botvilleChannel, noXpPrefixes, godpowerCooldownSeconds, logs, godpowerLogs, botServer } = require('../../configurations/config.json');
 const godpowerCooldown = new Set(); // to create a cooldown between each time a user can earn godpower
 
 async function giveGodpower(message, userData, Discord, client) {
@@ -80,7 +80,7 @@ async function giveGodpower(message, userData, Discord, client) {
 
     setTimeout(() => {
         godpowerCooldown.delete(message.author.id);
-    }, cdSeconds * 1000);
+    }, godpowerCooldownSeconds * 1000);
 }
 
 module.exports = giveGodpower;

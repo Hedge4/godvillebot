@@ -29,13 +29,13 @@ async function checkChatContest(client, userData) {
         }, timeRemaining);
 
         timeRemaining = ~~(timeRemaining / 1000); // change timeremaining to seconds for the logs
-        console.log(`Last chat contest elligible message was sent ${elapsed} seconds ago, ${~~(timeRemaining / 60)} minutes and ${timeRemaining % 60} seconds remaining until chat is ded.`);
-        logsChannel.send(`Last chat contest elligible message was sent ${elapsed} seconds ago, ${~~(timeRemaining / 60)} minutes and ${timeRemaining % 60} seconds remaining until chat is ded.`);
+        console.log(`Last chat contest elligible message was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')} remaining until chat is ded.`);
+        logsChannel.send(`Last chat contest elligible message was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')} remaining until chat is ded.`);
     } else {
     timeRemaining *= -1; // timeRemaining is negative in this case
     timeRemaining = ~~(timeRemaining / 1000); // change timeremaining to seconds for the logs
-    console.log(`Last chat contest elligible message was sent ${elapsed} seconds ago, which means chat has been dead for ${~~(timeRemaining / 60)} minutes and ${timeRemaining % 60} seconds.`);
-    logsChannel.send(`Last chat contest elligible message was sent ${elapsed} seconds ago, which means chat has been dead for ${~~(timeRemaining / 60)} minutes and ${timeRemaining % 60} seconds.`);
+    console.log(`Last chat contest elligible message was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, which means chat has been dead for ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')}.`);
+    logsChannel.send(`Last chat contest elligible message was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, which means chat has been dead for ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')}.`);
     }
 
     setLastWinner(client);
@@ -124,9 +124,9 @@ async function winningChatContest(message, client, userData) {
     if (message.id == lastMessage.id) {
         const logsChannel = client.channels.cache.get(logs);
         if (message.author.id == lastWinner) {
-            message.reply(`you were the last person to talk for ${chatContestTime} minutes, but you already won the last chat-killing contest! :skull:`);
-            console.log(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} minutes, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
-            logsChannel.send(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} minutes, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
+            message.reply(`you were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but you already won the last chat-killing contest! :skull:`);
+            console.log(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
+            logsChannel.send(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
         } else {
             lastWinner = message.author.id;
             if (chatCombo < 0) chatCombo = 0; // in case it's negative for whatever reason
@@ -143,22 +143,22 @@ async function winningChatContest(message, client, userData) {
             switch (Math.floor(Math.random() * chatMultiplier + chatMultiplierBonus)) {
                 case 0:
                     gold = Math.floor(Math.random() * 14) + 6;
-                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a small amount of gold <:t_gold:668200334933622794> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+                    message.reply(`you were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a small amount of gold <:t_gold:668200334933622794> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
                 case 1:
                 case 2:
                 case 4:
                     gold = Math.floor(Math.random() * 21) + 22;
-                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a normal bag of gold <:t_goldbag:668202265777274890> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+                    message.reply(`you were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a normal bag of gold <:t_goldbag:668202265777274890> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
                 case 3:
                 case 5:
                     gold = Math.floor(Math.random() * 50) + 50;
-                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, and you won a big crate of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+                    message.reply(`you were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a big crate of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
                 default:
                     gold = 100;
-                    message.reply(`you were the last person to talk for ${chatContestTime} minutes, but something went wrong calculating your reward. You were awarded a default amount of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:\n<@346301339548123136>`);
+                    message.reply(`you were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but something went wrong calculating your reward. You were awarded a default amount of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:\n<@346301339548123136>`);
             }
 
             const userDoc = await userData.get();
@@ -181,13 +181,15 @@ async function winningChatContest(message, client, userData) {
             User[message.author.id].last_username = message.author.tag;
             userData.set(User, { merge: true });
 
-            console.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo}, tier multiplier ${chatMultiplier} and multiplier bonus ${chatMultiplierBonus}. Gold: ${oldGold} -> ${newGold}.`);
-            logsChannel.send(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} minutes, after a conversation with combo ${chatCombo}, tier multiplier ${chatMultiplier} and multiplier bonus ${chatMultiplierBonus}. Gold: ${oldGold} -> ${newGold}.`);
+            console.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, after a conversation with combo ${chatCombo}, tier multiplier ${chatMultiplier} and multiplier bonus ${chatMultiplierBonus}. Gold: ${oldGold} -> ${newGold}.`);
+            logsChannel.send(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, after a conversation with combo ${chatCombo}, tier multiplier ${chatMultiplier} and multiplier bonus ${chatMultiplierBonus}. Gold: ${oldGold} -> ${newGold}.`);
         }
         lastMessage = null;
         chatCombo = 0;
     }
 }
+
+const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;
 
 exports.startupCheck = checkChatContest;
 exports.newMessage = checkMessage;

@@ -1,7 +1,7 @@
 # GodBot
-Version: 4.12.3
+Version: 4.12.4
 
-I should probably include some sort of description here. Meh, I'll add it later.
+I should probably include some sort of description here. Meh, I'll add it later (read: probably never).
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.
@@ -21,7 +21,7 @@ Lastly, commands now support aliases and are sorted into modules (as of version 
 * 4.9 Added one generic getUser() function that can be accessed from anywhere in the features folder.
 * 4.10 Accepting/rejecting suggestions now sends a message in botville, and accepted suggestions reward gold!
 * 4.11 Added >gvprofile to show any Godville profile, and added >showlink to only show someone's linked URL, without fetching their profile.
-* 4.12 Added >makevote <msg_id>, which will make any message into a vote (encourage/miracle/punish) and remove reactions as necessary.
+* 4.12 Added >makevote <msg_id>, which will make any message into a vote (encourage/miracle/punish) and remove reactions as necessary. The bot now correctly chooses singular/plural in some prompts.
 
 ## What's new in version 3?
 Version 3 adds the functionality of CrosswordGod to GodBot, so just running one of the two bots will be enough.
