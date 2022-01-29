@@ -119,7 +119,7 @@ async function renewNewspaperRequest(message, Discord) {
     });
 
     // we end by sending the newspaper to the channel
-    reply.edit('done! Here is the renewed Godville Times:');
+    reply.edit(`<@${message.author.id}>, done! Here is the renewed Godville Times:`);
     sendNewspaper(message.channel, Discord, true);
 }
 
