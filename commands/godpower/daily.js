@@ -32,7 +32,7 @@ async function checkDaily(client, message, limitedCommandsData, userData) {
         const delay = getResetTimer(client, false);
         console.log(`${message.author.tag} tried to use their daily in ${message.channel.name}, but had already used it.`);
         logsChannel.send(`${message.author.tag} tried to use their daily in ${message.channel.name}, but had already used it.`);
-        message.reply(`you already used your daily! Dailies reset in ${delay[1]} hours, ${delay[2]} minutes and ${delay[4]} seconds.`);
+        message.reply(`you already used your daily! Dailies reset in ${delay[1]} ${quantiseWords(delay[1], 'hour')}, ${delay[2]} ${quantiseWords(delay[2], 'minute')} and ${delay[4]} ${quantiseWords(delay[4], 'second')}.`);
     }
 }
 
@@ -62,8 +62,8 @@ function getResetTimer(client, show) {
     const delaySecs = Math.ceil((delay % (60 * 1000) / 1000));
     const logsChannel = client.channels.cache.get(logs);
     if (show === true) {
-        console.log(`--------------------------------------------------------\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\n--------------------------------------------------------`);
-        logsChannel.send(`\`\`\`\nNext daily reset scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.\`\`\``);
+        console.log(`--------------------------------------------------------\nNext daily reset scheduled for ${then}, in ${delayHours} ${quantiseWords(delayHours, 'hour')} and ${delayMins} ${quantiseWords(delayMins, 'minute')}.\n--------------------------------------------------------`);
+        logsChannel.send(`\`\`\`\nNext daily reset scheduled for ${then}, in ${delayHours} ${quantiseWords(delayHours, 'hour')} and ${delayMins} ${quantiseWords(delayMins, 'minute')}.\`\`\``);
     }
     return [delay, delayHours, delayMins, then, delaySecs];
 }
@@ -75,10 +75,12 @@ function dailyReset(client, limitedCommandsData) {
     limitedCommandsData.set({ daily: usedDaily });
     newsSent = false;
     const logsChannel = client.channels.cache.get(logs);
-    console.log(`Successfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.`);
-    logsChannel.send(`**Successfully reset use of the >daily command! ${dailiesUsed} dailies were used yesterday.**`);
+    console.log(`Successfully reset use of the >daily command! ${dailiesUsed} ${quantiseWords(dailiesUsed, 'daily was', 'dailies were')} used yesterday.`);
+    logsChannel.send(`**Successfully reset use of the >daily command! ${dailiesUsed} ${quantiseWords(dailiesUsed, 'daily was', 'dailies were')} used yesterday.**`);
     setTimeout(dailyReset, delay[0], client, limitedCommandsData);
 }
+
+const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;
 
 exports.daily = checkDaily;
 exports.resetDelay = getResetTimer;

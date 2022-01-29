@@ -1,4 +1,4 @@
-const { prefix, botvilleChannel, noXpPrefixes, cdSeconds, logs, godpowerLogs } = require('../../configurations/config.json');
+const { prefix, botvilleChannel, noXpPrefixes, godpowerCooldownSeconds, logs, godpowerLogs } = require('../../configurations/config.json');
 const godpowerCooldown = new Set();
 
 async function giveGodpower(message, userData, Discord, client) {
@@ -79,7 +79,7 @@ async function giveGodpower(message, userData, Discord, client) {
 
     setTimeout(() => {
         godpowerCooldown.delete(message.author.id);
-    }, cdSeconds * 1000);
+    }, godpowerCooldownSeconds * 1000);
 }
 
 module.exports = giveGodpower;
