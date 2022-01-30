@@ -13,7 +13,7 @@ const news = {
 
 // used when a user requests the newspaper to send a reply before sending the newspaper
 function sendNewspaperRequest(message, Discord) {
-    message.reply('here is today\'s Godville Times summary!');
+    message.reply('Here is today\'s Godville Times summary!');
     logger.log(`${message.author.tag} requested the Godville Times summary in ${message.channel.name}.`);
     sendNewspaper(message.channel, Discord);
 }
@@ -107,14 +107,14 @@ function sendNewspaper(channel, Discord, renewed = false) {
 
 // method used when a user renews the newspaper, not the automatic timer. Doesn't send in logs
 async function renewNewspaperRequest(message, Discord) {
-    if (!message.member.roles.cache.has(adminRole) && !owner.includes(message.author.id)) return message.reply('only moderators can forcefully renew the newspaper.');
+    if (!message.member.roles.cache.has(adminRole) && !owner.includes(message.author.id)) return message.reply('Only moderators can forcefully renew the newspaper.');
     logger.log(`${message.author.tag} forcefully started the newspaper renewing process in ${message.channel}.`);
     const reply = await message.reply('I\'m working on it...');
 
     await loadNewspaper().then((success) => {
         if (!success) { // on fail, just let whoever used the command know. loadNewspaper() does the logging already
             reply.delete();
-            return message.reply('something went wrong while trying to renew the newspaper content. You can check the logs to find out what happened.');
+            return message.reply('Something went wrong while trying to renew the newspaper content. You can check the logs to find out what happened.');
         }
     });
 

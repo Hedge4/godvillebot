@@ -20,7 +20,7 @@ function redirect(cmd, content, message, Discord, client) {
         case 'makevote':
             return makevote(message, content);
         default:
-            return message.reply(`the '${cmd}' command does not seem to be correctly set up.`);
+            return message.reply(`The '${cmd}' command does not seem to be correctly set up.`);
     }
 }
 

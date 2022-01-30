@@ -123,7 +123,7 @@ async function winningChatContest(message, client, userData) {
     if (message.id == lastMessage.id) {
         const logsChannel = client.channels.cache.get(logs);
         if (message.author.id == lastWinner) {
-            message.reply(`you were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but you already won the last chat-killing contest! :skull:`);
+            message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but you already won the last chat-killing contest! :skull:`);
             console.log(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
             logsChannel.send(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
         } else {
@@ -142,22 +142,22 @@ async function winningChatContest(message, client, userData) {
             switch (Math.floor(Math.random() * chatMultiplier + chatMultiplierBonus)) {
                 case 0:
                     gold = Math.floor(Math.random() * 14) + 6;
-                    message.reply(`you were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a small amount of gold <:t_gold:668200334933622794> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+                    message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a small amount of gold <:t_gold:668200334933622794> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
                 case 1:
                 case 2:
                 case 4:
                     gold = Math.floor(Math.random() * 21) + 22;
-                    message.reply(`you were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a normal bag of gold <:t_goldbag:668202265777274890> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+                    message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a normal bag of gold <:t_goldbag:668202265777274890> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
                 case 3:
                 case 5:
                     gold = Math.floor(Math.random() * 50) + 50;
-                    message.reply(`you were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a big crate of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+                    message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a big crate of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
                     break;
                 default:
                     gold = 100;
-                    message.reply(`you were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but something went wrong calculating your reward. You were awarded a default amount of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:\n<@346301339548123136>`);
+                    message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but something went wrong calculating your reward. You were awarded a default amount of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:\n<@346301339548123136>`);
             }
 
             const userDoc = await userData.get();

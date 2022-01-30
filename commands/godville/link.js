@@ -2,7 +2,7 @@ const { prefix, logs, commandChannels, botvilleChannel } = require('../../config
 
 function link_profile(message, link, godData, client) {
     if (!commandChannels.includes(message.channel.id)) {
-        return message.reply(`please only use this command in <#${botvilleChannel}> to avoid spam.`);
+        return message.reply(`Please only use this command in <#${botvilleChannel}> to avoid spam.`);
     }
 
     link = link.replace(/%20/g, ' ');
@@ -28,7 +28,7 @@ function link_profile(message, link, godData, client) {
         godData.set(user, { merge: true });
         return;
     } else {
-        message.reply(`your link doesn't start with '<https://godvillegame.com/gods/>' or you made a typo in your god name: "${link}".`);
+        message.reply(`Your link doesn't start with '<https://godvillegame.com/gods/>' or you made a typo in your god name: "${link}".`);
         message.channel.send('Please format the link exactly like this:\n\'<https://godvillegame.com/gods/YOUR-GOD-NAME>\'');
         return message.channel.send('God names start with a capital letter, and can only contain letters, numbers, hyphens and spaces. Using %20 to encode spaces is okay too.');
     }

@@ -81,7 +81,7 @@ async function refreshOmnibus(message, Discord, client) {
         const minutes = ~~(howLongAgo / (60 * 1000));
         const minutesLeft = refreshBreak - minutes;
         logger.log(`${message.author.tag} requested the Omnibus list to be refreshed, but the command was on cooldown: ${minutesLeft} ${quantiseWords(minutesLeft, 'minute')} left.`);
-        return message.reply(`the Omnibus list was last updated ${minutes} ${quantiseWords(minutes, 'minute')} ago.`
+        return message.reply(`The Omnibus list was last updated ${minutes} ${quantiseWords(minutes, 'minute')} ago.`
             + ` To make sure the devs don't get mad at me, please wait ${minutesLeft} more ${quantiseWords(minutesLeft, 'minute')}.`);
     }
 
@@ -225,7 +225,7 @@ function parseOmnibusEntries(omnibusHtml) {
 
 
 async function createBackup(message) {
-    if (!owner.includes(message.author.id)) return message.reply('only the bot owner can create new backups.'); // hehe nope
+    if (!owner.includes(message.author.id)) return message.reply('Only the bot owner can create new backups.'); // hehe nope
     logger.log(`${message.author.tag} is trying to create a new omnibus backup file...`);
     const result = await createBackupFile();
     return message.channel.send(`<@${message.author.id}>: ${result}`);

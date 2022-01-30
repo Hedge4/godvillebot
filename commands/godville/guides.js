@@ -36,7 +36,7 @@ function show_guides_list(client, message) {
         text += `+ {${i + 1}}  ${guides_list[i][0]}\n`;
     }
     text += `\nUse "${prefix}guides [number]" to get the URL to a specific guide. Contact Wawajabba to include your guide here, or use ${prefix}suggest. Be sure to include the URL, a short and an extended description and the guide authors.\n\`\`\``;
-    message.reply(`here are all ${guides_list.length} currently available guides:\n${text}`);
+    message.reply(`Here are all ${guides_list.length} currently available guides:\n${text}`);
 }
 
 function show_guide(message, guide_number, client, Discord) {
@@ -62,10 +62,10 @@ function list_or_guide(message, number, client, Discord) {
         logsChannel.send(`${message.author.tag} requested guide ${number} in channel ${message.channel.name}.`);
 
         if (isNaN(number)) {
-            return message.reply('you need to enter the number of the guide you want to view.');
+            return message.reply('You need to enter the number of the guide you want to view.');
         }
         if (number < 1 || number > guides_list.length) {
-            return message.reply('that guide number doesn\'t exist.');
+            return message.reply('That guide number doesn\'t exist.');
         }
         number = Math.floor(number);
         show_guide(message, number, client, Discord);

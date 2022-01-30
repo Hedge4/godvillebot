@@ -21,7 +21,7 @@ function crosswordgod(message) {
     if (message.content.toLowerCase().startsWith(`${prefix}renew`)) {
         if (message.member.roles.cache.has(adminRole) || owner.includes(message.author.id)) {
             renew(message.channel, message.guild.name);
-        } else { return message.reply('you do not have access to this command.'); }
+        } else { return message.reply('You do not have access to this command.'); }
     }
     if (commandChannels.concat(newspaperChannel).includes(message.channel.id) === true || owner.includes(message.author.id) === true) {
         if (message.content.toLowerCase().startsWith(`${prefix}update`)) {
@@ -149,7 +149,7 @@ function getUpdate(message) {
     const delay = then_UTC_milsec - now_milsec;
     const delayHours = Math.floor(delay / 1000 / 3600);
     const delayMins = Math.ceil((delay % (1000 * 3600)) / (60 * 1000));
-    message.reply(`the next automatic update is scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.`);
+    message.reply(`The next automatic update is scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes.`);
     console.log(`Next automatic update scheduled for ${then}, in ${delayHours} hours and ${delayMins} minutes. Info requested by ${message.author.tag}.`); return delayHours, delayMins;
 }
 

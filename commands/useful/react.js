@@ -9,13 +9,13 @@ async function main(message, content, client) {
 
     const splitContent = content.indexOf(' ');
     if (splitContent < 1) {
-        return message.reply('you need to enter both the ID of a message to react to, and a reaction.'
+        return message.reply('You need to enter both the ID of a message to react to, and a reaction.'
             + '\n\nTo get the ID of a message, you need to enable Developer Mode in the \'Behavior\' tab of your User Settings.'
             + ' Once you\'ve done this, right click/hold the message and a \'Copy ID\' option will appear.');
     }
     const messageID = content.substring(0, splitContent);
     if (isNaN(messageID)) {
-        return message.reply(`a message ID has to be a number, which '${messageID}' isn't.`
+        return message.reply(`A message ID has to be a number, which '${messageID}' isn't.`
             + '\n\nTo get the ID of a message, you need to enable Developer Mode in the \'Behavior\' tab of your User Settings.'
             + ' Once you\'ve done this, right click/hold the message and a \'Copy ID\' option will appear.');
     }
@@ -44,11 +44,11 @@ async function main(message, content, client) {
     }
     const reactionCount = targetMsg.reactions.cache.size;
     if (reactionCount >= maxReactions) {
-        return message.reply('this message already has the maximum amount of reactions.');
+        return message.reply('This message already has the maximum amount of reactions.');
     }
 
     if (reactionList.length > maxReactions - reactionCount) {
-        return message.reply(`your reaction can be ${maxReactions - reactionCount} different characters at most - keep in mind duplicate letters will be removed!`);
+        return message.reply(`Your reaction can be ${maxReactions - reactionCount} different characters at most - keep in mind duplicate letters will be removed!`);
     }
 
     const logsChannel = client.channels.cache.get(logs);

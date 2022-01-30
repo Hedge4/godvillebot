@@ -8,7 +8,7 @@ async function displayGold(message, userData, Discord, client) {
         const username = message.content.slice(6).trim();
         user = getUsers.One(username, client);
         if (!user) {
-            return message.reply('mention a valid user or use a valid username/ID!');
+            return message.reply('Mention a valid user or use a valid username/ID!');
         }
     } else {
         user = message.author;

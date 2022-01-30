@@ -172,7 +172,7 @@ client.on('messageCreate', (message) => {
         // people without Admin or Deities role need to activate their access to the server first
         if (message.content.toLowerCase().startsWith('?rank')) {
             if (!message.member.roles.cache.has('313453649315495946') && !message.member.roles.cache.has(adminRole)) {
-                return message.reply('use the `?ireadtherules` command to unlock core server functionality before adding any extra channels!');
+                return message.reply('Use the `?ireadtherules` command to unlock core server functionality before adding any extra channels!');
             }
         }
 
@@ -280,7 +280,7 @@ client.on('messageCreate', (message) => {
 
     // respond when the bot is in a server it shouldn't be in
     } else {
-        return message.reply('this bot is not created for this server. Please kick me from this server.');
+        return message.reply('This bot is not created for this server. Please kick me from this server.');
     }
 
     // handle accepting or rejecting suggestions in the bot's suggestion/log server

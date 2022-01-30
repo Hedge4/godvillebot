@@ -25,12 +25,12 @@ async function checkDaily(message, limitedCommandsData, userData) {
         User[message.author.id].last_username = message.author.tag;
         userData.set(User, { merge: true });
 
-        message.reply(`you received **${goldAdd}** daily gold. You now have **${newGold}** gold total. <:stat_gold:401414686651711498>`);
+        message.reply(`You received **${goldAdd}** daily gold. You now have **${newGold}** gold total. <:stat_gold:401414686651711498>`);
         logger.log(`${message.author.tag} used their daily in ${message.channel.name}. Gold: ${oldGold} -> ${newGold}.`);
     } else {
         const delay = getResetTimer(false);
         logger.log(`${message.author.tag} tried to use their daily in ${message.channel.name}, but had already used it.`);
-        message.reply(`you already used your daily! Dailies reset in ${delay[1]} ${quantiseWords(delay[1], 'hour')}, ${delay[2]} ${quantiseWords(delay[2], 'minute')} and ${delay[4]} ${quantiseWords(delay[4], 'second')}.`);
+        message.reply(`You already used your daily! Dailies reset in ${delay[1]} ${quantiseWords(delay[1], 'hour')}, ${delay[2]} ${quantiseWords(delay[2], 'minute')} and ${delay[4]} ${quantiseWords(delay[4], 'second')}.`);
     }
 }
 

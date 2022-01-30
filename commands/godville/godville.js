@@ -18,7 +18,7 @@ function redirect(cmd, content, message, client, Discord, godData) {
         case 'link':
             return link(message, content, godData, client);
         default:
-            return message.reply(`the '${cmd}' command does not seem to be correctly set up.`);
+            return message.reply(`The '${cmd}' command does not seem to be correctly set up.`);
     }
 }
 

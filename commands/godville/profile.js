@@ -9,7 +9,7 @@ async function showProfile(message, username, client, Discord, godData) {
     if (username.length > 0) {
         user = getUsers.One(username, client);
         if (!user) {
-            return message.reply('mention a valid user or use a valid username/ID!');
+            return message.reply('Mention a valid user or use a valid username/ID!');
         }
     } else {
         user = message.author;
@@ -27,7 +27,7 @@ async function showProfile(message, username, client, Discord, godData) {
     if(godDoc.data()[user.id] === undefined) {
         if (!self) {
             return message.reply(`<@${user.id}> hasn't linked their Godville account yet.\nThey can do so using the \`${prefix}link\` command in <#${botvilleChannel}>.`);
-        } else { return message.reply(`you haven't linked your Godville account yet. You can do that with the following command in <#${botvilleChannel}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
+        } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#${botvilleChannel}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
     }
     const godURL = godDoc.data()[user.id];
     let god = godURL.slice(30);
@@ -92,14 +92,14 @@ async function showGodvilleProfile(message, godURL, client, Discord) {
     if (!godURL.startsWith('https://godvillegame.com/gods/')) {
         if (!(/^[A-Z][a-zA-Z0-9- ]{2,29}$/.test(godURL))) {
 
-            return message.reply(`this god(dess) name, '${godURL}', seems to be illegal. Make sure it only includes letters, numbers, hypens and spaces, and starts with a capital letter.`);
+            return message.reply(`This god(dess) name, '${godURL}', seems to be illegal. Make sure it only includes letters, numbers, hypens and spaces, and starts with a capital letter.`);
         } else {
             godURL = 'https://godvillegame.com/gods/' + godURL;
         }
 
     } else if (!(/^[A-Z][a-zA-Z0-9- ]{2,29}$/.test(godURL.slice(30)))) {
 
-        return message.reply(`the god(dess) name at the end of the URL, '${godURL.slice(30)}', seems to be illegal. Make sure it only includes letters, numbers, hypens and spaces, and starts with a capital letter.`);
+        return message.reply(`The god(dess) name at the end of the URL, '${godURL.slice(30)}', seems to be illegal. Make sure it only includes letters, numbers, hypens and spaces, and starts with a capital letter.`);
     }
 
     let god = godURL.slice(30);
@@ -162,7 +162,7 @@ async function showLink(message, username, client, godData) {
     if (username.length > 0) {
         user = getUsers.One(username, client);
         if (!user) {
-            return message.reply('mention a valid user or use a valid username/ID!');
+            return message.reply('Mention a valid user or use a valid username/ID!');
         }
     } else {
         user = message.author;
@@ -179,13 +179,13 @@ async function showLink(message, username, client, godData) {
     if(godDoc.data()[user.id] === undefined) {
         if (!self) {
             return message.reply(`<@${user.id}> hasn't linked their Godville account yet.\nThey can do so using the \`${prefix}link\` command in <#${botvilleChannel}>.`);
-        } else { return message.reply(`you haven't linked your Godville account yet. You can do that with the following command in <#${botvilleChannel}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
+        } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#${botvilleChannel}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
     }
 
     const godURL = godDoc.data()[user.id];
     let god = godURL.slice(30);
     god = decodeURI(god);
-    message.reply(`this is the god(dess) linked to ${fetchedUser}: **${god}** <${godURL}>`);
+    message.reply(`This is the god(dess) linked to ${fetchedUser}: **${god}** <${godURL}>`);
 
     const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} requested the profile URL for god(dess) ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
