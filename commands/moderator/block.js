@@ -2,11 +2,11 @@ const { modlogs, logs, owner } = require('../../configurations/config.json');
 const getUsers = require('../features/getUsers');
 
 function hasImage(attachments) {
-    const imgFormats = ['.png', '.jpeg', '.jpg', '.gif'];
+    const imgFormats = ['.png', '.jpeg', '.jpg', '.gif']; // maybe add more formats later
     let imageFound = false;
     for (let i = 0; i < attachments.size; i++) {
         try {
-            const format = /^[\s\S]+(\.[^.]+$)/.exec(attachments.array()[i].name)[1];
+            const format = /^[\s\S]+(\.[^.]+$)/.exec(attachments.at(i).name)[1];
             if (imgFormats.includes(format)) {
                 imageFound = true;
                 break;
@@ -37,12 +37,10 @@ const correctFormat = `Correct format: \`>block|unblock|blocklist ${blockLists.j
 function blockList(message, client) {
     const args = message.content.slice(10).trim().split(' ');
     if (!args[0].length) {
-        message.reply('please specify which list of blocked users you want to view!');
-        return message.channel.send(correctFormat);
+        return message.reply('please specify which list of blocked users you want to view!\n' + correctFormat);
     }
     if (!blockLists.includes(args[0].toLowerCase())) {
-        message.reply(`${args[0]} is not one of the blocked user lists.`);
-        return message.channel.send(correctFormat);
+        return message.reply(`${args[0]} is not one of the blocked user lists.\n${correctFormat}`);
     }
 
     const logsChannel = client.channels.cache.get(logs);
@@ -113,18 +111,15 @@ function block(message, client, blockedData) {
     if (args.length > 2) {
         args[1] = args.slice(1).join(' ');
     } else if (args.length < 2) {
-        message.reply('please specify what you want to block and for which user!');
-        return message.channel.send(correctFormat);
+        return message.reply('please specify what you want to block and for which user!\n' + correctFormat);
     }
     if (!blockLists.includes(args[0].toLowerCase())) {
-        message.reply(`${args[0]} is not one of the things users can be blocked from.`);
-        return message.channel.send(correctFormat);
+        return message.reply(`${args[0]} is not one of the things users can be blocked from.\n${correctFormat}`);
     }
 
     const user = getUsers.One(args[1], client);
     if (!user) {
-        message.reply(`user "${args[1]}" could not be found. Mention a valid user or use a valid username/ID!`);
-        return message.channel.send(correctFormat);
+        return message.reply(`user "${args[1]}" could not be found. Mention a valid user or use a valid username/ID!\n+${correctFormat}`);
     }
     if (user.id == owner) {
         return message.reply(`nuh uh I'm not blocking ${user.username} you dummy!`);
@@ -171,17 +166,14 @@ function unblock(message, client, blockedData) {
     if (args.length > 2) {
         args[1] = args.slice(1).join(' ');
     } else if (args.length < 2) {
-        message.reply('please specify what you want to unblock and for which user!');
-        return message.channel.send(correctFormat);
+        return message.reply('please specify what you want to unblock and for which user!\n' + correctFormat);
     }
     if (!blockLists.includes(args[0].toLowerCase())) {
-        message.reply(`${args[0]} is not one of the things users can be blocked from.`);
-        return message.channel.send(correctFormat);
+        return message.reply(`${args[0]} is not one of the things users can be blocked from.\n${correctFormat}`);
     }
     const user = getUsers.One(args[1], client);
     if (!user) {
-        message.reply(`user "${args[1]}" could not be found. Mention a valid user or use a valid username/ID!`);
-        return message.channel.send(correctFormat);
+        return message.reply(`user "${args[1]}" could not be found. Mention a valid user or use a valid username/ID!\n${correctFormat}`);
     }
 
     args[0] = args[0].toLowerCase();

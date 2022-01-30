@@ -4,15 +4,18 @@ exports.getClient = function() { return client; };
 exports.getDiscord = function() { return Discord; };
 exports.getGodData = function() { return godData; };
 
-const testing = true; // when changing this value, remember to change log channels (and any other channels used in testing)!
-
 
 // discord connection setup, bot login is at bottom of file
 const Discord = require('discord.js');
-const botIntents = new Discord.Intents([Discord.Intents.FLAGS.GUILD_MESSAGES]);
-botIntents.add(Discord.Intents.FLAGS.DIRECT_MESSAGES);
-botIntents.add(Discord.Intents.FLAGS.GUILDS);
-const client = new Discord.Client({ intents: botIntents });
+const client = new Discord.Client({
+    intents: [
+        'GUILD_MESSAGES',
+        'DIRECT_MESSAGES',
+        'GUILDS',
+        'GUILD_MEMBERS',
+        'GUILD_MESSAGE_REACTIONS',
+    ], partials: ['CHANNEL'],
+});
 
 // certain variables used in this file
 const { version, updateMsg1, updateMsg2, updateMsg3 } = require('./package.json');
@@ -144,19 +147,21 @@ client.on('ready', () => {
 
 
 // done whenever the bot detects a new message in any channel it has access to
-client.on('messageCreate', async (message) => {
+client.on('messageCreate', (message) => {
     // ignore any messages from bots or people blocked from interacting with the bot
     if (message.author.bot) {return;}
     if (botBlocked.includes(message.author.id)) {return;}
 
-    if (testing && !(message.guild.id === botServer)) return; // FOR TESTING PURPOSES
+    if (message.attachments.size > 0) block.hasImage(message.attachments);
+    if (message.guild.id !== botServer) return; // FOR TESTING PURPOSES, remember to change log channel id values
 
     // handle DMs
-    if (message.channel.type === 'dm') {
+    if (message.channel.type === 'DM') {
         return botDMs.handleDMs(message, client);
 
     // handle messages in servers the bot is available in
     } else if (serversServed.includes(message.guild.id)) {
+        // possibly later add detection for image links that automatically turn into an embed
         if (imageBlocked.includes(message.author.id) && message.attachments.size > 0 && block.hasImage(message.attachments)) {
             return block.blockImage(client, message);
         }

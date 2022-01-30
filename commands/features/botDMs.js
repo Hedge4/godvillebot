@@ -14,6 +14,8 @@ function handleDMs(message, client) {
     let msg = `I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`${prefix}suggest\` in <#${botvilleChannel}>.`;
     if (contestRunning) msg += '\n\nDid you want to enter the current contest? Then make sure you type \'+\' before your entry.';
     message.reply(msg);
+
+    // only log to console because logs are public
     console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
     client.channels.cache.get(botDmLogs).send(`*${message.author.tag} / ${message.author.id} sent the following message in my DMs:*`);
     const attachments = [];
@@ -38,7 +40,7 @@ async function checkDMContest(client) {
 
         const messages = await channel.messages.fetch(options);
         if (messages.size < 1) break;
-        messages.array().forEach(e => {
+        messages.forEach(e => {
             contestAuthors += e.content;
             contestTotal++;
         });

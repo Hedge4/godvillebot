@@ -42,7 +42,7 @@ async function main(message, content, client) {
     } catch (error) {
         return message.reply('I couldn\'t find a message with that ID in this channel.');
     }
-    const reactionCount = targetMsg.reactions.cache.array().length;
+    const reactionCount = targetMsg.reactions.cache.size;
     if (reactionCount >= maxReactions) {
         return message.reply('this message already has the maximum amount of reactions.');
     }

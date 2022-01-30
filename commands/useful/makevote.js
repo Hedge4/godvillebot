@@ -1,4 +1,4 @@
-const { adminRole } = require('../../configurations/config.json');
+const { adminRole, owner } = require('../../configurations/config.json');
 let reacting = false;
 const logger = require('../features/logging');
 
@@ -44,10 +44,10 @@ async function main(message, content) {
     }
 
     let logsText = `${message.author.tag} made a message from ${targetMsg.author.tag} in ${message.channel.name} into a vote.`;
-    const reactionCount = targetMsg.reactions.cache.array().length;
+    const reactionCount = targetMsg.reactions.cache.size;
 
     if (reactionCount > 0) {
-        if (message.member.roles.cache.has(adminRole)) {
+        if (message.member.roles.cache.has(adminRole) || owner.includes(message.author.id)) {
             // try to remove the reactions already on the message if the user is a mod
             try {
                 await targetMsg.reactions.removeAll();
