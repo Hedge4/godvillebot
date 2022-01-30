@@ -14,7 +14,7 @@ const client = new Discord.Client({
         'GUILDS',
         'GUILD_MEMBERS',
         'GUILD_MESSAGE_REACTIONS',
-    ], partials: ['CHANNEL'],
+    ], partials: ['CHANNEL'], // CHANNEL needed to receive DMs
 });
 
 // certain variables used in this file

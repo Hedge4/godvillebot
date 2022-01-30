@@ -26,7 +26,7 @@ function newsPing(client) {
 }
 
 function requestNewspaperUpdateTime(message) {
-    const output = timers.getDelay(22, 20);
+    const output = timers.getDelay(22, 10);
     const then = output.goalDate;
     const delayHours = output.hoursFromNow;
     const delayMins = output.minutesFromNow;

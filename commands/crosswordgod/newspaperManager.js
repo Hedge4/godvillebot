@@ -39,7 +39,7 @@ function sendNewspaper(channel, Discord, renewed = false) {
     if (news.forecast) {
         const forecastEmbed = new Discord.MessageEmbed()
         .setTitle('Daily Forecast')
-        .setDescription(news.forecast.toString())
+        .setDescription(news.forecast)
         .setURL('https://godvillegame.com/news')
         .setColor(0x78de79) // noice green
         .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
@@ -50,7 +50,7 @@ function sendNewspaper(channel, Discord, renewed = false) {
     if (news.famousHeroes) {
         const famousEmbed = new Discord.MessageEmbed()
         .setTitle('Famous Heroes')
-        .setDescription(news.famousHeroes.toString())
+        .setDescription(news.famousHeroes)
         .setURL('https://godvillegame.com/news')
         .setColor(0x78de79) // noice green
         .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
@@ -61,7 +61,7 @@ function sendNewspaper(channel, Discord, renewed = false) {
     if (news.guildSpotlight) {
         const guildEmbed = new Discord.MessageEmbed()
         .setTitle('Guild Spotlight')
-        .setDescription(news.guildSpotlight.toString())
+        .setDescription(news.guildSpotlight)
         .setURL('https://godvillegame.com/news')
         .setColor(0x78de79) // noice green
         .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
@@ -70,7 +70,7 @@ function sendNewspaper(channel, Discord, renewed = false) {
     } else { missingEmbedsList.push('The Guild Spotlight couldn\'t be loaded today.'); }
 
     // embeds are finished, now send the whole package!
-    // In testing, Discord only sent the first embed of embedsList, so we're sending them one by one.
+    // In testing, Discord only displays the first embed attached to a message, so we're sending them one by one.
     // channel.send({ embeds: embedsList }).catch((err) => {
     //     logger.log('News: Error sending newspaper embeds. ' + err);
     // });
@@ -79,6 +79,8 @@ function sendNewspaper(channel, Discord, renewed = false) {
             logger.log('News: Error sending newspaper embeds. ' + err);
         });
     });
+
+    // send a message with an explanation about the parts of the newspaper that couldn't be sent
     if (missingEmbedsList.length) channel.send(missingEmbedsList.join('\n'));
 
     if (renewed && news.mentionedGods) { // mention any gods who are in the news, but only if the newspaper was renewed
@@ -88,13 +90,14 @@ function sendNewspaper(channel, Discord, renewed = false) {
         godData.get().then((godDoc) => {
             const data = godDoc.data();
             news.mentionedGods.forEach(god => {
-                const res = Object.keys(data).find(key => data[key] === god);
+                const res = Object.keys(data).find(key => data[key].toLowerCase() === god.toLowerCase());
                 if (res) {
                     godIDs.push(res);
                     godNames.push(data[res].slice(data[res].indexOf('gods/') + 5));
                 }
             });
 
+            // we got the goods now ship 'em
             for (let i = 0; i < godIDs.length; i++) {
                 channel.send(`<@${godIDs[i]}> ${godNames[i]}, you're in the news!`);
                 logger.log(`News: Sent a ping to ID ${godIDs[i]} in ${channel.name}, because their god ${godNames[i]} is in the news.`);
@@ -131,7 +134,7 @@ async function renewNewspaperRequest(message, Discord) {
 
 // method used for timed renewing. Returns true/false for success, and pushes news to the logs
 async function renewNewspaperAutomatic(channel, Discord) {
-    channel.send('♻️ Renewing my Godville Times summary... ♻️');
+    const reply = await channel.send('♻️ Renewing my Godville Times summary... ♻️');
     // upper method allready logged that this process is starting
 
     await loadNewspaper(true).then((success) => {
@@ -143,7 +146,7 @@ async function renewNewspaperAutomatic(channel, Discord) {
     });
 
     // we end by sending the newspaper to the channel
-    channel.send('Successfully renewed my Godville Times summary! Here is the new edition: 🗞️');
+    reply.edit('Successfully renewed my Godville Times summary! Here is the new edition: 🗞️');
     sendNewspaper(channel, Discord, true);
 }
 
