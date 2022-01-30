@@ -18,8 +18,8 @@ async function showProfile(message, username, client, Discord, godData) {
 
 
     let author = user.tag;
-    const nickname = message.guild.member(user) ? message.guild.member(user).displayName : null;
-    if (nickname !== user.username) {
+    const nickname = message.guild.members.cache.get(user) ? message.guild.members.cache.get(user).displayName : null;
+    if (nickname && nickname !== user.username) {
         author += '/' + nickname;
     }
 
@@ -53,7 +53,7 @@ async function showProfile(message, username, client, Discord, godData) {
         .addField('ERROR', 'Extra data such as their (gr)avatar and level could not be found for this god; either the bot can\'t acces this page or it was linked incorrectly. In case of the former, the link above will still work.')
         .setColor('006600')
         .setFooter({ text: author, iconURL: user.displayAvatarURL() });
-        return message.channel.send(godEmbed);
+        return message.channel.send({ embeds: [godEmbed] });
     }
 
     if (!godvilleData[6]) {
@@ -68,7 +68,7 @@ async function showProfile(message, username, client, Discord, godData) {
         .addField('Medals', godvilleData[5], false)
         .setColor('006600')
         .setFooter({ text: author, iconURL: user.displayAvatarURL() });
-        return message.channel.send(godEmbed);
+        return message.channel.send({ embeds: [godEmbed] });
     } else {
         const godEmbed = new Discord.MessageEmbed()
         .setTitle(`${godvilleData[4]} ${god}`)
@@ -82,7 +82,7 @@ async function showProfile(message, username, client, Discord, godData) {
         .addField('Medals', godvilleData[5], false)
         .setColor('006600')
         .setFooter({ text: author, iconURL: user.displayAvatarURL() });
-        return message.channel.send(godEmbed);
+        return message.channel.send({ embeds: [godEmbed] });
     }
 }
 
@@ -125,7 +125,7 @@ async function showGodvilleProfile(message, godURL, client, Discord) {
         .setDescription('Click the god(dess)\'s username to open their Godville page.')
         .addField('ERROR', 'I couldn\'t found any data for this god(dess). Either the bot can\'t acces this page or it was linked incorrectly. In case of the former, the link above will still work.')
         .setColor('006600');
-        return message.channel.send(godEmbed);
+        return message.channel.send({ embeds: [godEmbed] });
     }
 
     if (!godvilleData[6]) {
@@ -139,7 +139,7 @@ async function showGodvilleProfile(message, godURL, client, Discord) {
         .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
         .addField('Medals', godvilleData[5], false)
         .setColor('006600');
-        return message.channel.send(godEmbed);
+        return message.channel.send({ embeds: [godEmbed] });
     } else {
         const godEmbed = new Discord.MessageEmbed()
         .setTitle(`${godvilleData[4]} ${god}`)
@@ -152,7 +152,7 @@ async function showGodvilleProfile(message, godURL, client, Discord) {
         .addField('Pet', `${godvilleData[6]}\n${godvilleData[7]}`, true)
         .addField('Medals', godvilleData[5], false)
         .setColor('006600');
-        return message.channel.send(godEmbed);
+        return message.channel.send({ embeds: [godEmbed] });
     }
 }
 
@@ -170,8 +170,8 @@ async function showLink(message, username, client, godData) {
     }
 
     let fetchedUser = user.tag;
-    const nickname = message.guild.member(user) ? message.guild.member(user).displayName : null;
-    if (nickname !== user.username) {
+    const nickname = message.guild.members.cache.get(user) ? message.guild.members.cache.get(user).displayName : null;
+    if (nickname && nickname !== user.username) {
         fetchedUser += '/' + nickname;
     }
 

@@ -47,7 +47,7 @@ function show_guide(message, guide_number, client, Discord) {
         .setColor(0xFFD300) // Dark yellow
         .setDescription(guides_list[index_number][1])
         .setFooter(`Guide by ${guides_list[index_number][3]}`);
-    message.channel.send(guide_embed);
+    message.channel.send({ embeds: [guide_embed] });
     const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} requested the guide "${guides_list[index_number][0]}" in channel ${message.channel.name}.`);
     logsChannel.send(`${message.author.tag} requested the guide "${guides_list[index_number][0]}" in channel ${message.channel.name}.`);

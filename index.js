@@ -152,7 +152,6 @@ client.on('messageCreate', (message) => {
     if (message.author.bot) {return;}
     if (botBlocked.includes(message.author.id)) {return;}
 
-    if (message.attachments.size > 0) block.hasImage(message.attachments);
     if (message.guild.id !== botServer) return; // FOR TESTING PURPOSES, remember to change log channel id values
 
     // handle DMs

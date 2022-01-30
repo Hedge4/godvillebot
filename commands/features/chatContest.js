@@ -29,8 +29,8 @@ async function checkChatContest(client, userData) {
         }, timeRemaining);
 
         timeRemaining = ~~(timeRemaining / 1000); // change timeremaining to seconds for the logs
-        console.log(`Last chat contest elligible message was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')} remaining until chat is ded.`);
-        logsChannel.send(`Last chat contest elligible message was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')} remaining until chat is ded.`);
+        console.log(`Last chat contest elligible message was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')} remaining until chat is dead.`);
+        logsChannel.send(`Last chat contest elligible message was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')} remaining until chat is dead.`);
     } else {
     timeRemaining *= -1; // timeRemaining is negative in this case
     timeRemaining = ~~(timeRemaining / 1000); // change timeremaining to seconds for the logs

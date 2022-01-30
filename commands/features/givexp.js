@@ -62,7 +62,7 @@ async function giveGodpower(message, userData, Discord, client) {
         User[message.author.id].gold = User[message.author.id].gold + goldAdd;
         let newNextLevel = Math.floor(100 * 1.2 ** (newLevel ** (4 / 5)));
         if (newLevel >= 50) newNextLevel = 6666;
-        const nickname = message.guild.member(message.author) ? message.guild.member(message.author).displayName : null;
+        const nickname = message.guild.members.cache.get(message.author) ? message.guild.members.cache.get(message.author).displayName : null;
 
         const lvlUpEmbed = new Discord.MessageEmbed()
             .setColor('d604cf')
@@ -71,7 +71,7 @@ async function giveGodpower(message, userData, Discord, client) {
             .addField('Gold rewarded', `You earned ${goldAdd} <:stat_gold:401414686651711498> for reaching level ` + User[message.author.id].level + '. You now have ' + User[message.author.id].gold + ' gold total.')
             .setFooter({ text: `You'll need ${newNextLevel} godpower for level ${newLevel + 1}. Use ${prefix}toggle-mentions to enable/disable being mentioned on level-up.`, iconURL: message.author.displayAvatarURL() });
         if (User[message.author.id].mention !== false) { client.channels.cache.get(botvilleChannel).send(`Congratulations on reaching level ${User[message.author.id].level}, ${message.author}!`);}
-        client.channels.cache.get(botvilleChannel).send(lvlUpEmbed);
+        client.channels.cache.get(botvilleChannel).send({ embeds: [lvlUpEmbed] });
     }
 
     User[message.author.id].last_username = message.author.tag;

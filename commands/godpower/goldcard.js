@@ -14,7 +14,7 @@ async function displayGold(message, userData, Discord, client) {
         user = message.author;
     }
 
-    let author = user.tag;
+    let userName = user.tag;
     const userDoc = await userData.get();
     const User = {};
     if(userDoc.data()[user.id] === undefined) {
@@ -24,27 +24,27 @@ async function displayGold(message, userData, Discord, client) {
             level: 0,
             gold: 0,
         };
-        User[user.id].last_username = author;
+        User[user.id].last_username = userName;
         await userData.set(User, { merge: true });
     } else {
         User[user.id] = userDoc.data()[user.id];
     }
 
-    const nickname = message.guild.member(user) ? message.guild.member(user).displayName : null;
-    if (nickname !== user.username) {
-        author = author + ' / ' + nickname;
+    const nickname = message.guild.members.cache.get(user) ? message.guild.members.cache.get(user).displayName : null;
+    if (nickname && nickname !== user.username) {
+        userName = userName + ' / ' + nickname;
     }
 
     const goldEmbed = new Discord.MessageEmbed()
-    .setAuthor(author)
+    .setAuthor({ name: userName })
     .setColor('ffd700')
-    .addField('Gold <:stat_gold:401414686651711498>', User[user.id].gold, true)
+    .addField('Gold <:stat_gold:401414686651711498>', User[user.id].gold.toString(), true)
     .setThumbnail(user.displayAvatarURL());
 
     const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} requested the gold amount for ${user.tag}.`);
     logsChannel.send(`${message.author.tag} requested the gold amount for ${user.tag}.`);
-    message.channel.send(goldEmbed);
+    message.channel.send({ embeds: [goldEmbed] });
 }
 
 module.exports = displayGold;

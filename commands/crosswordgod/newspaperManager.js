@@ -27,11 +27,11 @@ function sendNewspaper(channel, Discord, renewed = false) {
     const introductionEmbed = new Discord.MessageEmbed()
     .setTitle(`Godville Times issue ${news.edition} on day ${news.date} g.e.`)
     .setDescription('[Click for a link to the free coupon.](https://godvillegame.com/news#cpn_name)'
-        + '\n\nDid you know I can automatically solve the newspaper\'s crossword for you? You just have to send me the words!'
-        + `you can do so with \`${prefix}solve\` for separate words (type . for unknowns), or just upload the raw html page with \`${prefix}solvehtml\`!`)
+        + '\n\nDid you know I can solve the newspaper\'s crossword for you? You just have to send me the words! '
+        + `You can do so with \`${prefix}solve\` for separate words (type a . for unknown letters), or just upload the raw html page with \`${prefix}solvehtml\`!`)
     .setURL('https://godvillegame.com/news')
     .setColor(0x78de79) // noice green
-    //.setThumbnail('https://i.imgur.com/t5udHzR.jpeg')
+    .setThumbnail('https://i.imgur.com/t5udHzR.jpeg')
     .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
     .setTimestamp();
     embedsList.push(introductionEmbed);
@@ -39,7 +39,7 @@ function sendNewspaper(channel, Discord, renewed = false) {
     if (news.forecast) {
         const forecastEmbed = new Discord.MessageEmbed()
         .setTitle('Daily Forecast')
-        .setDescription(news.forecast)
+        .setDescription(news.forecast.toString())
         .setURL('https://godvillegame.com/news')
         .setColor(0x78de79) // noice green
         .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
@@ -50,7 +50,7 @@ function sendNewspaper(channel, Discord, renewed = false) {
     if (news.famousHeroes) {
         const famousEmbed = new Discord.MessageEmbed()
         .setTitle('Famous Heroes')
-        .setDescription(news.famousHeroes)
+        .setDescription(news.famousHeroes.toString())
         .setURL('https://godvillegame.com/news')
         .setColor(0x78de79) // noice green
         .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
@@ -60,8 +60,8 @@ function sendNewspaper(channel, Discord, renewed = false) {
 
     if (news.guildSpotlight) {
         const guildEmbed = new Discord.MessageEmbed()
-        .setTitle('Famous Heroes')
-        .setDescription(news.famousHeroes)
+        .setTitle('Guild Spotlight')
+        .setDescription(news.guildSpotlight.toString())
         .setURL('https://godvillegame.com/news')
         .setColor(0x78de79) // noice green
         .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
@@ -70,8 +70,14 @@ function sendNewspaper(channel, Discord, renewed = false) {
     } else { missingEmbedsList.push('The Guild Spotlight couldn\'t be loaded today.'); }
 
     // embeds are finished, now send the whole package!
-    channel.send({ embeds: embedsList }).catch((err) => {
-        logger.log('News: Error sending newspaper embeds. ' + err);
+    // In testing, Discord only sent the first embed of embedsList, so we're sending them one by one.
+    // channel.send({ embeds: embedsList }).catch((err) => {
+    //     logger.log('News: Error sending newspaper embeds. ' + err);
+    // });
+    embedsList.forEach(embed => {
+        channel.send({ embeds: [embed] }).catch((err) => {
+            logger.log('News: Error sending newspaper embeds. ' + err);
+        });
     });
     if (missingEmbedsList.length) channel.send(missingEmbedsList.join('\n'));
 
@@ -248,10 +254,17 @@ function parseNewspaper(html) {
         const forecastRegex = /<h2>Daily Forecast<\/h2>\s*(.*?)\s*<\/div>/s;
         const pRegex = /<\/p>.*?<p>/s;
         forecast = forecastRegex.exec(html)[1]; // gives all forecasts (no matter the amount) but with html in between
-        forecast = forecast.slice(4, -4).trim(); // remove outer html
+        forecast = forecast.slice(3, -4).trim(); // remove outer html
         while (pRegex.test(forecast)) {
             forecast = forecast.replace(pRegex, '*\n*'); // remove inner html + add inside italics formatting
         }
+
+        //forecast.replace(/&#0149;/g, '-'); // would be better but doesn't work somehow
+        forecast = '•' + forecast.slice(7);
+        const splitIndex = forecast.indexOf('\n');
+        forecast = forecast.slice(0, splitIndex + 2) + '•' + forecast.slice(splitIndex + 9);
+
+        forecast = parseHtmlEntities(forecast); // catch remaining funky stuff (also doesn't work for bullet points)
         forecast = '*' + forecast + '*'; // add outside italics formatting
         forecastSuccess = true;
     } catch (error) {
@@ -271,7 +284,8 @@ function parseNewspaper(html) {
             }
             match = hyperlinkRegex.exec(hero);
             while (match) {
-                const link = (match[1].startsWith('/') ? 'https://godvillegame.com' : '') + match[1];
+                let link = (match[1].startsWith('/') ? 'https://godvillegame.com' : '') + match[1];
+                link = encodeURI(link);
                 if (!mentions.includes(link)) mentions.push(link);
                 hero = hero.replace(hyperlinkRegex, `[${match[2]}](${link})`);
                 match = hyperlinkRegex.exec(hero);
@@ -289,6 +303,7 @@ function parseNewspaper(html) {
             return hero.trim();
         });
         heroes = heroes.join('\n\n'); // join the two famous heroes together into one string
+        heroes = parseHtmlEntities(heroes);
         heroesSuccess = true;
     } catch (error) {
         logger.log('News: Couldn\'t parse newspaper famous heroes correctly. Error: ' + error);
@@ -306,13 +321,15 @@ function parseNewspaper(html) {
             }
             match = hyperlinkRegex.exec(guild);
             while (match) {
-                const link = (match[1].startsWith('/') ? 'https://godvillegame.com' : '') + match[1];
+                let link = (match[1].startsWith('/') ? 'https://godvillegame.com' : '') + match[1];
+                link = encodeURI(link);
                 guild = guild.replace(hyperlinkRegex, `[${match[2]}](${link})`);
                 match = hyperlinkRegex.exec(guild);
             }
             return guild.trim();
         });
         guilds = guilds.join('\n\n'); // join the two guilds together into one string
+        guilds = parseHtmlEntities(guilds);
         guildSuccess = true;
     } catch (error) {
         logger.log('News: Couldn\'t parse newspaper guild spotlight correctly. Error: ' + error);
@@ -337,6 +354,14 @@ function parseNewspaper(html) {
         logger.log('News: No parts of the daily newspaper loaded correctly, so no daily update will be sent.');
         return false;
     }
+}
+
+// used to resolve some funky characters from stuff like hero mottos
+function parseHtmlEntities(str) {
+    return str.replace(/&#([0-9]{1,3});/gi, function(match, numStr) {
+        const num = parseInt(numStr, 10); // read num as normal number
+        return String.fromCharCode(num);
+    });
 }
 
 exports.send = sendNewspaperRequest;

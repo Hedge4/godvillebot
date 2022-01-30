@@ -39,8 +39,8 @@ async function displayLevel(message, userData, Discord, client) {
     if (curLevel >= 50) reqGodpower = 6666;
     const nextLevel = curLevel + 1;
     const difference = reqGodpower - curGodpower;
-    const nickname = message.guild.member(user) ? message.guild.member(user).displayName : null;
-    if (nickname !== user.username) {
+    const nickname = message.guild.members.cache.get(user) ? message.guild.members.cache.get(user).displayName : null;
+    if (nickname && nickname !== user.username) {
         author = author + ' / ' + nickname;
     }
 
@@ -56,7 +56,7 @@ async function displayLevel(message, userData, Discord, client) {
     const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} requested the level card for ${user.tag}.`);
     logsChannel.send(`${message.author.tag} requested the level card for ${user.tag}.`);
-    message.channel.send(lvlEmbed);
+    message.channel.send({ embeds: [lvlEmbed] });
 }
 
 async function getOwnRanking(userID, userDocData) {

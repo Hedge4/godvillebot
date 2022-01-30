@@ -115,7 +115,7 @@ async function refreshOmnibus(message, Discord, client) {
     .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
     .setTimestamp();
     // we also update a message for the logs
-    let updateMessage = `Succesfully refreshed online Omnibus list with ${list.length} total entries!`;
+    let updateMessage = `Omnibus: Succesfully refreshed online Omnibus list with ${list.length} total entries!`;
 
     // get difference between previous list and refreshed one
     if (!oldOmnibus || oldOmnibus.length < expectedAmount) {
@@ -126,7 +126,7 @@ async function refreshOmnibus(message, Discord, client) {
         const notInOld = omnibus.filter(x => !oldOmnibus.includes(x));
 
         updateEmbed.setDescription(`\nCompared to the previous list, ${notInOld.length} ${quantiseWords(notInOld.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`);
-        updateMessage += `\nCompared to the previous list, ${notInOld.length} ${quantiseWords(notInOld.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
+        updateMessage += `\nOmnibus: Compared to the previous list, ${notInOld.length} ${quantiseWords(notInOld.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
 
 
         if (notInOld.length !== 0 && notInOld.length < 50) {
@@ -140,7 +140,7 @@ async function refreshOmnibus(message, Discord, client) {
     }
 
     logger.log(updateMessage);
-    reply.edit('done!', { embeds: [updateEmbed] });
+    reply.edit({ content: 'Done!', embeds: [updateEmbed] });
 }
 
 function getOmnibus() {

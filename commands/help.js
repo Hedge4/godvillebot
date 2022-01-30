@@ -185,10 +185,10 @@ function chooseHelp(message, Discord, client) {
         return message.reply(`I don't know the command \`${prefix}${arg}\`!`);
     }
     if (commandChannels.includes(message.channel.id)) {
-        return message.channel.send(helpEmbed);
+        return message.channel.send({ embeds: [helpEmbed] });
     } else {
         message.reply(`I've sent my help message in <#${botvilleChannel}>!`);
-        return client.channels.cache.get(botvilleChannel).send(helpEmbed);
+        return client.channels.cache.get(botvilleChannel).send({ embeds: [helpEmbed] });
     }
 }
 

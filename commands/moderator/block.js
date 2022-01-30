@@ -21,13 +21,11 @@ function hasImage(attachments) {
 
 async function blockImage(client, message) {
     const logsChannel = client.channels.cache.get(logs);
-    message.delete();
+    setTimeout(() => { message.delete(); }, 100);
     console.log(`Blocked ${message.author.tag} from sending an image with filename "${message.attachments.first().name}" in ${message.channel.name}.`);
     logsChannel.send(`Blocked ${message.author.tag} from sending an image with filename "${message.attachments.first().name}" in ${message.channel.name}.`);
-    message.reply('You are currently not allowed to post images in the server.')
-        .then(msg => {
-            msg.delete({ timeout: 5000 });
-        })
+    message.channel.send(`<@${message.author.id}>, you are currently not allowed to post images in the server.`)
+        .then(msg => { setTimeout(() => { msg.delete(); }, 10 * 1000); })
         .catch(console.error);
 }
 
