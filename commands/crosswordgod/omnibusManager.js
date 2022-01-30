@@ -64,8 +64,8 @@ async function loadOmnibus(startup = false) {
             const notInOmnibus = backup.filter(x => !omnibus.includes(x));
             const notInBackup = omnibus.filter(x => !backup.includes(x));
             updateMessage += `\nOmnibus: Compared to the backup, ${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
-            if (notInBackup.length !== 0 && notInBackup.length < 50) updateMessage += `\n Added: ${notInBackup.join(', ')}`;
-            if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) updateMessage += `\n Removed: ${notInOmnibus.join(', ')}`;
+            if (notInBackup.length !== 0 && notInBackup.length < 50) updateMessage += `\n - Added: ${notInBackup.join(', ')}`;
+            if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) updateMessage += `\n - Removed: ${notInOmnibus.join(', ')}`;
             updateMessage += '\n';
         }
     }
@@ -131,11 +131,11 @@ async function refreshOmnibus(message, Discord, client) {
 
         if (notInOld.length !== 0 && notInOld.length < 50) {
             updateEmbed.addField('Added:', `${notInOld.join(', ')}`);
-            updateMessage += '\nAdded: ' + `${notInOld.join(', ')}`;
+            updateMessage += '\n - Added: ' + `${notInOld.join(', ')}`;
         }
         if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) {
             updateEmbed.addField('Removed:', `${notInOmnibus.join(', ')}`);
-            updateMessage += '\nRemoved: ' + `${notInOmnibus.join(', ')}`;
+            updateMessage += '\n - Removed: ' + `${notInOmnibus.join(', ')}`;
         }
     }
 
@@ -227,8 +227,9 @@ function parseOmnibusEntries(omnibusHtml) {
 async function createBackup(message) {
     if (!owner.includes(message.author.id)) return message.reply('Only the bot owner can create new backups.'); // hehe nope
     logger.log(`${message.author.tag} is trying to create a new omnibus backup file...`);
+    const reply = await message.reply('Trying to create a new omnibus backup file...');
     const result = await createBackupFile();
-    return message.channel.send(`<@${message.author.id}>: ${result}`);
+    return reply.edit(result);
 }
 
 async function createBackupFile() {
@@ -245,8 +246,8 @@ async function createBackupFile() {
         const notInOmnibus = backup.filter(x => !omnibus.includes(x));
         const notInBackup = omnibus.filter(x => !backup.includes(x));
         successMessage += `\nOmnibus: ${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
-        if (notInBackup.length !== 0 && notInBackup.length < 50) successMessage += `\nAdded: ${notInBackup.join(', ')}`;
-        if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) successMessage += `\nRemoved: ${notInOmnibus.join(', ')}`;
+        if (notInBackup.length !== 0 && notInBackup.length < 50) successMessage += `\n - Added: ${notInBackup.join(', ')}`;
+        if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) successMessage += `\n - Removed: ${notInOmnibus.join(', ')}`;
     }
 
     // now we can create a new omniBackup.txt

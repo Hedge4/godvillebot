@@ -136,14 +136,14 @@ async function renewNewspaperAutomatic(channel, Discord) {
 
     await loadNewspaper(true).then((success) => {
         if (!success) {
-            channel.send('⚠️ Oops! ⚠️ Something went wrong, and I couldn\'t load the new newspaper...'
-                + `You can ask a moderator to force another update with \`${prefix}renew\`.`);
+            channel.send('⚠️ Oops! ⚠️ Something went wrong, and I couldn\'t load the new newspaper edition...'
+                + ` You can ask a moderator to force another update with \`${prefix}renew\`.`);
             return;
         }
     });
 
     // we end by sending the newspaper to the channel
-    channel.send('Successfully renewed! Here is the new Godville Times edition: 🗞️');
+    channel.send('Successfully renewed my Godville Times summary! Here is the new edition: 🗞️');
     sendNewspaper(channel, Discord, true);
 }
 

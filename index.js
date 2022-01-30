@@ -294,7 +294,7 @@ client.on('messageCreate', (message) => {
 });
 
 client.on('messageDelete', deletedMessage => {
-    if (deletedMessage.author.bot) {return;}
+    if (deletedMessage.author.bot) {return;} // when removing this add it to chatContest.deleteMessage()
 
     chatContest.deleteMessage(deletedMessage, client);
 });
