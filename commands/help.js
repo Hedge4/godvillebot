@@ -131,7 +131,7 @@ function constructHelp(message, Discord, client) {
         .setDescription(`GodBot gives XP, or 'godpower' for talking, and provides several other Godville related functions, such as linking your profile and daily crossword solutions. Use \`${prefix}help [command]\` for more information on a specific command/function.\n\n` + text)
         .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
         .setTimestamp()
-        .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL());
+        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
     const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} requested the help message in ${message.channel.name}.`);
     logsChannel.send(`${message.author.tag} requested the help message in ${message.channel.name}.`);
@@ -146,7 +146,7 @@ function constructSpecificHelp(message, Discord, client, element) {
             .setDescription(element[3])
             .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
             .setTimestamp()
-            .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL());
+            .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
         const logsChannel = client.channels.cache.get(logs);
         console.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
         logsChannel.send(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
@@ -163,7 +163,7 @@ function constructSpecificHelp(message, Discord, client, element) {
             .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
             .addField('__Usage examples:__', `${examples}`)
             .setTimestamp()
-            .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL());
+            .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
         const logsChannel = client.channels.cache.get(logs);
         console.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
         logsChannel.send(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);

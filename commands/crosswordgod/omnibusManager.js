@@ -112,7 +112,7 @@ async function refreshOmnibus(message, Discord, client) {
     const updateEmbed = new Discord.MessageEmbed()
     .setTitle(`⏫ Succesfully refreshed online Omnibus list with ${list.length} total entries!`)
     .setColor(0x0092db) // noice blue
-    .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
+    .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
     .setTimestamp();
     // we also update a message for the logs
     let updateMessage = `Succesfully refreshed online Omnibus list with ${list.length} total entries!`;

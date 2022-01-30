@@ -51,7 +51,7 @@ async function displayLevel(message, userData, Discord, client) {
     .addField('Godpower <:stat_godpower:401412765232660492>', curGodpower, true)
     .addField('Total godpower', User[user.id].total_godpower, true)
     .addField('Rank', rank, true)
-    .setFooter(`${difference} godpower needed for level ${nextLevel}.`, user.displayAvatarURL());
+    .setFooter({ text: `${difference} godpower needed for level ${nextLevel}.`, iconURL: user.displayAvatarURL() });
 
     const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} requested the level card for ${user.tag}.`);

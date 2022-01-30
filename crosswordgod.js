@@ -204,7 +204,7 @@ function embedCrossword(embedTitle1, embedBody1) {
         .setThumbnail('https://i.imgur.com/TyGn2ch.jpg')
         .setURL('https://godvillegame.com/news')
         .setTimestamp()
-        .setFooter('This crossword solution is brought to you by Wawajabba', 'https://i.imgur.com/TyGn2ch.jpg');
+        .setFooter({ text: 'This crossword solution is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/TyGn2ch.jpg' });
     return embed;
 }
 
@@ -215,7 +215,7 @@ function embedForecast(embedTitle2, embedBody2) {
         .setDescription(embedBody2)
         .setURL('https://godvillegame.com/news')
         .setTimestamp()
-        .setFooter('Brought to you by Wawajabba', 'https://i.imgur.com/TyGn2ch.jpg');
+        .setFooter({ text: 'Brought to you by Wawajabba', iconURL: 'https://i.imgur.com/TyGn2ch.jpg' });
     return embed;
 }
 

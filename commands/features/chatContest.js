@@ -50,7 +50,7 @@ async function getLastMessage(client) {
         .catch(console.error);
 
     // loop through messages until one not sent by a bot is found
-    for (const message of messages.array()) {
+    for (const message of messages.values()) {
         if (message.author.bot) continue;
         return message;
     }
@@ -67,8 +67,7 @@ async function setLastWinner(client) {
 
     // search back 1000 messages at most
     for (let i = 0; i < 10; i++) {
-
-        for (const msg of messages.array()) {
+        for (const msg of messages.values()) {
             chatCombo++;
             if (!msg.author.bot) continue;
             if (!msg.author.id == botID) continue; // check if author is the bot

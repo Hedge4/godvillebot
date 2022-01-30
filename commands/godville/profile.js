@@ -52,7 +52,7 @@ async function showProfile(message, username, client, Discord, godData) {
         .setDescription('Click the god(dess)\'s username to open their Godville page.')
         .addField('ERROR', 'Extra data such as their (gr)avatar and level could not be found for this god; either the bot can\'t acces this page or it was linked incorrectly. In case of the former, the link above will still work.')
         .setColor('006600')
-        .setFooter(author, user.displayAvatarURL());
+        .setFooter({ text: author, iconURL: user.displayAvatarURL() });
         return message.channel.send(godEmbed);
     }
 
@@ -67,7 +67,7 @@ async function showProfile(message, username, client, Discord, godData) {
         .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
         .addField('Medals', godvilleData[5], false)
         .setColor('006600')
-        .setFooter(author, user.displayAvatarURL());
+        .setFooter({ text: author, iconURL: user.displayAvatarURL() });
         return message.channel.send(godEmbed);
     } else {
         const godEmbed = new Discord.MessageEmbed()
@@ -81,7 +81,7 @@ async function showProfile(message, username, client, Discord, godData) {
         .addField('Pet', `${godvilleData[6]}\n${godvilleData[7]}`, true)
         .addField('Medals', godvilleData[5], false)
         .setColor('006600')
-        .setFooter(author, user.displayAvatarURL());
+        .setFooter({ text: author, iconURL: user.displayAvatarURL() });
         return message.channel.send(godEmbed);
     }
 }

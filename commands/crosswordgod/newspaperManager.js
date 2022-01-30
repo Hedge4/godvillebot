@@ -32,7 +32,7 @@ function sendNewspaper(channel, Discord, renewed = false) {
     .setURL('https://godvillegame.com/news')
     .setColor(0x78de79) // noice green
     //.setThumbnail('https://i.imgur.com/t5udHzR.jpeg')
-    .setFooter('GodBot is brought to you by Wawajabba', 'https://i.imgur.com/t5udHzR.jpeg')
+    .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
     .setTimestamp();
     embedsList.push(introductionEmbed);
 
@@ -42,7 +42,7 @@ function sendNewspaper(channel, Discord, renewed = false) {
         .setDescription(news.forecast)
         .setURL('https://godvillegame.com/news')
         .setColor(0x78de79) // noice green
-        .setFooter('GodBot is brought to you by Wawajabba', 'https://i.imgur.com/t5udHzR.jpeg')
+        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
         .setTimestamp();
         embedsList.push(forecastEmbed);
     } else { missingEmbedsList.push('The Daily Forecast couldn\'t be loaded today.'); }
@@ -53,7 +53,7 @@ function sendNewspaper(channel, Discord, renewed = false) {
         .setDescription(news.famousHeroes)
         .setURL('https://godvillegame.com/news')
         .setColor(0x78de79) // noice green
-        .setFooter('GodBot is brought to you by Wawajabba', 'https://i.imgur.com/t5udHzR.jpeg')
+        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
         .setTimestamp();
         embedsList.push(famousEmbed);
     } else { missingEmbedsList.push('The Famous Heroes couldn\'t be loaded today.'); }
@@ -64,7 +64,7 @@ function sendNewspaper(channel, Discord, renewed = false) {
         .setDescription(news.famousHeroes)
         .setURL('https://godvillegame.com/news')
         .setColor(0x78de79) // noice green
-        .setFooter('GodBot is brought to you by Wawajabba', 'https://i.imgur.com/t5udHzR.jpeg')
+        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
         .setTimestamp();
         embedsList.push(guildEmbed);
     } else { missingEmbedsList.push('The Guild Spotlight couldn\'t be loaded today.'); }
