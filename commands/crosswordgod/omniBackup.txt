@@ -4696,7 +4696,6 @@ Igpay Atinlay
 Illeagle
 Illegal Guardian
 Illuminaughty Agent
-Imaginary Threat
 Immoral Porpoise
 Immunogoblin
 Impaladin
@@ -4885,7 +4884,6 @@ Lootlicker
 Lord of the Dunce
 Lord of the Keyring
 Lost Action Hero
-Lost Sole
 Lost Spirit Guide
 Lost Viking
 Lounge Lizard
@@ -4969,7 +4967,6 @@ Mindless Consumer
 Mindsweeper
 Mine Sweeper
 Minitaur
-Minor Glitch
 Minotourist
 Misanthropic Lycanthrope
 Misanthropologist
@@ -5064,7 +5061,6 @@ Ne'er-do-Whale
 Neferkitty
 Neighborhood Witch
 Nerd of Steel
-Nervous Tick
 Net Troll
 Neuro Sturgeon
 Never-Ending Storyteller
@@ -5257,7 +5253,6 @@ Plaicea
 Plan Beekeeper
 Plankton of the Opera
 Plant-Eating Zombie
-Plastic Sturgeon
 Plato's Caveman
 Playdough Golem
 Player #2
@@ -5374,7 +5369,6 @@ Randominatrix
 Rastafairy
 Rathing Mome
 Ravenous Bugblatter Beast
-Reaction Figure
 Reader Digester
 Reagent Provocateur
 Reanimated Sprite
@@ -5532,8 +5526,6 @@ Seventh Deadliest Sinner
 Seventh Lawyer of Hell
 Sewer Gator
 Sewer Horse
-Shadow of a Doubt
-Shadow Puppet
 Shadow Worrier
 Shaman Kong
 Shamaniac
@@ -5896,7 +5888,6 @@ Unstable Constable
 Unsuitable Suitor
 Unsupported Character
 Untrainable Dragon
-Untuned Harmonica
 Unusual Suspect
 Uptown Ghoul
 Uranium Slug
@@ -5925,7 +5916,6 @@ Virtual Enemy
 Virtual Realtor
 Virtual Threat
 Vogon Poet
-Voice of Treason
 Volunterrier
 Voodoo Barbie
 Voodude
@@ -6203,7 +6193,6 @@ Bubble wrap breastplate
 Bucket of sensory deprivation
 Bull's eye
 Bull-shield
-Bulletproof monk
 Bulletproof T-shirt
 Bullyproof vest
 Bunny suit
@@ -6329,7 +6318,6 @@ Decorative moose antlers
 Deely boppers
 Deep-sea waders
 Deer hunter's boots
-Defence attorney
 Deja view glasses
 Demagoggles
 Demolition derby
@@ -7007,7 +6995,6 @@ Seat-back
 Seaweed wrap
 Secondhand glove
 Security breeches
-Security gourd
 Security question
 Self-cutting axe
 Self-portrait
@@ -7316,3 +7303,162 @@ Yeti slippers
 Yin-yang earrings
 Zirconium bracelet
 Zombieskin overcoat
+Acid tears
+Asynchronous swimming
+Auto-stopping
+Awkward silence
+Baby surprise
+Backyard portal
+Bad breath
+Battle chess
+Beer belly
+Bending chakras
+Bloody itch
+Brain dilution
+Brainstorm
+Brownian motion
+Cash whistle
+Chakra bending
+Cheshire smile
+Clinical strike
+Cobweb gulp
+Concrete placer
+Contagious yawning
+Cri de coeur
+Cry of horror
+Deafening snore
+Death by snu-snu
+Disarming smile
+Dove of peace
+Dragon pout
+Drunken rampage
+Effect of the groundhog
+Elbow bite
+Electro-broom
+Electrostatic discharge
+Epitaph writing
+Exhaust of the dragon
+Explosive character
+Eye scream
+Fake smile
+Falcon punch
+Fanned fingers
+Flying bird
+Foot massage
+Forced generosity
+Frost bite
+Full throttle
+Garlic aura of alienation
+Geometric laughter
+Glance of Kaa
+Golden vein
+Grace of the behemoth
+Heel grip
+Hey, you
+Homesickness
+Inept singing
+Instant evil eye
+Instant hairloss
+Intimate tickling
+Iron vortex
+Kiss in the stomach
+Knight's move
+Liana-eyebrows
+Lion belch
+Lossy compression
+Lucky hoof
+Mass effect
+Mating contact
+Menacing glance
+Mosquito roar
+Mountain moving
+Navel clamp
+Oak cloaking
+Opacity control
+Palm of the panda
+Pathological honesty
+Peace enforcement
+Peek-a-boo
+Pocket hypnotoad
+Poisoned kiss
+Portal to the backyard
+Powerful sneeze
+Pseudopod attack
+Quantum fireball
+Quantum leap
+Radiokinesis
+Radioportation
+Rail-bending
+Rays of love
+Relatively honest robbery
+Rickrolling
+Save-load
+Scissorhands
+Seasickness
+Self-cloning
+Self-propelled feet
+Shiny heels
+Slap of the whale
+Smack of the bribe
+Sober view
+Somersault squatting
+Somersault through the navel
+Splinter removal
+Spontaneous combustion
+Spoon-bending
+Steel finger
+Sticky fingers
+Stifling embrace
+Street magic
+Strike of the rabbit
+Strong brow
+Sunstroke
+Swear-o-matic
+Swoop of the smith
+Sword-swallowing
+Teeth gnashing
+Thumb beating
+Thumb blowing
+Tin throat
+Toe-bite
+Tooth sampling
+Turn of Rincewind
+Unbearable boredom
+Win on points
+Winged swing
+Anville
+Bad Gateway
+Beerburgh
+Bosswell
+Bumchester
+Dessertown
+Deville
+Dogville
+Egopolis
+El Herado
+Ghost Town
+Godville
+Godvillewood
+Healiopolis
+Heisenburg
+Herolympus
+Herostan
+Herowin
+Laplandville
+Last Resort
+Los Adminos
+Los Demonos
+Lostway
+Monsterdam
+Monstro City
+Newland
+Next Station
+Nothingham
+Quirkytown
+Roflopolis
+San Satanos
+Simpletown
+Tradeburg
+Trollbridge
+Unsettlement
+Unspecifiedistan

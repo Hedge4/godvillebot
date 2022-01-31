@@ -89,7 +89,7 @@ async function solveWordsRequest(message, content) {
     });
 
     // get the longest word that is equal to or shorter than 21 characters, then use it to create the message
-    const longest = solvedWords.reduce(function(old, nw) { return nw.length > old && nw.length <= 20 ? nw.length : old; }, 0);
+    const longest = words.reduce(function(old, nw) { return nw.length > old && nw.length <= 20 ? nw.length : old; }, 0);
     for (let i = 0; i < words.length; i++) {
         let word = words[i];
         if (word.length < longest) word += ' '.repeat(longest - word.length);
@@ -98,12 +98,30 @@ async function solveWordsRequest(message, content) {
     }
     solution += '```';
 
+    if (solution.length > 1800) {
+        return reply.edit('I found your words, but in total there were too many results for one message.'
+            + ' If you try solving for less words, the results will probably fit in one message.');
+    }
     reply.edit(solution);
 }
 
-async function solveHtmlRequest(message, content) {
-    // check for content and shite
-    const words = parseWords(content);
+async function solveHtmlRequest(message) {
+    // check whether the message has exactly one attachment / swear at user if not
+    // CHECK HERE
+
+    // fetch the omnibus list from our manager thingy that isn't actually a manager
+    const omnibus = omnibusManager.get();
+    if (!omnibus) { // previous line returns null if there is no omnibus list to use
+        return message.reply(`I couldn't download the Omnibus list or find a backup of it. Try refreshing it with \`${prefix}refresh\`.`);
+    }
+
+    const reply = await message.reply('');
+
+    // get words from that attachment
+    const words = parseWords() // need attachments here
+        .catch(error => {
+            // send a reply about it or something
+        });
     console.log(words);
 }
 
@@ -111,17 +129,15 @@ function solveWord(word, omnibus) {
     const regExString = '^' + escapeRegExp(word) + '$'; // ^ and $ match the beginning and end of a line
     const regExp = new RegExp(regExString, 'i'); // i = case insensitive flag
     const foundWords = [];
-    const foundLowercase = []; // we use this to make sure we don't get duplicate results (even if capitalisation mismatches)
+    // we don't have to watch for duplicates here, because the way the omnibus list gets loaded removes all duplicates
     omnibus.forEach(entry => {
         if (regExp.test(entry)) { // returns true if we get a match
-            if (!foundLowercase.includes(entry.toLowerCase())) {
-                foundWords.push(entry);
-                foundLowercase.push(entry.toLowerCase());
-            }
+            foundWords.push(entry);
         }
     });
     if (!foundWords.length) return 'No results found.';
     if (foundWords.length === 1) return foundWords[0];
+    if (foundWords.length > 20) return '20+ results.'; // Any more than this definitely shouldn't be necessary
     return `[${foundWords.join(', ')}]`;
 }
 
