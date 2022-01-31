@@ -22,7 +22,7 @@ function handleDMs(message, client) {
     message.attachments.forEach(element => {
         attachments.push(element.url);
     });
-    client.channels.cache.get(botDmLogs).send(message.content, { files: attachments })
+    client.channels.cache.get(botDmLogs).send({ content: message.content, files: attachments })
         .catch(err => client.channels.cache.get(botDmLogs).send(`Failed to forward: ${err}`));
 }
 

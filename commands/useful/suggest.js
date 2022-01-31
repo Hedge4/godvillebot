@@ -133,8 +133,8 @@ async function accept(message, client, Discord, userData) {
     old_msg.delete();
     const new_channel = await client.channels.cache.get(botServerChannels[1]);
     const botChannel = client.channels.cache.get(botvilleChannel);
-    new_channel.send({ text: `${author} accepted :white_check_mark: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
-    botChannel.send({ text: `${author} accepted :white_check_mark: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
+    new_channel.send({ content: `${author} accepted :white_check_mark: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
+    botChannel.send({ content: `${author} accepted :white_check_mark: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
 }
 
 async function reject(message, client, Discord) {
@@ -179,8 +179,8 @@ async function reject(message, client, Discord) {
     old_msg.delete();
     const new_channel = await client.channels.cache.get(botServerChannels[2]);
     const botChannel = client.channels.cache.get(botvilleChannel);
-    new_channel.send({ text: `${author} rejected :x: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
-    botChannel.send({ text: `${author} rejected :x: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
+    new_channel.send({ content: `${author} rejected :x: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
+    botChannel.send({ content: `${author} rejected :x: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
 }
 
 exports.suggestion = suggest;

@@ -7,8 +7,8 @@ function redirect(cmd, content, message, Discord, client) {
     switch (cmd) {
         case 'solvecrossword':
             return solveCrossword.solveWords(message, content);
-        case 'solvecrosswordhtml':
-            return solveCrossword.solveHtml(message, content);
+        case 'solvehtml':
+            return solveCrossword.solveHtml(message);
         case 'newspaper':
             return newspaper.send(message, Discord);
         case 'newspaperupdate':

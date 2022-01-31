@@ -1,7 +1,7 @@
 const { prefix } = require('../../configurations/config.json');
-const parseWords = require('./wordFinder');
-const omnibusManager = require('./omnibusManager');
 const logger = require('../features/logging');
+const omnibusManager = require('./omnibusManager');
+const parseWords = require('./wordFinder');
 const maxWords = 25, maxContent = 400, maxWordSize = 75;
 
 async function solveWordsRequest(message, content) {
@@ -107,7 +107,19 @@ async function solveWordsRequest(message, content) {
 
 async function solveHtmlRequest(message) {
     // check whether the message has exactly one attachment / swear at user if not
-    // CHECK HERE
+    if (!message.attachments.size) {
+        return message.reply('Your message didn\'t have an attachment! You need to send me the HTML of <https://godvillegame.com/news>,'
+            + ' or I won\'t have any data about the crossword. You can download the HTML by visiting the page on a computer,'
+            + ' and holding Control+S or Command+S. Download the file, and use the command in a message with that attachment.');
+    }
+    if (message.attachments.size > 1) { // nuh uh I just want one
+        return message.reply('You sent multiple attachments, but I only need the HTML of one page!'
+        + ' Please only attach the HTML of <https://godvillegame.com/news> to the command.');
+    }
+    if (message.attachments.first().size > 250000) { // people will definitely try to send weird stuff
+        return message.reply(`This file is surprisingly large for the <https://godvillegame.com/news> page ${message.attachments.first().size},`
+            + ' so please make sure you send the HTML of the right page. If this is an error, contact the bot owner.');
+    }
 
     // fetch the omnibus list from our manager thingy that isn't actually a manager
     const omnibus = omnibusManager.get();
@@ -115,14 +127,30 @@ async function solveHtmlRequest(message) {
         return message.reply(`I couldn't download the Omnibus list or find a backup of it. Try refreshing it with \`${prefix}refresh\`.`);
     }
 
-    const reply = await message.reply('');
+    const timeSinceUpdate = Date.now() - omnibus.timestamp;
+    const daysAgo = ~~(timeSinceUpdate / (24 * 3600 * 1000));
+    const hoursAgo = ~~(timeSinceUpdate % (24 * 3600 * 1000) / (3600 * 1000));
+    const minsAgo = ~~(timeSinceUpdate % (3600 * 1000) / (60 * 1000));
+    const reply = await message.reply(`I'm working on it, using a ${omnibus.version} version of the Omnibus list from`
+        + ` ${daysAgo} ${quantiseWords(daysAgo, 'day')}, ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and`
+        + ` ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago...`);
+    logger.log(`${message.author.tag} used the command to solve the crossword from an HTML file. Using a ${omnibus.version}`
+        + ` version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')}, ${hoursAgo}`
+        + ` ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago.`);
 
     // get words from that attachment
-    const words = parseWords() // need attachments here
-        .catch(error => {
-            // send a reply about it or something
-        });
+    let words;
+    try {
+        await parseWords(message.attachments.first().url); // need to send the attached file to this function somehow
+    } catch (error) {
+        reply.edit(`Something went wrong, and I couldn't find the crossword words in your file! Error: ${error}`);
+        logger.toConsole(`Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`);
+        return logger.toChannel({ content: `Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`,
+            files: [{ attachment: message.attachments.first().url, name: message.attachments.first().name }] });
+    }
+
     console.log(words);
+    reply.edit(words.toString());
 }
 
 function solveWord(word, omnibus) {

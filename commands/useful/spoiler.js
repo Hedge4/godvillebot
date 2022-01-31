@@ -8,9 +8,9 @@ async function main(client, message) {
         try {
             format = /^[\s\S]+(\.[^.]+$)/.exec(message.attachments.first().name)[1];
         } catch {
-            // do nothing
+            // do nothing, this file or whatever has no extension
         }
-        message.channel.send(`${message.author}, here is your spoilered file:`, {
+        message.channel.send({ content: `${message.author}, here is your spoilered file:`,
             files: [{
                 attachment: message.attachments.first().url,
                 name: `SPOILER_${rand}${format}`,
@@ -27,7 +27,7 @@ async function main(client, message) {
         let format = '';
         try {
             format = /^[\s\S]+(\.[^.]+$)/.exec(url)[1];
-            message.channel.send(`${message.author}, here is your spoilered file:`, {
+            message.channel.send({ content: `${message.author}, here is your spoilered file:`,
                 files: [{
                     attachment: url,
                     name: `SPOILER_${rand}${format}`,

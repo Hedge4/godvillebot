@@ -1,7 +1,7 @@
 const logger = require('../features/logging');
 
-function main(html) {
-    //
+async function main(url) {
+    throw('randomError haha' + url);
 }
 
 function findCrosswordInHtml(html) {
