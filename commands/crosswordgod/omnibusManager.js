@@ -148,11 +148,10 @@ function getOmnibus() {
         if (!backup || backup.length < expectedAmount) {
             return null;
         } else {
-            //return ['backup', backup, backupLastUpdated];
             return { version: 'backup', omnibusEntries: backup, timestamp: backupLastUpdated };
         }
     } else {
-        return { version: 'current', omnibusEntries: omnibus, timestamp: lastUpdated };
+        return { version: 'recent', omnibusEntries: omnibus, timestamp: lastUpdated };
     }
 }
 
