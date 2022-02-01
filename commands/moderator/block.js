@@ -131,7 +131,7 @@ function block(message, client, blockedData) {
         console.log(`${message.author.tag} blocked ${user.tag} from using the bot.`);
         console.log(`${message.author.tag} blocked ${user.tag} from using the bot.`);
         client.channels.cache.get(modlogs).send(`${message.author.tag} blocked ${user.tag} from using the bot.`);
-        return message.reply(`Succesfully blocked ${user.tag} from using the bot.`);
+        return message.reply(`Successfully blocked ${user.tag} from using the bot.`);
     }
     if (args[0] == 'xp') {
         if (xpBlocked.includes(user.id)) { return message.reply('This user is already blocked from this.'); }
@@ -139,7 +139,7 @@ function block(message, client, blockedData) {
         blockedData.set({ xp: xpBlocked }, { merge: true });
         console.log(`${message.author.tag} blocked ${user.tag} from gaining xp (godpower).`);
         client.channels.cache.get(modlogs).send(`${message.author.tag} blocked ${user.tag} from gaining xp (godpower).`);
-        return message.reply(`Succesfully blocked ${user.tag} from gaining xp (godpower).`);
+        return message.reply(`Successfully blocked ${user.tag} from gaining xp (godpower).`);
     }
     if (args[0] == 'suggest') {
         if (suggestBlocked.includes(user.id)) { return message.reply('This user is already blocked from this.'); }
@@ -147,7 +147,7 @@ function block(message, client, blockedData) {
         blockedData.set({ suggest: suggestBlocked }, { merge: true });
         console.log(`${message.author.tag} blocked ${user.tag} from making suggestions for the bot.`);
         client.channels.cache.get(modlogs).send(`${message.author.tag} blocked ${user.tag} from making suggestions for the bot.`);
-        return message.reply(`Succesfully blocked ${user.tag} from making suggestions for the bot.`);
+        return message.reply(`Successfully blocked ${user.tag} from making suggestions for the bot.`);
     }
     if (args[0] == 'image') {
         if (imageBlocked.includes(user.id)) { return message.reply('This user is already blocked from this.'); }
@@ -155,7 +155,7 @@ function block(message, client, blockedData) {
         blockedData.set({ image: imageBlocked }, { merge: true });
         console.log(`${message.author.tag} blocked ${user.tag} from sending images in the server.`);
         client.channels.cache.get(modlogs).send(`${message.author.tag} blocked ${user.tag} from sending images in the server.`);
-        return message.reply(`Succesfully blocked ${user.tag} from sending images in the server.`);
+        return message.reply(`Successfully blocked ${user.tag} from sending images in the server.`);
     }
 }
 
@@ -181,7 +181,7 @@ function unblock(message, client, blockedData) {
         blockedData.set({ bot: botBlocked }, { merge: true });
         console.log(`${message.author.tag} unblocked ${user.tag} from using the bot.`);
         client.channels.cache.get(modlogs).send(`${message.author.tag} unblocked ${user.tag} from using the bot.`);
-        return message.reply(`Succesfully unblocked ${user.tag} from using the bot.`);
+        return message.reply(`Successfully unblocked ${user.tag} from using the bot.`);
     }
     if (args[0] == 'xp') {
         if (!xpBlocked.includes(user.id)) { return message.reply('This user isn\'t blocked from this.'); }
@@ -189,7 +189,7 @@ function unblock(message, client, blockedData) {
         blockedData.set({ xp: xpBlocked }, { merge: true });
         console.log(`${message.author.tag} unblocked ${user.tag} from gaining xp (godpower).`);
         client.channels.cache.get(modlogs).send(`${message.author.tag} unblocked ${user.tag} from gaining xp (godpower).`);
-        return message.reply(`Succesfully unblocked ${user.tag} from gaining xp (godpower).`);
+        return message.reply(`Successfully unblocked ${user.tag} from gaining xp (godpower).`);
     }
     if (args[0] == 'suggest') {
         if (!suggestBlocked.includes(user.id)) { return message.reply('This user isn\'t blocked from this.'); }
@@ -197,7 +197,7 @@ function unblock(message, client, blockedData) {
         blockedData.set({ suggest: suggestBlocked }, { merge: true });
         console.log(`${message.author.tag} unblocked ${user.tag} from making suggestions for the bot.`);
         client.channels.cache.get(modlogs).send(`${message.author.tag} unblocked ${user.tag} from making suggestions for the bot.`);
-        return message.reply(`Succesfully unblocked ${user.tag} from making suggestions for the bot.`);
+        return message.reply(`Successfully unblocked ${user.tag} from making suggestions for the bot.`);
     }
     if (args[0] == 'image') {
         if (!imageBlocked.includes(user.id)) { return message.reply('This user isn\'t blocked from this.'); }
@@ -205,7 +205,7 @@ function unblock(message, client, blockedData) {
         blockedData.set({ image: imageBlocked }, { merge: true });
         console.log(`${message.author.tag} unblocked ${user.tag} from sending images in the server.`);
         client.channels.cache.get(modlogs).send(`${message.author.tag} unblocked ${user.tag} from sending images in the server.`);
-        return message.reply(`Succesfully unblocked ${user.tag} from sending images in the server.`);
+        return message.reply(`Successfully unblocked ${user.tag} from sending images in the server.`);
     }
 }
 

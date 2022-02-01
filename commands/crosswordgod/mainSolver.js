@@ -139,18 +139,19 @@ async function solveHtmlRequest(message) {
         + ` ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago.`);
 
     // get words from that attachment
-    let words;
+    let wordsObject;
     try {
-        await parseWords(message.attachments.first().url); // need to send the attached file to this function somehow
+        wordsObject = await parseWords(message.attachments.first()); // need to send the attached file to this function somehow
     } catch (error) {
-        reply.edit(`Something went wrong, and I couldn't find the crossword words in your file! Error: ${error}`);
+        // we don't do any logging in wordFinder.js and just throw errors (finally doing logging in a way that makes sense lol)
+        reply.edit(`Something went wrong, and I couldn't find the crossword words in your file! ${error}`);
         logger.toConsole(`Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`);
         return logger.toChannel({ content: `Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`,
             files: [{ attachment: message.attachments.first().url, name: message.attachments.first().name }] });
     }
 
-    console.log(words);
-    reply.edit(words.toString());
+    console.log(wordsObject);
+    reply.edit(wordsObject.toString());
 }
 
 function solveWord(word, omnibus) {

@@ -97,8 +97,8 @@ async function setLastWinner(client) {
     }
 
     chatCombo = 500;
-    console.log('ERROR: No succesful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code? ChatCombo was set to 500.');
-    logsChannel.send('ERROR: No succesful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code? ChatCombo was set to 500.');
+    console.log('ERROR: No successful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code? ChatCombo was set to 500.');
+    logsChannel.send('ERROR: No successful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code? ChatCombo was set to 500.');
 }
 
 // run contest for the last message in general chat

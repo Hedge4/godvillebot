@@ -26,7 +26,7 @@ function loadBackup() {
         const howLongAgo = Date.now() - backupLastUpdated;
         const days = ~~(howLongAgo / (24 * 60 * 60 * 1000));
         const hours = ~~((howLongAgo % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
-        logger.log(`OmniBackup: Succesfully loaded omnibus backup file with ${backup.length} entries, `
+        logger.log(`OmniBackup: Successfully loaded omnibus backup file with ${backup.length} entries, `
             + `from ${days} ${quantiseWords(days, 'day')} and ${hours} ${quantiseWords(hours, 'hour')} ago.`);
 
         return true; // true means loaded successfully
@@ -40,7 +40,7 @@ function loadBackup() {
 
 async function loadOmnibus(startup = false) {
     const html = await downloadOmnibus();
-    if (!html) return false;
+    if (!html) return false; // we don't log jackshit because downloadOmnibus() already does it
 
     // now we get the individual omnibus entries
     const list = parseOmnibusEntries(html);
@@ -53,7 +53,7 @@ async function loadOmnibus(startup = false) {
     // actually update the list and the timestamp
     omnibus = Array.from(list);
     lastUpdated = Date.now();
-    let updateMessage = `Omnibus: Succesfully loaded online Omnibus list with ${list.length} entries.`;
+    let updateMessage = `Omnibus: Successfully loaded online Omnibus list with ${list.length} entries.`;
 
     // on startup, also send statistics about how far ahead the omnibus list is.
     if (startup) {
@@ -81,18 +81,18 @@ async function refreshOmnibus(message, Discord, client) {
         const minutes = ~~(howLongAgo / (60 * 1000));
         const minutesLeft = refreshBreak - minutes;
         logger.log(`${message.author.tag} requested the Omnibus list to be refreshed, but the command was on cooldown: ${minutesLeft} ${quantiseWords(minutesLeft, 'minute')} left.`);
-        return message.reply(`The Omnibus list was last updated ${minutes} ${quantiseWords(minutes, 'minute')} ago.`
+        return message.reply(`The last attempt at updating the Omnibus list was ${minutes} ${quantiseWords(minutes, 'minute')} ago.`
             + ` To make sure the devs don't get mad at me, please wait ${minutesLeft} more ${quantiseWords(minutesLeft, 'minute')}.`);
     }
 
     logger.log(message.author.tag + ' requested the stored Omnibus list to be refreshed.');
     const reply = await message.reply('I\'m working on it...'); // we edit this reply when we're done.
-    const requester = `<@${message.author.id}>`;
 
     // get html
+    lastUpdated = Date.now(); // attempts count as well
     const html = await downloadOmnibus();
     if (!html) {
-        return reply.edit(requester + ', something went wrong while trying to get the Omnibus list\'s HTML. Try again later or contact the bot owner.');
+        return reply.edit('Something went wrong while trying to get the Omnibus list\'s HTML. Try again later or contact the bot owner.');
     }
 
     // now we get the individual omnibus entries
@@ -100,22 +100,21 @@ async function refreshOmnibus(message, Discord, client) {
     if (!list || list.length < expectedAmount) {
         logger.log('Something went wrong parsing omnibus entries from the html.');
         if (list) logger.log(`There were only ${list.length} items, expected at least ${expectedAmount}.`);
-        return reply.edit(requester + ', something went wrong while parsing the HTML. Try again later or contact the bot owner.');
+        return reply.edit('Something went wrong while parsing the HTML. Try again later or contact the bot owner.');
     }
 
     // actually update the list and the timestamp
     const oldOmnibus = Array.from(omnibus);
     omnibus = Array.from(list);
-    lastUpdated = Date.now();
 
     // create nice embed for the update message, which we can add to
     const updateEmbed = new Discord.MessageEmbed()
-    .setTitle(`⏫ Succesfully refreshed online Omnibus list with ${list.length} total entries!`)
+    .setTitle(`⏫ Successfully refreshed online Omnibus list with ${list.length} total entries!`)
     .setColor(0x0092db) // noice blue
     .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
     .setTimestamp();
     // we also update a message for the logs
-    let updateMessage = `Omnibus: Succesfully refreshed online Omnibus list with ${list.length} total entries!`;
+    let updateMessage = `Omnibus: Successfully refreshed online Omnibus list with ${list.length} total entries!`;
 
     // get difference between previous list and refreshed one
     if (!oldOmnibus || oldOmnibus.length < expectedAmount) {
@@ -186,8 +185,8 @@ async function downloadOmnibus() {
             logger.log(`Omnibus: Oops! Something went wrong when downloading from url ${URL}! No data was received.`);
             return null;
         }
-        logger.toChannel(`Omnibus: Received html from <${URL}> succesfully.`); // need separate log to prevent an embed
-        logger.toConsole(`Omnibus: Received html from ${URL} succesfully.`);
+        logger.toChannel(`Omnibus: Successfully received html from <${URL}>`); // need separate log to prevent an embed
+        logger.toConsole(`Omnibus: Successfully received html from ${URL}`);
         return result;
     }).catch((error) => {
         logger.log(`Omnibus: Oops! Something went wrong when downloading from url ${URL}! Error: ` + error);
@@ -199,10 +198,10 @@ async function downloadOmnibus() {
 
 
 function parseOmnibusEntries(omnibusHtml) {
-    const artifactRegex = /id="GV-Artifacts".*?<ul>(.*?)<\/ul>/gs;
-    const monsterRegex = /id="GV-Monsters".*?<ul>(.*?)<\/ul>/gs;
-    const equipmentRegex = /id="GV-Equipment".*?<ul>(.*?)<\/ul>/gs;
-    const skillRegex = /id="GV-Skills".*?<ul>(.*?)<\/ul>/gs;
+    const artifactRegex = /id="GV-Artifacts".*?<ul>(.*?)<\/ul>/s;
+    const monsterRegex = /id="GV-Monsters".*?<ul>(.*?)<\/ul>/s;
+    const equipmentRegex = /id="GV-Equipment".*?<ul>(.*?)<\/ul>/s;
+    const skillRegex = /id="GV-Skills".*?<ul>(.*?)<\/ul>/s;
     let artifactEntries = artifactRegex.exec(omnibusHtml)[1];
     let monsterEntries = monsterRegex.exec(omnibusHtml)[1];
     let equipmentEntries = equipmentRegex.exec(omnibusHtml)[1];
@@ -248,7 +247,7 @@ async function createBackupFile() {
     }
 
     // get difference between previous backup and new one
-    let successMessage = `Omnibus: The list was succesfully downloaded and a new backup was made with ${omnibus.length} entries.`;
+    let successMessage = `Omnibus: The list was successfully downloaded and a new backup was made with ${omnibus.length} entries.`;
     if (!backup || backup.length < expectedAmount) {
         logger.log('Omnibus: Omnibus backup file was not loaded in correctly - I can\'t compare the new and old backup.');
     } else {
