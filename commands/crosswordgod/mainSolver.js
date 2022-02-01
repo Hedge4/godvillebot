@@ -1,4 +1,5 @@
 const { prefix } = require('../../configurations/config.json');
+const main = require('../../index');
 const logger = require('../features/logging');
 const omnibusManager = require('./omnibusManager');
 const parseWords = require('./wordFinder');
@@ -124,6 +125,7 @@ async function solveHtmlRequest(message) {
     // fetch the omnibus list from our manager thingy that isn't actually a manager
     const omnibus = omnibusManager.get();
     if (!omnibus) { // previous line returns null if there is no omnibus list to use
+        logger.log(`${message.author.tag} tried to solve the crossword using an HTML file, but the Omnibus list was missing.`);
         return message.reply(`I couldn't download the Omnibus list or find a backup of it. Try refreshing it with \`${prefix}refresh\`.`);
     }
 
@@ -131,12 +133,10 @@ async function solveHtmlRequest(message) {
     const daysAgo = ~~(timeSinceUpdate / (24 * 3600 * 1000));
     const hoursAgo = ~~(timeSinceUpdate % (24 * 3600 * 1000) / (3600 * 1000));
     const minsAgo = ~~(timeSinceUpdate % (3600 * 1000) / (60 * 1000));
-    const reply = await message.reply(`I'm working on it, using a ${omnibus.version} version of the Omnibus list from`
-        + ` ${daysAgo} ${quantiseWords(daysAgo, 'day')}, ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and`
-        + ` ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago...`);
-    logger.log(`${message.author.tag} used the command to solve the crossword from an HTML file. Using a ${omnibus.version}`
-        + ` version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')}, ${hoursAgo}`
-        + ` ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago.`);
+    const reply = await message.reply('I\'m working on it...');
+    logger.log(`${message.author.tag} used the command to solve the crossword from an HTML file in #${message.channel.name}.`
+        + ` Using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
+        + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago.`);
 
     // get words from that attachment
     let wordsObject;
@@ -144,14 +144,36 @@ async function solveHtmlRequest(message) {
         wordsObject = await parseWords(message.attachments.first()); // need to send the attached file to this function somehow
     } catch (error) {
         // we don't do any logging in wordFinder.js and just throw errors (finally doing logging in a way that makes sense lol)
-        reply.edit(`Something went wrong, and I couldn't find the crossword words in your file! ${error}`);
+        reply.edit(`Something went wrong, and I couldn't find the crossword words in your file!\n${error}`);
         logger.toConsole(`Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`);
         return logger.toChannel({ content: `Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`,
             files: [{ attachment: message.attachments.first().url, name: message.attachments.first().name }] });
     }
 
-    console.log(wordsObject);
-    reply.edit(wordsObject.toString());
+    // BOOM solved
+    const solvedHorizontals = [], solvedVerticals = [];
+    wordsObject.Horizontal.forEach(word => { solvedHorizontals.push(solveWord(word, omnibus.omnibusEntries)); });
+    wordsObject.Vertical.forEach(word => { solvedVerticals.push(solveWord(word, omnibus.omnibusEntries)); });
+
+
+    const Discord = main.getDiscord();
+    const client = main.getClient();
+
+    const crosswordEmbed = new Discord.MessageEmbed()
+    .setTitle('Godville Times crossword solution')
+    .setDescription(`Solved using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
+    + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago. If not all words are`
+    + ` solved, add them to the [Omnibus List](https://wiki.godvillegame.com/Omnibus_List) and use command \`${prefix}refresh\`.\n`)
+    .addField('Horizontal solutions', `||${solvedHorizontals.join('\n')}||`)
+    .addField('Vertical solutions', `||${solvedVerticals.join('\n')}||`)
+    .setColor(0x78de79) // noice green
+    .setURL('https://godvillegame.com/news')
+    .setThumbnail('https://i.imgur.com/t5udHzR.jpeg')
+    .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
+    .setTimestamp();
+
+    logger.log(`Finished solving the crossword in ${message.channel.name}.`);
+    reply.edit({ content: ' ', embeds: [crosswordEmbed] });
 }
 
 function solveWord(word, omnibus) {

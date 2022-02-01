@@ -1,5 +1,5 @@
 const https = require('https');
-const logger = require('../features/logging');
+//const logger = require('../features/logging');
 
 async function main(attachment) {
     const fileContent = await downloadAttachment(attachment.url); // if something goes wrong it throws an error
@@ -174,8 +174,8 @@ async function downloadAttachment(URL) {
         if (!result) {
             throw(`Error: Something went wrong when downloading from url <${URL}>! No data was received.`);
         }
-        logger.toChannel(`Successfully received file content from <${URL}>`); // need separate log to prevent automatic embed
-        logger.toConsole(`Successfully received file content from ${URL}`);
+        //logger.toChannel(`Successfully received file content from <${URL}>`); // need separate log to prevent automatic embed
+        //logger.toConsole(`Successfully received file content from ${URL}`);
         return result;
     }).catch((error) => {
         throw(`Error: Something went wrong when downloading from url <${URL}>! Error: ` + error);
