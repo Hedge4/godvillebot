@@ -112,9 +112,9 @@ client.on('ready', () => {
         .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
         .setTimestamp();
     client.channels.cache.get(botvilleChannel).send({ embeds: [startEmbed] });
-    const delay1 = crosswordTimers.getUpdateDelay();
+    const delay1 = crosswordTimers.getUpdateDelay(); // delay before news automatically updates
     const delay2 = daily.resetDelay(true)[0];
-    const delay3 = crosswordTimers.getNewsDelay();
+    const delay3 = crosswordTimers.getNewsDelay(); // delay before the next newsping
 
     // set timeouts and get data such as the last chat kill / ongoing DM contests
     setTimeout(crosswordTimers.dailyUpdate, delay1, client, Discord);

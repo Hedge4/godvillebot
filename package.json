@@ -19,7 +19,6 @@
   "dependencies": {
     "discord.js": "^13.0.0",
     "find": "~0.3.0",
-    "firebase-admin": "^10.0.2",
-    "python-shell": "^1.0.8"
+    "firebase-admin": "^10.0.2"
   }
 }
