@@ -117,9 +117,9 @@ client.on('ready', () => {
     const delay3 = crosswordTimers.getNewsDelay(); // delay before the next newsping
 
     // set timeouts and get data such as the last chat kill / ongoing DM contests
-    setTimeout(crosswordTimers.dailyUpdate, delay1, client, Discord);
+    setTimeout(crosswordTimers.dailyUpdate, delay1);
     setTimeout(daily.reset, delay2, limitedCommandsData);
-    setTimeout(crosswordTimers.newsPing, delay3, client);
+    setTimeout(crosswordTimers.newsPing, delay3);
     botDMs.checkDMContest(client);
     chatContest.startupCheck(client, userData);
 
@@ -227,11 +227,11 @@ client.on('messageCreate', (message) => {
             if (commandChannels.concat(newspaperChannel).includes(message.channel.id)) {
                 for (let i = 0; i < crossword.length; i++) {
                     if (cmd == crossword[i][0]) {
-                        return crosswordModule(cmd, content, message, Discord, client);
+                        return crosswordModule(cmd, content, message);
                     }
                     for (let j = 0; j < crossword[i][1].length; j++) {
                         if (cmd == crossword[i][1][j]) {
-                            return crosswordModule(crossword[i][0], content, message, Discord, client);
+                            return crosswordModule(crossword[i][0], content, message);
                         }
                     }
                 }

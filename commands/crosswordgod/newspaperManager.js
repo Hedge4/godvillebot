@@ -12,16 +12,17 @@ const news = {
 };
 
 // used when a user requests the newspaper to send a reply before sending the newspaper
-function sendNewspaperRequest(message, Discord) {
+function sendNewspaperRequest(message) {
     message.reply('Here is today\'s Godville Times summary!');
     logger.log(`${message.author.tag} requested the Godville Times summary in ${message.channel.name}.`);
-    sendNewspaper(message.channel, Discord);
+    sendNewspaper(message.channel);
 }
 
 // sends newspaper to specified channel using upper scope variable + formats it nicely as multiple embeds
-function sendNewspaper(channel, Discord, renewed = false) {
+function sendNewspaper(channel, renewed = false) {
     const embedsList = [];
     const missingEmbedsList = [];
+    const Discord = main.getDiscord();
 
     // create introduction and add it to sendList
     const introductionEmbed = new Discord.MessageEmbed()
@@ -115,7 +116,7 @@ function sendNewspaper(channel, Discord, renewed = false) {
 
 
 // method used when a user renews the newspaper, not the automatic timer. Doesn't send in logs
-async function renewNewspaperRequest(message, Discord) {
+async function renewNewspaperRequest(message) {
     if (!message.member.roles.cache.has(adminRole) && !owner.includes(message.author.id)) return message.reply('Only moderators can forcefully renew the newspaper.');
     logger.log(`${message.author.tag} forcefully started the newspaper renewing process in ${message.channel}.`);
     const reply = await message.reply('I\'m working on it...');
@@ -129,11 +130,11 @@ async function renewNewspaperRequest(message, Discord) {
 
     // we end by sending the newspaper to the channel
     reply.edit(`<@${message.author.id}>, done! Here is the renewed Godville Times:`);
-    sendNewspaper(message.channel, Discord, true);
+    sendNewspaper(message.channel, true);
 }
 
 // method used for timed renewing. Returns true/false for success, and pushes news to the logs
-async function renewNewspaperAutomatic(channel, Discord) {
+async function renewNewspaperAutomatic(channel) {
     const reply = await channel.send('♻️ Renewing my Godville Times summary... ♻️');
     // upper method allready logged that this process is starting
 
@@ -147,7 +148,7 @@ async function renewNewspaperAutomatic(channel, Discord) {
 
     // we end by sending the newspaper to the channel
     reply.edit('Successfully renewed my Godville Times summary! Here is the new edition: 🗞️');
-    sendNewspaper(channel, Discord, true);
+    sendNewspaper(channel, true);
 }
 
 

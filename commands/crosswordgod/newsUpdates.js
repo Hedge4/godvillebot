@@ -1,20 +1,23 @@
 const { newspaperChannel } = require('../../configurations/config.json');
-const newspaper = require('./newspaperManager.js');
+const main = require('../../index');
 const logger = require('../features/logging');
 const timers = require('../features/timers');
+const newspaper = require('./newspaperManager.js');
 
-function dailyNewspaperUpdate(client, Discord) {
+function dailyNewspaperUpdate() {
+    const client = main.getClient();
     const channel = client.channels.cache.get(newspaperChannel);
-    newspaper.renewAuto(channel, Discord);
+    newspaper.renewAuto(channel);
     logger.log(`News: Automatically tried to renew the newspaper and send it to the ${channel.name} channel. Random number check: ${Math.floor(Math.random() * 1000)}.`);
     let delay = getNewspaperUpdateDelay();
     if (delay < 1000 * 60 * 25) { // set delay to a full day if less than 25 minutes
         delay = 1000 * 60 * 60 * 24;
     }
-    setTimeout(dailyNewspaperUpdate, delay, client, Discord);
+    setTimeout(dailyNewspaperUpdate, delay);
 }
 
-function newsPing(client) {
+function newsPing() {
+    const client = main.getClient();
     const channel = client.channels.cache.get(newspaperChannel);
     channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator!');
     logger.log(`Sent a newspaper reminder to the ${channel.name} channel. Random number check: ${Math.floor(Math.random() * 1000)}.`);
@@ -22,7 +25,7 @@ function newsPing(client) {
     if (delay < 1000 * 60 * 25) { // set delay to a full day if less than 25 minutes
         delay = 1000 * 60 * 60 * 24;
     }
-    setTimeout(newsPing, delay, client);
+    setTimeout(newsPing, delay);
 }
 
 function requestNewspaperUpdateTime(message) {

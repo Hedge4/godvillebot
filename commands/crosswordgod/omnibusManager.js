@@ -1,5 +1,6 @@
 /* eslint-disable no-prototype-builtins */
 const { owner } = require('../../configurations/config.json');
+const main = require('../../index');
 const logger = require('../features/logging');
 const https = require('https');
 const fs = require('fs');
@@ -75,7 +76,7 @@ async function loadOmnibus(startup = false) {
 }
 
 
-async function refreshOmnibus(message, Discord, client) {
+async function refreshOmnibus(message) {
     const howLongAgo = Date.now() - lastUpdated;
     if (howLongAgo < refreshBreak * 60 * 1000) {
         const minutes = ~~(howLongAgo / (60 * 1000));
@@ -108,6 +109,8 @@ async function refreshOmnibus(message, Discord, client) {
     omnibus = Array.from(list);
 
     // create nice embed for the update message, which we can add to
+    const Discord = main.getDiscord();
+    const client = main.getClient();
     const updateEmbed = new Discord.MessageEmbed()
     .setTitle(`⏫ Successfully refreshed online Omnibus list with ${list.length} total entries!`)
     .setColor(0x0092db) // noice blue
@@ -249,6 +252,7 @@ async function createBackupFile() {
     // get difference between previous backup and new one
     let successMessage = `Omnibus: The list was successfully downloaded and a new backup was made with ${omnibus.length} entries.`;
     if (!backup || backup.length < expectedAmount) {
+        successMessage += ' The backup file was not loaded in correctly - I can\'t compare the new and old backup.';
         logger.log('Omnibus: Omnibus backup file was not loaded in correctly - I can\'t compare the new and old backup.');
     } else {
         const notInOmnibus = backup.filter(x => !omnibus.includes(x));
