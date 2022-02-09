@@ -20,6 +20,14 @@ function loadBackup() {
             backup.push(line);
         });
 
+        // error if the file is empty
+        if(!backup.length || backup.every(function(e) {
+            return !e.length ? true : false; // check if every item in backup has no length
+        })) {
+            logger.log('OmniBackup: Failed to load in omnibus backup file - Loaded file was empty.');
+            return false;
+        }
+
         backupLastUpdated = parseInt(backup.shift()); // first line is the timestamp
         if (isNaN(backupLastUpdated)) backupLastUpdated = 0; // just set to 1970 if something goes wrong lol
         while (!backup[backup.length - 1].trim().length) backup.pop(); // remove last item(s) if it's just a newline.
@@ -60,7 +68,7 @@ async function loadOmnibus(startup = false) {
     if (startup) {
         // get difference between previous backup and new one
         if (!backup || backup.length < expectedAmount) {
-            updateMessage += ' The Omnibus backup file was not loaded in (correctly), so I can\'t give statistics about the differences between the backup and current list.';
+            updateMessage += ' The Omnibus backup file was not loaded in (correctly), so I can\'t give information about the differences between the backup and current list.';
         } else {
             const notInOmnibus = backup.filter(x => !omnibus.includes(x));
             const notInBackup = omnibus.filter(x => !backup.includes(x));
@@ -121,8 +129,8 @@ async function refreshOmnibus(message) {
 
     // get difference between previous list and refreshed one
     if (!oldOmnibus || oldOmnibus.length < expectedAmount) {
-        updateEmbed.setDescription('The now replaced Omnibus list was not loaded in (correctly), so I can\'t give statistics about the differences between the previous and this list.');
-        updateMessage += 'The now replaced Omnibus list was not loaded in (correctly), so I can\'t give statistics about the differences between the previous and this list.';
+        updateEmbed.setDescription('The now replaced Omnibus list was not loaded in (correctly), so I can\'t give information about the differences between the previous and this list.');
+        updateMessage += 'The now replaced Omnibus list was not loaded in (correctly), so I can\'t give information about the differences between the previous and this list.';
     } else {
         const notInOmnibus = oldOmnibus.filter(x => !omnibus.includes(x));
         const notInOld = omnibus.filter(x => !oldOmnibus.includes(x));
@@ -240,26 +248,54 @@ async function createBackup(message) {
     logger.log(`${message.author.tag} is trying to create a new omnibus backup file...`);
     const reply = await message.reply('Trying to create a new omnibus backup file...');
     const result = await createBackupFile();
-    return reply.edit(result);
+
+    // if there was no error then Error property will be undefined
+    if (result.Error) {
+        return reply.edit(result.Error);
+    }
+
+    // create nice embed for the backup update message
+    const Discord = main.getDiscord();
+    const client = main.getClient();
+    const backupUpdateEmbed = new Discord.MessageEmbed()
+    .setTitle(result.Title)
+    .setDescription(result.Description)
+    .setColor(0x0092db) // noice blue
+    .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
+    .setTimestamp();
+
+    // lastly, add fields based on if the object has them, then send
+    if (result.Added) backupUpdateEmbed.addField('Added:', result.Added);
+    if (result.Removed) backupUpdateEmbed.addField('Removed:', result.Removed);
+    return reply.edit({ embeds: [backupUpdateEmbed] }).catch(error => console.log(error));
 }
 
 async function createBackupFile() {
     if (!await loadOmnibus()) {
         logger.log('Omnibus: Something went wrong loading the online omnibus list.');
-        return 'Something went wrong loading the online omnibus list. No new backup file could be made.';
+        return { Error: 'Something went wrong loading the online omnibus list. No new backup file could be made.' };
     }
 
     // get difference between previous backup and new one
+    const embedContent = {};
+    embedContent.Title = `⏫ Successfully created a new Omnibus list backup with ${omnibus.length} total entries!`;
     let successMessage = `Omnibus: The list was successfully downloaded and a new backup was made with ${omnibus.length} entries.`;
     if (!backup || backup.length < expectedAmount) {
-        successMessage += ' The backup file was not loaded in correctly - I can\'t compare the new and old backup.';
-        logger.log('Omnibus: Omnibus backup file was not loaded in correctly - I can\'t compare the new and old backup.');
+        embedContent.Description = 'The backup file was not loaded in correctly - I can\'t compare the new and old backup.';
+        successMessage += '\nOmnibus: The backup file was not loaded in correctly - I can\'t compare the new and old backup.';
     } else {
         const notInOmnibus = backup.filter(x => !omnibus.includes(x));
         const notInBackup = omnibus.filter(x => !backup.includes(x));
-        successMessage += `\nOmnibus: ${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
-        if (notInBackup.length !== 0 && notInBackup.length < 50) successMessage += `\n - Added: ${notInBackup.join(', ')}`;
-        if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) successMessage += `\n - Removed: ${notInOmnibus.join(', ')}`;
+        embedContent.Description = `${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
+        successMessage += `\nOmnibus: ${embedContent.Description}`;
+        if (notInBackup.length !== 0 && notInBackup.length < 50) {
+            embedContent.Added = notInBackup.join(', ');
+            successMessage += `\n - Added: ${embedContent.Added}`;
+        }
+        if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) {
+            embedContent.Removed = notInOmnibus.join(', ');
+            successMessage += `\n - Removed: ${embedContent.Removed}`;
+        }
     }
 
     // now we can create a new omniBackup.txt
@@ -277,13 +313,12 @@ async function createBackupFile() {
         backup = Array.from(omnibus);
         backupLastUpdated = updateTime; // set last update time only when old backup variable is replaced
         logger.log(successMessage);
-        return successMessage;
+        return embedContent;
 
     } catch (error) {
         logger.log('Omnibus: Something went wrong while creating the new omnibus backup file. Try to repair it manually. ' + error);
-        return 'Something went wrong while creating the new omnibus backup file. Try to repair it manually.\n' + error;
+        return { Error: 'Something went wrong while creating the new omnibus backup file. Try to repair it manually.\n' + error };
     }
-
 }
 
 const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;

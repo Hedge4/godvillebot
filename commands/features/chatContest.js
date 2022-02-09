@@ -135,7 +135,7 @@ async function deleteMessage(message, client) {
 
 // check if this message is still the last message in general chat, and reward the author if it is
 async function winningChatContest(message, client, userData) {
-    if (message.id == lastMessage.id) {
+    if (lastMessage && message.id == lastMessage.id) { // first check if lastMessage even exists
         const logsChannel = client.channels.cache.get(logs);
         if (message.author.id == lastWinner) {
             message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but you already won the last chat-killing contest! :skull:`);
