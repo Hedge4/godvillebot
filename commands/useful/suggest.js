@@ -26,16 +26,14 @@ async function suggest(client, message, content) {
     }
 }
 
-// detect a message in the suggestion/log server
+// detect a message in the suggestion/log server. index.js already checks for the right channel
 function onMessage(message, client, Discord, userData) {
-    if (message.channel.id === botServerChannels[0]) {
-        if (owner.includes(message.author.id)) {
-            if (message.content.toLowerCase().startsWith('accept')) {
-                return accept(message, client, Discord, userData);
-            }
-            if (message.content.toLowerCase().startsWith('reject')) {
-                return reject(message, client, Discord);
-            }
+    if (owner.includes(message.author.id)) {
+        if (message.content.toLowerCase().startsWith('accept')) {
+            return accept(message, client, Discord, userData);
+        }
+        if (message.content.toLowerCase().startsWith('reject')) {
+            return reject(message, client, Discord);
         }
     }
 }

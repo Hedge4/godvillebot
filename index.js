@@ -19,8 +19,8 @@ const client = new Discord.Client({
 
 // certain variables used in this file
 const { version, updateMsg1, updateMsg2, updateMsg3 } = require('./package.json');
-const { logs, botServer, prefix, token, serversServed, owner, noXpChannels, botvilleChannel, commandChannels,
-    newspaperChannel, adminRole, ignoredChannels } = require('./configurations/config.json');
+const { logs, botServer, prefix, token, serversServed, owner, noXpChannels, botvilleChannel, commandChannels, newspaperChannel,
+    adminRole, ignoredChannels, botServerChannels, sendViaBotChannel } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator, crossword } = require('./configurations/commands.json');
 
 // firebase database setup and login
@@ -74,6 +74,7 @@ const help = require('./commands/help');
 const newspaper = require('./commands/crosswordgod/newspaperManager.js');
 const omnibus = require('./commands/crosswordgod/omnibusManager.js');
 const crosswordTimers = require('./commands/crosswordgod/newsUpdates.js');
+const sendViaBot = require('./commands/features/sendViaBot');
 
 
 // setup done as soon as the bot has a connection with the Discord API
@@ -282,10 +283,16 @@ client.on('messageCreate', (message) => {
         return message.reply('This bot is not created for this server. Please kick me from this server.');
     }
 
-    // handle accepting or rejecting suggestions in the bot's suggestion/log server
     if (message.guild.id == botServer) {
-        suggest.handleMessage(message, client, Discord, userData);
+        // handle accepting or rejecting suggestions in the bot's suggestion/log server
+        if (message.channel.id === botServerChannels[0]) {
+            return suggest.handleMessage(message, client, Discord, userData);
+        }
+
+        // handle messages that should be sent via the bot to a specific channel/user
+        if (message.channel.id == sendViaBotChannel) return sendViaBot(message);
     }
+
 
     // respond with a randomly selected reaction when the bot is pinged
     if (/<@666851479444783125>|<@!666851479444783125>/.test(message.content)) {
