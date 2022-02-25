@@ -153,7 +153,7 @@ client.on('messageCreate', (message) => {
     if (message.author.bot) {return;}
     if (botBlocked.includes(message.author.id)) {return;}
 
-    if (message.guild.id !== botServer) return; // FOR TESTING PURPOSES, remember to change log channel id values
+    if (message.channel.type !== 'DM' && message.guild.id !== botServer) return; // FOR TESTING PURPOSES, remember to change log channel id values
 
     // handle DMs
     if (message.channel.type === 'DM') {
