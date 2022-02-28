@@ -5,8 +5,8 @@ function main(message) {
     let content = message.content.trim();
     let index = message.content.trim().indexOf('>');
     if (index < 0) return sendHelp(message, 'You didn\'t provide a target for the message to be sent to.');
-    content = content.slice(index + 1).trim(); // get everything after the target
     const target = content.slice(1, index).trim(); // we're left without < and > but with @/#
+    content = content.slice(index + 1).trim(); // get everything after the target
 
     const attachments = [];
     message.attachments.forEach(element => {
@@ -32,27 +32,72 @@ function main(message) {
         content = content.slice(0, index).trim() + ' ' + content.slice(secondIndex + 1).trim();
     }
 
-    console.log(rawEmbeds);
+    content = content.trim(); // in case a space was added in front when removing reply{} or embed{} tags in front
     const finishedEmbeds = constructEmbeds(rawEmbeds);
-    console.log(finishedEmbeds);
     if (typeof finishedEmbeds === 'string' || finishedEmbeds instanceof String) {
         return sendHelp(message, finishedEmbeds); // if something went wrong when making the embeds, this is the error message
     }
 
-    message.channel.send({ content: content, files: attachments, embeds: finishedEmbeds })
-    .catch(e => sendHelp(message, 'Couldn\'t send message! ' + e));
+    if (target.startsWith('#')) {
+        sendtoChannel(message, target.slice(1), { content: content, files: attachments, embeds: finishedEmbeds }, replyID);
+    } else if (target.startsWith('@')) {
+        sendtoUser(message, target.slice(1), { content: content, files: attachments, embeds: finishedEmbeds }, replyID);
+    } else {
+        sendHelp(message, `${target} doesn't start with # or @.`);
+    }
 }
 
 function sendHelp(message, error = 'Something went wrong.') {
     message.reply('Error: ' + error);
 }
 
-function sendtoChannel() {
-    //
+async function sendtoChannel(message, target, fwd, replyID) {
+    const client = getters.getClient();
+
+    try {
+        // this could return the wrong type of (not text) channel... but I'd get some other error out of that anyway.
+        const channel = await client.channels.fetch(target);
+
+        // get message to reply to if a reply ID was given, otherwise just send to channel
+        if (replyID) {
+            await channel.send({ reply: { messageReference: replyID }, content: fwd.content, files: fwd.attachments, embeds: fwd.embeds });
+        } else {
+            await channel.send({ content: fwd.content, files: fwd.attachments, embeds: fwd.embeds });
+        }
+        // if we didn't error yet we log the sent message
+        const logMsg = `**Sent the following message to '${channel.name}' / <#${channel.id}> in '${channel.guild.name}':**\n`;
+        message.channel.send({ content: logMsg + fwd.content, files: fwd.attachments, embeds: fwd.embeds });
+    } catch (error) {
+        sendHelp(message, error);
+    }
 }
 
-function sendtoUser() {
-    //
+async function sendtoUser(message, target, fwd, replyID) {
+    const client = getters.getClient();
+    if (target.startsWith('!')) target = target.slice(1);
+    if (isNaN(target)) {
+        if (target.startsWith('!')) {
+            target = target.slice(1);
+            if (isNaN(target)) { return sendHelp(message, `@!${target} isn't a person you silly goof`); }
+        } else { return sendHelp(message, `@${target} isn't a person you silly goof`); }
+    }
+
+    try {
+        const user = await client.users.fetch(target);
+        const dmChannel = await user.createDM();
+
+        // get message to reply to if a reply ID was given, otherwise just send to channel
+        if (replyID) {
+            await dmChannel.send({ reply: { messageReference: replyID }, content: fwd.content, files: fwd.attachments, embeds: fwd.embeds });
+        } else {
+            await dmChannel.send({ content: fwd.content, files: fwd.attachments, embeds: fwd.embeds });
+        }
+        // if we didn't error yet we log the sent message
+        const logMsg = `**Sent the following message to '${user.tag}' / ${user.id}:**\n`;
+        message.channel.send({ content: logMsg + fwd.content, files: fwd.attachments, embeds: fwd.embeds });
+    } catch (error) {
+        sendHelp(message, error);
+    }
 }
 
 function constructEmbeds(rawEmbeds) {

@@ -16,8 +16,8 @@ function handleDMs(message, client) {
     message.reply(msg);
 
     // only log to console because logs are public
-    console.log('A DM was sent to the bot by \'' + message.author.tag + '/' + message.author.id + '\'. The content was: \'' + message.content + '\'');
-    client.channels.cache.get(botDmLogs).send(`*${message.author.tag} / ${message.author.id} sent the following message in my DMs:*`);
+    console.log(`A DM with ID ${message.id} was sent to the bot by '` + message.author.tag + '\' / ' + message.author.id + '\'. The content was: \'' + message.content + '\'');
+    client.channels.cache.get(botDmLogs).send(`**'${message.author.tag}' / ${message.author.id} sent the following message in my DMs:**`);
     const attachments = [];
     message.attachments.forEach(element => {
         attachments.push(element.url);

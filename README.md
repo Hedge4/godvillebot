@@ -6,7 +6,7 @@ I should probably include some sort of description here. Meh, I'll add it later 
 ## What's new in version 5?
 Version 5 includes a full rewrite off all files related to the Godville Times newspaper, removing any leftover Python files and related dependencies in the process. This version re-introduces a daily summary of the newspaper, and commands to solve the crossword through downloading and parsing the [Omnibus list](https://wiki.godvillegame.com/Omnibus_List) by either uploading an HTML file of the newspaper or an array of terms to solve.
 
-Additionally, all files were updated to work with discord.js V13 instead of V12, and methods and prompts were updated accordingly. I also revisited how the bot calculates delays and created a `timers.js` feature file, building up to a tasks scheduling system. `index.js` now has getter methods for often referenced objects like `Discord` and `client`, and the bot owner can send messages/embeds to specific channels through the bot.
+Additionally, all files were updated to work with discord.js V13 instead of V12, and methods and prompts were updated accordingly. I also revisited how the bot calculates delays and created a `timers.js` feature file, building up to a tasks scheduling system that will be introduced next. `index.js` now has getter methods for often referenced objects like `Discord` and `client`, and the bot owner can send messages/embeds to specific channels through the bot. Lastly, the bot can now be used to send a message including files and embeds to a specific channel or user.
 
 ### What has been added since?
 Nothing!
