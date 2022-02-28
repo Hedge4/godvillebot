@@ -39,7 +39,7 @@
         ["solvehtml", ["solvecrosswordhtml", "crosswordhtml", "html"]],
         ["newspaper", ["forecast", "news"]],
         ["newspaperupdate", ["update"]],
-        ["renewnewspaper", ["renew", "refreshnewspaper"]],
+        ["renewnewspaper", ["renew", "refresh", "refreshnewspaper"]],
         ["renewomnibus", ["refreshomnibus", "omnibus"]],
-        ["createomnibusbackup", ["createbackup", "backup"]]]
+        ["createomnibusbackup", ["createbackup", "backup", "omnibusbackup"]]]
 }
