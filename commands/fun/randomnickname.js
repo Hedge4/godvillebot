@@ -11,7 +11,7 @@ async function main(message, client) {
 
         console.log(`${message.author.tag} / ${message.author.id}: Changed nickname from ${oldNick} to ${newNick}.`);
         client.channels.cache.get(logs).send(`**${message.author.tag} / ${message.author.id}**: Changed nickname from **${oldNick}** to **${newNick}**.`);
-        return message.reply(`changed your nickname from **${oldNick}** to **${newNick}**.`);
+        return message.reply(`Changed your nickname from **${oldNick}** to **${newNick}**.`);
     }
 }
 

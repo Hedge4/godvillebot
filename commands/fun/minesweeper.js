@@ -9,16 +9,16 @@ function main(client, message) {
             if (!isNaN(num)) {
                 if (num >= 2 && num <= 13) {
                     size = num;
-                } else { message.reply(`size should 2-13. Using previous value ${size}.`); }
-            } else { message.reply(`size input should be an integer, not ${num}. Using previous value (${size}).`); }
+                } else { message.reply(`Size should 2-13. Using previous value ${size}.`); }
+            } else { message.reply(`Size input should be an integer, not ${num}. Using previous value (${size}).`); }
         }
         if (arg.startsWith('b')) {
             const num = parseFloat(arg.slice(1));
             if (!isNaN(num)) {
                 if (num >= 0 && num <= 60) {
                     bomb = num;
-                } else { message.reply(`bomb percentage should be 0-60. Using previous value ${bomb}%.`); }
-            } else { message.reply(`bomb input should be a number, not ${num}. Using previous value (${bomb})%.`); }
+                } else { message.reply(`Bomb percentage should be 0-60. Using previous value ${bomb}%.`); }
+            } else { message.reply(`Bomb input should be a number, not ${num}. Using previous value (${bomb})%.`); }
         }
     });
 
@@ -73,12 +73,12 @@ function main(client, message) {
     }
 
     if (!indices.length) {
-        message.reply(`here is your minesweeper game with size ${size} and ${bombs.length} bombs:\n${spoilers}`);
+        message.reply(`Here is your minesweeper game with size ${size} and ${bombs.length} bombs:\n${spoilers}`);
         message.channel.send('This minefield does not contain any zeroes, so you do not get a starting position. Good luck.');
     } else {
         const index = indices[Math.floor(Math.random() * indices.length)];
         spoilers = spoilers.substring(0, index) + ':zero:' + spoilers.substring(index + 10);
-        message.reply(`here is your minesweeper game with size ${size} and ${bombs.length} bombs:\n${spoilers}`);
+        message.reply(`Here is your minesweeper game with size ${size} and ${bombs.length} bombs:\n${spoilers}`);
     }
 
 }

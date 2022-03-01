@@ -8,9 +8,9 @@ async function main(client, message) {
         try {
             format = /^[\s\S]+(\.[^.]+$)/.exec(message.attachments.first().name)[1];
         } catch {
-            // do nothing
+            // do nothing, this file or whatever has no extension
         }
-        message.channel.send(`${message.author}, here is your spoilered file:`, {
+        message.channel.send({ content: `${message.author}, here is your spoilered file:`,
             files: [{
                 attachment: message.attachments.first().url,
                 name: `SPOILER_${rand}${format}`,
@@ -21,13 +21,13 @@ async function main(client, message) {
     } else {
         message.delete();
         const url = message.content.slice(8).trim();
-        if (!url || !url.length) {return message.reply('please provide the URL to a file, or attach an image you want to make into a spoiler.');}
+        if (!url || !url.length) {return message.reply('Please provide the URL to a file, or attach an image you want to make into a spoiler.');}
         console.log(`${message.author.tag} requested a spoilered image from an URL in ${message.channel.name}. URL: ${url}`);
         logsChannel.send(`${message.author.tag} requested a spoilered image from an URL in ${message.channel.name}. URL: ${url}`);
         let format = '';
         try {
             format = /^[\s\S]+(\.[^.]+$)/.exec(url)[1];
-            message.channel.send(`${message.author}, here is your spoilered file:`, {
+            message.channel.send({ content: `${message.author}, here is your spoilered file:`,
                 files: [{
                     attachment: url,
                     name: `SPOILER_${rand}${format}`,

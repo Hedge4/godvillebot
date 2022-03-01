@@ -1,10 +1,11 @@
-const { prefix, botvilleChannel, noXpPrefixes, godpowerCooldownSeconds, logs, godpowerLogs } = require('../../configurations/config.json');
-const godpowerCooldown = new Set();
+const { prefix, botvilleChannel, noXpPrefixes, godpowerCooldownSeconds, logs, godpowerLogs, botServer } = require('../../configurations/config.json');
+const godpowerCooldown = new Set(); // to create a cooldown between each time a user can earn godpower
 
 async function giveGodpower(message, userData, Discord, client) {
 
     if (godpowerCooldown.has(message.author.id)) {return;}
     if (xpBlocked.includes(message.author.id)) {return;}
+    if (message.guild.id === botServer) {return;} // no xp for logs/suggestions server
     noXpPrefixes.forEach(element => {
         if (message.content.startsWith(element)) {return;}
     });
@@ -61,16 +62,16 @@ async function giveGodpower(message, userData, Discord, client) {
         User[message.author.id].gold = User[message.author.id].gold + goldAdd;
         let newNextLevel = Math.floor(100 * 1.2 ** (newLevel ** (4 / 5)));
         if (newLevel >= 50) newNextLevel = 6666;
-        const nickname = message.guild.member(message.author) ? message.guild.member(message.author).displayName : null;
+        const nickname = message.guild.members.cache.get(message.author) ? message.guild.members.cache.get(message.author).displayName : null;
 
         const lvlUpEmbed = new Discord.MessageEmbed()
             .setColor('d604cf')
             .setTitle(nickname + ' levelled UP! <:screen_pantheonup:441043802325778442>')
             .setDescription('You gathered ' + nextLevel + ' godpower <:stat_godpower:401412765232660492> and levelled up to level ' + User[message.author.id].level + '! :tada: - You now have ' + User[message.author.id].total_godpower + ' godpower total.')
             .addField('Gold rewarded', `You earned ${goldAdd} <:stat_gold:401414686651711498> for reaching level ` + User[message.author.id].level + '. You now have ' + User[message.author.id].gold + ' gold total.')
-            .setFooter(`You'll need ${newNextLevel} godpower for level ${newLevel + 1}. Use ${prefix}toggle-mentions to enable/disable being mentioned on level-up.`, message.author.displayAvatarURL());
+            .setFooter({ text: `You'll need ${newNextLevel} godpower for level ${newLevel + 1}. Use ${prefix}toggle-mentions to enable/disable being mentioned on level-up.`, iconURL: message.author.displayAvatarURL() });
         if (User[message.author.id].mention !== false) { client.channels.cache.get(botvilleChannel).send(`Congratulations on reaching level ${User[message.author.id].level}, ${message.author}!`);}
-        client.channels.cache.get(botvilleChannel).send(lvlUpEmbed);
+        client.channels.cache.get(botvilleChannel).send({ embeds: [lvlUpEmbed] });
     }
 
     User[message.author.id].last_username = message.author.tag;

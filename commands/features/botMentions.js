@@ -23,8 +23,7 @@ async function mentionReact(message, client) {
         botMentionCooldown.delete(message.author.id);
         const logsChannel = client.channels.cache.get(logs);
         message.member.roles.add(mutedRole);
-        //const reply = await message.reply('don\'t spam mention me.'); // use after new message.reply functionality releases
-        message.reply('don\'t spam mention me.');
+        message.reply('Don\'t spam mention me.');
         setTimeout(() => {
             message.member.roles.remove(mutedRole);
             message.channel.send(`Unmuted ${message.author}.`);

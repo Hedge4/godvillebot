@@ -47,8 +47,8 @@ async function main(client, message) {
             wrapped = wrapped + '||' + (tobewrapped.slice(0, 2) + '||||' + tobewrapped.slice(2)) + '||';
         } else {(wrapped = (wrapped + '||' + (tobewrapped)) + '||');}
         message.delete();
-        message.reply('\n' + wrapped);
-    } else {message.reply('you can only bubblewrap messages longer than 3 characters and shorter than 500 characters.');}
+        message.reply(wrapped);
+    } else {message.reply('You can only bubblewrap messages longer than 3 characters and shorter than 500 characters.');}
 }
 
 module.exports = main;

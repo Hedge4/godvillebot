@@ -16,7 +16,7 @@ async function toggleMentions(message, userData, client) {
         await userData.set(User, { merge: true });
         console.log(`${message.author.tag} disabled mentions for level-ups.`);
         logsChannel.send(`${message.author.tag} disabled mentions for level-ups.`);
-        return message.reply('successfully disabled mentioning for level-ups!');
+        return message.reply('Successfully disabled mentioning for level-ups!');
     } else {
         User[message.author.id] = userDoc.data()[message.author.id];
         if (User[message.author.id].mention === false) {
@@ -24,13 +24,13 @@ async function toggleMentions(message, userData, client) {
             await userData.set(User, { merge: true });
             console.log(`${message.author.tag} enabled mentions for level-ups.`);
             logsChannel.send(`${message.author.tag} enabled mentions for level-ups.`);
-            return message.reply('successfully enabled mentioning for level-ups!');
+            return message.reply('Successfully enabled mentioning for level-ups!');
         } else {
             User[message.author.id].mention = false;
             await userData.set(User, { merge: true });
             console.log(`${message.author.tag} disabled mentions for level-ups.`);
             logsChannel.send(`${message.author.tag} disabled mentions for level-ups.`);
-            return message.reply('successfully disabled mentioning for level-ups!');
+            return message.reply('Successfully disabled mentioning for level-ups!');
         }
     }
 }

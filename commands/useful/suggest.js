@@ -6,10 +6,10 @@ async function suggest(client, message, content) {
     if (!suggestBlocked.includes(message.author.id)) {
         let suggestion = content.split('`');
         suggestion = suggestion.join('');
-        if (suggestion.length <= 20) {return message.reply('please add enough detail and make the description of your suggestion at least 20 characters!');}
-        if (suggestion.length >= 1000) {return message.reply('please be a bit more concise in your description and use less than 1000 characters!');}
+        if (suggestion.length <= 20) {return message.reply('Please add enough detail and make the description of your suggestion at least 20 characters!');}
+        if (suggestion.length >= 1000) {return message.reply('Please be a bit more concise in your description and use less than 1000 characters!');}
         const channel = await client.channels.cache.get(botServerChannels[0]);
-        if (channel === undefined) {message.reply('the message couldn\'t be sent.');}
+        if (channel === undefined) {message.reply('The message couldn\'t be sent.');}
         channel.send(` --- ${message.author.tag} sent the following suggestion from channel ${message.channel.name}:\n` + '`' + suggestion + '`')
         .then(botMessage => {
             botMessage.react('👍');
@@ -18,24 +18,22 @@ async function suggest(client, message, content) {
         });
         console.log(`${message.author.tag} made a bot suggestion in ${message.channel.name} with text: ${suggestion}.`);
         logsChannel.send(`${message.author.tag} made a bot suggestion in ${message.channel.name} with text: ${suggestion}.`);
-        return message.reply('thank you for your suggestion! You can view it here: https://discord.gg/dFC4sWv');
+        return message.reply('Thank you for your suggestion! You can view it here: https://discord.gg/dFC4sWv');
     } else {
         console.log(`${message.author.tag} tried to make a bot suggestion in ${message.channel.name}, but they're blocked from doing so.`);
         logsChannel.send(`${message.author.tag} tried to make a bot suggestion in ${message.channel.name}, but they're blocked from doing so.`);
-        return message.reply('you are not allowed to use that command.');
+        return message.reply('You are not allowed to use that command.');
     }
 }
 
-// detect a message in the suggestion/log server
+// detect a message in the suggestion/log server. index.js already checks for the right channel
 function onMessage(message, client, Discord, userData) {
-    if (message.channel.id === botServerChannels[0]) {
-        if (owner.includes(message.author.id)) {
-            if (message.content.toLowerCase().startsWith('accept')) {
-                return accept(message, client, Discord, userData);
-            }
-            if (message.content.toLowerCase().startsWith('reject')) {
-                return reject(message, client, Discord);
-            }
+    if (owner.includes(message.author.id)) {
+        if (message.content.toLowerCase().startsWith('accept')) {
+            return accept(message, client, Discord, userData);
+        }
+        if (message.content.toLowerCase().startsWith('reject')) {
+            return reject(message, client, Discord);
         }
     }
 }
@@ -43,7 +41,7 @@ function onMessage(message, client, Discord, userData) {
 async function accept(message, client, Discord, userData) {
     message.delete(); // always delete the accept/reject command
     if (args > 1000) {
-        message.reply('please use 1000 characters at most.')
+        message.reply('Please use 1000 characters at most.')
             .then(msg => { setTimeout(() => { msg.delete(); }, 10000); });
         return; // give error if no ID was provided
     }
@@ -51,7 +49,7 @@ async function accept(message, client, Discord, userData) {
     let args = message.content.slice(7).trim().split(' ');
     let ID = 0;
     if (!args[0] || !args[0].length || isNaN(args[0])) {
-        message.reply('after the accept/reject command, you should specify the ID of the to be handled suggestion.')
+        message.reply('After the accept/reject command, you should specify the ID of the to be handled suggestion.')
             .then(msg => { setTimeout(() => { msg.delete(); }, 10000); });
         return; // give error if no ID was provided
     } else {
@@ -71,7 +69,7 @@ async function accept(message, client, Discord, userData) {
 
     // get reward level and accept/reject comments
     if (!args[0] || !args[0].length || !(args[0] == 1 || args[0] == 2 || args[0] == 3)) {
-        message.reply('after the ID of the message, you need to provide a reward level of either 1 (small), 2 (normal) or 3 (big).')
+        message.reply('After the ID of the message, you need to provide a reward level of either 1 (small), 2 (normal) or 3 (big).')
             .then(msg => { setTimeout(() => { msg.delete(); }, 10000); });
         return; // give error if no reward level was provided
     }
@@ -127,14 +125,14 @@ async function accept(message, client, Discord, userData) {
     .setDescription(suggestion)
     .addField('Gold earned <:stat_gold:401414686651711498>', goldEarnedMsg, true)
     .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/joypixels/291/check-mark-button_2705.png')
-    .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
+    .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
     .setTimestamp();
 
     old_msg.delete();
     const new_channel = await client.channels.cache.get(botServerChannels[1]);
     const botChannel = client.channels.cache.get(botvilleChannel);
-    new_channel.send(`${author} accepted :white_check_mark: a suggestion by ${username}:`, { embed: acceptedEmbed });
-    botChannel.send(`${author} accepted :white_check_mark: a suggestion by ${username}:`, { embed: acceptedEmbed });
+    new_channel.send({ content: `${author} accepted :white_check_mark: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
+    botChannel.send({ content: `${author} accepted :white_check_mark: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
 }
 
 async function reject(message, client, Discord) {
@@ -143,7 +141,7 @@ async function reject(message, client, Discord) {
     let args = message.content.slice(7).trim().split(' ');
     let ID = 0;
     if (!args[0] || !args[0].length || isNaN(args[0])) {
-        message.reply('after the accept/reject command, you should specify the ID of the to be handled suggestion.')
+        message.reply('After the accept/reject command, you should specify the ID of the to be handled suggestion.')
             .then(msg => { setTimeout(() => { msg.delete(); }, 10000); });
         return; // give error if no ID was provided
     } else {
@@ -173,14 +171,14 @@ async function reject(message, client, Discord) {
     .setDescription(suggestion)
     .addField('Thank you! <:stat_gold:401414686651711498>', 'Although your suggestion was rejected, thank you for coming up with new ideas for the bot!', true)
     .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/whatsapp/302/cross-mark_274c.png')
-    .setFooter('GodBot is brought to you by Wawajabba', client.user.avatarURL())
+    .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
     .setTimestamp();
 
     old_msg.delete();
     const new_channel = await client.channels.cache.get(botServerChannels[2]);
     const botChannel = client.channels.cache.get(botvilleChannel);
-    new_channel.send(`${author} rejected :x: a suggestion by ${username}:`, { embed: acceptedEmbed });
-    botChannel.send(`${author} rejected :x: a suggestion by ${username}:`, { embed: acceptedEmbed });
+    new_channel.send({ content: `${author} rejected :x: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
+    botChannel.send({ content: `${author} rejected :x: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
 }
 
 exports.suggestion = suggest;

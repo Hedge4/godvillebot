@@ -8,7 +8,7 @@ async function displayLevel(message, userData, Discord, client) {
         const username = message.content.slice(7).trim();
         user = getUsers.One(username, client);
         if (!user) {
-            return message.reply('mention a valid user or use a valid username/ID!');
+            return message.reply('Mention a valid user or use a valid username/ID!');
         }
     } else {
         user = message.author;
@@ -39,8 +39,8 @@ async function displayLevel(message, userData, Discord, client) {
     if (curLevel >= 50) reqGodpower = 6666;
     const nextLevel = curLevel + 1;
     const difference = reqGodpower - curGodpower;
-    const nickname = message.guild.member(user) ? message.guild.member(user).displayName : null;
-    if (nickname !== user.username) {
+    const nickname = message.guild.members.cache.get(user) ? message.guild.members.cache.get(user).displayName : null;
+    if (nickname && nickname !== user.username) {
         author = author + ' / ' + nickname;
     }
 
@@ -51,12 +51,12 @@ async function displayLevel(message, userData, Discord, client) {
     .addField('Godpower <:stat_godpower:401412765232660492>', curGodpower, true)
     .addField('Total godpower', User[user.id].total_godpower, true)
     .addField('Rank', rank, true)
-    .setFooter(`${difference} godpower needed for level ${nextLevel}.`, user.displayAvatarURL());
+    .setFooter({ text: `${difference} godpower needed for level ${nextLevel}.`, iconURL: user.displayAvatarURL() });
 
     const logsChannel = client.channels.cache.get(logs);
     console.log(`${message.author.tag} requested the level card for ${user.tag}.`);
     logsChannel.send(`${message.author.tag} requested the level card for ${user.tag}.`);
-    message.channel.send(lvlEmbed);
+    message.channel.send({ embeds: [lvlEmbed] });
 }
 
 async function getOwnRanking(userID, userDocData) {

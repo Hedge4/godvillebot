@@ -14,7 +14,7 @@ function redirect(cmd, content, message, client, blockedData) {
         case 'purge':
             return admin_only.purge(client, message);
         default:
-            return message.reply(`the '${cmd}' command does not seem to be correctly set up.`);
+            return message.reply(`The '${cmd}' command does not seem to be correctly set up.`);
     }
 }
 
