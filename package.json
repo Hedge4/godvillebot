@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "updateMsg1": "5.0 Fully rewrote Python crosswordgod functions into JavaScript (go to <#431305701021974539> now to make my effort worth it), and updated to discord.js V13.",
   "updateMsg2": "4.12 Added the >makevote command, and I can now choose singular/plural correctly for some prompts.",
   "updateMsg3": "4.11 Fixed several chatContest bugs and chatCombos now won't reset anymore when the bot restarts.",

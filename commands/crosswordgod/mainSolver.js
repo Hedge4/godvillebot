@@ -173,7 +173,7 @@ async function solveHtmlRequest(message) {
     .setTimestamp();
 
     logger.log(`Finished solving the crossword in ${message.channel.name}.`);
-    reply.edit({ content: ' ', embeds: [crosswordEmbed] });
+    reply.edit({ content: 'Here you go!', embeds: [crosswordEmbed] });
 }
 
 function solveWord(word, omnibus) {

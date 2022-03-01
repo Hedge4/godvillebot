@@ -176,7 +176,7 @@ function constructSpecificHelp(message, Discord, client, element) {
         if (examplesList.length) {
             for (let i = 1; i <= examplesList.length; i++) { // Note: 1-based, not 0-based
                 const e = examplesList[i];
-                specificHelpEmbed.addField(`__Usage examples ${i}:__`, `${e}`);
+                specificHelpEmbed.addField(`__Usage examples ${i - 1}:__`, `${e}`);
             }
         } else {
             specificHelpEmbed.addField('__Usage examples:__', `${examples}`);
