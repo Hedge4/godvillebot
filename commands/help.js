@@ -174,9 +174,9 @@ function constructSpecificHelp(message, Discord, client, element) {
             .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
 
         if (examplesList.length) {
-            for (let i = 1; i <= examplesList.length; i++) { // Note: 1-based, not 0-based
+            for (let i = 0; i < examplesList.length; i++) {
                 const e = examplesList[i];
-                specificHelpEmbed.addField(`__Usage examples ${i - 1}:__`, `${e}`);
+                specificHelpEmbed.addField(`__Usage examples ${i + 1}:__`, `${e}`);
             }
         } else {
             specificHelpEmbed.addField('__Usage examples:__', `${examples}`);
