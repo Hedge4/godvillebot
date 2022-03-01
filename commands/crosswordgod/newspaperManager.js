@@ -141,7 +141,7 @@ async function renewNewspaperAutomatic(channel) {
     await loadNewspaper(true).then((success) => {
         if (!success) {
             channel.send('⚠️ Oops! ⚠️ Something went wrong, and I couldn\'t load the new newspaper edition...'
-                + ` You can ask a moderator to force another update with \`${prefix}renew\`.`);
+                + ` You can ask a moderator to force another update with \`${prefix}refreshnews\`.`);
             return;
         }
     });

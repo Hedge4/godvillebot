@@ -63,7 +63,7 @@ async function solveWordsRequest(message, content) {
     // fetch the omnibus list from our manager thingy that isn't actually a manager
     const omnibus = omnibusManager.get();
     if (!omnibus) { // previous line returns null if there is no omnibus list to use
-        return message.reply(`I couldn't download the Omnibus list or find a backup of it. Try refreshing it with \`${prefix}refresh\`.`);
+        return message.reply(`I couldn't download the Omnibus list or find a backup of it. Try refreshing it with \`${prefix}refreshomnibus\`.`);
     }
 
     // checks are done, now we update the channel + log that we're getting to work
@@ -126,7 +126,7 @@ async function solveHtmlRequest(message) {
     const omnibus = omnibusManager.get();
     if (!omnibus) { // previous line returns null if there is no omnibus list to use
         logger.log(`${message.author.tag} tried to solve the crossword using an HTML file, but the Omnibus list was missing.`);
-        return message.reply(`I couldn't download the Omnibus list or find a backup of it. Try refreshing it with \`${prefix}refresh\`.`);
+        return message.reply(`I couldn't download the Omnibus list or find a backup of it. Try refreshing it with \`${prefix}refreshomnibus\`.`);
     }
 
     const timeSinceUpdate = Date.now() - omnibus.timestamp;
@@ -163,7 +163,7 @@ async function solveHtmlRequest(message) {
     .setTitle('Godville Times crossword solution')
     .setDescription(`Solved using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
     + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago. If not all words are`
-    + ` solved, add them to the [Omnibus List](https://wiki.godvillegame.com/Omnibus_List) and use command \`${prefix}refresh\`.\n`)
+    + ` solved, add them to the [Omnibus List](https://wiki.godvillegame.com/Omnibus_List) and use command \`${prefix}refreshomnibus\`.\n`)
     .addField('Horizontal solutions', `||${solvedHorizontals.join('\n')}||`)
     .addField('Vertical solutions', `||${solvedVerticals.join('\n')}||`)
     .setColor(0x78de79) // noice green
