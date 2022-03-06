@@ -30,9 +30,9 @@ async function displayGold(message, userData, Discord, client) {
         User[user.id] = userDoc.data()[user.id];
     }
 
-    const nickname = message.guild.members.cache.get(user) ? message.guild.members.cache.get(user).displayName : null;
-    if (nickname && nickname !== user.username) {
-        userName = userName + ' / ' + nickname;
+    const member = await message.guild.members.fetch(user);
+    if (member && member.displayName !== user.username) {
+        userName = userName + ' / ' + member.displayName;
     }
 
     const goldEmbed = new Discord.MessageEmbed()

@@ -14,8 +14,10 @@ async function displayLevel(message, userData, Discord, client) {
         user = message.author;
     }
 
+    console.log(user);
+
     let rank = '';
-    let author = user.tag;
+    let requestedUser = user.tag;
     const userDoc = await userData.get();
     const User = {};
     if(userDoc.data()[user.id] === undefined) {
@@ -25,7 +27,7 @@ async function displayLevel(message, userData, Discord, client) {
             level: 0,
             gold: 0,
         };
-        User[user.id].last_username = author;
+        User[user.id].last_username = requestedUser;
         await userData.set(User, { merge: true });
     } else {
         User[user.id] = userDoc.data()[user.id];
@@ -39,18 +41,19 @@ async function displayLevel(message, userData, Discord, client) {
     if (curLevel >= 50) reqGodpower = 6666;
     const nextLevel = curLevel + 1;
     const difference = reqGodpower - curGodpower;
-    const nickname = message.guild.members.cache.get(user) ? message.guild.members.cache.get(user).displayName : null;
-    if (nickname && nickname !== user.username) {
-        author = author + ' / ' + nickname;
+
+    const member = await message.guild.members.fetch(user);
+    if (member && member.displayName !== user.username) {
+        requestedUser = requestedUser + ' / ' + member.displayName;
     }
 
     const lvlEmbed = new Discord.MessageEmbed()
-    .setAuthor(author)
+    .setAuthor({ name: requestedUser })
     .setColor('32cd32')
-    .addField('Level', curLevel, true)
-    .addField('Godpower <:stat_godpower:401412765232660492>', curGodpower, true)
-    .addField('Total godpower', User[user.id].total_godpower, true)
-    .addField('Rank', rank, true)
+    .addField('Level', curLevel.toString(), true)
+    .addField('Godpower <:stat_godpower:401412765232660492>', curGodpower.toString(), true)
+    .addField('Total godpower', User[user.id].total_godpower.toString(), true)
+    .addField('Rank', rank.toString(), true)
     .setFooter({ text: `${difference} godpower needed for level ${nextLevel}.`, iconURL: user.displayAvatarURL() });
 
     const logsChannel = client.channels.cache.get(logs);

@@ -62,7 +62,8 @@ async function giveGodpower(message, userData, Discord, client) {
         User[message.author.id].gold = User[message.author.id].gold + goldAdd;
         let newNextLevel = Math.floor(100 * 1.2 ** (newLevel ** (4 / 5)));
         if (newLevel >= 50) newNextLevel = 6666;
-        const nickname = message.guild.members.cache.get(message.author) ? message.guild.members.cache.get(message.author).displayName : null;
+        const member = await message.guild.members.fetch(message.author);
+        const nickname = member.displayName ? member.displayName : message.author.tag;
 
         const lvlUpEmbed = new Discord.MessageEmbed()
             .setColor('d604cf')
