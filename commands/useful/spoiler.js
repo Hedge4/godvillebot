@@ -23,7 +23,7 @@ async function main(client, message) {
         const url = message.content.slice(8).trim();
         if (!url || !url.length) {return message.reply('Please provide the URL to a file, or attach an image you want to make into a spoiler.');}
         console.log(`${message.author.tag} requested a spoilered image from an URL in ${message.channel.name}. URL: ${url}`);
-        logsChannel.send(`${message.author.tag} requested a spoilered image from an URL in ${message.channel.name}. URL: ${url}`);
+        logsChannel.send(`${message.author.tag} requested a spoilered image from an URL in ${message.channel.name}. URL: <${url}>`);
         let format = '';
         try {
             format = /^[\s\S]+(\.[^.]+$)/.exec(url)[1];

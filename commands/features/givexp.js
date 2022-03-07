@@ -1,24 +1,28 @@
-const { prefix, botvilleChannel, noXpPrefixes, godpowerCooldownSeconds, logs, godpowerLogs, botServer } = require('../../configurations/config.json');
+const { prefix, botvilleChannel, noXpPrefixes, godpowerCooldownSeconds, logs, godpowerLogs, godvilleServer } = require('../../configurations/config.json');
 const godpowerCooldown = new Set(); // to create a cooldown between each time a user can earn godpower
 
 async function giveGodpower(message, userData, Discord, client) {
 
     if (godpowerCooldown.has(message.author.id)) {return;}
     if (xpBlocked.includes(message.author.id)) {return;}
-    if (message.guild.id === botServer) {return;} // no xp for logs/suggestions server
-    noXpPrefixes.forEach(element => {
-        if (message.content.startsWith(element)) {return;}
-    });
-    let valid_size = message.content.trim().replace(/<([^:]*):([^:]+):([0-9]+)>/g, ''); // filter out custom emojis
-    valid_size = message.content.trim().replace(/<(@&?|#)[0-9]+>/g, ''); // filter out member, person and channel mentions
-    const rx_emoji = emoji_regex(); // filter out emojis
-    const rx_uri1 = /<?(ht|f)tp(s?):\/\/[^\s]+/gi; // filter out most urls starting with http(s) or ftp(s)
-    const rx_uri2 = /<?www.[^\s]+/gi; // filter out urls starting with www.
-    valid_size = valid_size.replace(rx_emoji, '');
-    valid_size = valid_size.replace(rx_uri1, '');
-    valid_size = valid_size.replace(rx_uri2, '');
-    valid_size = valid_size.replace(/[\s]+/g, ' ');
-    if (valid_size.trim().length < 7) {return;}
+    if (!message.guild.id === godvilleServer) {return;} // no xp for other servers than the Godville server
+    if (noXpPrefixes.some(e => message.content.startsWith(e))) {return;}
+
+    const regexCustomEmoji = /<[^:>]*:[^:>]+:[0-9]+>/g; // filter out custom emojis
+    const regexMentions = /<(@(!|&)?|#)[0-9]+>/g; // filter out member, person and channel mentions
+    const regexEmoji = emoji_regex(); // filter out emojis
+    const regexUri1 = /<?(ht|f)tps?:\/\/[^\s]+/gi; // filter out most urls starting with http(s):// or ftp(s)://
+    const regexUri2 = /<?www2?\.[^\s]+/gi; // filter out urls starting with www(2).
+
+    let validContent = message.content.replace(regexCustomEmoji, '');
+    validContent = validContent.replace(regexMentions, '');
+    validContent = validContent.replace(regexEmoji, '');
+    validContent = validContent.replace(regexUri1, '');
+    validContent = validContent.replace(regexUri2, '');
+    validContent = validContent.replace(/[\s]+/g, ' '); // filter out whitespace larger than 1 character
+
+    // no godpower for messages shorter than 15 characters
+    if (validContent.trim().length < 15) {return;}
 
     const userDoc = await userData.get();
     const User = {};

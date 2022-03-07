@@ -25,7 +25,7 @@ async function checkDaily(message, limitedCommandsData, userData) {
         User[message.author.id].last_username = message.author.tag;
         userData.set(User, { merge: true });
 
-        message.reply(`You received **${goldAdd}** daily gold. You now have **${newGold}** gold total. <:stat_gold:401414686651711498>`);
+        message.reply(`<:stat_gold:401414686651711498> You received **${goldAdd}** daily gold. You now have **${newGold}** gold.`);
         logger.log(`${message.author.tag} used their daily in ${message.channel.name}. Gold: ${oldGold} -> ${newGold}.`);
     } else {
         const delay = getResetTimer(false);

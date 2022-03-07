@@ -27,7 +27,7 @@ function sendNewspaper(channel, renewed = false) {
     // create introduction and add it to sendList
     const introductionEmbed = new Discord.MessageEmbed()
     .setTitle(`Godville Times issue ${news.edition} on day ${news.date} g.e.`)
-    .setDescription('[Click for a link to the free coupon.](https://godvillegame.com/news#cpn_name)'
+    .setDescription('[Claim your free daily coupon...](https://godvillegame.com/news#cpn_name)'
         + '\n\nDid you know I can solve the newspaper\'s crossword for you? You just have to send me the words! '
         + `You can do so with \`${prefix}solve\` for separate words (type a . for unknown letters), or just upload the raw html page with \`${prefix}solvehtml\`!`)
     .setURL('https://godvillegame.com/news')
@@ -40,7 +40,7 @@ function sendNewspaper(channel, renewed = false) {
     if (news.forecast) {
         const forecastEmbed = new Discord.MessageEmbed()
         .setTitle('Daily Forecast')
-        .setDescription(news.forecast)
+        .setDescription('[Click here for an explanation about forecast effects.](https://wiki.godvillegame.com/Daily_Forecast#List_of_possible_forecasts)\n\n' + news.forecast)
         .setURL('https://godvillegame.com/news')
         .setColor(0x78de79) // noice green
         .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
@@ -71,10 +71,11 @@ function sendNewspaper(channel, renewed = false) {
     } else { missingEmbedsList.push('The Guild Spotlight couldn\'t be loaded today.'); }
 
     // embeds are finished, now send the whole package!
-    // In testing, Discord only displays the first embed attached to a message, so we're sending them one by one.
     // channel.send({ embeds: embedsList }).catch((err) => {
     //     logger.log('News: Error sending newspaper embeds. ' + err);
     // });
+
+    // In testing, Discord only displays the first embed attached to a message, so we're sending them one by one.
     embedsList.forEach(embed => {
         channel.send({ embeds: [embed] }).catch((err) => {
             logger.log('News: Error sending newspaper embeds. ' + err);

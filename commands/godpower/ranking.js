@@ -1,7 +1,7 @@
 const { logs } = require('../../configurations/config.json');
 
-async function getRanking(message, userData, client) {
-    const args = message.content.slice(8).trim().split(' ');
+async function getRanking(message, content, userData, client) {
+    const args = content.split(' ');
     let page = 1;
     if (args.length > 1) {
         return message.reply('The correct syntax is >ranking [page].');

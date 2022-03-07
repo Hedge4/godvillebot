@@ -1,12 +1,11 @@
 const { logs } = require('../../configurations/config.json');
 const getUsers = require('../features/getUsers');
 
-async function displayGold(message, userData, Discord, client) {
+async function displayGold(message, msgContent, userData, Discord, client) {
 
     let user;
-    if (message.content.length > 6) {
-        const username = message.content.slice(6).trim();
-        user = getUsers.One(username, client);
+    if (msgContent.length) {
+        user = getUsers.One(msgContent, client);
         if (!user) {
             return message.reply('Mention a valid user or use a valid username/ID!');
         }

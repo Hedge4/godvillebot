@@ -26,7 +26,7 @@ async function showProfile(message, username, client, Discord, godData) {
     const godDoc = await godData.get();
     if(godDoc.data()[user.id] === undefined) {
         if (!self) {
-            return message.reply(`<@${user.id}> hasn't linked their Godville account yet.\nThey can do so using the \`${prefix}link\` command in <#${botvilleChannel}>.`);
+            return message.reply(`<@${user.id}> hasn't linked their Godville account yet. They can do so using the \`${prefix}link\` command in <#${botvilleChannel}>.`);
         } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#${botvilleChannel}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
     }
     const godURL = godDoc.data()[user.id];
@@ -178,7 +178,7 @@ async function showLink(message, username, client, godData) {
     const godDoc = await godData.get();
     if(godDoc.data()[user.id] === undefined) {
         if (!self) {
-            return message.reply(`<@${user.id}> hasn't linked their Godville account yet.\nThey can do so using the \`${prefix}link\` command in <#${botvilleChannel}>.`);
+            return message.reply(`<@${user.id}> hasn't linked their Godville account yet. They can do so using the \`${prefix}link\` command in <#${botvilleChannel}>.`);
         } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#${botvilleChannel}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
     }
 

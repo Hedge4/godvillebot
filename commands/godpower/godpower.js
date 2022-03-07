@@ -7,13 +7,13 @@ const limitedCommands = require('./daily');
 function redirect(cmd, content, message, Discord, client, userData, limitedCommandsData) {
     switch (cmd) {
         case 'level':
-            return displayLevel(message, userData, Discord, client);
+            return displayLevel(message, content, userData, Discord, client);
         case 'gold':
-            return displayGold(message, userData, Discord, client);
+            return displayGold(message, content, userData, Discord, client);
         case 'toggle-mentions':
             return toggleMentions(message, userData, client);
         case 'ranking':
-            return getRanking(message, userData, client);
+            return getRanking(message, content, userData, client);
         case 'daily':
             return limitedCommands.daily(message, limitedCommandsData, userData);
         default:

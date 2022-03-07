@@ -40,10 +40,11 @@ function onMessage(message, client, Discord, userData) {
 
 async function accept(message, client, Discord, userData) {
     message.delete(); // always delete the accept/reject command
-    if (args > 1000) {
+
+    if (message.content.length > 1000) {
         message.reply('Please use 1000 characters at most.')
             .then(msg => { setTimeout(() => { msg.delete(); }, 10000); });
-        return; // give error if no ID was provided
+        return;
     }
 
     let args = message.content.slice(7).trim().split(' ');
@@ -121,7 +122,7 @@ async function accept(message, client, Discord, userData) {
 
     const acceptedEmbed = new Discord.MessageEmbed()
     .setTitle('<:i_accepted:700766526713888849> Suggestion content:')
-    .setColor(0x00ffff) // light blue
+    .setColor(0xaafb1a) // light blue
     .setDescription(suggestion)
     .addField('Gold earned <:stat_gold:401414686651711498>', goldEarnedMsg, true)
     .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/joypixels/291/check-mark-button_2705.png')
@@ -137,6 +138,12 @@ async function accept(message, client, Discord, userData) {
 
 async function reject(message, client, Discord) {
     message.delete(); // always delete the accept/reject command
+
+    if (message.content.length > 1000) {
+        message.reply('Please use 1000 characters at most.')
+            .then(msg => { setTimeout(() => { msg.delete(); }, 10000); });
+        return;
+    }
 
     let args = message.content.slice(7).trim().split(' ');
     let ID = 0;

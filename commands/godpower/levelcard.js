@@ -1,20 +1,17 @@
 const { logs } = require('../../configurations/config.json');
 const getUsers = require('../features/getUsers');
 
-async function displayLevel(message, userData, Discord, client) {
+async function displayLevel(message, msgContent, userData, Discord, client) {
 
     let user;
-    if (message.content.length > 7) {
-        const username = message.content.slice(7).trim();
-        user = getUsers.One(username, client);
+    if (msgContent.length) {
+        user = getUsers.One(msgContent, client);
         if (!user) {
             return message.reply('Mention a valid user or use a valid username/ID!');
         }
     } else {
         user = message.author;
     }
-
-    console.log(user);
 
     let rank = '';
     let requestedUser = user.tag;

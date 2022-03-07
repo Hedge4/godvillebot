@@ -24,7 +24,7 @@ function getDelay(targetHour, targetMinute) {
     const delay = then.valueOf() - now.valueOf();
     const delayHours = Math.floor(delay / 1000 / 3600);
     const delayMins = Math.floor((delay % (1000 * 3600)) / (60 * 1000));
-    const delaySecs = Math.floor((delay % (1000 * 3600 * 60)) / (1000));
+    const delaySecs = Math.floor((delay % (1000 * 60)) / (1000));
     return { delay: delay, goalDate: then, hoursFromNow: delayHours, minutesFromNow: delayMins, secondsFromNow: delaySecs };
 }
 
