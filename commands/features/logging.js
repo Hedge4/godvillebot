@@ -1,23 +1,31 @@
-//const { logs } = require('../../configurations/config.json');
-// let started = false; // Possible: have check whether startup was done/restart bot if not. Error detection? Link to index.js?
+// const { logs } = require('../../configurations/config.json');
+// const getters = require('../../index.js');
+
 let logsChannel;
+let started = false;
+
+// make a queue of messages to log, clear this queue by 1 message every second and stop recursing if queue is empty
+// when clearing queue, try to combine 5 messages at most into 1 with newlines (<500 characters total)
+// if message in queue has more than 2000 chars, split it up in a smart way (find newline between 1900 and 2000? Then space?)
+
+// todo: if started == false for 5 minutes, try to reconfigure with client and logs (and login???)
+// if that fails as well, try again after 5 more minutes, et cetera
+// maybe make method for this in index.js instead and just activate that instead - other source would be failed startup
 
 function startup(input) {
-    logsChannel = input;
-}
-
-function logBoth(text) {
-    console.log(text);
-    if (logsChannel) {
-        logsChannel.send(text)
-        .catch(e => console.log('ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!! ' + e));
-    } else {
-        // restart or something?
+    if (input) {
+        logsChannel = input;
+        started = true;
     }
 }
 
+function logBoth(text) {
+    logConsole(text);
+    logChannel(text);
+}
+
 function logChannel(text) {
-    if (logsChannel) {
+    if (started) {
         logsChannel.send(text)
         .catch(e => console.log('ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!! ' + e));
     } else {

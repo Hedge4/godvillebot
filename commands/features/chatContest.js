@@ -49,7 +49,11 @@ async function getLastMessage(client) {
     const amount = 20; // amount of messages to fetch (Discord gets mad at anything >100)
     const channel = client.channels.cache.get(chatContestChannel);
     const messages = await channel.messages.fetch({ limit: amount })
-        .catch(console.error);
+        .catch(e => {
+            console.error(e);
+            logger.toChannel(e);
+            return null;
+        });
 
     let foundMessage; // we use this to make sure we get the last message by a unique user, but the first one for that user
     // loop through messages until one not sent by a bot is found
