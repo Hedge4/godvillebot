@@ -38,8 +38,8 @@
         [["solvecrossword", ["solve", "crossword"]],
         ["solvehtml", ["solvecrosswordhtml", "crosswordhtml", "html"]],
         ["newspaper", ["forecast", "news"]],
-        ["newsdelay", ["updatedelay"]],
-        ["refreshnews", ["renewnews", "update"]],
+        ["newsdelay", ["updatedelay", "newsupdate"]],
+        ["refreshnews", ["renewnews", "update", "updatenews"]],
         ["refreshomnibus", ["renewomnibus", "omnibus", "updateomnibus"]],
         ["omnibusbackup", ["createbackup", "backup", "omnibackup"]]]
 }

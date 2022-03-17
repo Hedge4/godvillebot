@@ -19,7 +19,7 @@ const commands_list = [
     [`${prefix}solvehtml`, 'Download the newspaper page (**while logged in, otherwise the crossword is hidden**) and add the file to the message with this command. The bot will automatically extract and solve the crossword.'],
     [`${prefix}newspaper`, 'Sends today\'s Godville Time\'s summary. Please note the bot updates five minutes after the (normal) daily reset.'],
     [`${prefix}newsdelay`, 'Shows the time remaining before GodBot automatically updates its Godville Time\'s summary.'],
-    [`${prefix}refreshwomnibus`, 'Downloads a newer version of the Omnibus List (the bot uses this to solve the crossword). The bot automatically updates its own Omnibus List reference every day, so only use this in case this update failed or if there was a recent addition to the Omnibus List.'],
+    [`${prefix}refreshomnibus`, 'Downloads a newer version of the Omnibus List (the bot uses this to solve the crossword). The bot automatically updates its own Omnibus List reference every day, so only use this in case this update failed or if there was a recent addition to the Omnibus List.'],
     ['?rank newsping', 'Toggles whether you\'ll be mentioned to complete the bingo and crossword an hour before the newspaper updates.'],
     [`${prefix}refreshnews`, '(Admin only.) Forcefully updates the bot\'s summary of today\'s Godville Times. Use only when the bot fails to update, or if the newspaper refreshed later than usual.'],
     [`${prefix}omnibusbackup`, '(Owner only.) Creates a new local backup of the Omnibus List. Do not use while the bot is being hosted, as the backup will be reset after at most a day.']]],

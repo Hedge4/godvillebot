@@ -11,13 +11,13 @@ function redirect(cmd, content, message) {
             return solveCrossword.solveHtml(message);
         case 'newspaper':
             return newspaper.send(message);
-        case 'newspaperupdate':
+        case 'newsdelay':
             return newsUpdates.askUpdate(message);
-        case 'renewnewspaper':
+        case 'refreshnews':
             return newspaper.renewRequest(message);
-        case 'renewomnibus':
+        case 'refreshomnibus':
             return omnibus.refresh(message);
-        case 'createomnibusbackup':
+        case 'omnibusbackup':
             return omnibus.createBackup(message);
         default:
             return message.reply(`The '${cmd}' command does not seem to be correctly set up.`);
