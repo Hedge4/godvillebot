@@ -22,6 +22,25 @@ function getOneUser(username, client) {
     return user;
 }
 
-// add method to find multiple users later??
+function getMoreUsers(usernames, client) {
+    const foundUsers = [];
+    const notFoundUsers = [];
+
+    usernames.forEach(username => {
+        const user = getOneUser(username, client);
+
+        if (user) {
+            foundUsers.push(user);
+        } else {
+            notFoundUsers.push(user);
+        }
+    });
+
+    return {
+        found: foundUsers,
+        notFound: notFoundUsers,
+    };
+}
 
 exports.One = getOneUser;
+exports.Multiple = getMoreUsers;

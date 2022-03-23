@@ -20,7 +20,7 @@ const client = new Discord.Client({
 // certain variables used in this file
 const { version, updateMsg1, updateMsg2, updateMsg3 } = require('./package.json');
 const { logs, botServer, prefix, token, serversServed, owner, noXpChannels, botvilleChannel, commandChannels, newspaperChannel,
-    adminRole, ignoredChannels, botServerChannels, sendViaBotChannel } = require('./configurations/config.json');
+    adminRole, ignoredChannels, botServerChannels, sendViaBotChannel, godvilleServer } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator, crossword } = require('./configurations/commands.json');
 
 // firebase database setup and login
@@ -174,8 +174,8 @@ client.on('messageCreate', (message) => {
             }
         }
 
-        // give a user xp/godpower if they're talking in the right channel
-        if (!noXpChannels.includes(message.channel.id)) {
+        // give a user xp/godpower if they're talking in the right channel in the right server
+        if (!noXpChannels.includes(message.channel.id) && message.guild.id == godvilleServer) {
             giveXP(message, userData, Discord, client);
         }
 
