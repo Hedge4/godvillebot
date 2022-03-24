@@ -20,13 +20,13 @@
         ["code", ["github"]],
         ["ping", ["pong", "latency"]],
         ["react", []],
-        ["makevote", ["mv", "vote", "mp", "makepoll", "poll"]]],
+        ["makevote", ["mv", "vote", "mp", "makepoll", "poll"]],
+        ["no", ["nope"]]],
 
     "fun":
         [["minesweeper", []],
         ["bubblewrap", []],
-        ["randomnick", ["nickname", "changenick", "changenickname"]],
-    ["no", ["nope"]]],
+        ["randomnick", ["nickname", "changenick", "changenickname"]]],
 
     "moderator":
         [["break", []],
