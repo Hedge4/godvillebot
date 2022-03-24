@@ -2,8 +2,11 @@
 const { owner } = require('../../configurations/config.json');
 const main = require('../../index');
 const logger = require('../features/logging');
+
+const Discord = require('discord.js');
 const https = require('https');
 const fs = require('fs');
+
 let backupLastUpdated;
 let lastUpdated;
 let backup = [];
@@ -117,7 +120,6 @@ async function refreshOmnibus(message) {
     omnibus = Array.from(list);
 
     // create nice embed for the update message, which we can add to
-    const Discord = main.getDiscord();
     const client = main.getClient();
     const updateEmbed = new Discord.MessageEmbed()
     .setTitle(`⏫ Successfully refreshed online Omnibus list with ${list.length} total entries!`)
@@ -255,7 +257,6 @@ async function createBackup(message) {
     }
 
     // create nice embed for the backup update message
-    const Discord = main.getDiscord();
     const client = main.getClient();
     const backupUpdateEmbed = new Discord.MessageEmbed()
     .setTitle(result.Title)

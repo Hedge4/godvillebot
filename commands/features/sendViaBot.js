@@ -1,4 +1,5 @@
 //const { prefix } = require('../../configurations/config.json');
+const Discord = require('discord.js');
 const getters = require('../../index');
 
 function main(message) {
@@ -134,7 +135,6 @@ function constructEmbeds(rawEmbeds) {
                 embedParts[i] = { type : type, body : body };
             }
 
-            const Discord = getters.getDiscord();
             const client = getters.getClient();
             const embed = new Discord.MessageEmbed()
             .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });

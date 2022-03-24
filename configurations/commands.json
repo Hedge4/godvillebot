@@ -25,7 +25,8 @@
     "fun":
         [["minesweeper", []],
         ["bubblewrap", []],
-        ["randomnick", ["nickname", "changenick", "changenickname"]]],
+        ["randomnick", ["nickname", "changenick", "changenickname"]],
+    ["no", ["nope"]]],
 
     "moderator":
         [["break", []],

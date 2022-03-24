@@ -1,4 +1,5 @@
 const { adminRole, prefix, owner } = require('../../configurations/config.json');
+const Discord = require('discord.js');
 const main = require('../../index');
 const logger = require('../features/logging');
 const https = require('https');
@@ -22,7 +23,6 @@ function sendNewspaperRequest(message) {
 function sendNewspaper(channel, renewed = false) {
     const embedsList = [];
     const missingEmbedsList = [];
-    const Discord = main.getDiscord();
 
     // create introduction and add it to sendList
     const introductionEmbed = new Discord.MessageEmbed()

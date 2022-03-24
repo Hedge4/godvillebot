@@ -1,4 +1,5 @@
 const { prefix } = require('../../configurations/config.json');
+const Discord = require('discord.js');
 const main = require('../../index');
 const logger = require('../features/logging');
 const omnibusManager = require('./omnibusManager');
@@ -156,7 +157,6 @@ async function solveHtmlRequest(message) {
     wordsObject.Vertical.forEach(word => { solvedVerticals.push(solveWord(word, omnibus.omnibusEntries)); });
 
 
-    const Discord = main.getDiscord();
     const client = main.getClient();
 
     const crosswordEmbed = new Discord.MessageEmbed()

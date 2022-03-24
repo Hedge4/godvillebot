@@ -1,5 +1,5 @@
 # GodBot
-Version: 5.0.6
+Version: 5.1.0
 
 I should probably include some sort of description here. Meh, I'll add it later (read: probably never).
 
@@ -9,7 +9,7 @@ Version 5 includes a full rewrite off all files related to the Godville Times ne
 Additionally, all files were updated to work with discord.js V13 instead of V12, and methods and prompts were updated accordingly. I also revisited how the bot calculates delays and created a `timers.js` feature file, building up to a tasks scheduling system that will be introduced next. `index.js` now has getter methods for often referenced objects like `Discord` and `client`, and the bot owner can send messages/embeds to specific channels through the bot. Lastly, the bot can now be used to send a message including files and embeds to a specific channel or user.
 
 ### What has been added since?
-Nothing!
+* 5.1 Added >no, which takes a mentioned user's profile picture, greyscales it, and overlays a red 'forbidden' sign.
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.

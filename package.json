@@ -1,9 +1,9 @@
 {
   "name": "godbot",
-  "version": "5.0.6",
-  "updateMsg1": "5.0 Fully rewrote Python crosswordgod functions into JavaScript (go to <#431305701021974539> now to make my effort worth it), and updated to discord.js V13.",
-  "updateMsg2": "4.12 Added the >makevote command, and I can now choose singular/plural correctly for some prompts.",
-  "updateMsg3": "4.11 Fixed several chatContest bugs and chatCombos now won't reset anymore when the bot restarts.",
+  "version": "5.1.0",
+  "updateMsg1": "5.1 Added a generic >no command that accepts a mention.",
+  "updateMsg2": "5.0 Fully rewrote Python crosswordgod functions into JavaScript (go to <#431305701021974539> now to make my effort worth it), and updated to discord.js V13.",
+  "updateMsg3": "4.12 Added the >makevote command, and I can now choose singular/plural correctly for some prompts.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",
@@ -19,6 +19,7 @@
   "dependencies": {
     "discord.js": "^13.0.0",
     "find": "~0.3.0",
-    "firebase-admin": "^10.0.2"
+    "firebase-admin": "^10.0.2",
+    "sharp": "^0.30.3"
   }
 }
