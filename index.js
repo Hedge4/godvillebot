@@ -275,6 +275,11 @@ client.on('messageCreate', (message) => {
             }
         }
 
+        // APRIL FOOLS CODE
+        if (message.channel.id === '313398424911347712') {
+            return aprilFools(message);
+        }
+
     // respond when the bot is in a server it shouldn't be in
     } else {
         return message.reply('This bot is not created for this server. Please kick me from this server.');
@@ -302,6 +307,36 @@ client.on('messageDelete', deletedMessage => {
 
     chatContest.deleteMessage(deletedMessage, client);
 });
+
+// APRIL FOOLS CODE
+function aprilFools(message) {
+    let content = message.content;
+    content = content.replace(/\|\|(.+?)\|\|/g, '').trim();
+
+    if (content.length > 0 || (message.attachments.size > 0 && !message.attachments.every(attachment => { return attachment.spoiler; }))) {
+        deleteMessage(message);
+    }
+}
+
+async function deleteMessage(message) {
+    try {
+        const dmChannel = await message.author.createDM(true);
+        await dmChannel.send(`Your message in <#${message.channel.id}> was deleted for vulgar content. Your message was:`);
+        if (message.content.trim().length) {
+            await dmChannel.send(message.content);
+        } else {
+            await dmChannel.send('One or more stinky little attachments. Discord sucks so I\'m not forwarding those.');
+        }
+
+    } catch (error) {
+        console.error(error);
+        await message.reply('your message was deleted for vulgar content.').catch(e => console.error(e));
+    } finally {
+        logger.log(`Deleted a vulgar message by ${message.author.tag} in ${message.channel.name}.`);
+        // always delete the message
+        message.delete().catch(e => console.error(e));
+    }
+}
 
 
 // log in to Discord after any setup is done
