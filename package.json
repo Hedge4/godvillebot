@@ -1,9 +1,9 @@
 {
   "name": "godbot",
-  "version": "22.4.1",
-  "updateMsg1": "22.4.1 RULEBREAKERS WILL NOT BE TOLERATED.",
-  "updateMsg2": "5.1 Added a generic >no command that accepts a mention.",
-  "updateMsg3": "5.0 Fully rewrote Python crosswordgod functions into JavaScript (go to <#431305701021974539> now to make my effort worth it), and updated to discord.js V13.",
+  "version": "5.1.0",
+  "updateMsg1": "5.1 Added a generic >no command that accepts a mention.",
+  "updateMsg2": "5.0 Fully rewrote Python crosswordgod functions into JavaScript (go to <#431305701021974539> now to make my effort worth it), and updated to discord.js V13.",
+  "updateMsg3": "4.12 Added the >makevote command, and I can now choose singular/plural correctly for some prompts.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",
