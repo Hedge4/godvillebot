@@ -334,7 +334,9 @@ async function deleteMessage(message) {
     } finally {
         logger.log(`Deleted a vulgar message by ${message.author.tag} in ${message.channel.name}.`);
         // always delete the message
-        message.delete().catch(e => console.error(e));
+        setTimeout(() => {
+            message.delete().catch(e => console.error(e));
+        }, 1000);
     }
 }
 
