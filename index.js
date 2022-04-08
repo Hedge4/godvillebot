@@ -3,7 +3,6 @@
 exports.getClient = function() { return client; };
 exports.getGodData = function() { return godData; };
 
-
 // discord connection setup, bot login is at bottom of file
 const Discord = require('discord.js');
 const client = new Discord.Client({
@@ -16,11 +15,46 @@ const client = new Discord.Client({
     ], partials: ['CHANNEL'], // CHANNEL needed to receive DMs
 });
 
+// ==========================================================
+// ========= NORMAL SETUP AFTER GETTERS ARE DEFINED =========
+// ==========================================================
+
 // certain variables used in this file
 const { version, updateMsg1, updateMsg2, updateMsg3 } = require('./package.json');
 const { logs, botServer, prefix, token, serversServed, owner, noXpChannels, botvilleChannel, commandChannels, newspaperChannel,
     adminRole, ignoredChannels, botServerChannels, sendViaBotChannel, godvilleServer } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator, crossword } = require('./configurations/commands.json');
+
+// load any dependencies here
+
+// the different command modules
+const godvilleModule = require('./commands/godville/godville.js');
+const godpowerModule = require('./commands/godpower/godpower.js');
+const funModule = require('./commands/fun/fun.js');
+const usefulModule = require('./commands/useful/useful.js');
+const moderatorModule = require('./commands/moderator/moderator.js');
+const crosswordModule = require('./commands/crosswordgod/crosswordgod.js');
+
+// functions/commands (partly) separate from the main modules
+const logger = require('./commands/features/logging');
+const scheduler = require('./commands/features/scheduler');
+const giveXP = require('./commands/features/givexp');
+const onMention = require('./commands/features/botMentions');
+const messageReactions = require('./commands/features/messageReactions');
+const botDMs = require('./commands/features/botDMs');
+const chatContest = require('./commands/features/chatContest');
+const daily = require('./commands/godpower/daily');
+const suggest = require('./commands/useful/suggest');
+const block = require('./commands/moderator/block.js');
+const help = require('./commands/help');
+const newspaper = require('./commands/crosswordgod/newspaperManager.js');
+const omnibus = require('./commands/crosswordgod/omnibusManager.js');
+const crosswordTimers = require('./commands/crosswordgod/newsUpdates.js');
+const sendViaBot = require('./commands/features/sendViaBot');
+
+// ==========================================================
+// ================ FIREBASE AND SETUP LOGIC ================
+// ==========================================================
 
 // firebase database setup and login
 const admin = require('firebase-admin');
@@ -33,6 +67,7 @@ const userData = db.collection('data').doc('users');
 const godData = db.collection('data').doc('gods');
 const limitedCommandsData = db.collection('data').doc('limited uses');
 const blockedData = db.collection('data').doc('blocked');
+const plannedEvents = db.collection('data').doc('schedule');
 
 // create important based on data in the database
 userData.get()
@@ -49,34 +84,12 @@ blockedData.get().then (doc => {
     global.suggestBlocked = doc.data()['suggest'];
     global.xpBlocked = doc.data()['xp'];
 });
+scheduler.start(plannedEvents);
 
+// =========================================================
+// ============ AFTER CONNECTION TO DISCORD API ============
+// =========================================================
 
-// the different command modules
-const godvilleModule = require('./commands/godville/godville.js');
-const godpowerModule = require('./commands/godpower/godpower.js');
-const funModule = require('./commands/fun/fun.js');
-const usefulModule = require('./commands/useful/useful.js');
-const moderatorModule = require('./commands/moderator/moderator.js');
-const crosswordModule = require('./commands/crosswordgod/crosswordgod.js');
-
-// functions/commands (partly) separate from the main modules
-const logger = require('./commands/features/logging');
-const giveXP = require('./commands/features/givexp');
-const onMention = require('./commands/features/botMentions');
-const messageReactions = require('./commands/features/messageReactions');
-const botDMs = require('./commands/features/botDMs');
-const chatContest = require('./commands/features/chatContest');
-const daily = require('./commands/godpower/daily');
-const suggest = require('./commands/useful/suggest');
-const block = require('./commands/moderator/block.js');
-const help = require('./commands/help');
-const newspaper = require('./commands/crosswordgod/newspaperManager.js');
-const omnibus = require('./commands/crosswordgod/omnibusManager.js');
-const crosswordTimers = require('./commands/crosswordgod/newsUpdates.js');
-const sendViaBot = require('./commands/features/sendViaBot');
-
-
-// setup done as soon as the bot has a connection with the Discord API
 client.on('ready', () => {
     // do some caching and stuff for each guild I guess
     serversServed.forEach(guildID => {
@@ -277,7 +290,7 @@ client.on('messageCreate', (message) => {
 
     // respond when the bot is in a server it shouldn't be in
     } else {
-        return message.reply('This bot is not created for this server. Please kick me from this server.');
+        return message.reply('This bot was not created for this server. Please kick me from this server.');
     }
 
     if (message.guild.id == botServer) {
