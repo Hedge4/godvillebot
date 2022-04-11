@@ -60,7 +60,7 @@ const sendViaBot = require('./commands/features/sendViaBot');
 const admin = require('firebase-admin');
 const serviceAccount = require('./configurations/serviceAccountKey.json');
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert(serviceAccount),
 });
 const db = admin.firestore();
 const userData = db.collection('data').doc('users');
@@ -71,32 +71,34 @@ const plannedEvents = db.collection('data').doc('schedule');
 
 // create important based on data in the database
 userData.get()
-    .then (doc => {
+    .then(doc => {
         global.totalGodpower = doc.data()[1];
     });
 limitedCommandsData.get()
-    .then (doc => {
+    .then(doc => {
         global.usedDaily = doc.data()['daily'];
     });
-blockedData.get().then (doc => {
+blockedData.get().then(doc => {
     global.imageBlocked = doc.data()['image'];
     global.botBlocked = doc.data()['bot'];
     global.suggestBlocked = doc.data()['suggest'];
     global.xpBlocked = doc.data()['xp'];
 });
-scheduler.start(plannedEvents);
 
 // =========================================================
 // ============ AFTER CONNECTION TO DISCORD API ============
 // =========================================================
 
 client.on('ready', () => {
-    // do some caching and stuff for each guild I guess
+    // do some caching and stuff for each guild in advance I guess
     serversServed.forEach(guildID => {
         const guild = client.guilds.cache.get(guildID);
         guild.me.setNickname('GoddessBot');
         guild.members.fetch();
     });
+
+    // only if our client is ready we can do these stuffs
+    scheduler.start(plannedEvents);
 
     // send log messages that bot is online I guess
     const currentDate = new Date();
@@ -111,7 +113,7 @@ client.on('ready', () => {
         \nNewly added:\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}\`\`\``);
     client.user.setActivity(`${prefix}help | By Wawajabba`);
 
-    // idk why I have this if this is undefined this isn't even a fix lol
+    // idk why I have this if this is undefined this isn't even a fix it just makes it worse lol
     if (!totalGodpower) {
         totalGodpower = 0;
     }
@@ -162,14 +164,14 @@ client.on('ready', () => {
 // done whenever the bot detects a new message in any channel it has access to
 client.on('messageCreate', (message) => {
     // ignore any messages from bots or people blocked from interacting with the bot
-    if (message.author.bot) {return;}
-    if (botBlocked.includes(message.author.id)) {return;}
+    if (message.author.bot) { return; }
+    if (botBlocked.includes(message.author.id)) { return; }
 
     // handle DMs
     if (message.channel.type === 'DM') {
         return botDMs.handleDMs(message, client);
 
-    // handle messages in servers the bot is available in
+        // handle messages in servers the bot is available in
     } else if (serversServed.includes(message.guild.id)) {
         // possibly later add detection for image links that automatically turn into an embed
         if (imageBlocked.includes(message.author.id) && message.attachments.size > 0 && block.hasImage(message.attachments)) {
@@ -177,7 +179,7 @@ client.on('messageCreate', (message) => {
         }
 
         // Ignore any channels in which the bot should not react to anything
-        if (ignoredChannels.includes(message.channel.id)) {return;}
+        if (ignoredChannels.includes(message.channel.id)) { return; }
 
         // people without Admin or Deities role need to activate their access to the server first
         if (message.content.toLowerCase().startsWith('?rank')) {
@@ -288,7 +290,7 @@ client.on('messageCreate', (message) => {
             }
         }
 
-    // respond when the bot is in a server it shouldn't be in
+        // respond when the bot is in a server it shouldn't be in
     } else {
         return message.reply('This bot was not created for this server. Please kick me from this server.');
     }
@@ -311,7 +313,7 @@ client.on('messageCreate', (message) => {
 });
 
 client.on('messageDelete', deletedMessage => {
-    if (deletedMessage.author.bot) {return;} // when removing this add it to chatContest.deleteMessage()
+    if (deletedMessage.author.bot) { return; } // when removing this add it to chatContest.deleteMessage()
 
     chatContest.deleteMessage(deletedMessage, client);
 });

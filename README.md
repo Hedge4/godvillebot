@@ -10,6 +10,7 @@ Additionally, all files were updated to work with discord.js V13 instead of V12,
 
 ### What has been added since?
 * 5.1 Added >no, which takes a mentioned user's profile picture, greyscales it, and overlays a red 'forbidden' sign.
+* 5.2 Added >remindme, and a scheduler file + document in the database to keep track of scheduled events.
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.

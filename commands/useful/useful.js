@@ -5,6 +5,7 @@ const react = require('./react.js');
 const makevote = require('./makevote.js');
 const suggest = require('./suggest');
 const noCommand = require('./noCommand.js');
+const reminder = require('./reminder.js');
 
 function redirect(cmd, content, message, Discord, client) {
     switch (cmd) {
@@ -22,6 +23,8 @@ function redirect(cmd, content, message, Discord, client) {
             return makevote(message, content);
         case 'no':
             return noCommand(message);
+        case 'remindme':
+            return reminder.create(message, content);
         default:
             return message.reply(`The '${cmd}' command does not seem to be correctly set up.`);
     }

@@ -1,5 +1,7 @@
 const FieldValue = require('firebase-admin').firestore.FieldValue;
-const logger = require('./commands/features/logging');
+const logger = require('./logging');
+
+const reminder = require('../useful/reminder');
 
 const allowedTypes = ['reminder'];
 let eventsDoc;
@@ -9,13 +11,30 @@ let nextId = 0;
 function startup(dbDoc) {
     eventsDoc = dbDoc;
     dbDoc.get().then(doc => {
-        Object.keys(doc).forEach(key => {
-            const event = doc[key];
+        const data = doc.data();
+        if (!data) {
+            console.log('No reminder entries found in database!');
+            return;
+        }
+        let count = 0;
+        let highestId = 0;
+
+        Object.keys(data).forEach(key => {
+            if (key === 'nextId') return; // only this property doesn't store an event so we skiiiip
+            key = parseInt(key);
+            if (isNaN(key)) return; // ewww that's a dirty key
+            highestId = key > highestId ? key : highestId;
+
+            const event = data[key];
             event.id = key; // for deletion from the database later
             const timestamp = event.timestamp;
             delete event.timestamp; // this is only necessary in the database
             scheduleEvent(event, timestamp);
+            count++;
         });
+
+        nextId = data['nextId'] || highestId;
+        logger.log(`SCHEDULER: Scheduled ${count} events from the database. Next event id is ${nextId}.`);
     });
 }
 
@@ -24,6 +43,7 @@ function createEvent(event) {
     return new Promise((resolve, reject) => {
         if (!eventsDoc) reject('Scheduler.js wasn\'t initialised properly!'); // deny event creation
         if (!event || !event.type || !event.timestamp) reject('The event parameter, type or timestamp wasn\'t given! This is a code error.');
+        if (typeof event.id !== 'undefined') reject('ID property was already specified in the event object, but this property would be overwritten. This is a code error.');
 
         if (!allowedTypes.includes(event.type)) reject(`${event.type} is not a valid event type! This is a code error.`);
 
@@ -64,9 +84,9 @@ function executeEvent(event) {
         [id]: FieldValue.delete(),
     });
 
-    switch(type) {
+    switch (type) {
         case 'reminder':
-            return 0;
+            return reminder.send(event);
         default:
             logger.log(`SCHEDULER ERROR: Failed to execute event ${id} of invalid type ${type}.`);
     }
