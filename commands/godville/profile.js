@@ -235,7 +235,8 @@ async function getGodData(URL, message) {
 
     if (guild_res) {
         godData.guildName = decodeURI(guild_res[2].trim()).replace(/&#39;/g, '\'');
-        godData.guildUrl = encodeURI(guild_res[1]);
+        // if the url contains spaces we need to encode it (if it doesn't we might accidentally double encode if we do)
+        godData.guildUrl = guild_res[1].includes(' ') ? encodeURI(guild_res[1]) : guild_res[1];
     } else {
         godData.guildName = 'No guild.';
     }
@@ -257,7 +258,8 @@ async function getGodData(URL, message) {
     const pet_res = rx_pet.exec(html);
 
     if (pet_res) {
-        godData.petUrl = encodeURI(pet_res[1]);
+        // if the url contains spaces we need to encode it (if it doesn't we might accidentally double encode if we do)
+        godData.petUrl = pet_res[1].includes(' ') ? encodeURI(pet_res[1]) : pet_res[1];
         godData.petType = decodeURI(pet_res[2]).trim().replace(/&#39;/g, '\'');
         godData.petName = decodeURI(pet_res[3]).trim().replace(/&#39;/g, '\'');
     }
@@ -331,7 +333,7 @@ async function getGodData(URL, message) {
     });
 
     let progressString = progressActive.join(', ');
-    progressString = progressString[0].toUpperCase() + progressString.slice(1);
+    progressString = `*${progressString[0].toUpperCase()}${progressString.slice(1)}*`;
     achievements += progressString; // there already is a newline before this added string
     godData.achievements = achievements;
 

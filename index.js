@@ -161,7 +161,10 @@ client.on('ready', () => {
 });
 
 
-// done whenever the bot detects a new message in any channel it has access to
+// ==========================================================
+// ========== FOR EACH NEW MESSAGE SEEN BY THE BOT ==========
+// ==========================================================
+
 client.on('messageCreate', (message) => {
     // ignore any messages from bots or people blocked from interacting with the bot
     if (message.author.bot) { return; }
@@ -265,11 +268,11 @@ client.on('messageCreate', (message) => {
             // redirect useful module commands
             for (let i = 0; i < useful.length; i++) {
                 if (cmd == useful[i][0]) {
-                    return usefulModule(cmd, content, message, Discord, client);
+                    return usefulModule(cmd, content, message, client);
                 }
                 for (let j = 0; j < useful[i][1].length; j++) {
                     if (cmd == useful[i][1][j]) {
-                        return usefulModule(useful[i][0], content, message, Discord, client);
+                        return usefulModule(useful[i][0], content, message, client);
                     }
                 }
             }

@@ -107,7 +107,7 @@ const commands_list = [
     ['react',
         `${prefix}react <message ID> <reaction>`,
         'Add letter emojis as a reaction to a message.',
-        'I am too tired to explain this right now so just try it, lol. A reaction can only consist of characters from a-z, 0-9, and some special characters. You get the ID of the message you want to react to by right clicking on it and copying the ID (developer mode) or copying the link and only using the last number of the url.'],
+        'I am too tired to explain this right now, so just try it, lol. You get the ID of the message you want to react to by right clicking on it and copying the ID (developer mode) or copying the link and only using the last number of the url.'],
     ['makevote',
         `${prefix}makevote <message ID> [number]`,
         'Make a message into a vote. Support multiple choice votes if you specify a number of votes (2 to 10).',

@@ -1,5 +1,5 @@
 # GodBot
-Version: 5.3.0
+Version: 5.4.0
 
 I should probably include some sort of description here. Meh, I'll add it later (read: probably never).
 
@@ -12,6 +12,7 @@ Additionally, all files were updated to work with discord.js V13 instead of V12,
 * 5.1 Added >no, which takes a mentioned user's profile picture, greyscales it, and overlays a red 'forbidden' sign.
 * 5.2 Added >remindme, and a scheduler file + document in the database to keep track of scheduled events.
 * 5.3 Added boss, shop, bookmaker medal and bricks/logs/pairs/words/savings progress to >profile and >gvprofile cards!
+* 5.4 The bot can now also react with emojis for the >react command because of smarter command parsing.
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.

@@ -1,8 +1,8 @@
-const { logs } = require('../../configurations/config.json');
+const logger = require('../features/logging');
 let reacting = false;
 const maxReactions = 20;
 
-async function main(message, content, client) {
+async function main(message, content) {
     if (reacting) {
         return message.reply('I\'m already reacting to a different message! Try again in a few seconds.');
     }
@@ -19,19 +19,32 @@ async function main(message, content, client) {
             + '\n\nTo get the ID of a message, you need to enable Developer Mode in the \'Behavior\' tab of your User Settings.'
             + ' Once you\'ve done this, right click/hold the message and a \'Copy ID\' option will appear.');
     }
-    const reaction = content.toLowerCase().substring(splitContent).trim();
+    // .trim() might be unnecessary here with the extra regex
+    const reaction = content.toLowerCase().substring(splitContent).trim().replace(/\s/g, '');
+
+    const regexEmoji = /\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu;
+    const emojiResults = {};
+    // we don't need more than 20 unique emojis
+    while ([...new Set(Object.values(emojiResults))].length < 20) {
+        const res = regexEmoji.exec(reaction);
+        if (!res) break;
+        // obj.index = emoji
+        emojiResults[res.index] = res[0];
+    }
 
     const reactionList = [];
-    const reactionArray = reaction.replace(/\s/g, '').split('');
-    for (let i = 0; i < reactionArray.length; i++) {
-        const e = reactionArray[i];
+    for (let i = 0; i < reaction.length; i++) {
+        const e = reaction[i];
 
-        if (!(e in alphabet)) {
-            return message.reply(`'${e}' isn't in my dictionary, so I can't react with that emoji. Please use only letters.`);
+        if (e in alphabet) {
+            if (reactionList.includes(alphabet[e])) continue; // already in list? wheeeeee we skip
+            reactionList.push(alphabet[e]);
+        } else {
+            // if not in alphabet, we check if our emoji thingy found a match
+            if (!(i in emojiResults)) continue; // no match? No care
+            if (reactionList.includes(emojiResults[i])) continue; // already in list? wheeeeee we skip
+            reactionList.push(emojiResults[i]);
         }
-
-        if (reactionList.includes(alphabet[e])) continue;
-        reactionList.push(alphabet[e]);
 
         if (reactionList.length >= 20) break;
     }
@@ -47,16 +60,15 @@ async function main(message, content, client) {
         return message.reply('This message already has the maximum amount of reactions.');
     }
 
+    // remove any overflow of reactions
     if (reactionList.length > maxReactions - reactionCount) {
-        return message.reply(`Your reaction can be ${maxReactions - reactionCount} different characters at most - keep in mind duplicate letters will be removed!`);
+        reactionList.splice(maxReactions - reactionCount);
     }
 
-    const logsChannel = client.channels.cache.get(logs);
-    logsChannel.send(`${message.author.tag} reacted '${reaction}' to a message from ${targetMsg.author.tag} in ${message.channel.name}.`);
-    console.log(`${message.author.tag} reacted '${reaction}' to a message from ${targetMsg.author.tag} in ${message.channel.name}.`);
+    logger.log(`${message.author.tag} reacted '${reaction}' to a message from ${targetMsg.author.tag} in ${message.channel.name}. ReactionList (${reactionList.length}): ${reactionList.join()}`);
     reacting = true;
     setTimeout(() => {
-        message.delete();
+        message.delete().catch(() => { /*I don't careeeeeee*/ });
     }, 100);
     react(targetMsg, reactionList);
 }
@@ -64,6 +76,8 @@ async function main(message, content, client) {
 function react(message, reactionList) {
     message.react(reactionList.shift())
         .catch(() => { /*Do nothing, this error is common and it clogs up the console. Me is lazy*/ });
+
+    // we done!
     if (reactionList.length < 1) {
         reacting = false;
         return;

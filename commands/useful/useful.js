@@ -7,7 +7,7 @@ const suggest = require('./suggest');
 const noCommand = require('./noCommand.js');
 const reminder = require('./reminder.js');
 
-function redirect(cmd, content, message, Discord, client) {
+function redirect(cmd, content, message, client) {
     switch (cmd) {
         case 'suggest':
             return suggest.suggestion(client, message, content);
@@ -18,7 +18,7 @@ function redirect(cmd, content, message, Discord, client) {
         case 'ping':
             return ping(message, client);
         case 'react':
-            return react(message, content, client);
+            return react(message, content);
         case 'makevote':
             return makevote(message, content);
         case 'no':
