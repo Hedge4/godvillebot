@@ -1,6 +1,10 @@
+const getters = require('../../index');
+
 // returns a user object (or undefined)
 // username should be selected beforehand, so no additional arguments get in
-function getOneUser(username, client) {
+function getOneUser(username, client = undefined) {
+    if (!client) client = getters.getClient();
+
     username = username.trim();
     let user;
 
@@ -22,7 +26,9 @@ function getOneUser(username, client) {
     return user;
 }
 
-function getMoreUsers(usernames, client) {
+function getMoreUsers(usernames, client = undefined) {
+    if (!client) client = getters.getClient();
+
     const foundUsers = [];
     const notFoundUsers = [];
 

@@ -1,8 +1,8 @@
 {
   "name": "godbot",
-  "version": "5.2.2",
-  "updateMsg1": "5.2 Added the long awaited >remindme command!",
-  "updateMsg2": "5.1 Added a generic >no command that accepts a mention.",
+  "version": "5.3.0",
+  "updateMsg1": "5.3 Fixed >profile and >gvprofile parsing code, and added boss, shop, bookmaker medal and bricks/logs/pairs/words/savings progress!",
+  "updateMsg2": "5.2 Added the long awaited >remindme command!",
   "updateMsg3": "5.0 Fully rewrote Python crosswordgod functions into JavaScript (go to <#431305701021974539> now to make my effort worth it), and updated to discord.js V13.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",

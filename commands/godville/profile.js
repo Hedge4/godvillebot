@@ -1,13 +1,18 @@
 const https = require('https');
-const { prefix, logs, botvilleChannel } = require('../../configurations/config.json');
-const getUsers = require('../features/getUsers');
+const { MessageEmbed } = require('discord.js');
 
-async function showProfile(message, username, client, Discord, godData) {
+const { prefix, botvilleChannel } = require('../../configurations/config.json');
+const logger = require('../features/logging');
+const getUsers = require('../features/getUsers');
+const getters = require('../../index');
+
+
+async function showProfile(message, username, godData) {
 
     let self;
     let user;
     if (username.length > 0) {
-        user = getUsers.One(username, client);
+        user = getUsers.One(username);
         if (!user) {
             return message.reply('Mention a valid user or use a valid username/ID!');
         }
@@ -15,7 +20,6 @@ async function showProfile(message, username, client, Discord, godData) {
         user = message.author;
         self = true;
     }
-
 
     let author = user.tag;
     const nickname = message.guild.members.cache.get(user) ? message.guild.members.cache.get(user).displayName : null;
@@ -32,61 +36,22 @@ async function showProfile(message, username, client, Discord, godData) {
     const godURL = godDoc.data()[user.id];
     let god = godURL.slice(30);
     god = decodeURI(god);
-    const logsChannel = client.channels.cache.get(logs);
-    console.log(`${message.author.tag} requested the profile page for ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
-    logsChannel.send(`${message.author.tag} requested the profile page for ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
+    logger.log(`${message.author.tag} requested the profile page for ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
 
     let godvilleData = null;
     try {
-        godvilleData = await getGodData(godURL, message, client);
+        godvilleData = await getGodData(godURL, message);
     } catch (err) {
-        console.log(`Error while getting god data for ${godURL}! Error: \n` + err);
-        logsChannel.send(`Error while getting god data for ${godURL}! Error: \n` + err);
+        logger.log(`Error while getting god data for ${godURL}! Error: \n` + err);
         godvilleData = null;
     }
 
-    if (!godvilleData) {
-        const godEmbed = new Discord.MessageEmbed()
-            .setTitle(god)
-            .setURL(godURL)
-            .setDescription('Click the god(dess)\'s username to open their Godville page.')
-            .addField('ERROR', 'Extra data such as their (gr)avatar and level could not be found for this god; either the bot can\'t acces this page or it was linked incorrectly. In case of the former, the link above will still work.')
-            .setColor('006600')
-            .setFooter({ text: author, iconURL: user.displayAvatarURL() });
-        return message.channel.send({ embeds: [godEmbed] });
-    }
-
-    if (!godvilleData[6]) {
-        const godEmbed = new Discord.MessageEmbed()
-            .setTitle(`${godvilleData[4]} ${god}`)
-            .setURL(godURL)
-            .setThumbnail(godvilleData[1])
-            .setDescription('Coming soon: Badges!')
-            .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}\n${godvilleData[11]} old`, true)
-            .addField('Motto', godvilleData[8], true)
-            .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
-            .addField('Medals', godvilleData[5], false)
-            .setColor('006600')
-            .setFooter({ text: author, iconURL: user.displayAvatarURL() });
-        return message.channel.send({ embeds: [godEmbed] });
-    } else {
-        const godEmbed = new Discord.MessageEmbed()
-            .setTitle(`${godvilleData[4]} ${god}`)
-            .setURL(godURL)
-            .setThumbnail(godvilleData[1])
-            .setDescription('Coming soon: Badges!')
-            .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}\n${godvilleData[11]} old`, true)
-            .addField('Motto', godvilleData[8], true)
-            .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
-            .addField('Pet', `${godvilleData[6]}\n${godvilleData[7]}`, true)
-            .addField('Medals', godvilleData[5], false)
-            .setColor('006600')
-            .setFooter({ text: author, iconURL: user.displayAvatarURL() });
-        return message.channel.send({ embeds: [godEmbed] });
-    }
+    const godEmbed = generateEmbed(god, godURL, godvilleData, { text: author, iconURL: user.displayAvatarURL() });
+    return message.channel.send({ embeds: [godEmbed] });
 }
 
-async function showGodvilleProfile(message, godURL, client, Discord) {
+
+async function showGodvilleProfile(message, godURL) {
 
     godURL = godURL.replace(/%20/g, ' ');
     if (!godURL.startsWith('https://godvillegame.com/gods/')) {
@@ -105,56 +70,66 @@ async function showGodvilleProfile(message, godURL, client, Discord) {
     let god = godURL.slice(30);
     godURL = godURL.replace(/ /g, '%20');
     god = decodeURI(god);
-    const logsChannel = client.channels.cache.get(logs);
-    console.log(`${message.author.tag} requested the profile page for URL ${godURL} in channel ${message.channel.name}.`);
-    logsChannel.send(`${message.author.tag} requested the profile page for URL ${godURL} in channel ${message.channel.name}.`);
+    logger.log(`${message.author.tag} requested the profile page for URL ${godURL} in channel ${message.channel.name}.`);
 
     let godvilleData = null;
     try {
-        godvilleData = await getGodData(godURL, message, client);
+        godvilleData = await getGodData(godURL, message);
     } catch (err) {
-        console.log(`Error while getting god data for ${godURL}! Error: \n` + err);
-        logsChannel.send(`Error while getting god data for ${godURL}! Error: \n` + err);
+        logger.log(`Error while getting god data for ${godURL}! Error: \n` + err);
         godvilleData = null;
     }
 
+    const godEmbed = generateEmbed(god, godURL, godvilleData);
+    return message.channel.send({ embeds: [godEmbed] });
+}
+
+
+function generateEmbed(god, godURL, godvilleData, footer = undefined) {
+    if (!footer) {
+        const client = getters.getClient();
+        footer = { text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() };
+    }
+
     if (!godvilleData) {
-        const godEmbed = new Discord.MessageEmbed()
+        const godEmbed = new MessageEmbed()
             .setTitle(god)
             .setURL(godURL)
             .setDescription('Click the god(dess)\'s username to open their Godville page.')
-            .addField('ERROR', 'I couldn\'t found any data for this god(dess). Either the bot can\'t acces this page or it was linked incorrectly. In case of the former, the link above will still work.')
-            .setColor('006600');
-        return message.channel.send({ embeds: [godEmbed] });
+            .addField('ERROR', 'I couldn\'t found any data for this god(dess). Either my parsing code is outdated, the bot can\'t acces this page, or it was linked incorrectly. Click the blue link to check if the latter is the cause of this problem.')
+            .setColor('006600')
+            .setFooter(footer);
+        return godEmbed;
     }
 
-    if (!godvilleData[6]) {
-        const godEmbed = new Discord.MessageEmbed()
-            .setTitle(`${godvilleData[4]} ${god}`)
-            .setURL(godURL)
-            .setThumbnail(godvilleData[1])
-            .setDescription('Coming soon: Badges!')
-            .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}\n${godvilleData[11]} old`, true)
-            .addField('Motto', godvilleData[8], true)
-            .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
-            .addField('Medals', godvilleData[5], false)
-            .setColor('006600');
-        return message.channel.send({ embeds: [godEmbed] });
-    } else {
-        const godEmbed = new Discord.MessageEmbed()
-            .setTitle(`${godvilleData[4]} ${god}`)
-            .setURL(godURL)
-            .setThumbnail(godvilleData[1])
-            .setDescription('Coming soon: Badges!')
-            .addField(`${godvilleData[0]}`, `${godvilleData[2]}, level ${godvilleData[3]}\n${godvilleData[11]} old`, true)
-            .addField('Motto', godvilleData[8], true)
-            .addField('Guild', `[${godvilleData[9]}](${godvilleData[10]})`, true)
-            .addField('Pet', `${godvilleData[6]}\n${godvilleData[7]}`, true)
-            .addField('Medals', godvilleData[5], false)
-            .setColor('006600');
-        return message.channel.send({ embeds: [godEmbed] });
+    // we return so there's no need for an else statement
+
+    const godEmbed = new MessageEmbed()
+        .setTitle(`${godvilleData.godGender} ${god}`)
+        .setURL(godURL)
+        .setThumbnail(godvilleData.avatarUrl)
+        .setDescription('Not coming soon: Badges!')
+        .addField(`${godvilleData.gender}`, `${godvilleData.name}, level ${godvilleData.level}\n${godvilleData.age} old`, true)
+        .addField('Motto', godvilleData.motto, true)
+        .addField('Guild', `[${godvilleData.guildName}](${godvilleData.guildUrl})`, true)
+        .setColor('006600')
+        .setFooter(footer);
+
+    if (godvilleData.petType) {
+        godEmbed.addField('Pet', `[${godvilleData.petType}](${godvilleData.petUrl})\n${godvilleData.petName}`, true);
     }
+    if (godvilleData.bossName) {
+        godEmbed.addField('Boss', `${godvilleData.bossName}\n${godvilleData.bossPower} power`, true);
+    }
+    if (godvilleData.shop) {
+        godEmbed.addField('Shop', godvilleData.shop, true);
+    }
+
+    godEmbed.addField('Medals', godvilleData.achievements, false);
+
+    return godEmbed;
 }
+
 
 async function showLink(message, username, client, godData) {
     let self;
@@ -187,12 +162,11 @@ async function showLink(message, username, client, godData) {
     god = decodeURI(god);
     message.reply(`This is the god(dess) linked to ${fetchedUser}: **${god}** <${godURL}>`);
 
-    const logsChannel = client.channels.cache.get(logs);
-    console.log(`${message.author.tag} requested the profile URL for god(dess) ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
-    logsChannel.send(`${message.author.tag} requested the profile URL for god(dess) ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
+    logger.log(`${message.author.tag} requested the profile URL for god(dess) ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
 }
 
-async function getGodData(URL, message, client) {
+
+async function getGodData(URL, message) {
     const myFirstPromise = new Promise((resolve, reject) => {
         https.get(URL, (res) => {
             res.on('data', (d) => {
@@ -205,25 +179,24 @@ async function getGodData(URL, message, client) {
         });
     });
 
-    const logsChannel = client.channels.cache.get(logs);
     let html = '';
     await myFirstPromise.then((result) => {
         html = result;
         //console.log(html);
     }).catch((error) => {
-        console.log(`Oops! Couldn't get god page for url ${URL}!` + error);
-        logsChannel.send(`Oops! Couldn't get god page for url ${URL}!` + error);
+        logger.log(`Oops! Couldn't get god page for url ${URL}!` + error);
         message.channel.send('Could not obtain online data. This is most likely a connection error, or the linked URL is incorrect.');
         return (null);
     });
 
     if (!html) {
-        console.log(`Failed to get any html for URL ${URL}.`);
-        logsChannel.send(`Failed to get any html for URL ${URL}.`);
+        logger.log(`Failed to get any html for URL ${URL}.`);
         message.channel.send('Could not obtain online data. This is most likely a connection error.');
         return (null);
     }
 
+
+    const godData = {};
 
     // BASIC INFO
     const rx_level = /(?:class="level">)[\s\S]*?(\d+)/;
@@ -232,11 +205,11 @@ async function getGodData(URL, message, client) {
     const rx_gender = /caption">\s*(Hero(?:ine)?)/;
     const rx_god_gender = /caption">\s*(God(?:ess)?)/;
 
-    const level = rx_level.exec(html)[1];
-    const name = decodeURI(rx_name.exec(html)[1]).trim();
-    const age = rx_age.exec(html)[1];
-    const gender = rx_gender.exec(html)[1];
-    const god_gender = rx_god_gender.exec(html)[1];
+    godData.level = rx_level.exec(html)[1];
+    godData.name = decodeURI(rx_name.exec(html)[1]).trim();
+    godData.age = rx_age.exec(html)[1];
+    godData.gender = rx_gender.exec(html)[1];
+    godData.godGender = rx_god_gender.exec(html)[1];
 
 
     // AVATAR
@@ -253,17 +226,18 @@ async function getGodData(URL, message, client) {
             avatar_url += rand;
         }
     }
+    godData.avatarUrl = avatar_url;
 
 
     // GUILD
     const rx_guild = /name guild">[^>]+href="([^">]+?)">([^<>]+)/;
     const guild_res = rx_guild.exec(html);
 
-    let guild_name = 'No guild.';
-    let guild_url;
     if (guild_res) {
-        guild_name = (decodeURI(guild_res[2].trim())).replace(/&#39;/g, '\'');
-        guild_url = guild_res[1];
+        godData.guildName = decodeURI(guild_res[2].trim()).replace(/&#39;/g, '\'');
+        godData.guildUrl = encodeURI(guild_res[1]);
+    } else {
+        godData.guildName = 'No guild.';
     }
 
 
@@ -271,25 +245,40 @@ async function getGodData(URL, message, client) {
     const rx_motto = /motto">([^<]+)</;
     const motto_res = rx_motto.exec(html);
 
-    let motto = 'No motto set.';
     if (motto_res) {
-        motto = (decodeURI(motto_res[1])).trim().replace(/&#39;/g, '\'');
+        godData.motto = decodeURI(motto_res[1]).trim().replace(/&#39;/g, '\'');
+    } else {
+        godData.motto = 'No motto set.';
     }
 
 
     // PET
-    const rx_pet_type = /label">Pet(?:[\s\S]*?>){3}([\s\S]*?)</;
-    const rx_pet_name = /label">Pet(?:[\s\S]*?>){4}([\s\S]*?)</;
-    const pet_type_res = rx_pet_type.exec(html);
+    const rx_pet = /label">Pet[\s\S]*?href="([^">]+?)">(.*?)<\/a>(.*?)</;
+    const pet_res = rx_pet.exec(html);
 
-    let pet_name;
-    let pet_type;
-    if (pet_type_res) {
-        pet_name = (decodeURI(rx_pet_name.exec(html)[1].trim())).replace(/&#39;/g, '\'');
-        pet_type = (decodeURI(pet_type_res[1])).replace(/&#39;/g, '\'');
-    } else {
-        pet_name = null;
-        pet_type = null;
+    if (pet_res) {
+        godData.petUrl = encodeURI(pet_res[1]);
+        godData.petType = decodeURI(pet_res[2]).trim().replace(/&#39;/g, '\'');
+        godData.petName = decodeURI(pet_res[3]).trim().replace(/&#39;/g, '\'');
+    }
+
+
+    // BOSS
+    const rxBoss = /label">Boss[\s\S]*?name">(.*?) with.*?(\d*%)/;
+    const bossRes = rxBoss.exec(html);
+
+    if (bossRes) {
+        godData.bossName = decodeURI(bossRes[1]).trim().replace(/&#39;/g, '\'');
+        godData.bossPower = bossRes[2];
+    }
+
+
+    // SHOP
+    const rxShop = /label">Shop[\s\S]*?name">([^<]*)</;
+    const shopRes = rxShop.exec(html);
+
+    if (shopRes) {
+        godData.shop = decodeURI(shopRes[1]).trim().replace(/&#39;/g, '\'');
     }
 
 
@@ -308,9 +297,10 @@ async function getGodData(URL, message, client) {
     const creature_master = rx_creature_master.exec(html);
     const bookmaker = rx_bookmaker.exec(html);
 
+    // achievements needs to end with \n because the progressString is added at the end
     let achievements = '';
     if (!temple && !animalist) {
-        achievements = `This ${god_gender} doesn't have any medals yet.`;
+        achievements = `This ${godData.godGender} doesn't have any medals yet.\n`;
     } else {
         [temple, ark, animalist, trader, creature_master, bookmaker].forEach(e => {
             // transform mm-dd-yy to dd-mm-yy
@@ -318,8 +308,35 @@ async function getGodData(URL, message, client) {
         });
     }
 
+    // PROGRESS
+    const progress = {};
+    const rxBricks = /label">Bricks for Temple[\s\S]*?name">([^<]*)</i;
+    const rxLogs1 = /label">Wood for Ark[\s\S]*?name">([^<]*)</i;
+    const rxLogs2 = /label">Ark Completed at[\s\S]*?name">[^<()]*\((.*?)\)</i;
+    const rxPairs = /label">Twos of Every Kind[\s\S]*?name">[^<()]*\((.*?)\)</i;
+    const rxWords = /label">Words in Book[\s\S]*?name">([^<]*)</i;
+    const rxSavings = /label">Savings[\s\S]*?name">[^<()]*\((.*?)\)</i;
 
-    return ([gender, avatar_url, name, level, god_gender, achievements, pet_type, pet_name, motto, guild_name, guild_url, age]);
+    progress.bricks = rxBricks.exec(html);
+    if (!ark) progress.logs = rxLogs1.exec(html);
+    else progress.logs = rxLogs2.exec(html);
+    progress.pairs = rxPairs.exec(html);
+    progress.words = rxWords.exec(html);
+    progress.savings = rxSavings.exec(html);
+
+    const progressActive = [];
+    Object.keys(progress).forEach(key => {
+        const elem = progress[key];
+        if (elem) progressActive.push(`${key}: ${elem[1]}`);
+    });
+
+    let progressString = progressActive.join(', ');
+    progressString = progressString[0].toUpperCase() + progressString.slice(1);
+    achievements += progressString; // there already is a newline before this added string
+    godData.achievements = achievements;
+
+
+    return (godData);
 }
 
 exports.showProfile = showProfile;
