@@ -13,7 +13,7 @@ function startup(dbDoc) {
     dbDoc.get().then(doc => {
         const data = doc.data();
         if (!data) {
-            console.log('No reminder entries found in database!');
+            logger.log('No scheduled events found in the database!');
             return;
         }
         let count = 0;

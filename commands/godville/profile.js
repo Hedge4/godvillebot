@@ -226,14 +226,14 @@ async function getGodData(URL, message, client) {
 
     const rx_avatar = /(?:img alt="Gravatar)[\s\S]*?src="([\s\S]*?)\?/;
     const rx_level = /(?:class="level">)[\s\S]*?(\d+)/;
-    const rx_name = /og:title[\s\S]*?hero[\w]* ([\s\S]*?)"/;
-    const rx_gender = /heroine/i;
-    const rx_god_gender = /goddess/i;
+    const rx_name = /essential_info">[\s\S]*?<h3>([\s\S]*?)</;
+    const rx_gender = /caption">\s*(Hero(?:ine)?)/;
+    const rx_god_gender = /caption">\s*(God(?:ess)?)/;
     const rx_temple = />(Temple Owner since \d+\/\d+\/\d+)/;
     const rx_ark = />(Ark Owner since \d+\/\d+\/\d+)/;
     const rx_animalist = />(Animalist since \d+\/\d+\/\d+)/;
     const rx_trader = />(Trader since \d+\/\d+\/\d+)/;
-    const rx_CM = />(Creature Master since \d+\/\d+\/\d+)/;
+    const rx_creature_master = />(Creature Master since \d+\/\d+\/\d+)/;
     const rx_pet_type = /label">Pet(?:[\s\S]*?>){3}([\s\S]*?)</;
     const rx_pet_name = /label">Pet(?:[\s\S]*?>){4}([\s\S]*?)</;
     const rx_motto = /motto">([\s\S]+?)</;
@@ -245,13 +245,13 @@ async function getGodData(URL, message, client) {
     const level = rx_level.exec(html)[1];
     const name = decodeURI(rx_name.exec(html)[1]);
     const age = rx_age.exec(html)[1];
-    const gender_res = rx_gender.exec(html);
-    const god_gender_res = rx_god_gender.exec(html);
+    const gender = rx_gender.exec(html)[1];
+    const god_gender = rx_god_gender.exec(html)[1];
     const temple = rx_temple.exec(html);
     const ark = rx_ark.exec(html);
     const animalist = rx_animalist.exec(html);
     const trader = rx_trader.exec(html);
-    const CM = rx_CM.exec(html);
+    const creature_master = rx_creature_master.exec(html);
     const pet_type_res = rx_pet_type.exec(html);
     const guild_url_res = rx_guild_url.exec(html);
 
@@ -264,16 +264,19 @@ async function getGodData(URL, message, client) {
         const rand = Date.now();
         avatar_url += rand;
     }
+
     let guild_name = 'No guild.';
     let guild_url = '';
     if (guild_url_res) {
         guild_name = (decodeURI(rx_guild.exec(html)[1].trim())).replace(/&#39;/g, '\'');
         guild_url = guild_url_res[1];
     }
+
     let motto = 'No motto set.';
     if (motto_res) {
         motto = (decodeURI(motto_res[1].trim())).replace(/&#39;/g, '\'');
     }
+
     let pet_name = '';
     let pet_type = '';
     if (pet_type_res) {
@@ -283,14 +286,7 @@ async function getGodData(URL, message, client) {
         pet_name = null;
         pet_type = null;
     }
-    let gender = '';
-    let god_gender = '';
-    if (!gender_res) {
-        gender = 'Hero';
-    } else { gender = 'Heroine'; }
-    if (!god_gender_res) {
-        god_gender = 'God';
-    } else { god_gender = 'Goddess'; }
+
     let achievements = '';
     if (!temple && !animalist) {
         achievements = `This ${god_gender} doesn't have any medals yet.`;
@@ -299,7 +295,7 @@ async function getGodData(URL, message, client) {
     if (ark) { achievements += `${ark.slice(1)}\n`; }
     if (animalist) { achievements += `${animalist.slice(1)}\n`; }
     if (trader) { achievements += `${trader.slice(1)}\n`; }
-    if (CM) { achievements += `${CM.slice(1)}\n`; }
+    if (creature_master) { achievements += `${creature_master.slice(1)}\n`; }
 
     return([gender, avatar_url, name, level, god_gender, achievements, pet_type, pet_name, motto, guild_name, guild_url, age]);
 }
