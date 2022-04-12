@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "updateMsg1": "5.2 Added the long awaited >remindme command!",
   "updateMsg2": "5.1 Added a generic >no command that accepts a mention.",
   "updateMsg3": "5.0 Fully rewrote Python crosswordgod functions into JavaScript (go to <#431305701021974539> now to make my effort worth it), and updated to discord.js V13.",
