@@ -7,19 +7,21 @@ const scheduler = require('../features/scheduler');
 
 function create(message, content) {
     // separate the delay and reminder itself
-    const delayRegex = /([0-9]+)\s*(\S+)/;
+    const delayRegex = /([0-9]+)\s*([a-z]+)/i;
     const regexRes = delayRegex.exec(content);
-    if (!regexRes) return message.reply('That\'s not the correct syntax you dumdum! Use a digit and a regular unit of time.');
+    if (!regexRes) return message.reply('That\'s not the correct syntax you dumdum! Use a whole number and a regular unit of time. Also, fractions suck.');
 
-    content = content.slice(regexRes.index + regexRes[0].length);
+    content = content.slice(regexRes.index + regexRes[0].length).trim();
     if (!content.length) content = 'Empty reminder.';
     if (content.length > 500) return message.reply('Just because I\'m mean, I only accept reminders of up to 500 characters. Try again you marshmallow.');
     const amount = regexRes[1];
     const unit = regexRes[2].toLowerCase();
 
+    const maxDelay = getDelay(2, 'y');
     const convertedAmount = getDelay(amount, unit);
-    if (isNaN(convertedAmount)) return message.reply('Your delay evaluated to NaN, which means there was probably something wrong with your input.');
-    if (convertedAmount > getDelay(2, 'y')) return message.reply('You can\'t schedule a reminder past 2 years in the future.');
+    if (convertedAmount !== 0 && !convertedAmount) return message.reply('The unit you specified wasn\'t recognised. Use a normal unit of time.');
+    if (isNaN(convertedAmount)) return message.reply('Your delay evaluated to NaN, which means that you probably gave some insane or funky input.');
+    if (convertedAmount > maxDelay) return message.reply('You can\'t schedule a reminder past 2 years in the future.');
     const thenTimestamp = new Date().getTime() + convertedAmount;
     const thenDate = new Date(thenTimestamp);
 
@@ -91,6 +93,8 @@ async function sendReminder(reminder) {
 }
 
 function getDelay(amount, unit) {
+    amount = parseInt(amount); // no need to use isNaN() since the regex only picks up numbers
+
     if (['ms', 'millisecond', 'milliseconds'].includes(unit)) {
         return amount;
     } else if (['s', 'sec', 'secs', 'second', 'seconds'].includes(unit)) {
@@ -112,14 +116,19 @@ function getDelay(amount, unit) {
     const min = now.getUTCMinutes();
     const s = now.getUTCSeconds();
 
+    let validUnit = false;
     if (['y', 'year', 'years'].includes(unit)) {
-        y += amount;
+        y += amount; validUnit = true;
     } else if (['month', 'months'].includes(unit)) {
-        m += amount;
+        m += amount; validUnit = true;
     } else if (['w', 'week', 'weeks'].includes(unit)) {
-        d += amount * 7;
+        d += amount * 7; validUnit = true;
     } else if (['d', 'day', 'days'].includes(unit)) {
-        d += amount;
+        d += amount; validUnit = true;
+    }
+
+    if (!validUnit) {
+        return false;
     }
 
     // fuck timezones

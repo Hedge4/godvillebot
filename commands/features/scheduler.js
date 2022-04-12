@@ -67,6 +67,10 @@ function scheduleEvent(event, timestamp) {
     const now = new Date().getTime();
     const delay = timestamp - now;
 
+    // timeout delay is stored as a 32-bit signed int, which is a little over 25 days
+    // we filter those edge cases out now, but if the hosting/database ever changes we need an alternative
+    if (delay > 7 * 24 * 60 * 60 * 1000) return; // 7 days
+
     setTimeout(() => {
         executeEvent(event);
     }, delay);

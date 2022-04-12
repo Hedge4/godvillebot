@@ -1,4 +1,4 @@
-1643418075526
+1649723700098
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -227,6 +227,7 @@ Beacon of hopelessness
 Bead of sweat
 Bean of light
 Bear necessities
+Beardcrumbs
 Beaten bush
 Beauty mark
 Bed of snails
@@ -1541,6 +1542,7 @@ Handful of nuts
 Handful of small change
 Handle on things
 Hangover cure pill
+Happy death-day card
 Happy little tree
 Hard rocking chair
 Hard truth
@@ -2178,7 +2180,7 @@ Mystery box
 Mystery meat
 Mystery meatball
 Myth duster
-Name-calling card
+Name calling card
 Nano screw bolt
 Nap sack
 Narscissors
@@ -2269,6 +2271,7 @@ Oil of “olé!”
 Old diary
 Old piece of equipment
 Old wife's tail
+Omnicillin
 Omnipotentiometer
 Omnipresent wrapper
 One man's trash
@@ -2746,6 +2749,7 @@ Refilled sandbag
 Refresh button
 Refried jellybeans
 Refurbished artifact
+Regen o' ration
 Regifted present
 Regifted thank-you note
 Region lock
@@ -2840,6 +2844,7 @@ Sacrificial ham
 Sacrificial lamp
 "Safety Rules for Superheroes" book
 Salad dressing code
+Sales glitch
 Salient point
 Salmon of doubt
 Salt of the earth
@@ -3169,6 +3174,7 @@ Sugar bowl
 Sugar-free salt
 Suggestively-shaped object
 Suggestively-shaped turnip
+Summoning circle chalk
 Sun spot remover
 Sun-protection monocle
 Sunburn lotion
@@ -3741,8 +3747,9 @@ Antagonist
 Anthropomorphic Person
 Anti-Anti-Virus
 Anti-Bio-Tick
-Antihero
 Anti-Social Worker
+Antibody Builder
+Antihero
 Ape of Wrath
 Apocalypse
 Apocalypse Cow
@@ -3809,6 +3816,7 @@ Babytooth Tiger
 Background Character
 Backseat Dungeoner
 Backstage Pastor
+Backward Thinker
 Bad Hobbit
 Bad News Bear
 Bad Samaritan
@@ -3848,6 +3856,7 @@ Battle Ox
 Battle Rattlesnake
 Battle Toad
 Battlesheep
+Battleshrimp
 Bawdy Guard
 Bazookat
 Bean Stalker
@@ -3936,6 +3945,7 @@ Bonsai Treant
 Boogie Woogie Man
 Boogy Knight
 Book Wyrm
+Boolean XORcist
 Boomerangutan
 Boozerker
 Borderline Collie
@@ -4064,6 +4074,7 @@ Civil Warlord
 Civil Warrior
 Clam before the Storm
 Clambassador
+Clamity
 Clawstrophobic Crab
 Cliff Hanger
 Clockroach
@@ -4185,6 +4196,7 @@ Deep Crow
 Deer God
 Defective Inspector
 Defence Attorney
+Defender of Injustice
 Deformed Rabbit
 Déjà-Vulture
 Delirium Tremendous
@@ -4316,6 +4328,7 @@ Ent of the World
 Entry-Level Enemy
 Epic Flailer
 Equine Ox
+Ergonomic Mouse
 Erroneous Monk
 Errorist
 Escape Goat
@@ -4453,6 +4466,7 @@ Funeral Crasher
 Furinda
 G.I. Foe
 Gallows Humorist
+Game-changing Bug
 Game Overlord
 Gameplay Mechanic
 Gamma Stingray
@@ -4534,6 +4548,7 @@ Grayscaled Dragon
 Grease Monkey
 Great Bull of Fire
 Great Caesar's Ghost
+Great Divider
 Great Wight Shark
 Green Fairy
 Green Intern
@@ -4566,6 +4581,7 @@ Gurgly
 Guttersniper
 Habeas Corpse
 Hacked Accountant
+Hackerel
 Hair Elemental
 Hairy Potter
 Hall Minotaur
@@ -4824,9 +4840,11 @@ Lag Monster
 Lame Duck
 Lampless Genie
 <span style="white-space:pre;"><span style="display:inline-block;margin-right:0.2em">🦌</span>Lancer the Reindeer</span>
+Lancing Queen
 Land Mime
 Landshark
 LANlord
+Laser Bream
 Laser Mouse
 Last Chancellor
 Last Hairbender
@@ -4860,7 +4878,7 @@ Lightsaber-Toothed Tiger
 Like-a-Boss Monster
 Lip Servant
 Lip Smacker
-Litter Bug
+Litterbug
 Little Green Man
 Little White Lion
 Live Saturday Knight
@@ -5252,6 +5270,7 @@ Placeboss
 Plaicea
 Plan Beekeeper
 Plankton of the Opera
+Plant-Based Animal
 Plant-Eating Zombie
 Plato's Caveman
 Playdough Golem
@@ -5413,6 +5432,7 @@ Ring Wyrm
 Rival Guild Fanboy
 River Banker
 Road Krill
+Roadgunner
 Roaming Gnome
 Robbed Zombie
 Robber Chicken
@@ -5447,6 +5467,7 @@ Rugskin Bear
 Runestone Cowboy
 Rushing Zergling
 Russian Roulette Croupier
+Rusty Snail
 Sabertooth Fairy
 Sabertooth Squirrel
 Sacrificial Prawn
@@ -5526,6 +5547,7 @@ Seventh Deadliest Sinner
 Seventh Lawyer of Hell
 Sewer Gator
 Sewer Horse
+Sewer Mermaid
 Shadow Worrier
 Shaman Kong
 Shamaniac
@@ -5659,6 +5681,7 @@ Staple Gunner
 Star Shrek
 Star-Crossed Astrologist
 Stare Master
+Starantula
 Starfish Trooper
 Starless Knight
 Starving Artist
@@ -5691,6 +5714,7 @@ Submarine Star
 Subconscientious Objector
 Substitute Creature
 Subtracting Adder
+Sulkworm
 Sulphuric Aphid
 Sumo Ninja
 Sun Dog
@@ -6299,6 +6323,7 @@ Cupboard door
 Curmudgeon bludgeon
 Cursed lucky charm
 Custom skin
+Cutsome slacks
 Cutting edge technology
 Cutting-edge weapon
 Daisy chainmail
@@ -6334,6 +6359,7 @@ Dimensionless gloves
 Diplomatic immunity
 Dirty sketchers
 Dis-organizer
+Dishonorary degree
 Disposable thumbs
 Distributor cap
 Diver's flippers
@@ -6631,6 +6657,7 @@ Kevlar greaves
 Kevlar opera gloves
 Kevlar trousers
 Kevlar vest
+Kickaxe
 Kilt of a thousand drafts
 Kilt of mooning
 Kitchen apron
@@ -6727,6 +6754,7 @@ Meat shield
 Medal of horror
 Medical gloves
 Mega-Soaker 2000
+Membrain
 Meme blocker
 Mermaid flipper
 Metal bikini
@@ -6918,6 +6946,7 @@ Psychological defence mechanism
 Puffy pirate sleeves
 Punk's wristlets
 Purity rings
+Purse of squandering
 Pythagorean pants
 Quadripolar magnet
 Quantum barrier
