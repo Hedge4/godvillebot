@@ -15,7 +15,7 @@ const commands_list = [
         'newspaper',
         `Get extra information about the newspaper funcions and the commands you can use for it using \`${prefix}help newspaper\`.`,
         'Every day, at 22:10 UTC (5 minutes after it changes), GodBot automatically downloads and summarises the Godville Times, and then sends it in <#431305701021974539>. These commands also work in that channel.',
-        [[`${prefix}solve`, 'Solves one or more crossword words using the Omnibus List. Use a dot ( . ) for unknown characters, and commas to separate different words.'],
+        [[`${prefix}solve`, 'Solves one or more crossword words using the Omnibus List. Use a dot ( . ) for unknown characters, and commas to separate different words. You can also use * to match 1 or more characters.'],
         [`${prefix}solvehtml`, 'Download the newspaper page (**while logged in, otherwise the crossword is hidden**) and add the file to the message with this command. The bot will automatically extract and solve the crossword.'],
         [`${prefix}newspaper`, 'Sends today\'s Godville Time\'s summary. Please note the bot updates five minutes after the (normal) daily reset.'],
         [`${prefix}newsdelay`, 'Shows the time remaining before GodBot automatically updates its Godville Time\'s summary.'],

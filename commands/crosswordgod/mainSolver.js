@@ -210,6 +210,7 @@ function createRegExp(text) {
     regExpString = regExpString.replace(/[-[\]{}()*+?,\\^$|#\s]/g, '\\$&');
     regExpString = '^' + regExpString + '$'; // ^ and $ match the beginning and end of a line
     regExpString = regExpString.replace(/\\[ -]/g, '[ -]'); // we don't differentiate between hyphens and spaces
+    regExpString = regExpString.replace(/\\\*/g, '.+'); // asterisks should match any amount of wildcards
     const regExp = new RegExp(regExpString, 'i'); // i = case insensitive flag
 
     return regExp;
