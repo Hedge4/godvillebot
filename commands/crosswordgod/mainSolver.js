@@ -55,8 +55,8 @@ async function solveWordsRequest(message, content) {
     }
     if (noWildcards.length) {
         errorMessage += `Error: ${noWildcards.length} ${quantiseWords(noWildcards.length, 'word')} had no wildcards.`
-        + ' Remember to put a dot for any unknown characters so I know what letters I need to solve for.'
-        + ` Problematic words: ${noWildcards.join(', ')}.\n`;
+            + ' Remember to put a dot for any unknown characters so I know what letters I need to solve for.'
+            + ` Problematic words: ${noWildcards.join(', ')}.\n`;
     }
     if (errorMessage.length) message.reply(errorMessage);
     if (!words.length) return; // return if there are no valid words left
@@ -82,8 +82,8 @@ async function solveWordsRequest(message, content) {
 
     // after sending that monster we actually solve the words and send them to the channel along with another monster string
     let solution = `Done! I tried to solve ${words.length} ${quantiseWords(words.length, 'word')}`
-    + ` using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
-    + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago.` + '```\n';
+        + ` using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
+        + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago.` + '```\n';
 
     const solvedWords = [];
     words.forEach(word => {
@@ -116,7 +116,7 @@ async function solveHtmlRequest(message) {
     }
     if (message.attachments.size > 1) { // nuh uh I just want one
         return message.reply('You sent multiple attachments, but I only need the HTML of one page!'
-        + ' Please only attach the HTML of <https://godvillegame.com/news> to the command.');
+            + ' Please only attach the HTML of <https://godvillegame.com/news> to the command.');
     }
     if (message.attachments.first().size > 250000) { // people will definitely try to send weird stuff
         return message.reply(`This file is surprisingly large for the <https://godvillegame.com/news> page ${message.attachments.first().size},`
@@ -147,8 +147,10 @@ async function solveHtmlRequest(message) {
         // we don't do any logging in wordFinder.js and just throw errors (finally doing logging in a way that makes sense lol)
         reply.edit(`Something went wrong, and I couldn't find the crossword words in your file!\n${error}`);
         logger.toConsole(`Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`);
-        return logger.toChannel({ content: `Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`,
-            files: [{ attachment: message.attachments.first().url, name: message.attachments.first().name }] });
+        return logger.toChannel({
+            content: `Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`,
+            files: [{ attachment: message.attachments.first().url, name: message.attachments.first().name }],
+        });
     }
 
     // BOOM solved
@@ -160,25 +162,24 @@ async function solveHtmlRequest(message) {
     const client = main.getClient();
 
     const crosswordEmbed = new Discord.MessageEmbed()
-    .setTitle('Godville Times crossword solution')
-    .setDescription(`Solved using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
-    + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago. If not all words are`
-    + ` solved, add them to the [Omnibus List](https://wiki.godvillegame.com/Omnibus_List) and use command \`${prefix}refreshomnibus\`.\n`)
-    .addField('Horizontal solutions', `||${solvedHorizontals.join('\n')}||`)
-    .addField('Vertical solutions', `||${solvedVerticals.join('\n')}||`)
-    .setColor(0x78de79) // noice green
-    .setURL('https://godvillegame.com/news')
-    .setThumbnail('https://i.imgur.com/t5udHzR.jpeg')
-    .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
-    .setTimestamp();
+        .setTitle('Godville Times crossword solution')
+        .setDescription(`Solved using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
+            + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago. If not all words are`
+            + ` solved, add them to the [Omnibus List](https://wiki.godvillegame.com/Omnibus_List) and use command \`${prefix}refreshomnibus\`.\n`)
+        .addField('Horizontal solutions', `||${solvedHorizontals.join('\n')}||`)
+        .addField('Vertical solutions', `||${solvedVerticals.join('\n')}||`)
+        .setColor(0x78de79) // noice green
+        .setURL('https://godvillegame.com/news')
+        .setThumbnail('https://i.imgur.com/t5udHzR.jpeg')
+        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
+        .setTimestamp();
 
     logger.log(`Finished solving the crossword in ${message.channel.name}.`);
     reply.edit({ content: 'Here you go!', embeds: [crosswordEmbed] });
 }
 
 function solveWord(word, omnibus) {
-    const regExString = '^' + escapeRegExp(word) + '$'; // ^ and $ match the beginning and end of a line
-    const regExp = new RegExp(regExString, 'i'); // i = case insensitive flag
+    const regExp = createRegExp(word);
     const foundWords = [];
     // we don't have to watch for duplicates here, because the way the omnibus list gets loaded removes all duplicates
     omnibus.forEach(entry => {
@@ -193,11 +194,35 @@ function solveWord(word, omnibus) {
 }
 
 
-// escapes all special characters beside the . (we use that as a wildcard)
-function escapeRegExp(text) {
-    return text.replace(/[-[\]{}()*+?,\\^$|#\s]/g, '\\$&');
+/**
+ * Creates a regular expression matching the provided word following these rules:
+ * - . still counts as a wildcard character,
+ * - all other special characters are escaped,
+ * - hypens and spaces also match each other,
+ * - case insensitive.
+ *
+ * @param {string} text The text to convert into a regular expression
+ * @returns A regular expression
+ */
+function createRegExp(text) {
+    // escapes all special characters beside the . (we use that as a wildcard)
+    let regExpString = text.replace(/…/g, '...'); // fuck ellipses
+    regExpString = regExpString.replace(/[-[\]{}()*+?,\\^$|#\s]/g, '\\$&');
+    regExpString = '^' + regExpString + '$'; // ^ and $ match the beginning and end of a line
+    regExpString = regExpString.replace(/\\[ -]/g, '[ -]'); // we don't differentiate between hyphens and spaces
+    const regExp = new RegExp(regExpString, 'i'); // i = case insensitive flag
+
+    return regExp;
 }
 
+/**
+ * Dynamically returns the singular or plural version of a noun
+ *
+ * @param {number} count The amount of items (1 is singular, otherwise plural)
+ * @param {string} singular The singular form of this noun, singular + s by default
+ * @param {string} plural The plural form of this noun
+ * @returns proper noun form based on quantity
+ */
 const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;
 
 

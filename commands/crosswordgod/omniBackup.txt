@@ -1,4 +1,4 @@
-1649723700098
+1650375861609
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -342,6 +342,7 @@ Book of generic pet names
 Book of glitchcraft
 Book of lulz
 Book of neverending stories
+Book of pseudoscience fiction
 Book of rejected prayers
 Book of saucery
 Book of single-letter words
@@ -2843,6 +2844,7 @@ Sack of lies
 Sacrificial ham
 Sacrificial lamp
 "Safety Rules for Superheroes" book
+Sailor moonshine
 Salad dressing code
 Sales glitch
 Salient point
@@ -3084,6 +3086,7 @@ Spectral thermometer
 Speech bubble
 Speeding ticket
 Spell binder
+Spell cheque
 Spellchecker spell
 Spice of life (variety pack)
 Spinal enhancement pill
@@ -4930,6 +4933,7 @@ Major Buzzkill
 Major Disappointment
 Major Problem
 ManBearPig
+Manglerfish
 Malignant Tutor
 Maniacrobat
 Margarine Fly
@@ -5051,6 +5055,7 @@ Multidexterous Millipede
 Multilegged E-bowler
 Multi-Porpoise
 Multi-Tusked Mammoth
+Mumble-bee
 Murdersquito
 Murphy's In-Law
 Murphy's Law
@@ -5138,6 +5143,7 @@ Ogre Achiever
 Ogrelord
 Old Town Rogue
 Olfactory Worker
+Omegalodon
 Omnipoet
 Omniscient Ignoramus
 Omnomnomnivore
