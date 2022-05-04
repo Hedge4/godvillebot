@@ -111,10 +111,12 @@ function generateEmbed(god, godURL, godvilleData, footer = undefined) {
         .setDescription('Not coming soon: Badges!')
         .addField(`${godvilleData.gender}`, `${godvilleData.name}, level ${godvilleData.level}\n${godvilleData.age} old`, true)
         .addField('Motto', godvilleData.motto, true)
-        .addField('Guild', `[${godvilleData.guildName}](${godvilleData.guildUrl})`, true)
         .setColor('006600')
         .setFooter(footer);
 
+    if (godvilleData.guildName) {
+        godEmbed.addField('Guild', `[${godvilleData.guildName}](${godvilleData.guildUrl})`, true);
+    }
     if (godvilleData.petType) {
         godEmbed.addField('Pet', `[${godvilleData.petType}](${godvilleData.petUrl})\n${godvilleData.petName}`, true);
     }
@@ -237,8 +239,6 @@ async function getGodData(URL, message) {
         godData.guildName = decodeURI(guild_res[2].trim()).replace(/&#39;/g, '\'');
         // if the url contains spaces we need to encode it (if it doesn't we might accidentally double encode if we do)
         godData.guildUrl = guild_res[1].includes(' ') ? encodeURI(guild_res[1]) : guild_res[1];
-    } else {
-        godData.guildName = 'No guild.';
     }
 
 
