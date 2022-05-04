@@ -37,7 +37,7 @@ async function solveWordsRequest(message, content) {
             tooLong++;
             continue;
         }
-        if (!word.includes('.')) {
+        if (!word.includes('.') || !word.includes('*')) { // dots and asterisks are both wildcards
             noWildcards.push(word);
             continue;
         }

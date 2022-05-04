@@ -3,9 +3,9 @@
         [["profile", ["god", "goddess", "showprofile"]],
         ["gvprofile", ["godvilleprofile", "gvgod", "godvillegod", "gvgoddess", "godvillegoddess", "showgodvilleprofile", "showgvprofile"]],
         ["guides", []],
-        ["godwiki", ["gw"]],
+        ["godwiki", ["gw", "wiki"]],
         ["link", []],
-        ["showlink", ["showurl"]]],
+        ["showlink", ["showurl", "godlink"]]],
 
 	"godpower":
         [["level", ["rank"]],

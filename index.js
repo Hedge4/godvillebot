@@ -12,7 +12,12 @@ const client = new Discord.Client({
         'GUILDS',
         'GUILD_MEMBERS',
         'GUILD_MESSAGE_REACTIONS',
-    ], partials: ['CHANNEL'], // CHANNEL needed to receive DMs
+    ], partials: [
+        'CHANNEL', // CHANNEL needed to receive DMs
+        'MESSAGE', // Needed to listen for reactions on uncached messages
+        'REACTION', // Needed to listen for reactions on uncached messages
+        'USER', // Apparently need this too (?) to listen for reactions on uncached messages
+    ],
 });
 
 // ==========================================================
@@ -319,6 +324,35 @@ client.on('messageDelete', deletedMessage => {
     if (deletedMessage.author.bot) { return; } // when removing this add it to chatContest.deleteMessage()
 
     chatContest.deleteMessage(deletedMessage, client);
+});
+
+// we bully HP
+client.on('messageReactionAdd', async (reaction, user) => {
+    if (reaction.partial) {
+        try {
+            await reaction.fetch();
+        } catch (_) {
+            return;
+        }
+    }
+
+    const message = reaction.message;
+    if (message.partial) {
+        try {
+            await message.fetch();
+        } catch (_) {
+            return;
+        }
+    }
+
+    // only suggestions channel
+    if (message.channel.id !== '670981969596645407') return;
+
+    // my ID here is just for testing but I probably won't remove it anyway
+    // no voting for me either :(
+    if (user.id !== '313438502698090496' && user.id !== '346301339548123136') return;
+
+    reaction.users.remove(user.id);
 });
 
 
