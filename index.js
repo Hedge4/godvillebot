@@ -321,6 +321,7 @@ client.on('messageCreate', (message) => {
 });
 
 client.on('messageDelete', deletedMessage => {
+    if (deletedMessage.partial) return; // we don't do anything with this and it'll crash the next line
     if (deletedMessage.author.bot) { return; } // when removing this add it to chatContest.deleteMessage()
 
     chatContest.deleteMessage(deletedMessage, client);

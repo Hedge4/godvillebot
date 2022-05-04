@@ -19,8 +19,15 @@ async function main(message, content) {
             + '\n\nTo get the ID of a message, you need to enable Developer Mode in the \'Behavior\' tab of your User Settings.'
             + ' Once you\'ve done this, right click/hold the message and a \'Copy ID\' option will appear.');
     }
-    // .trim() might be unnecessary here with the extra regex
-    const reaction = content.toLowerCase().substring(splitContent).trim().replace(/\s/g, '');
+
+    let reaction = content.toLowerCase().substring(splitContent);
+    // these are messy so we nope them
+    reaction = reaction.replace(/<(?:@!?&?|#)[0-9]+>/g, '');
+    // .trim() might be redundant here with the extra regex
+    reaction = reaction.trim().replace(/\s/g, '');
+    if (reaction.length < 1) {
+        return message.reply('the text you entered was filtered out, try another reaction.');
+    }
 
     const regexEmoji = /\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu;
     const emojiResults = {};
