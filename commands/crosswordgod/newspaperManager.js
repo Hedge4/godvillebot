@@ -26,47 +26,47 @@ function sendNewspaper(channel, renewed = false) {
 
     // create introduction and add it to sendList
     const introductionEmbed = new Discord.MessageEmbed()
-    .setTitle(`Godville Times issue ${news.edition} on day ${news.date} g.e.`)
-    .setDescription('[Claim your free daily coupon...](https://godvillegame.com/news#cpn_name)'
-        + '\n\nDid you know I can solve the newspaper\'s crossword for you? You just have to send me the words! '
-        + `You can do so with \`${prefix}solve\` for separate words (type a . for unknown letters), or just upload the raw html page with \`${prefix}solvehtml\`!`)
-    .setURL('https://godvillegame.com/news')
-    .setColor(0x78de79) // noice green
-    .setThumbnail('https://i.imgur.com/t5udHzR.jpeg')
-    .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
-    .setTimestamp();
+        .setTitle(`Godville Times issue ${news.edition} on day ${news.date} g.e.`)
+        .setDescription('[Claim your free daily coupon...](https://godvillegame.com/news#cpn_name)'
+            + '\n\nDid you know I can solve the newspaper\'s crossword for you? You just have to send me the words! '
+            + `You can do so with \`${prefix}solve\` for separate words (type a . for unknown letters), or just upload the raw html page with \`${prefix}solvehtml\`!`)
+        .setURL('https://godvillegame.com/news')
+        .setColor(0x78de79) // noice green
+        .setThumbnail('https://i.imgur.com/t5udHzR.jpeg')
+        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
+        .setTimestamp();
     embedsList.push(introductionEmbed);
 
     if (news.forecast) {
         const forecastEmbed = new Discord.MessageEmbed()
-        .setTitle('Daily Forecast')
-        .setDescription('[Click here for an explanation about forecast effects.](https://wiki.godvillegame.com/Daily_Forecast#List_of_possible_forecasts)\n\n' + news.forecast)
-        .setURL('https://godvillegame.com/news')
-        .setColor(0x78de79) // noice green
-        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
-        .setTimestamp();
+            .setTitle('Daily Forecast')
+            .setDescription('[Click here for an explanation about forecast effects.](https://wiki.godvillegame.com/Daily_Forecast#List_of_possible_forecasts)\n\n' + news.forecast)
+            .setURL('https://godvillegame.com/news')
+            .setColor(0x78de79) // noice green
+            .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
+            .setTimestamp();
         embedsList.push(forecastEmbed);
     } else { missingEmbedsList.push('The Daily Forecast couldn\'t be loaded today.'); }
 
     if (news.famousHeroes) {
         const famousEmbed = new Discord.MessageEmbed()
-        .setTitle('Famous Heroes')
-        .setDescription(news.famousHeroes)
-        .setURL('https://godvillegame.com/news')
-        .setColor(0x78de79) // noice green
-        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
-        .setTimestamp();
+            .setTitle('Famous Heroes')
+            .setDescription(news.famousHeroes)
+            .setURL('https://godvillegame.com/news')
+            .setColor(0x78de79) // noice green
+            .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
+            .setTimestamp();
         embedsList.push(famousEmbed);
     } else { missingEmbedsList.push('The Famous Heroes couldn\'t be loaded today.'); }
 
     if (news.guildSpotlight) {
         const guildEmbed = new Discord.MessageEmbed()
-        .setTitle('Guild Spotlight')
-        .setDescription(news.guildSpotlight)
-        .setURL('https://godvillegame.com/news')
-        .setColor(0x78de79) // noice green
-        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
-        .setTimestamp();
+            .setTitle('Guild Spotlight')
+            .setDescription(news.guildSpotlight)
+            .setURL('https://godvillegame.com/news')
+            .setColor(0x78de79) // noice green
+            .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: 'https://i.imgur.com/t5udHzR.jpeg' })
+            .setTimestamp();
         embedsList.push(guildEmbed);
     } else { missingEmbedsList.push('The Guild Spotlight couldn\'t be loaded today.'); }
 
@@ -204,18 +204,18 @@ async function downloadNewspaper() {
     });
 
     const res = await Promise.race([dataPromise, timeoutPromise])
-    .then((result) => {
-        if (!result) {
-            logger.log(`News: Oops! Something went wrong when downloading from url ${URL}! No data was received.`);
+        .then((result) => {
+            if (!result) {
+                logger.log(`News: Oops! Something went wrong when downloading from url ${URL}! No data was received.`);
+                return null;
+            }
+            logger.toChannel(`News: Received html from <${URL}> successfully.`); // need separate log to prevent an embed
+            logger.toConsole(`News: Received html from ${URL} successfully.`);
+            return result;
+        }).catch((error) => {
+            logger.log(`News: Oops! Something went wrong when downloading from url ${URL}! Error: ` + error);
             return null;
-        }
-        logger.toChannel(`News: Received html from <${URL}> successfully.`); // need separate log to prevent an embed
-        logger.toConsole(`News: Received html from ${URL} successfully.`);
-        return result;
-    }).catch((error) => {
-        logger.log(`News: Oops! Something went wrong when downloading from url ${URL}! Error: ` + error);
-        return null;
-    });
+        });
 
     return res;
 }
@@ -266,6 +266,7 @@ function parseNewspaper(html) {
 
         //forecast.replace(/&#0149;/g, '-'); // would be better but doesn't work somehow
         forecast = '•' + forecast.slice(7);
+
         const splitIndex = forecast.indexOf('\n');
         forecast = forecast.slice(0, splitIndex + 2) + '•' + forecast.slice(splitIndex + 9);
 
@@ -282,24 +283,33 @@ function parseNewspaper(html) {
         const heroRegex = /<h2>Famous Heroes<\/h2>.*?<p>(.*?)<\/p>.*?<p>(.*?)<\/p>/s;
         heroes = heroRegex.exec(html).slice(1, 3); // gives array with two famous heroes, but with lots of html
         heroes = heroes.map((hero) => {
+
+            // replace bold html for bold Discord formatting
             let match = boldRegex.exec(hero);
-            while(match) { // replace bold html for bold Discord formatting
+            while (match) {
                 hero = hero.replace(boldRegex, `**${match[1]}**`);
                 match = boldRegex.exec(hero);
             }
+
+            // replace hyperlink formatting + detect mentions
             match = hyperlinkRegex.exec(hero);
             while (match) {
                 let link = (match[1].startsWith('/') ? 'https://godvillegame.com' : '') + match[1];
                 link = encodeURI(link);
+                link = link.replace(/%25/g, '%'); // prevent double encoding (decode %25 into %)
                 if (!mentions.includes(link)) mentions.push(link);
                 hero = hero.replace(hyperlinkRegex, `[${match[2]}](${link})`);
                 match = hyperlinkRegex.exec(hero);
             }
+
+            // replace italics formatting
             match = spanRegex.exec(hero);
             while (match) {
                 hero = hero.replace(spanRegex, `*${match[1]}*`);
                 match = spanRegex.exec(hero);
             }
+
+            // replace other formatting with italics as well
             match = emRegex.exec(hero);
             while (match) {
                 hero = hero.replace(emRegex, `*${match[1]}*`);
@@ -319,11 +329,15 @@ function parseNewspaper(html) {
         const guildRegex = /<h2>Guild Spotlight<\/h2>.*?<p>(.*?)<\/p>.*?<p>(.*?)<\/p>/s;
         guilds = guildRegex.exec(html).slice(1, 3); // gives array with two guilds, but with lots of html
         guilds = guilds.map((guild) => {
+
+            // replace bold html for bold Discord formatting
             let match = boldRegex.exec(guild);
-            while(match) { // replace bold html for bold Discord formatting
+            while (match) {
                 guild = guild.replace(boldRegex, `**${match[1]}**`);
                 match = boldRegex.exec(guild);
             }
+
+            // replace hyperlink formatting
             match = hyperlinkRegex.exec(guild);
             while (match) {
                 let link = (match[1].startsWith('/') ? 'https://godvillegame.com' : '') + match[1];
@@ -331,8 +345,10 @@ function parseNewspaper(html) {
                 guild = guild.replace(hyperlinkRegex, `[${match[2]}](${link})`);
                 match = hyperlinkRegex.exec(guild);
             }
+
             return guild.trim();
         });
+
         guilds = guilds.join('\n\n'); // join the two guilds together into one string
         guilds = parseHtmlEntities(guilds);
         guildSuccess = true;
