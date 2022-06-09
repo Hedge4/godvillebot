@@ -17,9 +17,9 @@
     "node": "^16.13.2"
   },
   "dependencies": {
-    "discord.js": "^13.0.0",
+    "discord.js": "~13.8.0",
     "find": "~0.3.0",
-    "firebase-admin": "^10.0.2",
+    "firebase-admin": "^10.2.0",
     "sharp": "^0.30.3"
   }
 }
