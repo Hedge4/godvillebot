@@ -349,9 +349,9 @@ client.on('messageReactionAdd', async (reaction, user) => {
     // only suggestions channel
     if (message.channel.id !== '670981969596645407') return;
 
-    // my ID here is just for testing but I probably won't remove it anyway
-    // no voting for me either :(
-    if (user.id !== '313438502698090496' && user.id !== '346301339548123136') return;
+    // so somehow I ended up removing HPs Id and not my own...
+    // now I'm the only one who can't vote :(
+    if (!['346301339548123136', '255906086781976576'].includes(user.id)) return;
 
     reaction.users.remove(user.id);
 });

@@ -26,7 +26,7 @@ async function main(message, content) {
     // .trim() might be redundant here with the extra regex
     reaction = reaction.trim().replace(/\s/g, '');
     if (reaction.length < 1) {
-        return message.reply('the text you entered was filtered out, try another reaction.');
+        return message.reply('The text you entered was filtered out, try another reaction.');
     }
 
     const regexEmoji = /\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu;

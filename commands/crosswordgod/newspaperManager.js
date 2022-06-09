@@ -101,7 +101,7 @@ function sendNewspaper(channel, renewed = false) {
 
             // we got the goods now ship 'em
             for (let i = 0; i < godIDs.length; i++) {
-                channel.send(`<@${godIDs[i]}> ${godNames[i]}, you're in the news!`);
+                channel.send(`<@${godIDs[i]}> ${decodeURI(godNames[i])}, you're in the news!`);
                 logger.log(`News: Sent a ping to ID ${godIDs[i]} in ${channel.name}, because their god ${godNames[i]} is in the news.`);
             }
         });
