@@ -1,4 +1,4 @@
-1650375861609
+1663164824408
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -30,6 +30,7 @@ Accidental floss
 Achieve mint
 ACME black hole
 ACME monster trap
+ACME supply crate
 Acoustic chair
 “Act of God” insurance policy
 Activated activatable artifact
@@ -275,6 +276,7 @@ Biodegradable time capsule
 Bioenergy amplifier
 Biological clock
 Bit map
+Bit of a pickle
 Bit of bytes
 Bit of inspiration
 Bitcorn
@@ -785,6 +787,7 @@ Cosmo knot
 Cottonmouth candy
 Couch potato peeler
 Could-have bean
+Counter pint
 Counterclockwise clock
 Counterfeit Godville invite
 Counterfeit love
@@ -795,6 +798,7 @@ Courage requisition form
 Covalent bond
 Coy fish
 Cracked magic mirror
+Cracked whip
 Crackerjack prize
 Cradle of civilization
 "Crash Testing for Dummies" book
@@ -922,6 +926,7 @@ Depleted geranium
 Deploy-on-impact parachute
 Desanitizing lotion
 Desert rose
+Deserved parking spot
 Despair tire
 Destruction manual
 Deus ex machina
@@ -951,6 +956,7 @@ Digital surfboard
 Dig-your-own-tomb kit
 Dihydrogen monoxide potion
 Dimensional destabilizer
+Director's cutlery
 Dirty deed
 Dirty little secret
 Dirty money
@@ -1254,6 +1260,7 @@ Final countdown clock
 Final written warning
 Finder's fee
 Fine kettle of fish
+Fine printer
 Fingerprint magnet
 Finished connect-the-dots book
 Finite loop
@@ -1483,6 +1490,7 @@ Grenadine launcher
 Griddle of the Sphinx
 Gridkey
 Grip on reality
+Grounded broomstick
 Grounds for complaint
 Grudge holster
 Guacamolecule
@@ -1664,6 +1672,7 @@ Hyper-ventilation shaft
 Hypothetical loot
 Hypocritical mass
 "I am Hero's Name Here" badge
+“I have a T-shirt” T-shirt
 ‘I Love Godville’ T-shirt
 "I Love Godville" T-shirt
 'I Survived the Rapture' T-shirt
@@ -1672,6 +1681,7 @@ Iambic thermometer
 Ice cream sculpture
 Ice pack
 Ice sculpture of a cube
+Iceburger
 Icebreaker
 ID-10T form
 Idea polisher
@@ -1890,6 +1900,7 @@ License to drill
 License to kill
 License to maim
 License to own a license
+Life bulb
 Life in a nutshell
 Lifegourd
 Light-activated shadow
@@ -2433,6 +2444,7 @@ Penalty card
 Penalty shot glass
 Pencil ink
 Penultimatum
+Pepperminted coin
 Perfect attendance trophy
 Perfectly cromulent artifact
 Performance anxiety enhancer
@@ -2714,6 +2726,7 @@ Rant proposal
 Rare find
 Rarely asked questions leaflet
 Raven claw
+Razor-thin margarine
 Reaction figure
 Reader's block
 Ready-or-knot
@@ -2947,6 +2960,7 @@ Shadow puppet
 Shameless plug
 Shamerock
 Shape of things
+“Share your password” button
 Sharp wit
 Shattered dream fragment
 Shavings account
@@ -3149,7 +3163,7 @@ Straightened boomerang
 Strange brew
 Stranger thing
 Stranger's candy
-Strategy guide to life
+Strategy guide of life
 Strategy tictacs
 Street credit
 Street credit card
@@ -3632,6 +3646,7 @@ Wishy-washy machine
 Wit sharpener
 Witchcrafting table
 Witch-doctor's prescription
+Witch doctoral degree
 Withdrawn submission
 Wok of shame
 Wonderbox
@@ -4072,6 +4087,7 @@ Chupacabra
 Cinnabunny
 Cinnaminion
 Cinnamon Troll
+Civic Centaur
 Civil Serpent
 Civil Warlord
 Civil Warrior
@@ -4296,6 +4312,7 @@ Dust Devil
 Dyna Mite
 Dysenterrier
 Dyslexic Agnostic
+Dyson Steer
 Eager Beaver
 Earlier Worm
 Early Bird
@@ -4392,6 +4409,7 @@ Ferocita
 Fiction Fairy
 Fiend of a Fiend
 Fifth Elephant
+Fighty Duck
 File Executioner
 Filefry
 Final Frontiersman
@@ -4407,6 +4425,7 @@ Fisherman's Fiend
 Five o'clock Shadow
 Five-Alarm Friar
 Flagrant Mispeller
+Flame-ingo
 Flaming Snowman
 Flamingo Dancer
 Flappy Bard
@@ -4694,6 +4713,7 @@ Hydrachondriac
 Hydracula
 Hydrodjinn
 Hyper Lynx
+Hyper Vigilante
 Hyperbully
 Hyperventilator
 Hypetrain Conductor
@@ -5087,6 +5107,7 @@ Nerd of Steel
 Net Troll
 Neuro Sturgeon
 Never-Ending Storyteller
+Nevermind Flayer
 Neverwinter Knight
 Neverwinter Wight
 New Times Roman
@@ -5164,6 +5185,7 @@ Optical Illusionist
 Optimus Slime
 Optimystic
 Orangutank
+Orc-in-the-road
 Orc Angel
 Orc Bishop
 Orc De Triomphe
@@ -5330,8 +5352,9 @@ Prince of Dorkness
 Prince of Whales
 Principal of Darkness
 Privacy Leech
-Procrastinator
 Pro-Life Zombie
+Probability Surfer
+Procrastinator
 Prom Knight
 Propaganda Panda
 Propagandalf
@@ -5353,6 +5376,7 @@ Punk Croc
 Punk Flamingo
 Punk Panther
 Punslinger
+Pure Eel
 Purple Hero Eater
 Purranha
 Purrfectionist
@@ -5362,6 +5386,7 @@ Pyrobrainiac
 Pyromaniac Snowman
 Pyrophobic Phoenix
 Quackamole
+Quackstabber
 Quadriceratops
 Quadruple Agent
 Quaker Guy
@@ -5388,6 +5413,7 @@ Ragnarokker
 Rain Deer
 Rain-Bow Archer
 Rainbow Unicorn
+Ramen Emperor
 Rampaging Turtle
 Rand Lover
 Randominatrix
@@ -5925,6 +5951,7 @@ Urban Druid
 Used Horse Salesman
 User-Friendly Enemy
 Utility Polecat
+Utopianist
 Vampiranha
 Vampirate
 Vampire Brat
@@ -5946,6 +5973,7 @@ Virtual Enemy
 Virtual Realtor
 Virtual Threat
 Vogon Poet
+Volcanic Roc
 Volunterrier
 Voodoo Barbie
 Voodude
@@ -6044,6 +6072,7 @@ Acid tongue
 ACME leg-breaking boots
 Ad-blocker
 Adam's costume
+Adamantium dentures
 Adamantium thimble
 Adamantlers
 Admin's tambourine
@@ -6069,6 +6098,7 @@ Ancient cork
 Ancient CPU
 Angry bird
 Animated shorts
+Ankles of refraction
 Anti-goliath sling
 Anti-lock brakes
 Anti-meteor helmet
@@ -6097,6 +6127,7 @@ Armored dunce cap
 Armored tank top
 Arrowproof kneepads
 Arrowproof vest
+As-you-wishbone
 Asbestos fingers
 Aspen cross
 Asteroid belt
@@ -6158,11 +6189,13 @@ Beret of artistic pretense
 Bi-sickle
 Big bangles
 Big book of self defence
+Big brother hood
 Big pot cover
 Biker's helmet
 Biodegradable armor
 Biological cloak
 Bionic commando's arm
+Bionic eyebrows
 Birthday suit
 Black box recorder
 Black galoshes
@@ -6181,6 +6214,7 @@ Blindfold of accuracy
 Blindfold of invisibility
 Blindfold of justice
 Block chainmail
+Blood pressure cuffs
 Blue screen of death
 Boatswain's hobnailed boots
 'Boeing' jet boots
@@ -6212,6 +6246,7 @@ Bottom armor
 Boxing gloves
 Bracers of embracing
 Brain freeze ray
+Brainstorming helmet
 Braveman's quilted coat
 Breathing mask
 Breeches of etiquette
@@ -6221,12 +6256,14 @@ Broken washing tub
 Broomstick
 Bubble wrap breastplate
 Bucket of sensory deprivation
+Budget cutter
 Bull's eye
 Bull-shield
 Bulletproof T-shirt
 Bullyproof vest
 Bunny suit
 Bunny-ear slippers
+Burning gloves
 Burning shield
 Butcher's axe
 Camel hair mittens
@@ -6240,8 +6277,10 @@ Captured flag
 Car door
 Carbon fiber sword of idiocy
 Cardboard box
+Cardinal shins
 Cardinal's cape
 Carnival mask
+Cascading style shield
 Cash cowl
 Cast iron panama hat
 Cast iron shield
@@ -6273,6 +6312,7 @@ Chopstick
 Christmas stockings
 Chrome dome
 Clairvoyant's third eye
+Clasp of the titans
 Class action suit
 Clawed glove
 Clever clogs
@@ -6281,6 +6321,7 @@ Cloak of cloaking
 Cloak of daggers
 Cloak of permissiveness
 Cloak of visibility
+Clogs of stealth
 Close-contact lenses
 Club of aces
 Club of people's wrath
@@ -6304,7 +6345,9 @@ Concrete boots of agility
 Conquistador's cuirass
 Conscript's coat
 Containment breeches
+Content filter
 Contra band
+Convertible hood
 Cook's cap
 Cool crystal
 Cool sunglasses
@@ -6318,6 +6361,7 @@ Crime ring
 Croaking device
 Crosshairs
 Crown molding
+Crypto-mining helmet
 Crystal armor
 Crystal diadem
 Crystal heart
@@ -6340,6 +6384,7 @@ Data miner's headlamp
 Data mining headlamp
 Data spike
 Dead poets club
+Deadly shins
 Death rattle
 Death's door
 Death's sickle
@@ -6353,6 +6398,7 @@ Deja view glasses
 Demagoggles
 Demolition derby
 Demon's heart
+Depression socks
 Derby hat
 Detachable tentacles
 Diamond duster
@@ -6368,6 +6414,7 @@ Dis-organizer
 Dishonorary degree
 Disposable thumbs
 Distributor cap
+Disturban
 Diver's flippers
 Do-not-touch screen
 Document folder
@@ -6405,6 +6452,7 @@ Earmuffs of selective deafness
 Earmuffs of solitude
 Ears necklace
 Earthworm Jim's boots
+Echo chamber
 Edward's scissorhands
 Egg-carton armor
 Electric heel
@@ -6436,6 +6484,7 @@ Executioner's hood
 Executioner's mask
 Exfoliating face mask
 Exhaust muffler
+Existential dreadlocks
 Experience cap
 Extra large sword of compensation
 Extra set of hands
@@ -6455,6 +6504,7 @@ Fan-mail
 Faraday cage
 Farcefield
 Feet of strength
+Fiber of being
 Fig leaf
 Filibuster
 Finger puppets
@@ -6462,6 +6512,7 @@ Fingertrap
 Fire arms
 Fire icicle
 Firewall
+Firewallet
 Firmly held belief
 First class mail
 Fish scale armor
@@ -6570,6 +6621,7 @@ Heavy metal band
 Hefty sword
 Hellbottoms
 Hellboy's cuff
+Hellevator shoes
 Hellfire boots
 Helm of clear thoughts
 Helm of common sense
@@ -6611,6 +6663,7 @@ Hospital bedpans
 Hospital gown
 Hovering life bar
 Hugs-and-cuisses
+Humming beard
 Hunk of burning love
 Hurri-cane
 Hurt locket
@@ -6625,6 +6678,7 @@ Impact bracers
 Impermeable membrane
 Imposter's cloak
 Impure thoughts
+Incognito mode
 Indemnity claws
 Independent thought alarm
 Indie-pendant
@@ -6638,6 +6692,7 @@ Insanity plea
 Integral of mass destruction
 Interscepter
 Invisible hand of the market
+Invisible mask
 Invisible pants
 Ion fists
 Iron crown
@@ -6762,6 +6817,7 @@ Medical gloves
 Mega-Soaker 2000
 Membrain
 Meme blocker
+Mental defense
 Mermaid flipper
 Metal bikini
 Metal deflector
@@ -6797,9 +6853,11 @@ Moon walkers
 Moonglasses
 Moral support socks
 Morgue slab
+Morse-code dice
 Mortal coil
 Motion-capture dots
 Mourning star
+Moustache handlebars
 Mud coating
 Mummy wraps
 Mummy's arm
@@ -6824,6 +6882,7 @@ Nobleman's flail
 Nobleman's shoes
 Noodly appendages
 North Poleaxe
+Not-so-smart watch
 Not-to-scale mail
 Nuclear power pants
 Nuclear waistcoat
@@ -6840,6 +6899,7 @@ Offcuts of a five-inch pipe
 Offensive flag
 Ogre's saucer
 Ogre's toothpick
+Oktoberfists
 Oktobervest
 Old barrel
 Old felt boots
@@ -6876,6 +6936,7 @@ Paladin's bracers
 Palm oil
 Palm readers
 Pan lid
+Pandana
 Pandora's boxers
 Pantaloons of fury
 Pants o' mimes
@@ -6933,6 +6994,7 @@ Pocket protector
 Point-and-shoot sword
 Pointy stick
 Poker face
+Poker mace
 Polar ice cap
 Political correctness
 Pop up blocker
@@ -6941,6 +7003,7 @@ Portrait of the president
 Potato gun
 Power gloves
 Power ranger's armor
+Pre-socked sandals
 Prenuptial agreement
 Priority mail
 Prisoner's handcuffs
@@ -6949,7 +7012,9 @@ Protective custody
 Protective pentagram
 Proxy protection
 Psychological defence mechanism
+Psychotic brakes
 Puffy pirate sleeves
+Punchline gloves
 Punk's wristlets
 Purity rings
 Purse of squandering
@@ -6983,6 +7048,7 @@ Reservoir clogs
 Responsibility deflector
 Restraining order
 Reversible Mobius jacket
+Ridiculous-o-meter
 Ridiculously large sword
 Ring of fire
 Ring of opacity
@@ -7070,12 +7136,14 @@ Shining armor of darkness
 Shock absorber
 'shoulder angel and devil' set
 Shoulder parrot
+Shoulders of fortune
 Shroud of clarity
 Shroud of mystery
 Shroud of uncertainty
 Shrunken head of state
 Side of a barn
 Siege helmet
+Siegehammer
 Signed plaster cast
 Silver cross
 Silver surfboard
@@ -7099,6 +7167,7 @@ Sleeveless straight jacket
 Slice of moon
 Sling of outrageous fortune
 Sliver of hope
+Small town charm
 Small twig
 Smarty pants
 Smell of success
@@ -7243,6 +7312,7 @@ Tramp's shoes
 Transmogrifier gun
 Trenchant obtusenator of boorishness
 Trenchcoat of arms
+Tribble toupee
 Trident of wet power
 Trigger fingers
 Trollface
@@ -7266,6 +7336,7 @@ Ultimate shield of darkness
 Ultimate weapon
 Unconscious armadillo
 Undead Paladin's shield
+Unflippable coin
 Unicorn hunting license
 Unicorn's horn
 Unidentified fighting object
@@ -7273,8 +7344,10 @@ Universal remote
 Unlicensed nuclear accelerator
 Unlike button
 Unrequited gloves
+Untuned bagpipes
 Uranium walking stick
 Utility kilt
+Vacuum cleaver
 Vacuum pack
 Van Allen Belt
 Vanity mirror
@@ -7332,6 +7405,7 @@ Wrist dreamcatcher
 Wristlets of bad luck
 Wunderwaffle
 X-ray glasses
+XXL sword
 Yellow polka dot bikini
 Yellow raincoat
 Yeti slippers
