@@ -72,9 +72,9 @@ async function giveGodpower(message, userData, Discord, client) {
         const lvlUpEmbed = new Discord.MessageEmbed()
             .setColor('d604cf')
             .setTitle(nickname + ' levelled UP! <:screen_pantheonup:441043802325778442>')
-            .setDescription('You gathered ' + nextLevel + ' godpower <:stat_godpower:401412765232660492> and levelled up to level ' + User[message.author.id].level + '! :tada: - You now have ' + User[message.author.id].total_godpower + ' godpower total.')
+            .setDescription(`You gathered ${nextLevel} godpower <:stat_godpower:401412765232660492> and reached level ${User[message.author.id].level}! :tada: - You now have a total of ${User[message.author.id].total_godpower} godpower. You'll need ${newNextLevel} more godpower for level ${newLevel + 1}.`)
             .addField('Gold rewarded', `You earned ${goldAdd} <:stat_gold:401414686651711498> for reaching level ` + User[message.author.id].level + '. You now have ' + User[message.author.id].gold + ' gold total.')
-            .setFooter({ text: `You'll need ${newNextLevel} godpower for level ${newLevel + 1}. Use ${prefix}toggle-mentions to enable/disable being mentioned on level-up.`, iconURL: message.author.displayAvatarURL() });
+            .setFooter({ text: `Use ${prefix}toggle-mentions to enable or disable these notifications.`, iconURL: message.author.displayAvatarURL() });
         if (User[message.author.id].mention !== false) { client.channels.cache.get(botvilleChannel).send(`Congratulations on reaching level ${User[message.author.id].level}, ${message.author}!`);}
         client.channels.cache.get(botvilleChannel).send({ embeds: [lvlUpEmbed] });
     }

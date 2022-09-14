@@ -268,7 +268,9 @@ function parseNewspaper(html) {
         forecast = '•' + forecast.slice(7);
 
         const splitIndex = forecast.indexOf('\n');
-        forecast = forecast.slice(0, splitIndex + 2) + '•' + forecast.slice(splitIndex + 9);
+        if (splitIndex >= 0) { // only do this for multiline forecasts
+            forecast = forecast.slice(0, splitIndex + 2) + '•' + forecast.slice(splitIndex + 9);
+        }
 
         forecast = parseHtmlEntities(forecast); // catch remaining funky stuff (also doesn't work for bullet points)
         forecast = '*' + forecast + '*'; // add outside italics formatting

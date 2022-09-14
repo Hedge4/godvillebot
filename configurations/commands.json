@@ -1,47 +1,53 @@
 {
-	"godville":
-        [["profile", ["god", "goddess", "showprofile"]],
+	"godville": [
+        ["profile", ["god", "goddess", "showprofile"]],
         ["gvprofile", ["godvilleprofile", "gvgod", "godvillegod", "gvgoddess", "godvillegoddess", "showgodvilleprofile", "showgvprofile"]],
         ["guides", []],
         ["godwiki", ["gw", "wiki"]],
         ["link", []],
-        ["showlink", ["showurl", "godlink"]]],
+        ["showlink", ["showurl", "godlink"]]
+    ],
 
-	"godpower":
-        [["level", ["rank"]],
+	"godpower": [["level", ["rank"]],
         ["ranking", []],
         ["gold", []],
         ["daily", []],
-        ["toggle-mentions", ["togglementions"]]],
+        ["toggle-mentions", ["togglementions"]]
+    ],
 
-    "useful":
-        [["suggest", ["suggestion"]],
+    "useful": [
+        ["suggest", ["suggestion"]],
         ["spoiler", []],
         ["code", ["github"]],
         ["ping", ["pong", "latency"]],
         ["react", []],
         ["makevote", ["mv", "vote", "mp", "makepoll", "poll"]],
         ["remindme", ["remind", "reminder"]],
-        ["no", ["nope"]]],
+        ["no", ["nope"]],
+        ["bonk", []]
+    ],
 
-    "fun":
-        [["minesweeper", []],
+    "fun": [
+        ["minesweeper", []],
         ["bubblewrap", []],
-        ["randomnick", ["nickname", "changenick", "changenickname"]]],
+        ["randomnick", ["nickname", "changenick", "changenickname"]]
+    ],
 
-    "moderator":
-        [["break", []],
+    "moderator": [
+        ["break", []],
         ["block", []],
         ["unblock", []],
         ["blocklist", []],
-        ["purge", []]],
+        ["purge", []]
+    ],
 
-    "crossword":
-        [["solvecrossword", ["solve", "crossword"]],
+    "crossword": [
+        ["solvecrossword", ["solve", "crossword"]],
         ["solvehtml", ["solvecrosswordhtml", "crosswordhtml", "html"]],
         ["newspaper", ["forecast", "news"]],
         ["newsdelay", ["updatedelay", "newsupdate"]],
         ["refreshnews", ["renewnews", "update", "updatenews"]],
         ["refreshomnibus", ["renewomnibus", "omnibus", "updateomnibus"]],
-        ["omnibusbackup", ["createbackup", "backup", "omnibackup"]]]
+        ["omnibusbackup", ["createbackup", "backup", "omnibackup"]]
+    ]
 }
