@@ -51,6 +51,7 @@ const chatContest = require('./commands/features/chatContest');
 const daily = require('./commands/godpower/daily');
 const suggest = require('./commands/useful/suggest');
 const block = require('./commands/moderator/block.js');
+const reactionRoles = require('./commands/features/reactionRoles.js');
 const help = require('./commands/help');
 const newspaper = require('./commands/crosswordgod/newspaperManager.js');
 const omnibus = require('./commands/crosswordgod/omnibusManager.js');
@@ -143,6 +144,7 @@ client.on('ready', () => {
     setTimeout(crosswordTimers.newsPing, delay3);
     botDMs.checkDMContest(client);
     chatContest.startupCheck(client, userData);
+    reactionRoles.load(client);
 
     // load data such as the newspaper and the omnibus list
     logger.log('\nOmniBackup: Trying to load the Omnibus backup file...'); // linebreak for all of the newspaper/omnibus parsing spam
@@ -331,7 +333,7 @@ client.on('messageDelete', deletedMessage => {
 // handle reactions added to (cached) messages
 client.on('messageReactionAdd', async (reaction, user) => {
     // ignore any reactions from bots
-    if (message.author.bot) { return; }
+    if (user.bot) { return; }
 
     if (reaction.partial) {
         try {
@@ -350,19 +352,43 @@ client.on('messageReactionAdd', async (reaction, user) => {
         }
     }
 
-    // reaction roles
-    // prevent people blocked from using reaction roles from using the bot
-    if (reactionRolesBlocked.includes(message.author.id)) { return; }
-
+    // check if reaction roles were updated
+    reactionRoles.reaction('add', reaction, user, message);
 
     // remove votes from blocked users in suggestions
-    if (message.channel.id !== '670981969596645407') return;
+    if (message.channel.id === botServerChannels[0]) {
+        // I wanted to bully HP by preventing him from voting and added myself too so it wasn't too mean,
+        // but he wanted his removed and now I'm the only one who can't vote :(
+        // nvm I could add Paz :)
+        if (!['346301339548123136', '255906086781976576'].includes(user.id)) return;
+        reaction.users.remove(user.id);
+    }
+});
 
-    // I wanted to bully HP by preventing him from voting and added myself too so it wasn't too mean,
-    // but he wanted his removed and now I'm the only one who can't vote :(
-    // nvm I could add Paz :)
-    if (!['346301339548123136', '255906086781976576'].includes(user.id)) return;
-    reaction.users.remove(user.id);
+// handle reactions removed from (cached) messages
+client.on('messageReactionRemove', async (reaction, user) => {
+    // ignore any reactions from bots
+    if (user.bot) { return; }
+
+    if (reaction.partial) {
+        try {
+            await reaction.fetch();
+        } catch (_) {
+            return;
+        }
+    }
+
+    const message = reaction.message;
+    if (message.partial) {
+        try {
+            await message.fetch();
+        } catch (_) {
+            return;
+        }
+    }
+
+    // check if reaction roles were updated
+    reactionRoles.reaction('remove', reaction, user, message);
 });
 
 
