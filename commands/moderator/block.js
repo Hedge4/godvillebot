@@ -29,7 +29,7 @@ async function blockImage(client, message) {
         .catch(console.error);
 }
 
-const blockLists = ['bot', 'xp', 'image', 'suggest'];
+const blockLists = ['bot', 'xp', 'image', 'suggest', 'reactionroles'];
 const correctFormat = `Correct format: \`>block|unblock|blocklist ${blockLists.join('|')} (@user|user#0000|userID)\``;
 
 function blockList(message, client) {
@@ -43,7 +43,7 @@ function blockList(message, client) {
 
     const logsChannel = client.channels.cache.get(logs);
     args[0] = args[0].toLowerCase();
-    let msg = `here is the list of users blocked from "${args[0]}":\n\`\`\``;
+    let msg = `Here is the list of users blocked from "${args[0]}":\n\`\`\``;
     if (args[0] == 'bot') {
         if (!botBlocked.length) msg += ('No users blocked.');
         for (let i = 0; i < botBlocked.length; i++) {
@@ -100,6 +100,20 @@ function blockList(message, client) {
         logsChannel.send(`${message.author.tag} requested the list of users blocked from making suggestions.`);
         console.log(`${message.author.tag} requested the list of users blocked from making suggestions.`);
     }
+    if (args[0] == 'reactionroles') {
+        if (!reactionRolesBlocked.length) msg += ('No users blocked.');
+        for (let i = 0; i < reactionRolesBlocked.length; i++) {
+            let user = '';
+            try {
+                user = client.users.cache.get(reactionRolesBlocked[i]).tag;
+            } catch {
+                user = reactionRolesBlocked[i];
+            }
+            msg += (` ${i}. ${user}\n`);
+        }
+        logsChannel.send(`${message.author.tag} requested the list of users blocked from using reaction roles.`);
+        console.log(`${message.author.tag} requested the list of users blocked from using reaction roles.`);
+    }
     msg += ('```');
     return message.reply(msg);
 }
@@ -119,7 +133,7 @@ function block(message, client, blockedData) {
     if (!user) {
         return message.reply(`User "${args[1]}" could not be found. Mention a valid user or use a valid username/ID!\n+${correctFormat}`);
     }
-    if (user.id == owner) {
+    if (owner.includes(user.id)) {
         return message.reply(`Nuh uh I'm not blocking ${user.username} you dummy!`);
     }
 
@@ -128,7 +142,6 @@ function block(message, client, blockedData) {
         if (botBlocked.includes(user.id)) { return message.reply('This user is already blocked from this.'); }
         botBlocked.push(user.id);
         blockedData.set({ bot: botBlocked }, { merge: true });
-        console.log(`${message.author.tag} blocked ${user.tag} from using the bot.`);
         console.log(`${message.author.tag} blocked ${user.tag} from using the bot.`);
         client.channels.cache.get(modlogs).send(`${message.author.tag} blocked ${user.tag} from using the bot.`);
         return message.reply(`Successfully blocked ${user.tag} from using the bot.`);
@@ -157,6 +170,14 @@ function block(message, client, blockedData) {
         client.channels.cache.get(modlogs).send(`${message.author.tag} blocked ${user.tag} from sending images in the server.`);
         return message.reply(`Successfully blocked ${user.tag} from sending images in the server.`);
     }
+    if (args[0] == 'reactionroles') {
+        if (reactionRolesBlocked.includes(user.id)) { return message.reply('This user is already blocked from this.'); }
+        reactionRolesBlocked.push(user.id);
+        blockedData.set({ reactionRoles: reactionRolesBlocked }, { merge: true });
+        console.log(`${message.author.tag} blocked ${user.tag} from using reaction roles.`);
+        client.channels.cache.get(modlogs).send(`${message.author.tag} blocked ${user.tag} from using reaction roles.`);
+        return message.reply(`Successfully blocked ${user.tag} from using reaction roles.`);
+    }
 }
 
 function unblock(message, client, blockedData) {
@@ -172,6 +193,9 @@ function unblock(message, client, blockedData) {
     const user = getUsers.One(args[1], client);
     if (!user) {
         return message.reply(`User "${args[1]}" could not be found. Mention a valid user or use a valid username/ID!\n${correctFormat}`);
+    }
+    if (user.id === message.author.id && !owner.includes(message.author.id)) {
+        return message.reply('You can\'t unblock yourself you big dumdum 🤦');
     }
 
     args[0] = args[0].toLowerCase();
@@ -206,6 +230,14 @@ function unblock(message, client, blockedData) {
         console.log(`${message.author.tag} unblocked ${user.tag} from sending images in the server.`);
         client.channels.cache.get(modlogs).send(`${message.author.tag} unblocked ${user.tag} from sending images in the server.`);
         return message.reply(`Successfully unblocked ${user.tag} from sending images in the server.`);
+    }
+    if (args[0] == 'reactionroles') {
+        if (!reactionRolesBlocked.includes(user.id)) { return message.reply('This user isn\'t blocked from this.'); }
+        reactionRolesBlocked.splice(reactionRolesBlocked.indexOf(user.id), 1);
+        blockedData.set({ reactionRoles: reactionRolesBlocked }, { merge: true });
+        console.log(`${message.author.tag} unblocked ${user.tag} from using reaction roles.`);
+        client.channels.cache.get(modlogs).send(`${message.author.tag} unblocked ${user.tag} from using reaction roles.`);
+        return message.reply(`Successfully unblocked ${user.tag} from using reaction roles.`);
     }
 }
 

@@ -86,6 +86,7 @@ limitedCommandsData.get()
 blockedData.get().then(doc => {
     global.imageBlocked = doc.data()['image'];
     global.botBlocked = doc.data()['bot'];
+    global.reactionRolesBlocked = doc.data()['reactionRoles'];
     global.suggestBlocked = doc.data()['suggest'];
     global.xpBlocked = doc.data()['xp'];
 });
@@ -327,8 +328,11 @@ client.on('messageDelete', deletedMessage => {
     chatContest.deleteMessage(deletedMessage, client);
 });
 
-// we bully HP
+// handle reactions added to (cached) messages
 client.on('messageReactionAdd', async (reaction, user) => {
+    // ignore any reactions from bots
+    if (message.author.bot) { return; }
+
     if (reaction.partial) {
         try {
             await reaction.fetch();
@@ -346,13 +350,18 @@ client.on('messageReactionAdd', async (reaction, user) => {
         }
     }
 
-    // only suggestions channel
+    // reaction roles
+    // prevent people blocked from using reaction roles from using the bot
+    if (reactionRolesBlocked.includes(message.author.id)) { return; }
+
+
+    // remove votes from blocked users in suggestions
     if (message.channel.id !== '670981969596645407') return;
 
-    // so somehow I ended up removing HPs Id and not my own...
-    // now I'm the only one who can't vote :(
+    // I wanted to bully HP by preventing him from voting and added myself too so it wasn't too mean,
+    // but he wanted his removed and now I'm the only one who can't vote :(
+    // nvm I could add Paz :)
     if (!['346301339548123136', '255906086781976576'].includes(user.id)) return;
-
     reaction.users.remove(user.id);
 });
 
