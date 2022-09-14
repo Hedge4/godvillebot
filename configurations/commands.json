@@ -22,15 +22,15 @@
         ["ping", ["pong", "latency"]],
         ["react", []],
         ["makevote", ["mv", "vote", "mp", "makepoll", "poll"]],
-        ["remindme", ["remind", "reminder"]],
-        ["no", ["nope"]],
-        ["bonk", []]
+        ["remindme", ["remind", "reminder"]]
     ],
 
     "fun": [
         ["minesweeper", []],
         ["bubblewrap", []],
-        ["randomnick", ["nickname", "changenick", "changenickname"]]
+        ["randomnick", ["nick", "nickname", "changenick", "changenickname", "randomnickname"]],
+        ["no", ["nope"]],
+        ["bonk", []]
     ],
 
     "moderator": [

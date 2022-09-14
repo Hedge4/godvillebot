@@ -4,7 +4,6 @@ const ping = require('./ping.js');
 const react = require('./react.js');
 const makevote = require('./makevote.js');
 const suggest = require('./suggest');
-const noCommand = require('./noCommand.js');
 const reminder = require('./reminder.js');
 
 function redirect(cmd, content, message, client) {
@@ -21,8 +20,6 @@ function redirect(cmd, content, message, client) {
             return react(message, content);
         case 'makevote':
             return makevote(message, content);
-        case 'no':
-            return noCommand(message);
         case 'remindme':
             return reminder.create(message, content);
         default:

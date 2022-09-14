@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 const sharp = require('sharp');
 const https = require('https');
 
-const resizeSize = 300;
+const resizeSize = 216; // original size is 300
 
 async function main(message) {
     try {
@@ -38,7 +38,7 @@ async function main(message) {
             .greyscale(); // we make it boring
 
         await sharp('./images/nope.png')
-            //.resize(resizeSize, resizeSize) // resizing disabled because this image is already 300 x 300 pixels
+            .resize(resizeSize, resizeSize)
             .toBuffer({ resolveWithObject: true }) // buffers all the waaaaaaay
             .then(({ data, info }) => { // We now have the data / info of that buffer
                 imageToEdit
