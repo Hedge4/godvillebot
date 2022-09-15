@@ -216,8 +216,8 @@ client.on('messageCreate', (message) => {
             const cmd = message.content.toLowerCase().slice(prefix.length).split(/\s+/)[0]; // remove prefix and take first word
             const content = message.content.slice(prefix.length + cmd.length).trim(); // remove prefix, command and whitespace
 
+            // redirect godpower module commands (only command channels)
             if (commandChannels.includes(message.channel.id)) {
-                // redirect godpower module commands
                 for (let i = 0; i < godpower.length; i++) {
                     if (cmd == godpower[i][0]) {
                         return godpowerModule(cmd, content, message, Discord, client, userData, limitedCommandsData);
@@ -228,18 +228,6 @@ client.on('messageCreate', (message) => {
                         }
                     }
                 }
-
-                // redirect fun module commands
-                for (let i = 0; i < fun.length; i++) {
-                    if (cmd == fun[i][0]) {
-                        return funModule(cmd, content, message, Discord, client);
-                    }
-                    for (let j = 0; j < fun[i][1].length; j++) {
-                        if (cmd == fun[i][1][j]) {
-                            return funModule(fun[i][0], content, message, Discord, client);
-                        }
-                    }
-                }
             }
 
             // the help command
@@ -247,7 +235,7 @@ client.on('messageCreate', (message) => {
                 return help(message, Discord, client);
             }
 
-            // redirect crossword module commands
+            // redirect crossword module commands (only command/news channels)
             if (commandChannels.concat(newspaperChannel).includes(message.channel.id)) {
                 for (let i = 0; i < crossword.length; i++) {
                     if (cmd == crossword[i][0]) {
@@ -281,6 +269,18 @@ client.on('messageCreate', (message) => {
                 for (let j = 0; j < useful[i][1].length; j++) {
                     if (cmd == useful[i][1][j]) {
                         return usefulModule(useful[i][0], content, message, client);
+                    }
+                }
+            }
+
+            // redirect fun module commands
+            for (let i = 0; i < fun.length; i++) {
+                if (cmd == fun[i][0]) {
+                    return funModule(cmd, content, message, Discord, client);
+                }
+                for (let j = 0; j < fun[i][1].length; j++) {
+                    if (cmd == fun[i][1][j]) {
+                        return funModule(fun[i][0], content, message, Discord, client);
                     }
                 }
             }

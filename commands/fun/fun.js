@@ -1,3 +1,5 @@
+const { commandChannels } = require('../../configurations/config.json');
+
 const bubblewrap = require('./bubblewrap.js');
 const minesweeper = require('./minesweeper.js');
 const randomnickname = require('./randomnickname.js');
@@ -5,13 +7,16 @@ const noCommand = require('./noCommand.js');
 const bonkCommand = require('./bonkCommand.js');
 
 function redirect(cmd, content, message, Discord, client) {
+    // these functions should only work in command channels
+    const isCommandChannel = commandChannels.includes(message.channel.id);
+
     switch (cmd) {
         case 'bubblewrap':
-            return bubblewrap(client, message);
+            return isCommandChannel ? bubblewrap(client, message) : undefined;
         case 'minesweeper':
-            return minesweeper(client, message);
+            return isCommandChannel ? minesweeper(client, message) : undefined;
         case 'randomnick':
-            return randomnickname(message, client);
+            return isCommandChannel ? randomnickname(message, client) : undefined;
         case 'no':
             return noCommand(message);
         case 'bonk':
