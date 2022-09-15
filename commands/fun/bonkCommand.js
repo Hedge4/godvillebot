@@ -40,6 +40,8 @@ async function main(message) {
             bonker = bonkee;
             bonkee = message.author; // don't bonk the bot
         }
+        // if you bonk yourself the bot will be the bonker
+        if (bonker == bonkee) bonker = message.client.user;
 
         logger.log(`${message.author.tag} / ${message.author.id} used the bonk command on ${user.tag} / ${user.id}.`);
 
