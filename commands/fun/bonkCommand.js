@@ -31,18 +31,21 @@ function circumference(size) {
 
 async function main(message) {
     try {
-        let user = message.mentions.users.first();
-        if (!user) {
+        let bonker = message.author;
+        const user = message.mentions.users.first();
+        let bonkee = user;
+        if (!bonkee) {
             return message.reply('You need to mention someone to bonk, now go step on a lego dumdum');
-        } else if (user.id == botID) {
-            user = message.author; // don't bonk the bot
+        } else if (bonkee.id == botID) {
+            bonker = bonkee;
+            bonkee = message.author; // don't bonk the bot
         }
 
         logger.log(`${message.author.tag} / ${message.author.id} used the bonk command on ${user.tag} / ${user.id}.`);
 
         // fancy buffer stuff for the bonker
         const dataPromiseBonker = await new Promise((resolve, reject) => {
-            https.get(message.author.displayAvatarURL(), (res) => {
+            https.get(bonker.displayAvatarURL(), (res) => {
                 let buffer = Buffer.alloc(0);
                 res.on('data', (d) => {
                     buffer = Buffer.concat([buffer, d]);
@@ -57,7 +60,7 @@ async function main(message) {
 
         // fancy buffering for the bonkee
         const dataPromiseBonkee = await new Promise((resolve, reject) => {
-            https.get(user.displayAvatarURL(), (res) => {
+            https.get(bonkee.displayAvatarURL(), (res) => {
                 let buffer = Buffer.alloc(0);
                 res.on('data', (d) => {
                     buffer = Buffer.concat([buffer, d]);
