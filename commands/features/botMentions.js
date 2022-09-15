@@ -1,4 +1,4 @@
-const { mutedRoleMain, mutedRoleBot, godvilleServer, botServer } = require('../../configurations/config.json');
+const { mutedRoleMain, mutedRoleBot, godvilleServer, botServer, owner } = require('../../configurations/config.json');
 const logger = require('./logging');
 
 // setup for reacting to bot mentions in the godville server
@@ -40,6 +40,8 @@ const unmuteReactions = [
 
 // react when someoene mentions the bot
 async function mentionReact(message, client) {
+    if (owner.includes(message.author.id)) return;
+
     if (botMentionCooldown.has(message.author.id)) {
         botMentionCooldown.delete(message.author.id); // why do I bother doing this
 
