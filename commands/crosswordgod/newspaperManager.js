@@ -1,4 +1,4 @@
-const { adminRole, prefix, owner } = require('../../configurations/config.json');
+const { prefix, botOwners, roles } = require('../../configurations/config.json');
 const Discord = require('discord.js');
 const main = require('../../index');
 const logger = require('../features/logging');
@@ -118,7 +118,7 @@ function sendNewspaper(channel, renewed = false) {
 
 // method used when a user renews the newspaper, not the automatic timer. Doesn't send in logs
 async function renewNewspaperRequest(message) {
-    if (!message.member.roles.cache.has(adminRole) && !owner.includes(message.author.id)) return message.reply('Only moderators can forcefully renew the newspaper.');
+    if (!message.member.roles.cache.has(roles.admin) && !Object.values(botOwners).includes(message.author.id)) return message.reply('Only moderators can forcefully renew the newspaper.');
     logger.log(`${message.author.tag} forcefully started the newspaper renewing process in ${message.channel}.`);
     const reply = await message.reply('I\'m working on it...');
 

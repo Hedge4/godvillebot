@@ -1,4 +1,4 @@
-const { logs, botID } = require('../../configurations/config.json');
+const { channels, clientId } = require('../../configurations/config.json');
 const logger = require('../features/logging');
 
 // basic setup for chat contests
@@ -9,7 +9,7 @@ let lastKillTimestamp;
 
 // get the latest message applying for the chat contest
 async function checkChatContest(client, userData) {
-    const logsChannel = client.channels.cache.get(logs);
+    const logsChannel = client.channels.cache.get(channels.logs);
     const message = await getLastMessage(client); // get last message in the channel sent by a normal user
 
     if (!message) {
@@ -74,7 +74,7 @@ async function getLastMessage(client) {
 
 async function setLastWinner(client) {
     const channel = client.channels.cache.get(chatContestChannel);
-    const logsChannel = client.channels.cache.get(logs);
+    const logsChannel = client.channels.cache.get(channels.logs);
 
     let user;
     let messages = await channel.messages.fetch({ limit: 100 });
@@ -85,7 +85,7 @@ async function setLastWinner(client) {
         for (const msg of messages.values()) {
             chatCombo++;
             if (!msg.author.bot) continue;
-            if (!msg.author.id == botID) continue; // check if author is the bot
+            if (!msg.author.id == clientId) continue; // check if author is the bot
             if (!msg.content.includes('for successfully killing chat!')) continue;
 
             user = msg.mentions.users.first();
@@ -140,7 +140,7 @@ async function deleteMessage(message, client) {
 // check if this message is still the last message in general chat, and reward the author if it is
 async function winningChatContest(message, client, userData) {
     if (lastMessage && message.id == lastMessage.id) { // first check if lastMessage even exists
-        const logsChannel = client.channels.cache.get(logs);
+        const logsChannel = client.channels.cache.get(channels.logs);
         if (message.author.id == lastWinner) {
             message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but you already won the last chat-killing contest! :skull:`);
             console.log(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);

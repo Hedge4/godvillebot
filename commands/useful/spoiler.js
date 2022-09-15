@@ -1,8 +1,8 @@
-const { logs } = require('../../configurations/config.json');
+const { channels } = require('../../configurations/config.json');
 
 async function main(client, message) {
     const rand = Date.now();
-    const logsChannel = client.channels.cache.get(logs);
+    const logsChannel = client.channels.cache.get(channels.logs);
     if(message.attachments.first()) { //checks if an attachment is sent
         let format = '';
         try {

@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.6.2",
+  "version": "5.7.0",
   "updateMsg1": "5.5 Reactions in #toggleChannels are now handled by GoddessBot, and added basementping!",
   "updateMsg2": "5.4 >react is now able to react with emojis as well!",
   "updateMsg3": "5.3 Fixed >profile and >gvprofile parsing code, and added boss, shop, bookmaker medal and bricks/logs/pairs/words/savings progress!",

@@ -1,14 +1,14 @@
-const { botServerChannels, owner, logs, botvilleChannel } = require('../../configurations/config.json');
+const { channels, botOwners } = require('../../configurations/config.json');
 const getUsers = require('../features/getUsers');
 
 async function suggest(client, message, content) {
-    const logsChannel = client.channels.cache.get(logs);
+    const logsChannel = client.channels.cache.get(channels.logs);
     if (!suggestBlocked.includes(message.author.id)) {
         let suggestion = content.split('`');
         suggestion = suggestion.join('');
         if (suggestion.length <= 20) { return message.reply('Please add enough detail and make the description of your suggestion at least 20 characters!'); }
         if (suggestion.length >= 1000) { return message.reply('Please be a bit more concise in your description and use less than 1000 characters!'); }
-        const channel = await client.channels.cache.get(botServerChannels[0]);
+        const channel = await client.channels.cache.get(channels.botServer.suggestions);
         if (channel === undefined) { message.reply('The message couldn\'t be sent.'); }
         channel.send(` --- ${message.author.tag} / ${message.author.id}  sent the following suggestion from channel ${message.channel.name}:`
             + '```\n' + suggestion + '```' + message.url)
@@ -29,7 +29,7 @@ async function suggest(client, message, content) {
 
 // detect a message in the suggestion/log server. index.js already checks for the right channel
 function onMessage(message, client, Discord, userData) {
-    if (owner.includes(message.author.id)) {
+    if (Object.values(botOwners).includes(message.author.id)) {
         if (message.content.toLowerCase().startsWith('accept')) {
             return accept(message, client, Discord, userData);
         }
@@ -60,7 +60,7 @@ async function accept(message, client, Discord, userData) {
     }
 
     // get suggestion message contents, and get user(name)
-    const old_channel = await client.channels.cache.get(botServerChannels[0]);
+    const old_channel = await client.channels.cache.get(channels.botServer.suggestions);
     const old_msg = await old_channel.messages.fetch(ID);
     const contents = old_msg.content;
     let suggestion = contents.slice(contents.indexOf('`'));
@@ -140,8 +140,8 @@ async function accept(message, client, Discord, userData) {
         .setTimestamp();
 
     old_msg.delete();
-    const new_channel = await client.channels.cache.get(botServerChannels[1]);
-    const botChannel = client.channels.cache.get(botvilleChannel);
+    const new_channel = await client.channels.cache.get(channels.botServer.accepted);
+    const botChannel = client.channels.cache.get(channels.botville);
     new_channel.send({ content: `${author} accepted :white_check_mark: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
     botChannel.send({ content: `${author} accepted :white_check_mark: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
 }
@@ -167,7 +167,7 @@ async function reject(message, client, Discord) {
     }
 
     // get suggestion message contents, and get user(name)
-    const old_channel = await client.channels.cache.get(botServerChannels[0]);
+    const old_channel = await client.channels.cache.get(channels.botServer.suggestions);
     const old_msg = await old_channel.messages.fetch(ID);
     const contents = old_msg.content;
     let suggestion = contents.slice(contents.indexOf('`'));
@@ -201,8 +201,8 @@ async function reject(message, client, Discord) {
         .setTimestamp();
 
     old_msg.delete();
-    const new_channel = await client.channels.cache.get(botServerChannels[2]);
-    const botChannel = client.channels.cache.get(botvilleChannel);
+    const new_channel = await client.channels.cache.get(channels.botServer.rejected);
+    const botChannel = client.channels.cache.get(channels.botville);
     new_channel.send({ content: `${author} rejected :x: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
     botChannel.send({ content: `${author} rejected :x: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
 }

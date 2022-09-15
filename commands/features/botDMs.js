@@ -1,5 +1,5 @@
 /* eslint-disable no-constant-condition */
-const { prefix, botvilleChannel, botDmLogs } = require('../../configurations/config.json');
+const { prefix, channels } = require('../../configurations/config.json');
 const logger = require('./logging');
 
 // basic setup for contests through the bot's DMs
@@ -12,19 +12,19 @@ function handleDMs(message, client) {
     if (contestRunning && message.content.startsWith('+')) {
         return enterDMContest(message, client);
     }
-    let msg = `I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`${prefix}suggest\` in <#${botvilleChannel}>.`;
+    let msg = `I don't currently respond to DMs. If you want such a feature to be added, contact the bot owner (Wawajabba) or use \`${prefix}suggest\` in <#${channels.botville}>.`;
     if (contestRunning) msg += '\n\nDid you want to enter the current contest? Then make sure you type \'+\' before your entry.';
     message.reply(msg);
 
     // only log to console because logs are public
     logger.toConsole(`A DM with ID ${message.id} was sent to the bot by '` + message.author.tag + '\' / ' + message.author.id + '\'. The content was: \'' + message.content + '\'');
-    client.channels.cache.get(botDmLogs).send(`**'${message.author.tag}' / ${message.author.id} sent this message with id ${message.id} in my DMs:**`);
+    client.channels.cache.get(channels.dmLogs).send(`**'${message.author.tag}' / ${message.author.id} sent this message with id ${message.id} in my DMs:**`);
     const attachments = [];
     message.attachments.forEach(element => {
         attachments.push(element.url);
     });
-    client.channels.cache.get(botDmLogs).send({ content: message.content, files: attachments })
-        .catch(err => client.channels.cache.get(botDmLogs).send(`Failed to forward: ${err}`));
+    client.channels.cache.get(channels.dmLogs).send({ content: message.content, files: attachments })
+        .catch(err => client.channels.cache.get(channels.dmLogs).send(`Failed to forward: ${err}`));
 }
 
 // in case there's a bot DM contest running, check how many submissions were submitted already

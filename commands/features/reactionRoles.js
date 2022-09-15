@@ -1,4 +1,4 @@
-const { reactionRolesChannel } = require('../../configurations/config.json');
+const { channels } = require('../../configurations/config.json');
 const logger = require('./logging');
 let client;
 
@@ -236,7 +236,7 @@ const roleData = {
 function fetchToggleMessages(clientVar) {
     client = clientVar;
 
-    client.channels.fetch(reactionRolesChannel).then(channel => {
+    client.channels.fetch(channels.reactionRoles).then(channel => {
         Object.values(roleData).forEach(msg => {
             channel.messages.fetch(msg);
         });
@@ -245,14 +245,14 @@ function fetchToggleMessages(clientVar) {
 
 async function reactionUpdate(type, reaction, user, message) {
     // disregard reactions not in #toggleChannels
-    if (message.channel.id !== reactionRolesChannel) return;
+    if (message.channel.id !== channels.reactionRoles) return;
 
     // prevent people blocked from using reaction roles from using the bot
     if (reactionRolesBlocked.includes(message.author.id)) { return; }
 
     // return if category isn't registered
     if (!roleData[message.id]) {
-        logger.log(`ReactionRoles: Detected a message in <#${reactionRolesChannel}>, but the message with id ${message.id} isn't registered in roleData.`);
+        logger.log(`ReactionRoles: Detected a message in <#${channels.reactionRoles}>, but the message with id ${message.id} isn't registered in roleData.`);
         return;
     }
 
@@ -263,7 +263,7 @@ async function reactionUpdate(type, reaction, user, message) {
 
     // return if role isn't registered
     if (!roleData[message.id].roles[roleIdentifier]) {
-        logger.log(`ReactionRoles: Detected an unknown reaction to one of the messages in <#${reactionRolesChannel}>. The reaction was ${roleIdentifier} by user ${user.tag}.`);
+        logger.log(`ReactionRoles: Detected an unknown reaction to one of the messages in <#${channels.reactionRoles}>. The reaction was ${roleIdentifier} by user ${user.tag}.`);
         return;
     }
     const roleId = roleData[message.id].roles[roleIdentifier].roleId; // get roleId from roleData based on the identifier

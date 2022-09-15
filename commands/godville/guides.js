@@ -1,4 +1,4 @@
-const { logs, prefix } = require('../../configurations/config.json');
+const { channels, prefix } = require('../../configurations/config.json');
 
 const guides_list = [
     ['Extensive sailing guide by Blue Feather',
@@ -28,7 +28,7 @@ const guides_list = [
 ];
 
 function show_guides_list(client, message) {
-    const logsChannel = client.channels.cache.get(logs);
+    const logsChannel = client.channels.cache.get(channels.logs);
     console.log(`${message.author.tag} requested the list of guides in channel ${message.channel.name}`);
     logsChannel.send(`${message.author.tag} requested the list of guides in channel ${message.channel.name}`);
     let text = '```diff\n';
@@ -48,7 +48,7 @@ function show_guide(message, guide_number, client, Discord) {
         .setDescription(guides_list[index_number][1])
         .setFooter(`Guide by ${guides_list[index_number][3]}`);
     message.channel.send({ embeds: [guide_embed] });
-    const logsChannel = client.channels.cache.get(logs);
+    const logsChannel = client.channels.cache.get(channels.logs);
     console.log(`${message.author.tag} requested the guide "${guides_list[index_number][0]}" in channel ${message.channel.name}.`);
     logsChannel.send(`${message.author.tag} requested the guide "${guides_list[index_number][0]}" in channel ${message.channel.name}.`);
 }
@@ -57,7 +57,7 @@ function list_or_guide(message, number, client, Discord) {
     if (!number.length) {
         show_guides_list(client, message);
     } else {
-        const logsChannel = client.channels.cache.get(logs);
+        const logsChannel = client.channels.cache.get(channels.logs);
         console.log(`${message.author.tag} requested guide ${number} in channel ${message.channel.name}.`);
         logsChannel.send(`${message.author.tag} requested guide ${number} in channel ${message.channel.name}.`);
 

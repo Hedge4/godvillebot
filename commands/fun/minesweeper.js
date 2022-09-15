@@ -1,4 +1,4 @@
-const { logs } = require('../../configurations/config.json');
+const { channels } = require('../../configurations/config.json');
 
 function main(client, message) {
     let size = 6;
@@ -22,7 +22,7 @@ function main(client, message) {
         }
     });
 
-    const logsChannel = client.channels.cache.get(logs);
+    const logsChannel = client.channels.cache.get(channels.logs);
     console.log(`${message.author.tag} requested a minesweeper game in ${message.channel.name}.`);
     logsChannel.send(`${message.author.tag} requested a minesweeper game in ${message.channel.name}.`);
     const bombs = [];

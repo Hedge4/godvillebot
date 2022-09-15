@@ -1,10 +1,10 @@
-const { prefix, logs, commandChannels, botvilleChannel } = require('../../configurations/config.json');
+const { prefix, channels } = require('../../configurations/config.json');
 
 function link_profile(message, link, godData, client) {
-    if (!commandChannels.includes(message.channel.id)) {
-        return message.reply(`Please only use this command in <#${botvilleChannel}> to avoid spam.`);
+    if (!Object.values(channels.commandsAllowed).includes(message.channel.id)) {
+        return message.reply(`Please only use this command in <#${channels.botville}> to avoid spam.`);
     }
-    const logsChannel = client.channels.cache.get(logs);
+    const logsChannel = client.channels.cache.get(channels.logs);
 
     // we keep/make the link encoded if the user gave us a link to their page, and not the name
     if (link.startsWith('https://godvillegame.com/gods/')) {

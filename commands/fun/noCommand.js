@@ -1,5 +1,5 @@
 const logger = require('../features/logging');
-const { botID } = require('../../configurations/config.json');
+const { clientId } = require('../../configurations/config.json');
 const Discord = require('discord.js');
 const sharp = require('sharp');
 const https = require('https');
@@ -11,7 +11,7 @@ async function main(message) {
         let user = message.mentions.users.first();
         if (!user) {
             return message.reply('You need to mention someone to nope, you silly bag of freshly rotten grapes');
-        } else if (user.id == botID) {
+        } else if (user.id == clientId) {
             user = message.author; // don't nope the bot
         }
 

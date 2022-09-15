@@ -1,4 +1,4 @@
-const { logs, prefix } = require('../../configurations/config.json');
+const { channels, prefix } = require('../../configurations/config.json');
 
 async function main(message, client) {
     if (message.member.manageable) {
@@ -10,7 +10,7 @@ async function main(message, client) {
         message.member.setNickname(newNick, `Used ${prefix}randomnick command.`);
 
         console.log(`${message.author.tag} / ${message.author.id}: Changed nickname from ${oldNick} to ${newNick}.`);
-        client.channels.cache.get(logs).send(`**${message.author.tag} / ${message.author.id}**: Changed nickname from **${oldNick}** to **${newNick}**.`);
+        client.channels.cache.get(channels.logs).send(`**${message.author.tag} / ${message.author.id}**: Changed nickname from **${oldNick}** to **${newNick}**.`);
         return message.reply(`Changed your nickname from **${oldNick}** to **${newNick}**.`);
     }
 }

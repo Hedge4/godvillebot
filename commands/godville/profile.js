@@ -1,7 +1,7 @@
 const https = require('https');
 const { MessageEmbed } = require('discord.js');
 
-const { prefix, botvilleChannel } = require('../../configurations/config.json');
+const { prefix, channels } = require('../../configurations/config.json');
 const logger = require('../features/logging');
 const getUsers = require('../features/getUsers');
 const getters = require('../../index');
@@ -30,8 +30,8 @@ async function showProfile(message, username, godData) {
     const godDoc = await godData.get();
     if (godDoc.data()[user.id] === undefined) {
         if (!self) {
-            return message.reply(`<@${user.id}> hasn't linked their Godville account yet. They can do so using the \`${prefix}link\` command in <#${botvilleChannel}>.`);
-        } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#${botvilleChannel}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
+            return message.reply(`<@${user.id}> hasn't linked their Godville account yet. They can do so using the \`${prefix}link\` command in <#${channels.botville}>.`);
+        } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#${channels.botville}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
     }
     const godURL = godDoc.data()[user.id];
     let god = godURL.slice(30);
@@ -155,8 +155,8 @@ async function showLink(message, username, client, godData) {
     const godDoc = await godData.get();
     if (godDoc.data()[user.id] === undefined) {
         if (!self) {
-            return message.reply(`<@${user.id}> hasn't linked their Godville account yet. They can do so using the \`${prefix}link\` command in <#${botvilleChannel}>.`);
-        } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#${botvilleChannel}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
+            return message.reply(`<@${user.id}> hasn't linked their Godville account yet. They can do so using the \`${prefix}link\` command in <#${channels.botville}>.`);
+        } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#${channels.botville}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
     }
 
     const godURL = godDoc.data()[user.id];

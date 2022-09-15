@@ -1,4 +1,4 @@
-const { prefix, botvilleChannel, logs, commandChannels } = require('../configurations/config.json');
+const { prefix, channels } = require('../configurations/config.json');
 
 const commands_list = [
     ['help',
@@ -141,7 +141,7 @@ function constructHelp(message, Discord, client) {
         .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
         .setTimestamp()
         .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
-    const logsChannel = client.channels.cache.get(logs);
+    const logsChannel = client.channels.cache.get(channels.logs);
     console.log(`${message.author.tag} requested the help message in ${message.channel.name}.`);
     logsChannel.send(`${message.author.tag} requested the help message in ${message.channel.name}.`);
     return helpEmbed;
@@ -156,7 +156,7 @@ function constructSpecificHelp(message, Discord, client, element) {
             .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
             .setTimestamp()
             .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
-        const logsChannel = client.channels.cache.get(logs);
+        const logsChannel = client.channels.cache.get(channels.logs);
         console.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
         logsChannel.send(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
         return specificHelpEmbed;
@@ -189,7 +189,7 @@ function constructSpecificHelp(message, Discord, client, element) {
             specificHelpEmbed.addField('__Usage examples:__', `${examples}`);
         }
 
-        const logsChannel = client.channels.cache.get(logs);
+        const logsChannel = client.channels.cache.get(channels.logs);
         console.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
         logsChannel.send(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
         return specificHelpEmbed;
@@ -209,11 +209,11 @@ function chooseHelp(message, Discord, client) {
     })) {
         return message.reply(`I don't know the command \`${prefix}${arg}\`!`);
     }
-    if (commandChannels.includes(message.channel.id)) {
+    if (Object.values(channels.commandsAllowed).includes(message.channel.id)) {
         return message.channel.send({ embeds: [helpEmbed] });
     } else {
-        message.reply(`I've sent my help message in <#${botvilleChannel}>!`);
-        return client.channels.cache.get(botvilleChannel).send({ embeds: [helpEmbed] });
+        message.reply(`I've sent my help message in <#${channels.botville}>!`);
+        return client.channels.cache.get(channels.botville).send({ embeds: [helpEmbed] });
     }
 }
 

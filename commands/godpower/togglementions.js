@@ -1,9 +1,9 @@
-const { logs } = require('../../configurations/config.json');
+const { channels } = require('../../configurations/config.json');
 
 async function toggleMentions(message, userData, client) {
     const userDoc = await userData.get();
     const User = {};
-    const logsChannel = client.channels.cache.get(logs);
+    const logsChannel = client.channels.cache.get(channels.logs);
     if(userDoc.data()[message.author.id] === undefined) {
         User[message.author.id] = {
             godpower: 0,

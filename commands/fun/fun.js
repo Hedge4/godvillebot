@@ -1,4 +1,4 @@
-const { commandChannels } = require('../../configurations/config.json');
+const { channels } = require('../../configurations/config.json');
 
 const bubblewrap = require('./bubblewrap.js');
 const minesweeper = require('./minesweeper.js');
@@ -8,7 +8,7 @@ const bonkCommand = require('./bonkCommand.js');
 
 function redirect(cmd, content, message, Discord, client) {
     // these functions should only work in command channels
-    const isCommandChannel = commandChannels.includes(message.channel.id);
+    const isCommandChannel = Object.values(channels.commandsAllowed).includes(message.channel.id);
 
     switch (cmd) {
         case 'bubblewrap':

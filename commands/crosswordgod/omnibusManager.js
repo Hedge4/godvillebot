@@ -1,5 +1,5 @@
 /* eslint-disable no-prototype-builtins */
-const { owner } = require('../../configurations/config.json');
+const { botOwners } = require('../../configurations/config.json');
 const main = require('../../index');
 const logger = require('../features/logging');
 
@@ -246,7 +246,7 @@ function parseOmnibusEntries(omnibusHtml) {
 
 
 async function createBackup(message) {
-    if (!owner.includes(message.author.id)) return message.reply('Only the bot owner can create new backups.'); // hehe nope
+    if (!Object.values(botOwners).includes(message.author.id)) return message.reply('Only the bot owner can create new backups.'); // hehe nope
     logger.log(`${message.author.tag} is trying to create a new omnibus backup file...`);
     const reply = await message.reply('Trying to create a new omnibus backup file...');
     const result = await createBackupFile();

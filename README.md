@@ -1,5 +1,5 @@
 # GodBot
-Version: 5.6.2
+Version: 5.7.0
 
 I should probably include some sort of description here. Meh, I'll add it later (read: probably never).
 
@@ -15,6 +15,7 @@ Additionally, all files were updated to work with discord.js V13 instead of V12,
 * 5.4 The bot can now also react with emojis for the >react command because of smarter command parsing.
 * 5.5 God(des)Bot has replaced Dyno for reaction roles, and can toggle roles if users add/remove reactions to a specific message.
 * 5.6 Added the >bonk command! (this took way too much effort)
+* 5.7 Completely restructured and cleaned up config.json and updated files using it.
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.

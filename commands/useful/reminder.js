@@ -1,4 +1,4 @@
-const { botvilleChannel } = require('../../configurations/config.json');
+const { channels } = require('../../configurations/config.json');
 const { MessageEmbed } = require('discord.js');
 const getters = require('../../index');
 const logger = require('../features/logging');
@@ -77,8 +77,8 @@ async function sendReminder(reminder) {
         }
     }
 
-    // apparently we failed, so we now try to send the reminder to the botvilleChannel
-    const channel = await client.channels.fetch(botvilleChannel);
+    // apparently we failed, so we now try to send the reminder to the botville channel
+    const channel = await client.channels.fetch(channels.botville);
     if (!channel) {
         failMessage += ' Also failed to send reminder to botville, channel couldn\'t be fetched.';
     } else {

@@ -1,4 +1,4 @@
-const { newspaperChannel } = require('../../configurations/config.json');
+const { channels } = require('../../configurations/config.json');
 const main = require('../../index');
 const logger = require('../features/logging');
 const timers = require('../features/timers');
@@ -6,7 +6,7 @@ const newspaper = require('./newspaperManager.js');
 
 function dailyNewspaperUpdate() {
     const client = main.getClient();
-    const channel = client.channels.cache.get(newspaperChannel);
+    const channel = client.channels.cache.get(channels.newspaper);
     newspaper.renewAuto(channel);
     logger.log(`News: Automatically tried to renew the newspaper and send it to the ${channel.name} channel. Random number check: ${Math.floor(Math.random() * 1000)}.`);
     let delay = getNewspaperUpdateDelay();
@@ -18,7 +18,7 @@ function dailyNewspaperUpdate() {
 
 function newsPing() {
     const client = main.getClient();
-    const channel = client.channels.cache.get(newspaperChannel);
+    const channel = client.channels.cache.get(channels.newspaper);
     channel.send('<@&677288625301356556>, don\'t forget about the bingo, crossword and accumulator!');
     logger.log(`Sent a newspaper reminder to the ${channel.name} channel. Random number check: ${Math.floor(Math.random() * 1000)}.`);
     let delay = getNewsPingDelay();

@@ -1,12 +1,23 @@
-const { prefix, botvilleChannel, noXpPrefixes, godpowerCooldownSeconds, logs, godpowerLogs, godvilleServer } = require('../../configurations/config.json');
+const { prefix, serversServed, channels } = require('../../configurations/config.json');
+
+const noXpChannels = [
+    channels.botville,
+    channels.randomSpam,
+    channels.modbot,
+    channels.musicCommands,
+    channels.appeals,
+    channels.venting,
+];
+const noXpPrefixes = ['?', 't!', '!', '>', ':', ';'];
+const cooldownSecondsAmount = 20;
 const godpowerCooldown = new Set(); // to create a cooldown between each time a user can earn godpower
 
 async function giveGodpower(message, userData, Discord, client) {
-
-    if (godpowerCooldown.has(message.author.id)) {return;}
-    if (xpBlocked.includes(message.author.id)) {return;}
-    if (!message.guild.id === godvilleServer) {return;} // no xp for other servers than the Godville server
-    if (noXpPrefixes.some(e => message.content.startsWith(e))) {return;}
+    if (noXpChannels.includes(message.channel.id)) return; // spam channels
+    if (message.guild.id !== serversServed.godvilleServer) return; // wrong servers
+    if (godpowerCooldown.has(message.author.id)) return; // on cooldown
+    if (xpBlocked.includes(message.author.id)) return; // blocked from getting godpower
+    if (noXpPrefixes.some(e => message.content.startsWith(e))) return; // these are likely commands => no godpower
 
     const regexCustomEmoji = /<[^:>]*:[^:>]+:[0-9]+>/g; // filter out custom emojis
     const regexMentions = /<(@(!|&)?|#)[0-9]+>/g; // filter out member, person and channel mentions
@@ -22,12 +33,12 @@ async function giveGodpower(message, userData, Discord, client) {
     validContent = validContent.replace(/[\s]+/g, ' '); // filter out whitespace larger than 1 character
 
     // no godpower for messages shorter than 15 characters
-    if (validContent.trim().length < 15) {return;}
+    if (validContent.trim().length < 15) { return; }
 
     const userDoc = await userData.get();
     const User = {};
     const godpowerAdd = Math.floor(Math.random() * 5) + 3;
-    if(userDoc.data()[message.author.id] === undefined) {
+    if (userDoc.data()[message.author.id] === undefined) {
         User[message.author.id] = {
             godpower: 0,
             gold: 0,
@@ -40,7 +51,7 @@ async function giveGodpower(message, userData, Discord, client) {
         User[message.author.id] = userDoc.data()[message.author.id];
     }
 
-    const gpLogsChannel = client.channels.cache.get(godpowerLogs);
+    const gpLogsChannel = client.channels.cache.get(channels.godpowerLogs);
     console.log(`${godpowerAdd} godpower added for user ${message.author.tag} in channel ${message.channel.name}.`);
     gpLogsChannel.send(`${godpowerAdd} godpower added for user ${message.author.tag} in channel ${message.channel.name}.`);
     godpowerCooldown.add(message.author.id);
@@ -56,7 +67,7 @@ async function giveGodpower(message, userData, Discord, client) {
 
     if (nextLevel <= newGodpower) {
         const newLevel = curLevel + 1;
-        const logsChannel = client.channels.cache.get(logs);
+        const logsChannel = client.channels.cache.get(channels.logs);
         console.log('User ' + message.author.tag + ' levelled up from level ' + curLevel + ' to level ' + newLevel);
         logsChannel.send('User ' + message.author.tag + ' levelled up from level ' + curLevel + ' to level ' + newLevel);
         let goldAdd = Math.floor(100 * newLevel ** 0.412);
@@ -75,17 +86,17 @@ async function giveGodpower(message, userData, Discord, client) {
             .setDescription(`You gathered ${nextLevel} godpower <:stat_godpower:401412765232660492> and reached level ${User[message.author.id].level}! :tada: - You now have a total of ${User[message.author.id].total_godpower} godpower. You'll need ${newNextLevel} more godpower for level ${newLevel + 1}.`)
             .addField('Gold rewarded', `You earned ${goldAdd} <:stat_gold:401414686651711498> for reaching level ` + User[message.author.id].level + '. You now have ' + User[message.author.id].gold + ' gold total.')
             .setFooter({ text: `Use ${prefix}toggle-mentions to enable or disable these notifications.`, iconURL: message.author.displayAvatarURL() });
-        if (User[message.author.id].mention !== false) { client.channels.cache.get(botvilleChannel).send(`Congratulations on reaching level ${User[message.author.id].level}, ${message.author}!`);}
-        client.channels.cache.get(botvilleChannel).send({ embeds: [lvlUpEmbed] });
+        if (User[message.author.id].mention !== false) { client.channels.cache.get(channels.botville).send(`Congratulations on reaching level ${User[message.author.id].level}, ${message.author}!`); }
+        client.channels.cache.get(channels.botville).send({ embeds: [lvlUpEmbed] });
     }
 
     User[message.author.id].last_username = message.author.tag;
     userData.set(User, { merge: true });
-    userData.update({ 1:totalGodpower });
+    userData.update({ 1: totalGodpower });
 
     setTimeout(() => {
         godpowerCooldown.delete(message.author.id);
-    }, godpowerCooldownSeconds * 1000);
+    }, cooldownSecondsAmount * 1000);
 }
 
 module.exports = giveGodpower;

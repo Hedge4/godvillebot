@@ -1,4 +1,4 @@
-const { mutedRoleMain, mutedRoleBot, godvilleServer, botServer, owner } = require('../../configurations/config.json');
+const { serversServed, botOwners, roles } = require('../../configurations/config.json');
 const logger = require('./logging');
 
 // setup for reacting to bot mentions in the godville server
@@ -40,24 +40,24 @@ const unmuteReactions = [
 
 // react when someoene mentions the bot
 async function mentionReact(message, client) {
-    if (owner.includes(message.author.id)) return;
+    if (Object.values(botOwners).includes(message.author.id)) return;
 
     if (botMentionCooldown.has(message.author.id)) {
         botMentionCooldown.delete(message.author.id); // why do I bother doing this
 
-        const gvServer = client.guilds.cache.get(godvilleServer);
-        const testServer = client.guilds.cache.get(botServer);
+        const gvServer = client.guilds.cache.get(serversServed.godvilleServer);
+        const testServer = client.guilds.cache.get(serversServed.botServer);
         const gvMember = gvServer.members.fetch(message.user.id);
         const botMember = testServer.members.fetch(message.user.id);
         await Promise.all([gvMember, botMember]); // woohoo efficiencyyyy, fuck yeah!
 
         try {
-            gvMember.roles.add(mutedRoleMain);
-            botMember.roles.add(mutedRoleBot);
+            gvMember.roles.add(roles.mutedMainServer);
+            botMember.roles.add(roles.mutedBotServer);
             setTimeout(() => {
                 try {
-                    gvMember.roles.remove(mutedRoleMain);
-                    botMember.roles.remove(mutedRoleBot);
+                    gvMember.roles.remove(roles.mutedMainServer);
+                    botMember.roles.remove(roles.mutedBotServer);
                     let text = unmuteReactions[Math.floor(Math.random() * unmuteReactions.length)];
                     text = text.replace('DISCNAME', `${message.author.tag}`);
                     text = text.replace('DISCID', `${message.author.id}`);

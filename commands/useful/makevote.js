@@ -1,4 +1,4 @@
-const { adminRole, owner } = require('../../configurations/config.json');
+const { botOwners, roles } = require('../../configurations/config.json');
 let reacting = false;
 const logger = require('../features/logging');
 
@@ -47,7 +47,7 @@ async function main(message, content) {
     const reactionCount = targetMsg.reactions.cache.size;
 
     if (reactionCount > 0) {
-        if (message.member.roles.cache.has(adminRole) || owner.includes(message.author.id)) {
+        if (message.member.roles.cache.has(roles.admin) || Object.values(botOwners).includes(message.author.id)) {
             // try to remove the reactions already on the message if the user is a mod
             try {
                 await targetMsg.reactions.removeAll();

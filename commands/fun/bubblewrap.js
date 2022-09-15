@@ -1,7 +1,7 @@
-const { logs } = require('../../configurations/config.json');
+const { channels } = require('../../configurations/config.json');
 
 async function main(client, message) {
-    const logsChannel = client.channels.cache.get(logs);
+    const logsChannel = client.channels.cache.get(channels.logs);
     console.log(`${message.author.tag} used the bubblewrap command in ${message.channel.name}.`);
     logsChannel.send(`${message.author.tag} used the bubblewrap command in ${message.channel.name}.`);
     let tobewrapped = message.content.slice(11).trim();

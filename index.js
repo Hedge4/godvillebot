@@ -26,8 +26,8 @@ const client = new Discord.Client({
 
 // certain variables used in this file
 const { version, updateMsg1, updateMsg2, updateMsg3 } = require('./package.json');
-const { logs, botServer, prefix, token, serversServed, owner, noXpChannels, botvilleChannel, commandChannels, newspaperChannel,
-    adminRole, ignoredChannels, botServerChannels, sendViaBotChannel, godvilleServer } = require('./configurations/config.json');
+const { channels, prefix, token, serversServed, botOwners,
+    roles } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator, crossword } = require('./configurations/commands.json');
 
 // load any dependencies here
@@ -98,7 +98,7 @@ blockedData.get().then(doc => {
 
 client.on('ready', () => {
     // do some caching and stuff for each guild in advance I guess
-    serversServed.forEach(guildID => {
+    Object.values(serversServed).forEach(guildID => {
         const guild = client.guilds.cache.get(guildID);
         guild.me.setNickname('GoddessBot');
         guild.members.fetch();
@@ -109,7 +109,7 @@ client.on('ready', () => {
 
     // send log messages that bot is online I guess
     const currentDate = new Date();
-    const logsChannel = client.channels.cache.get(logs);
+    const logsChannel = client.channels.cache.get(channels.logs);
     const loggedInGuilds = client.guilds.cache.map(e => { return e.name; }).sort().join(', ');
     logger.start(logsChannel);
     logger.toConsole(`\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!`);
@@ -133,7 +133,7 @@ client.on('ready', () => {
             \n**Newly added:**\n• ${updateMsg1}\n• ${updateMsg2}\n• ${updateMsg3}`)
         .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
         .setTimestamp();
-    client.channels.cache.get(botvilleChannel).send({ embeds: [startEmbed] });
+    client.channels.cache.get(channels.botville).send({ embeds: [startEmbed] });
     const delay1 = crosswordTimers.getUpdateDelay(); // delay before news automatically updates
     const delay2 = daily.resetDelay(true)[0];
     const delay3 = crosswordTimers.getNewsDelay(); // delay before the next newsping
@@ -183,26 +183,25 @@ client.on('messageCreate', (message) => {
         return botDMs.handleDMs(message, client);
 
         // handle messages in servers the bot is available in
-    } else if (serversServed.includes(message.guild.id)) {
+    } else if (Object.values(serversServed).includes(message.guild.id)) {
         // possibly later add detection for image links that automatically turn into an embed
         if (imageBlocked.includes(message.author.id) && message.attachments.size > 0 && block.hasImage(message.attachments)) {
             return block.blockImage(client, message);
         }
 
         // Ignore any channels in which the bot should not react to anything
+        const ignoredChannels = [channels.venting];
         if (ignoredChannels.includes(message.channel.id)) { return; }
 
         // people without Admin or Deities role need to activate their access to the server first
         if (message.content.toLowerCase().startsWith('?rank')) {
-            if (!message.member.roles.cache.has('313453649315495946') && !message.member.roles.cache.has(adminRole)) {
+            if (!message.member.roles.cache.has('313453649315495946') && !message.member.roles.cache.has(roles.admin)) {
                 return message.reply('Use the `?ireadtherules` command to unlock core server functionality before adding any extra channels!');
             }
         }
 
-        // give a user xp/godpower if they're talking in the right channel in the right server
-        if (!noXpChannels.includes(message.channel.id) && message.guild.id == godvilleServer) {
-            giveXP(message, userData, Discord, client);
-        }
+        // check if a user should be given godpower for this message
+        giveXP(message, userData, Discord, client);
 
         // see if a message applies for the chat contest
         chatContest.newMessage(message, client, userData);
@@ -217,7 +216,7 @@ client.on('messageCreate', (message) => {
             const content = message.content.slice(prefix.length + cmd.length).trim(); // remove prefix, command and whitespace
 
             // redirect godpower module commands (only command channels)
-            if (commandChannels.includes(message.channel.id)) {
+            if (Object.values(channels.commandsAllowed).includes(message.channel.id)) {
                 for (let i = 0; i < godpower.length; i++) {
                     if (cmd == godpower[i][0]) {
                         return godpowerModule(cmd, content, message, Discord, client, userData, limitedCommandsData);
@@ -236,7 +235,7 @@ client.on('messageCreate', (message) => {
             }
 
             // redirect crossword module commands (only command/news channels)
-            if (commandChannels.concat(newspaperChannel).includes(message.channel.id)) {
+            if (Object.values(channels.commandsAllowed).concat(channels.newspaper).includes(message.channel.id)) {
                 for (let i = 0; i < crossword.length; i++) {
                     if (cmd == crossword[i][0]) {
                         return crosswordModule(cmd, content, message);
@@ -286,7 +285,7 @@ client.on('messageCreate', (message) => {
             }
 
             // only for admins or bot owners
-            if (message.member.roles.cache.has(adminRole) || owner.includes(message.author.id)) {
+            if (message.member.roles.cache.has(roles.admin) || Object.values(botOwners).includes(message.author.id)) {
                 // redirect moderator module commands
                 for (let i = 0; i < moderator.length; i++) {
                     if (cmd == moderator[i][0]) {
@@ -306,14 +305,14 @@ client.on('messageCreate', (message) => {
         return message.reply('This bot was not created for this server. Please kick me from this server.');
     }
 
-    if (message.guild.id == botServer) {
+    if (message.guild.id == serversServed.botServer) {
         // handle accepting or rejecting suggestions in the bot's suggestion/log server
-        if (message.channel.id === botServerChannels[0]) {
+        if (message.channel.id === channels.botServer.suggestions) {
             return suggest.handleMessage(message, client, Discord, userData);
         }
 
         // handle messages that should be sent via the bot to a specific channel/user
-        if (message.channel.id == sendViaBotChannel) return sendViaBot(message);
+        if (message.channel.id == channels.sendViaBot) return sendViaBot(message);
     }
 
 
@@ -356,7 +355,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
     reactionRoles.reaction('add', reaction, user, message);
 
     // remove votes from blocked users in suggestions
-    if (message.channel.id === botServerChannels[0]) {
+    if (message.channel.id === channels.botServer.suggestions) {
         // I wanted to bully HP by preventing him from voting and added myself too so it wasn't too mean,
         // but he wanted his removed and now I'm the only one who can't vote :(
         // nvm I could add Paz :)

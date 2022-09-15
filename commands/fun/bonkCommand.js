@@ -1,5 +1,5 @@
 const logger = require('../features/logging');
-const { botID } = require('../../configurations/config.json');
+const { clientId } = require('../../configurations/config.json');
 const Discord = require('discord.js');
 const sharp = require('sharp');
 const https = require('https');
@@ -36,7 +36,7 @@ async function main(message) {
         let bonkee = user;
         if (!bonkee) {
             return message.reply('You need to mention someone to bonk, now go step on a lego dumdum');
-        } else if (bonkee.id == botID) {
+        } else if (bonkee.id == clientId) {
             bonker = bonkee;
             bonkee = message.author; // don't bonk the bot
         }

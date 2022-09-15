@@ -1,4 +1,4 @@
-// const { logs } = require('../../configurations/config.json');
+// const { channels } = require('../../configurations/config.json');
 // const getters = require('../../index.js');
 
 let logsChannel;
