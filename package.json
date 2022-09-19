@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.8.0",
+  "version": "5.8.1",
   "updateMsg1": "5.6-5.8 Added the >hug and >bonk commands, similar to >nope.",
   "updateMsg2": "5.5 Reactions in #toggleChannels are now handled by GoddessBot, and added basementping!",
   "updateMsg3": "5.4 >react is now able to react with emojis as well!",
