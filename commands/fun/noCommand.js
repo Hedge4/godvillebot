@@ -12,7 +12,7 @@ async function main(message) {
         if (!user) {
             return message.reply('You need to mention someone to nope, you silly bag of freshly rotten grapes');
         } else if (user.id == clientId) {
-            user = message.author; // don't nope the bot
+            user = message.author; // don't nope the bot, if you do you will be the nopee
         }
 
         logger.log(`${message.author.tag} / ${message.author.id} used the no command on ${user.tag} / ${user.id}.`);

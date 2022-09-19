@@ -36,12 +36,12 @@ async function main(message) {
         let bonkee = user;
         if (!bonkee) {
             return message.reply('You need to mention someone to bonk, now go step on a lego dumdum');
-        } else if (bonkee.id == clientId) {
+        } else if (bonkee.id == clientId) { // don't bonk the bot, if you do roles get swapped
             bonker = bonkee;
-            bonkee = message.author; // don't bonk the bot
+            bonkee = message.author;
+        }else if (bonker == bonkee) { // if you bonk yourself the bot will be the bonker
+            bonker = message.client.user;
         }
-        // if you bonk yourself the bot will be the bonker
-        if (bonker == bonkee) bonker = message.client.user;
 
         logger.log(`${message.author.tag} / ${message.author.id} used the bonk command on ${user.tag} / ${user.id}.`);
 
@@ -89,7 +89,7 @@ async function main(message) {
 
         // load our bonk image
         const bonk = await sharp('./images/bonk.jpg')
-            .resize(imageSize, imageSize) // resizing disabled because this image is already 300 x 300 pixels
+            .resize(imageSize, imageSize) // resize so we ensure the ratio between sizes is correct
             .png()
             .toBuffer(); // output to buffer to 'apply' changes (idk)
 
@@ -154,7 +154,7 @@ async function main(message) {
     // one big catch all because I'm lazy
     } catch (error) {
         console.error(error);
-        logger.log('Something went wrong with the no command. Error: ' + error);
+        logger.log('Something went wrong with the bonk command. Error: ' + error);
         message.reply('Something went wrong. I would have written a better error message but nahhh. Just check the logs or something, now psshhhht, begone');
     }
 }
