@@ -189,6 +189,12 @@ const roleData = {
                 roleId: '321022131083280385',
                 desc: '',
             },
+            '📚': {
+                fullName: 'Reading',
+                roleName: null,
+                roleId: '1021573139584524338',
+                desc: '',
+            },
             '🏞️': {
                 fullName: 'Sports and nature',
                 roleName: null,
@@ -222,9 +228,8 @@ const roleData = {
                 desc: '',
             },
             '✍️': {
-                fullName: 'Writing and reading',
+                fullName: 'Writing',
                 roleName: null,
-                alts: ['writing', 'reading'],
                 roleId: '369320944101097475',
                 desc: '',
             },
