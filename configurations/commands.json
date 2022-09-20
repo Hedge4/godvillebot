@@ -26,12 +26,12 @@
     ],
 
     "fun": [
+        ["hug", ["hugs"]],
         ["minesweeper", []],
         ["bubblewrap", []],
         ["randomnick", ["nick", "nickname", "changenick", "changenickname", "randomnickname"]],
         ["no", ["nope"]],
-        ["bonk", []],
-        ["hug", ["hugs"]]
+        ["bonk", []]
     ],
 
     "moderator": [
