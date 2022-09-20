@@ -45,19 +45,22 @@ async function mentionReact(message, client) {
     if (botMentionCooldown.has(message.author.id)) {
         botMentionCooldown.delete(message.author.id); // why do I bother doing this
 
+        // no fetch for the servers, they should be cached upon client initialisation
         const gvServer = client.guilds.cache.get(serversServed.godvilleServer);
         const testServer = client.guilds.cache.get(serversServed.botServer);
-        const gvMember = gvServer.members.fetch(message.user.id);
-        const botMember = testServer.members.fetch(message.user.id);
-        await Promise.all([gvMember, botMember]); // woohoo efficiencyyyy, fuck yeah!
+
+        // members are undefined if the try clause fails
+        let gvMember, botMember;
+        try { gvMember = await gvServer.members.fetch(message.author.id); } catch(_) { /*do nothing*/ }
+        try { botMember = await testServer.members.fetch(message.author.id); } catch(_) { /*do nothing*/ }
 
         try {
-            gvMember.roles.add(roles.mutedMainServer);
-            botMember.roles.add(roles.mutedBotServer);
+            if (gvMember) gvMember.roles.add(roles.mutedMainServer);
+            if (botMember) botMember.roles.add(roles.mutedBotServer);
             setTimeout(() => {
                 try {
-                    gvMember.roles.remove(roles.mutedMainServer);
-                    botMember.roles.remove(roles.mutedBotServer);
+                    if (gvMember) gvMember.roles.remove(roles.mutedMainServer);
+                    if (botMember) botMember.roles.remove(roles.mutedBotServer);
                     let text = unmuteReactions[Math.floor(Math.random() * unmuteReactions.length)];
                     text = text.replace('DISCNAME', `${message.author.tag}`);
                     text = text.replace('DISCID', `${message.author.id}`);
