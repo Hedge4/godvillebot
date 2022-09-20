@@ -3,7 +3,8 @@ const Discord = require('discord.js');
 const sharp = require('sharp');
 const https = require('https');
 
-const imageSize = 202; // 216 would be more consistent, but starting res is 202px
+const imgPath = './images/hug2.png';
+const imageSize = 200; // 216 would be more consistent, but starting res is 200px
 const pfpHuggeeSize = Math.round(0.33 * imageSize / 2) * 2;
 const pfpHuggerSize = Math.round(0.365 * imageSize / 2) * 2;
 const leftHuggeeGap = Math.round(0.07 * imageSize);
@@ -71,7 +72,7 @@ async function main(message) {
         });
 
         // load our hug image
-        const hug = await sharp('./images/hug2.png')
+        const hug = await sharp(imgPath)
             .resize(imageSize, imageSize) // resizing disabled because this image is already 300 x 300 pixels
             .png()
             .toBuffer(); // output to buffer to 'apply' changes (idk)
