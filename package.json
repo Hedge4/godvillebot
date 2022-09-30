@@ -1,9 +1,9 @@
 {
   "name": "godbot",
   "version": "5.8.4",
-  "updateMsg1": "5.6-5.8 Added the >hug and >bonk commands, similar to >nope.",
-  "updateMsg2": "5.5 Reactions in #toggleChannels are now handled by GoddessBot, and added basementping!",
-  "updateMsg3": "5.4 >react is now able to react with emojis as well!",
+  "updateMsg1": "5.9 Enabled spookmode, and added a little something on the side... :jack_o_lantern:",
+  "updateMsg2": "5.6-5.8 Added the >hug and >bonk commands, similar to >nope.",
+  "updateMsg3": "5.5 Reactions in #toggleChannels are now handled by GoddessBot, and added basementping!",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",

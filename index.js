@@ -46,6 +46,7 @@ const scheduler = require('./commands/features/scheduler');
 const giveXP = require('./commands/features/givexp');
 const onMention = require('./commands/features/botMentions');
 const messageReactions = require('./commands/features/messageReactions');
+const randomMessages = require('./commands/features/randomMessages');
 const botDMs = require('./commands/features/botDMs');
 const chatContest = require('./commands/features/chatContest');
 const daily = require('./commands/godpower/daily');
@@ -146,6 +147,7 @@ client.on('ready', () => {
     botDMs.checkDMContest(client);
     chatContest.startupCheck(client, userData);
     reactionRoles.load(client);
+    randomMessages(client);
 
     // load data such as the newspaper and the omnibus list
     logger.log('\nOmniBackup: Trying to load the Omnibus backup file...'); // linebreak for all of the newspaper/omnibus parsing spam
