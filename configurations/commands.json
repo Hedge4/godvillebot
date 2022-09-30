@@ -22,7 +22,8 @@
         ["ping", ["pong", "latency"]],
         ["react", []],
         ["makevote", ["mv", "vote", "mp", "makepoll", "poll"]],
-        ["remindme", ["remind", "reminder"]]
+        ["remindme", ["remind", "reminder"]],
+        ["bottime", ["bt", "time"]]
     ],
 
     "fun": [

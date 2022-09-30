@@ -18,6 +18,7 @@ Additionally, all files were updated to work with discord.js V13 instead of V12,
 * 5.7 Completely restructured and cleaned up config.json and updated files using it.
 * 5.8 Added the >hug command, similar to >nope and >bonk.
 * 5.9 Enabled spookmode, and added random messages that appear randomly and get deleted quickly.
+* 5.10 Added the >botTime command
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.
