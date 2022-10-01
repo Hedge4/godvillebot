@@ -192,7 +192,7 @@ client.on('messageCreate', (message) => {
             return block.blockImage(message);
         }
 
-        // Ignore any channels in which the bot should not react to anything
+        // ignore any channels in which the bot should not react to anything
         const ignoredChannels = [channels.venting];
         if (ignoredChannels.includes(message.channel.id)) {
             const cmd = message.content.toLowerCase().slice(prefix.length).split(/\s+/)[0];
@@ -200,6 +200,11 @@ client.on('messageCreate', (message) => {
                 return hugCommand(message); // >hug is the only command that works in venting
             }
             return;
+        }
+
+        // TEMPORARY for Spooktober: reply 👻 to anything bbq says, because apparently he's dead
+        if (message.author.id === '785411625746169866') {
+            message.react('👻').catch(/* ignore */);
         }
 
         // people without Admin or Deities role need to activate their access to the server first
