@@ -5,7 +5,7 @@ const reactionEvents = [
         active: true,
         triggers: ['spook', 'scare', 'scary', 'horror', 'horrify', 'terror', 'terrify', 'scream', 'skeleton',
             'creepy', 'pumpkin', 'ghost', 'vampire', 'werewolf', 'zombie', 'fright', 'halloween', 'racism',
-            'witch', 'spider', 'skull', 'fear', 'mummy', 'trick or treat', 'slendy', 'wicked'],
+            'witch', 'spider', 'skull', 'fear', 'mummy', 'trick or treat', 'slendy', 'wicked', 'soul'],
         reactions: [
             'https://c.tenor.com/EaQlLgHY9dwAAAAM/pumpkins-pumpkin.gif',
             'https://c.tenor.com/uDCPw_UdZOoAAAAM/skeleton-dance.gif',
@@ -70,6 +70,9 @@ const reactionEvents = [
             'https://cdn.discordapp.com/attachments/872456115676393512/1024788199626780732/image0.gif',
             'https://tenor.com/view/imagen-animada-gif-18874126',
             'https://tenor.com/view/horror-gif-5045237',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC39EgG5Mpeh3XIOzyVRLypp_BKq3nIbRlug',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUTh_Yt30tjEyG5kkNyBgKwXfefNlfrqiKJQ',
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTju30MOyVsDNZSF8mtRUFNpi4zX7AeOiXHng',
         ],
     },
 ];
