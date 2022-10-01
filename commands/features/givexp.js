@@ -1,4 +1,5 @@
 const { prefix, serversServed, channels } = require('../../configurations/config.json');
+const logger = require('../features/logging');
 
 const noXpChannels = [
     channels.botville,
@@ -67,9 +68,7 @@ async function giveGodpower(message, userData, Discord, client) {
 
     if (nextLevel <= newGodpower) {
         const newLevel = curLevel + 1;
-        const logsChannel = client.channels.cache.get(channels.logs);
-        console.log('User ' + message.author.tag + ' levelled up from level ' + curLevel + ' to level ' + newLevel);
-        logsChannel.send('User ' + message.author.tag + ' levelled up from level ' + curLevel + ' to level ' + newLevel);
+        logger.log('User ' + message.author.tag + ' levelled up from level ' + curLevel + ' to level ' + newLevel);
         let goldAdd = Math.floor(100 * newLevel ** 0.412);
         if (goldAdd > 500) { goldAdd = 500; }
         User[message.author.id].godpower = newGodpower - nextLevel;

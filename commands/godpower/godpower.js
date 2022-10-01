@@ -11,9 +11,9 @@ function redirect(cmd, content, message, Discord, client, userData, limitedComma
         case 'gold':
             return displayGold(message, content, userData, Discord, client);
         case 'toggle-mentions':
-            return toggleMentions(message, userData, client);
+            return toggleMentions(message, userData);
         case 'ranking':
-            return getRanking(message, content, userData, client);
+            return getRanking(message, content, userData);
         case 'daily':
             return limitedCommands.daily(message, limitedCommandsData, userData);
         default:

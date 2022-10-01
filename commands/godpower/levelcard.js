@@ -1,4 +1,4 @@
-const { channels } = require('../../configurations/config.json');
+const logger = require('../features/logging');
 const getUsers = require('../features/getUsers');
 
 async function displayLevel(message, msgContent, userData, Discord, client) {
@@ -53,9 +53,7 @@ async function displayLevel(message, msgContent, userData, Discord, client) {
     .addField('Rank', rank.toString(), true)
     .setFooter({ text: `${difference} godpower needed for level ${nextLevel}.`, iconURL: user.displayAvatarURL() });
 
-    const logsChannel = client.channels.cache.get(channels.logs);
-    console.log(`${message.author.tag} requested the level card for ${user.tag}.`);
-    logsChannel.send(`${message.author.tag} requested the level card for ${user.tag}.`);
+    logger.log(`${message.author.tag} requested the level card for ${user.tag}.`);
     message.channel.send({ embeds: [lvlEmbed] });
 }
 

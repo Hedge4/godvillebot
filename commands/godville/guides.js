@@ -1,4 +1,5 @@
-const { channels, prefix } = require('../../configurations/config.json');
+const { prefix } = require('../../configurations/config.json');
+const logger = require('../features/logging');
 
 const guides_list = [
     ['Extensive sailing guide by Blue Feather',
@@ -27,10 +28,8 @@ const guides_list = [
     'Brinjal'],
 ];
 
-function show_guides_list(client, message) {
-    const logsChannel = client.channels.cache.get(channels.logs);
-    console.log(`${message.author.tag} requested the list of guides in channel ${message.channel.name}`);
-    logsChannel.send(`${message.author.tag} requested the list of guides in channel ${message.channel.name}`);
+function showGuidesList(message) {
+    logger.log(`${message.author.tag} requested the list of guides in channel ${message.channel.name}`);
     let text = '```diff\n';
     for (let i = 0; i < guides_list.length; i++) {
         text += `+ {${i + 1}}  ${guides_list[i][0]}\n`;
@@ -39,7 +38,7 @@ function show_guides_list(client, message) {
     message.reply(`Here are all ${guides_list.length} currently available guides:\n${text}`);
 }
 
-function show_guide(message, guide_number, client, Discord) {
+function showGuide(message, guide_number, Discord) {
     const index_number = guide_number - 1;
     const guide_embed = new Discord.MessageEmbed()
         .setTitle(guides_list[index_number][0])
@@ -48,18 +47,14 @@ function show_guide(message, guide_number, client, Discord) {
         .setDescription(guides_list[index_number][1])
         .setFooter(`Guide by ${guides_list[index_number][3]}`);
     message.channel.send({ embeds: [guide_embed] });
-    const logsChannel = client.channels.cache.get(channels.logs);
-    console.log(`${message.author.tag} requested the guide "${guides_list[index_number][0]}" in channel ${message.channel.name}.`);
-    logsChannel.send(`${message.author.tag} requested the guide "${guides_list[index_number][0]}" in channel ${message.channel.name}.`);
+    logger.log(`${message.author.tag} requested the guide "${guides_list[index_number][0]}" in channel ${message.channel.name}.`);
 }
 
-function list_or_guide(message, number, client, Discord) {
+function listOrGuide(message, number, Discord) {
     if (!number.length) {
-        show_guides_list(client, message);
+        showGuidesList(message);
     } else {
-        const logsChannel = client.channels.cache.get(channels.logs);
-        console.log(`${message.author.tag} requested guide ${number} in channel ${message.channel.name}.`);
-        logsChannel.send(`${message.author.tag} requested guide ${number} in channel ${message.channel.name}.`);
+        logger.log(`${message.author.tag} requested guide ${number} in channel ${message.channel.name}.`);
 
         if (isNaN(number)) {
             return message.reply('You need to enter the number of the guide you want to view.');
@@ -68,8 +63,8 @@ function list_or_guide(message, number, client, Discord) {
             return message.reply('That guide number doesn\'t exist.');
         }
         number = Math.floor(number);
-        show_guide(message, number, client, Discord);
+        showGuide(message, number, Discord);
     }
 }
 
-module.exports = list_or_guide;
+module.exports = listOrGuide;

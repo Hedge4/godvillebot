@@ -1,8 +1,7 @@
-const { channels } = require('../../configurations/config.json');
+const logger = require('../features/logging');
 
-async function main(client, message) {
+async function main(message) {
     const rand = Date.now();
-    const logsChannel = client.channels.cache.get(channels.logs);
     if(message.attachments.first()) { //checks if an attachment is sent
         let format = '';
         try {
@@ -16,14 +15,12 @@ async function main(client, message) {
                 name: `SPOILER_${rand}${format}`,
             }],
         }).then(message.delete());
-        console.log(`${message.author.tag} requested a spoilered image in channel ${message.channel.name} for a file with name: ${message.attachments.first().name}`);
-        logsChannel.send(`${message.author.tag} requested a spoilered image in channel ${message.channel.name} for a file with name: ${message.attachments.first().name}`);
+        logger.log(`${message.author.tag} requested a spoilered image in channel ${message.channel.name} for a file with name: ${message.attachments.first().name}`);
     } else {
         message.delete();
         const url = message.content.slice(8).trim();
         if (!url || !url.length) {return message.reply('Please provide the URL to a file, or attach an image you want to make into a spoiler.');}
-        console.log(`${message.author.tag} requested a spoilered image from an URL in ${message.channel.name}. URL: ${url}`);
-        logsChannel.send(`${message.author.tag} requested a spoilered image from an URL in ${message.channel.name}. URL: <${url}>`);
+        logger.log(`${message.author.tag} requested a spoilered image from an URL in ${message.channel.name}. URL: ${url}`);
         let format = '';
         try {
             format = /^[\s\S]+(\.[^.]+$)/.exec(url)[1];

@@ -1,4 +1,4 @@
-const { channels } = require('../../configurations/config.json');
+const logger = require('../features/logging');
 const getUsers = require('../features/getUsers');
 
 async function displayGold(message, msgContent, userData, Discord, client) {
@@ -40,9 +40,7 @@ async function displayGold(message, msgContent, userData, Discord, client) {
     .addField('Gold <:stat_gold:401414686651711498>', User[user.id].gold.toString(), true)
     .setThumbnail(user.displayAvatarURL());
 
-    const logsChannel = client.channels.cache.get(channels.logs);
-    console.log(`${message.author.tag} requested the gold amount for ${user.tag}.`);
-    logsChannel.send(`${message.author.tag} requested the gold amount for ${user.tag}.`);
+    logger.log(`${message.author.tag} requested the gold amount for ${user.tag}.`);
     message.channel.send({ embeds: [goldEmbed] });
 }
 

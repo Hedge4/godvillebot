@@ -1,4 +1,5 @@
 const { channels, botOwners } = require('../../configurations/config.json');
+const logger = require('../features/logging');
 const getUsers = require('../features/getUsers');
 
 function hasImage(attachments) {
@@ -19,11 +20,9 @@ function hasImage(attachments) {
     return false;
 }
 
-async function blockImage(client, message) {
-    const logsChannel = client.channels.cache.get(channels.logs);
+async function blockImage(message) {
     setTimeout(() => { message.delete(); }, 100);
-    console.log(`Blocked ${message.author.tag} from sending an image with filename "${message.attachments.first().name}" in ${message.channel.name}.`);
-    logsChannel.send(`Blocked ${message.author.tag} from sending an image with filename "${message.attachments.first().name}" in ${message.channel.name}.`);
+    logger.log(`Blocked ${message.author.tag} from sending an image with filename "${message.attachments.first().name}" in ${message.channel.name}.`);
     message.channel.send(`<@${message.author.id}>, you are currently not allowed to post images in the server.`)
         .then(msg => { setTimeout(() => { msg.delete(); }, 10 * 1000); })
         .catch(console.error);
@@ -41,9 +40,9 @@ function blockList(message, client) {
         return message.reply(`${args[0]} is not one of the blocked user lists.\n${correctFormat}`);
     }
 
-    const logsChannel = client.channels.cache.get(channels.logs);
     args[0] = args[0].toLowerCase();
     let msg = `Here is the list of users blocked from "${args[0]}":\n\`\`\``;
+
     if (args[0] == 'bot') {
         if (!botBlocked.length) msg += ('No users blocked.');
         for (let i = 0; i < botBlocked.length; i++) {
@@ -55,9 +54,9 @@ function blockList(message, client) {
             }
             msg += (` ${i}. ${user}\n`);
         }
-        logsChannel.send(`${message.author.tag} requested the list of users blocked from using the bot.`);
-        console.log(`${message.author.tag} requested the list of users blocked from using the bot.`);
+        logger.log(`${message.author.tag} requested the list of users blocked from using the bot.`);
     }
+
     if (args[0] == 'xp') {
         if (!xpBlocked.length) msg += ('No users blocked.');
         for (let i = 0; i < xpBlocked.length; i++) {
@@ -69,9 +68,9 @@ function blockList(message, client) {
             }
             msg += (` ${i}. ${user}\n`);
         }
-        logsChannel.send(`${message.author.tag} requested the list of users blocked from gaining xp (godpower).`);
-        console.log(`${message.author.tag} requested the list of users blocked from gaining xp (godpower).`);
+        logger.log(`${message.author.tag} requested the list of users blocked from gaining xp (godpower).`);
     }
+
     if (args[0] == 'image') {
         if (!imageBlocked.length) msg += ('No users blocked.');
         for (let i = 0; i < imageBlocked.length; i++) {
@@ -83,9 +82,9 @@ function blockList(message, client) {
             }
             msg += (` ${i}. ${user}\n`);
         }
-        logsChannel.send(`${message.author.tag} requested the list of users blocked from sending images.`);
-        console.log(`${message.author.tag} requested the list of users blocked from sending images.`);
+        logger.log(`${message.author.tag} requested the list of users blocked from sending images.`);
     }
+
     if (args[0] == 'suggest') {
         if (!suggestBlocked.length) msg += ('No users blocked.');
         for (let i = 0; i < suggestBlocked.length; i++) {
@@ -97,9 +96,9 @@ function blockList(message, client) {
             }
             msg += (` ${i}. ${user}\n`);
         }
-        logsChannel.send(`${message.author.tag} requested the list of users blocked from making suggestions.`);
-        console.log(`${message.author.tag} requested the list of users blocked from making suggestions.`);
+        logger.log(`${message.author.tag} requested the list of users blocked from making suggestions.`);
     }
+
     if (args[0] == 'reactionroles') {
         if (!reactionRolesBlocked.length) msg += ('No users blocked.');
         for (let i = 0; i < reactionRolesBlocked.length; i++) {
@@ -111,9 +110,9 @@ function blockList(message, client) {
             }
             msg += (` ${i}. ${user}\n`);
         }
-        logsChannel.send(`${message.author.tag} requested the list of users blocked from using reaction roles.`);
-        console.log(`${message.author.tag} requested the list of users blocked from using reaction roles.`);
+        logger.log(`${message.author.tag} requested the list of users blocked from using reaction roles.`);
     }
+
     msg += ('```');
     return message.reply(msg);
 }
@@ -125,9 +124,11 @@ function block(message, client, blockedData) {
     } else if (args.length < 2) {
         return message.reply('Please specify what you want to block and for which user!\n' + correctFormat);
     }
+
     if (!blockLists.includes(args[0].toLowerCase())) {
         return message.reply(`${args[0]} is not one of the things users can be blocked from.\n${correctFormat}`);
     }
+    args[0] = args[0].toLowerCase();
 
     const user = getUsers.One(args[1], client);
     if (!user) {
@@ -137,7 +138,6 @@ function block(message, client, blockedData) {
         return message.reply(`Nuh uh I'm not blocking ${user.username} you dummy!`);
     }
 
-    args[0] = args[0].toLowerCase();
     if (args[0] == 'bot') {
         if (botBlocked.includes(user.id)) { return message.reply('This user is already blocked from this.'); }
         botBlocked.push(user.id);
@@ -146,6 +146,7 @@ function block(message, client, blockedData) {
         client.channels.cache.get(channels.modLogs).send(`${message.author.tag} blocked ${user.tag} from using the bot.`);
         return message.reply(`Successfully blocked ${user.tag} from using the bot.`);
     }
+
     if (args[0] == 'xp') {
         if (xpBlocked.includes(user.id)) { return message.reply('This user is already blocked from this.'); }
         xpBlocked.push(user.id);
@@ -154,6 +155,7 @@ function block(message, client, blockedData) {
         client.channels.cache.get(channels.modLogs).send(`${message.author.tag} blocked ${user.tag} from gaining xp (godpower).`);
         return message.reply(`Successfully blocked ${user.tag} from gaining xp (godpower).`);
     }
+
     if (args[0] == 'suggest') {
         if (suggestBlocked.includes(user.id)) { return message.reply('This user is already blocked from this.'); }
         suggestBlocked.push(user.id);
@@ -162,6 +164,7 @@ function block(message, client, blockedData) {
         client.channels.cache.get(channels.modLogs).send(`${message.author.tag} blocked ${user.tag} from making suggestions for the bot.`);
         return message.reply(`Successfully blocked ${user.tag} from making suggestions for the bot.`);
     }
+
     if (args[0] == 'image') {
         if (imageBlocked.includes(user.id)) { return message.reply('This user is already blocked from this.'); }
         imageBlocked.push(user.id);
@@ -170,6 +173,7 @@ function block(message, client, blockedData) {
         client.channels.cache.get(channels.modLogs).send(`${message.author.tag} blocked ${user.tag} from sending images in the server.`);
         return message.reply(`Successfully blocked ${user.tag} from sending images in the server.`);
     }
+
     if (args[0] == 'reactionroles') {
         if (reactionRolesBlocked.includes(user.id)) { return message.reply('This user is already blocked from this.'); }
         reactionRolesBlocked.push(user.id);
@@ -187,9 +191,11 @@ function unblock(message, client, blockedData) {
     } else if (args.length < 2) {
         return message.reply('Please specify what you want to unblock and for which user!\n' + correctFormat);
     }
+
     if (!blockLists.includes(args[0].toLowerCase())) {
         return message.reply(`${args[0]} is not one of the things users can be blocked from.\n${correctFormat}`);
     }
+
     const user = getUsers.One(args[1], client);
     if (!user) {
         return message.reply(`User "${args[1]}" could not be found. Mention a valid user or use a valid username/ID!\n${correctFormat}`);
@@ -207,6 +213,7 @@ function unblock(message, client, blockedData) {
         client.channels.cache.get(channels.modLogs).send(`${message.author.tag} unblocked ${user.tag} from using the bot.`);
         return message.reply(`Successfully unblocked ${user.tag} from using the bot.`);
     }
+
     if (args[0] == 'xp') {
         if (!xpBlocked.includes(user.id)) { return message.reply('This user isn\'t blocked from this.'); }
         xpBlocked.splice(xpBlocked.indexOf(user.id), 1);
@@ -215,6 +222,7 @@ function unblock(message, client, blockedData) {
         client.channels.cache.get(channels.modLogs).send(`${message.author.tag} unblocked ${user.tag} from gaining xp (godpower).`);
         return message.reply(`Successfully unblocked ${user.tag} from gaining xp (godpower).`);
     }
+
     if (args[0] == 'suggest') {
         if (!suggestBlocked.includes(user.id)) { return message.reply('This user isn\'t blocked from this.'); }
         suggestBlocked.splice(suggestBlocked.indexOf(user.id), 1);
@@ -223,6 +231,7 @@ function unblock(message, client, blockedData) {
         client.channels.cache.get(channels.modLogs).send(`${message.author.tag} unblocked ${user.tag} from making suggestions for the bot.`);
         return message.reply(`Successfully unblocked ${user.tag} from making suggestions for the bot.`);
     }
+
     if (args[0] == 'image') {
         if (!imageBlocked.includes(user.id)) { return message.reply('This user isn\'t blocked from this.'); }
         imageBlocked.splice(imageBlocked.indexOf(user.id), 1);
@@ -231,6 +240,7 @@ function unblock(message, client, blockedData) {
         client.channels.cache.get(channels.modLogs).send(`${message.author.tag} unblocked ${user.tag} from sending images in the server.`);
         return message.reply(`Successfully unblocked ${user.tag} from sending images in the server.`);
     }
+
     if (args[0] == 'reactionroles') {
         if (!reactionRolesBlocked.includes(user.id)) { return message.reply('This user isn\'t blocked from this.'); }
         reactionRolesBlocked.splice(reactionRolesBlocked.indexOf(user.id), 1);

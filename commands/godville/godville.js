@@ -12,11 +12,11 @@ function redirect(cmd, content, message, client, Discord, godData) {
         case 'showlink':
             return profile.showLink(message, content, client, godData);
         case 'guides':
-            return guide(message, content, client, Discord);
+            return guide(message, content, Discord);
         case 'godwiki':
-            return godWiki(client, content, message);
+            return godWiki(content, message);
         case 'link':
-            return link(message, content, godData, client);
+            return link(message, content, godData);
         default:
             return message.reply(`The '${cmd}' command does not seem to be correctly set up.`);
     }

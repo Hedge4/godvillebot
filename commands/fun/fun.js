@@ -15,9 +15,9 @@ function redirect(cmd, content, message, Discord, client) {
         case 'bubblewrap':
             return isCommandChannel ? bubblewrap(client, message) : undefined;
         case 'minesweeper':
-            return isCommandChannel ? minesweeper(client, message) : undefined;
+            return isCommandChannel ? minesweeper(message) : undefined;
         case 'randomnick':
-            return isCommandChannel ? randomnickname(message, client) : undefined;
+            return isCommandChannel ? randomnickname(message) : undefined;
         case 'no':
             return noCommand(message);
         case 'bonk':

@@ -189,7 +189,7 @@ client.on('messageCreate', (message) => {
     } else if (Object.values(serversServed).includes(message.guild.id)) {
         // possibly later add detection for image links that automatically turn into an embed
         if (imageBlocked.includes(message.author.id) && message.attachments.size > 0 && block.hasImage(message.attachments)) {
-            return block.blockImage(client, message);
+            return block.blockImage(message);
         }
 
         // Ignore any channels in which the bot should not react to anything

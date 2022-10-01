@@ -1,8 +1,8 @@
 const { channels, botOwners } = require('../../configurations/config.json');
+const logger = require('../features/logging');
 const getUsers = require('../features/getUsers');
 
 async function suggest(client, message, content) {
-    const logsChannel = client.channels.cache.get(channels.logs);
     if (!suggestBlocked.includes(message.author.id)) {
         let suggestion = content.split('`');
         suggestion = suggestion.join('');
@@ -17,12 +17,10 @@ async function suggest(client, message, content) {
                 botMessage.react('🤷');
                 botMessage.react('👎');
             });
-        console.log(`${message.author.tag} / ${message.author.id}  made a bot suggestion in ${message.channel.name} with text: ${suggestion}.`);
-        logsChannel.send(`${message.author.tag} / ${message.author.id}  made a bot suggestion in ${message.channel.name} with text: ${suggestion}.`);
+        logger.log(`${message.author.tag} / ${message.author.id}  made a bot suggestion in ${message.channel.name} with text: ${suggestion}.`);
         return message.reply('Thank you for your suggestion! You can view it here: https://discord.gg/dFC4sWv');
     } else {
-        console.log(`${message.author.tag} / ${message.author.id} tried to make a bot suggestion in ${message.channel.name}, but they're blocked from doing so.`);
-        logsChannel.send(`${message.author.tag} / ${message.author.id}  tried to make a bot suggestion in ${message.channel.name}, but they're blocked from doing so.`);
+        logger.log(`${message.author.tag} / ${message.author.id} tried to make a bot suggestion in ${message.channel.name}, but they're blocked from doing so.`);
         return message.reply('You are not allowed to use that command.');
     }
 }

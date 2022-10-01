@@ -1,4 +1,5 @@
 const { prefix, channels } = require('../configurations/config.json');
+const logger = require('./features/logging');
 
 const commands_list = [
     ['help',
@@ -142,9 +143,7 @@ function constructHelp(message, Discord, client) {
         .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
         .setTimestamp()
         .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
-    const logsChannel = client.channels.cache.get(channels.logs);
-    console.log(`${message.author.tag} requested the help message in ${message.channel.name}.`);
-    logsChannel.send(`${message.author.tag} requested the help message in ${message.channel.name}.`);
+    logger.log(`${message.author.tag} requested the help message in ${message.channel.name}.`);
     return helpEmbed;
 }
 
@@ -157,9 +156,7 @@ function constructSpecificHelp(message, Discord, client, element) {
             .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
             .setTimestamp()
             .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
-        const logsChannel = client.channels.cache.get(channels.logs);
-        console.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
-        logsChannel.send(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
+        logger.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
         return specificHelpEmbed;
     } else {
         let examples = '';
@@ -190,9 +187,7 @@ function constructSpecificHelp(message, Discord, client, element) {
             specificHelpEmbed.addField('__Usage examples:__', `${examples}`);
         }
 
-        const logsChannel = client.channels.cache.get(channels.logs);
-        console.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
-        logsChannel.send(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
+        logger.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
         return specificHelpEmbed;
     }
 }

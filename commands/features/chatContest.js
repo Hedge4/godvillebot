@@ -1,4 +1,4 @@
-const { channels, clientId } = require('../../configurations/config.json');
+const { clientId } = require('../../configurations/config.json');
 const logger = require('../features/logging');
 
 // basic setup for chat contests
@@ -9,12 +9,10 @@ let lastKillTimestamp;
 
 // get the latest message applying for the chat contest
 async function checkChatContest(client, userData) {
-    const logsChannel = client.channels.cache.get(channels.logs);
     const message = await getLastMessage(client); // get last message in the channel sent by a normal user
 
     if (!message) {
-        console.log('The last 20 messages were either retrieved incorrectly, were too old, or were all sent by bots. No chat killing timers were set.');
-        logsChannel.send('The last 20 messages were either retrieved incorrectly, were too old, or were all sent by bots. No chat killing timers were set.');
+        logger.log('The last 20 messages were either retrieved incorrectly, were too old, or were all sent by bots. No chat killing timers were set.');
         setLastWinner(client);
         return;
     }
@@ -31,13 +29,11 @@ async function checkChatContest(client, userData) {
         }, timeRemaining);
 
         timeRemaining = ~~(timeRemaining / 1000); // change timeremaining to seconds for the logs
-        console.log(`Last chat contest elligible message (by ${message.author.tag}) was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')} remaining until chat is dead.`);
-        logsChannel.send(`Last chat contest elligible message (by ${message.author.tag}) was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')} remaining until chat is dead.`);
+        logger.log(`Last chat contest elligible message (by ${message.author.tag}) was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')} remaining until chat is dead.`);
     } else {
     timeRemaining *= -1; // timeRemaining is negative in this case
     timeRemaining = ~~(timeRemaining / 1000); // change timeremaining to seconds for the logs
-    console.log(`Last chat contest elligible message was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, which means chat has been dead for ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')}.`);
-    logsChannel.send(`Last chat contest elligible message was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, which means chat has been dead for ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')}.`);
+    logger.log(`Last chat contest elligible message was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, which means chat has been dead for ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')}.`);
     }
 
     setLastWinner(client);
@@ -74,7 +70,6 @@ async function getLastMessage(client) {
 
 async function setLastWinner(client) {
     const channel = client.channels.cache.get(chatContestChannel);
-    const logsChannel = client.channels.cache.get(channels.logs);
 
     let user;
     let messages = await channel.messages.fetch({ limit: 100 });
@@ -91,8 +86,7 @@ async function setLastWinner(client) {
             user = msg.mentions.users.first();
             lastWinner = user.id;
             lastKillTimestamp = msg.createdTimestamp;
-            console.log(`${user.tag} was found and set as the last chat-killer. ChatCombo is ${chatCombo}.`);
-            logsChannel.send(`${user.tag} was found and set as the last chat-killer. ChatCombo is ${chatCombo}.`);
+            logger.log(`${user.tag} was found and set as the last chat-killer. ChatCombo is ${chatCombo}.`);
             return;
         }
 
@@ -101,8 +95,7 @@ async function setLastWinner(client) {
     }
 
     chatCombo = 500;
-    console.log('ERROR: No successful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code? ChatCombo was set to 500.');
-    logsChannel.send('ERROR: No successful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code? ChatCombo was set to 500.');
+    logger.log('ERROR: No successful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code? ChatCombo was set to 500.');
 }
 
 // run contest for the last message in general chat
@@ -140,11 +133,9 @@ async function deleteMessage(message, client) {
 // check if this message is still the last message in general chat, and reward the author if it is
 async function winningChatContest(message, client, userData) {
     if (lastMessage && message.id == lastMessage.id) { // first check if lastMessage even exists
-        const logsChannel = client.channels.cache.get(channels.logs);
         if (message.author.id == lastWinner) {
             message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but you already won the last chat-killing contest! :skull:`);
-            console.log(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
-            logsChannel.send(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
+            logger.log(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
         } else {
             lastWinner = message.author.id;
             if (chatCombo < 0) chatCombo = 0; // in case it's negative for whatever reason
@@ -199,8 +190,7 @@ async function winningChatContest(message, client, userData) {
             User[message.author.id].last_username = message.author.tag;
             userData.set(User, { merge: true });
 
-            console.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, after a conversation with combo ${chatCombo}, tier multiplier ${chatMultiplier} and multiplier bonus ${chatMultiplierBonus}. Gold: ${oldGold} -> ${newGold}.`);
-            logsChannel.send(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, after a conversation with combo ${chatCombo}, tier multiplier ${chatMultiplier} and multiplier bonus ${chatMultiplierBonus}. Gold: ${oldGold} -> ${newGold}.`);
+            logger.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, after a conversation with combo ${chatCombo}, tier multiplier ${chatMultiplier} and multiplier bonus ${chatMultiplierBonus}. Gold: ${oldGold} -> ${newGold}.`);
         }
         lastMessage = null;
         chatCombo = 0;

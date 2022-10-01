@@ -1,11 +1,9 @@
-const { channels } = require('../../configurations/config.json');
+const logger = require('../features/logging');
 
-function searchWiki(client, search, message) {
+function searchWiki(search, message) {
     if (!search.length) { return message.reply('You have to input a search term to search the godwiki for.'); }
     search = encodeURI(search);
-    const logsChannel = client.channels.cache.get(channels.logs);
-    console.log(`${message.author.tag} searched the godwiki for '${search}'.`);
-    logsChannel.send(`${message.author.tag} searched the godwiki for '${search}'.`);
+    logger.log(`${message.author.tag} searched the godwiki for '${search}'.`);
     return message.channel.send(`<https://wiki.godvillegame.com/index.php?search=${search}>`);
 }
 

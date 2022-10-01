@@ -1,17 +1,17 @@
 const { prefix, channels } = require('../../configurations/config.json');
+const logger = require('../features/logging');
 
-function link_profile(message, link, godData, client) {
+function linkProfile(message, link, godData) {
     if (!Object.values(channels.commandsAllowed).includes(message.channel.id)) {
         return message.reply(`Please only use this command in <#${channels.botville}> to avoid spam.`);
     }
-    const logsChannel = client.channels.cache.get(channels.logs);
 
     // we keep/make the link encoded if the user gave us a link to their page, and not the name
     if (link.startsWith('https://godvillegame.com/gods/')) {
         const godName = link.slice(30).replace(/%20/g, ' '); // the name part can have spaces instead of %20, also for counting characters
         link = 'https://godvillegame.com/gods/' + godName.replace(/ /g, '%20'); // we want %20 instead of spaces in the actual link
-        console.log(`${message.author.tag} tried to link their account to '${link}'.`);
-        logsChannel.send(`${message.author.tag} tried to link their account to '<${link}>'.`);
+        logger.toConsole(`${message.author.tag} tried to link their account to '${link}'.`);
+        logger.toChannel(`${message.author.tag} tried to link their account to '<${link}>'.`);
 
         // test if god name meets Godville naming requirements
         if (/^[A-Z][a-zA-Z0-9- ]{2,29}$/.test(godName)) {
@@ -28,8 +28,7 @@ function link_profile(message, link, godData, client) {
     } else {
         // this is the god name, so we don't need a separate godName variable this time
         link = link.replace(/%20/g, ' ');
-        console.log(`${message.author.tag} tried to link their account to '${link}'.`);
-        logsChannel.send(`${message.author.tag} tried to link their account to '${link}'.`);
+        logger.log(`${message.author.tag} tried to link their account to '${link}'.`);
 
         // test if god name meets Godville naming requirements
         if (/^[A-Z][a-zA-Z0-9- ]{2,29}$/.test(link)) {
@@ -47,4 +46,4 @@ function link_profile(message, link, godData, client) {
     }
 }
 
-module.exports = link_profile;
+module.exports = linkProfile;

@@ -1,6 +1,6 @@
-const { channels } = require('../../configurations/config.json');
+const logger = require('../features/logging');
 
-function main(client, message) {
+function main(message) {
     let size = 6;
     let bomb = 15;
     message.content.toLowerCase().slice(12).trim().split('-').forEach(arg => {
@@ -22,9 +22,7 @@ function main(client, message) {
         }
     });
 
-    const logsChannel = client.channels.cache.get(channels.logs);
-    console.log(`${message.author.tag} requested a minesweeper game in ${message.channel.name}.`);
-    logsChannel.send(`${message.author.tag} requested a minesweeper game in ${message.channel.name}.`);
+    logger.log(`${message.author.tag} requested a minesweeper game with size ${size} and ${bomb}% bombs in ${message.channel.name}.`);
     const bombs = [];
     while (bombs.length < Math.round(size * size * bomb / 100)) {
         const coord = `${Math.floor(Math.random() * size)}, ${Math.floor(Math.random() * size)}`;
