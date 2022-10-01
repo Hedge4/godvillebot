@@ -125,9 +125,6 @@ function testTrigger(reactionEvent, message) {
         if (reactionEvent.triggers.some((e) => {
             if (e.onlyFullWords) {
                 const regex = new RegExp(`\\b${e.name}\\b`, 'i');
-                console.log(`\b${e.name}\b`);
-                console.log(regex);
-                console.log(regex.test(content));
                 return regex.test(content);
             } else {
                 return content.includes(e.name);
