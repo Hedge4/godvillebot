@@ -32,7 +32,7 @@ function circumference(size) {
 async function main(message) {
     try {
         let hugger = message.author;
-        const huggee = message.mentions.users.first();
+        let huggee = message.mentions.users.first();
         if (!huggee) {
             return message.reply('You need to mention someone to hug, now go step on a lego dumdum');
         } else if (hugger == huggee) { // if you hug yourself the bot will be the hugger
@@ -41,8 +41,12 @@ async function main(message) {
 
         logger.log(`${message.author.tag} / ${message.author.id} used the hug command on ${huggee.tag} / ${huggee.id}.`);
 
+        // switch to members for server avatars and prevent cache
+        hugger = await message.guild.members.fetch({ user: hugger, force: true });
+        huggee = await message.guild.members.fetch({ user: huggee, force: true });
+
         // fancy buffer stuff for the hugger
-        const dataPromisehugger = await new Promise((resolve, reject) => {
+        const dataPromiseHugger = await new Promise((resolve, reject) => {
             https.get(hugger.displayAvatarURL(), (res) => {
                 let buffer = Buffer.alloc(0);
                 res.on('data', (d) => {
@@ -57,7 +61,7 @@ async function main(message) {
         });
 
         // fancy buffering for the huggee
-        const dataPromisehuggee = await new Promise((resolve, reject) => {
+        const dataPromiseHuggee = await new Promise((resolve, reject) => {
             https.get(huggee.displayAvatarURL(), (res) => {
                 let buffer = Buffer.alloc(0);
                 res.on('data', (d) => {
@@ -78,9 +82,10 @@ async function main(message) {
             .toBuffer(); // output to buffer to 'apply' changes (idk)
 
         // load the hugger's pfp
-        let pfpHugger = await sharp(dataPromisehugger)
+        let pfpHugger = await sharp(dataPromiseHugger)
             .resize(pfpHuggerSize, pfpHuggerSize)
             .png()
+            .flatten({ background: '#ffffff' }) // solid white background
             .composite([{
                 input: circumference(pfpHuggerSize),
                 top: 0,
@@ -93,9 +98,10 @@ async function main(message) {
             .toBuffer(); // output to buffer to 'apply' changes (idk)
 
         // now load the huggee's image
-        let pfpHuggee = await sharp(dataPromisehuggee)
+        let pfpHuggee = await sharp(dataPromiseHuggee)
             .resize(pfpHuggeeSize, pfpHuggeeSize)
             .png()
+            .flatten({ background: '#ffffff' }) // solid white background
             .composite([{
                 input: circumference(pfpHuggeeSize),
                 top: 0,

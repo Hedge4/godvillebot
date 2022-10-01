@@ -17,9 +17,12 @@ async function main(message) {
 
         logger.log(`${message.author.tag} / ${message.author.id} used the no command on ${user.tag} / ${user.id}.`);
 
+        // switch to member for server avatar and prevent cache
+        const member = await message.guild.members.fetch({ user, force: true }); // user: user
+
         // fancy buffer stuff
         const dataPromise = await new Promise((resolve, reject) => {
-            https.get(user.displayAvatarURL(), (res) => {
+            https.get(member.displayAvatarURL(), (res) => {
                 let buffer = Buffer.alloc(0);
                 res.on('data', (d) => {
                     buffer = Buffer.concat([buffer, d]);

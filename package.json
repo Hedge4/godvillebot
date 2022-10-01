@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.10.0",
+  "version": "5.10.1",
   "updateMsg1": "5.9 Enabled spookmode, and added a little something on the side... :jack_o_lantern:",
   "updateMsg2": "5.6-5.8 Added the >hug and >bonk commands, similar to >nope.",
   "updateMsg3": "5.5 Reactions in #toggleChannels are now handled by GoddessBot, and added basementping!",

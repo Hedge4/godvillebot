@@ -39,11 +39,15 @@ async function main(message) {
         } else if (bonkee.id == clientId) { // don't bonk the bot, if you do roles get swapped
             bonker = bonkee;
             bonkee = message.author;
-        }else if (bonker == bonkee) { // if you bonk yourself the bot will be the bonker
+        } else if (bonker == bonkee) { // if you bonk yourself the bot will be the bonker
             bonker = message.client.user;
         }
 
         logger.log(`${message.author.tag} / ${message.author.id} used the bonk command on ${user.tag} / ${user.id}.`);
+
+        // switch to members for server avatars and prevent cache
+        bonker = await message.guild.members.fetch({ user: bonker, force: true });
+        bonkee = await message.guild.members.fetch({ user: bonkee, force: true });
 
         // fancy buffer stuff for the bonker
         const dataPromiseBonker = await new Promise((resolve, reject) => {
@@ -97,6 +101,7 @@ async function main(message) {
         const pfpBonker = await sharp(dataPromiseBonker)
             .resize(pfpBonkerSize, pfpBonkerSize)
             .png()
+            .flatten({ background: '#ffffff' }) // solid white background
             .composite([{
                 input: circumference(pfpBonkerSize),
                 top: 0,
@@ -112,6 +117,7 @@ async function main(message) {
         let pfpBonkee = await sharp(dataPromiseBonkee)
             .resize(pfpBonkeeSize, pfpBonkeeSize)
             .png()
+            .flatten({ background: '#ffffff' }) // solid white background
             .composite([{
                 input: circumference(pfpBonkeeSize),
                 top: 0,
@@ -151,7 +157,7 @@ async function main(message) {
         const attachment = new Discord.MessageAttachment(newImage);
         message.channel.send({ files: [attachment] });
 
-    // one big catch all because I'm lazy
+        // one big catch all because I'm lazy
     } catch (error) {
         console.error(error);
         logger.log('Something went wrong with the bonk command. Error: ' + error);
