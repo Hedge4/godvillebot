@@ -2,10 +2,38 @@
 const reactionEvents = [
     {
         name: 'Spookmode',
-        active: true,
-        triggers: ['spook', 'scare', 'scary', 'horror', 'horrify', 'terror', 'terrify', 'scream', 'skeleton',
-            'creepy', 'pumpkin', 'ghost', 'vampire', 'werewolf', 'zombie', 'fright', 'halloween', 'racism',
-            'witch', 'spider', 'skull', 'fear', 'mummy', 'trick or treat', 'slendy', 'wicked', 'soul'],
+        active() { return (new Date).getMonth() === 9; }, // only in October
+        triggers: [
+            { name: 'spook', onlyFullWords: false },
+            { name: 'scare', onlyFullWords: false },
+            { name: 'scary', onlyFullWords: false },
+            { name: 'horror', onlyFullWords: false },
+            { name: 'horrify', onlyFullWords: false },
+            { name: 'terror', onlyFullWords: false },
+            { name: 'terrify', onlyFullWords: false },
+            { name: 'scream', onlyFullWords: false },
+            { name: 'skeleton', onlyFullWords: false },
+            { name: 'creepy', onlyFullWords: false },
+            { name: 'pumpkin', onlyFullWords: false },
+            { name: 'ghost', onlyFullWords: false },
+            { name: 'vampire', onlyFullWords: false },
+            { name: 'werewolf', onlyFullWords: false },
+            { name: 'zombie', onlyFullWords: false },
+            { name: 'fright', onlyFullWords: false },
+            { name: 'halloween', onlyFullWords: false },
+            { name: 'racism', onlyFullWords: false },
+            { name: 'witch', onlyFullWords: false },
+            { name: 'spider', onlyFullWords: false },
+            { name: 'skull', onlyFullWords: false },
+            { name: 'fear', onlyFullWords: false },
+            { name: 'mummy', onlyFullWords: false },
+            { name: 'trick or treat', onlyFullWords: false },
+            { name: 'slendy', onlyFullWords: false },
+            { name: 'wicked', onlyFullWords: false },
+            { name: 'soul', onlyFullWords: false },
+            { name: 'boo', onlyFullWords: true },
+            { name: 'haunt', onlyFullWords: false },
+        ],
         reactions: [
             'https://c.tenor.com/EaQlLgHY9dwAAAAM/pumpkins-pumpkin.gif',
             'https://c.tenor.com/uDCPw_UdZOoAAAAM/skeleton-dance.gif',
@@ -15,7 +43,6 @@ const reactionEvents = [
             'https://c.tenor.com/zaAohlKdikYAAAAM/music-xylophone.gif',
             'https://c.tenor.com/8k9yFg-2jrgAAAAM/halloween-pumpkin.gif',
             'https://c.tenor.com/f1pfRCozhwkAAAAM/halloween-dance.gif',
-            'https://c.tenor.com/wbMvvdjxdLwAAAAM/pumpkin-dancing.gif',
             'https://c.tenor.com/p5lu_-ZRz1kAAAAM/halloween-happy-halloween.gif',
             'https://c.tenor.com/y91zil0e_cIAAAAM/spooky-spooktober.gif',
             'https://c.tenor.com/BFa7avN8704AAAAM/scooby-doo-ghost.gif',
@@ -73,6 +100,12 @@ const reactionEvents = [
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC39EgG5Mpeh3XIOzyVRLypp_BKq3nIbRlug',
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUTh_Yt30tjEyG5kkNyBgKwXfefNlfrqiKJQ',
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTju30MOyVsDNZSF8mtRUFNpi4zX7AeOiXHng',
+            'https://tenor.com/view/pumpkin-gif-23554708',
+            'https://tenor.com/view/fall-autumn-goodmorning-morning-season-gif-23324284',
+            'https://tenor.com/view/ghost-gif-13060487',
+            'https://tenor.com/view/heinzel-satanic-ritual-gif-17325845',
+            'https://tenor.com/view/skeleton-skull-gif-18854593',
+            'https://tenor.com/view/afraid-scared-spongebob-nightmare-anxious-gif-17742018',
         ],
     },
 ];
@@ -89,7 +122,17 @@ function messageReactions(message) {
 function testTrigger(reactionEvent, message) {
     if (reactionEvent.active) {
         const content = message.content.toLowerCase();
-        if (reactionEvent.triggers.some((e) => content.includes(e))) {
+        if (reactionEvent.triggers.some((e) => {
+            if (e.onlyFullWords) {
+                const regex = new RegExp(`\\b${e.name}\\b`, 'i');
+                console.log(`\b${e.name}\b`);
+                console.log(regex);
+                console.log(regex.test(content));
+                return regex.test(content);
+            } else {
+                return content.includes(e.name);
+            }
+        })) {
             message.channel.send(reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)]);
         }
     }
