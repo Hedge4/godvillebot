@@ -10,6 +10,7 @@ const messageEvents = [
         channelId: '313398424911347712',
         messages: [
             'https://cdn.discordapp.com/attachments/353554102833250305/1024788025168904243/bbq_pfp-2.png',
+            'https://cdn.discordapp.com/attachments/353554102833250305/1024788025168904243/bbq_pfp-2.png',
             'https://cdn.discordapp.com/attachments/353554102833250305/1025469102912966756/IMG_20220930_140327.jpg',
         ],
     },

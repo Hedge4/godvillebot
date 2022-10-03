@@ -202,9 +202,14 @@ client.on('messageCreate', (message) => {
             return;
         }
 
-        // TEMPORARY for Spooktober: reply 👻 to anything bbq says, because apparently he's dead
+        // TEMPORARY for Spooktober: bbq undead uprising stuff
         if (message.author.id === '785411625746169866') {
-            message.react('👻').catch(/* ignore */);
+            // starts October 4th and one in 20 messages
+            if ((Date.now() > new Date(2022, 9, 3)) && (Math.random() * 20 > 19)) {
+                message.reply('https://cdn.discordapp.com/attachments/353554102833250305/1026299634357915709/image0.gif');
+            } else {
+                message.react('👻').catch(/* ignore */);
+            }
         }
 
         // people without Admin or Deities role need to activate their access to the server first
