@@ -4,35 +4,36 @@ const reactionEvents = [
         name: 'Spookmode',
         active() { return (new Date).getMonth() === 9; }, // only in October
         triggers: [
-            { name: 'spook', onlyFullWords: false },
-            { name: 'scare', onlyFullWords: false },
-            { name: 'scary', onlyFullWords: false },
-            { name: 'horror', onlyFullWords: false },
-            { name: 'horrify', onlyFullWords: false },
-            { name: 'terror', onlyFullWords: false },
-            { name: 'terrify', onlyFullWords: false },
-            { name: 'scream', onlyFullWords: false },
-            { name: 'skeleton', onlyFullWords: false },
-            { name: 'creepy', onlyFullWords: false },
-            { name: 'pumpkin', onlyFullWords: false },
-            { name: 'ghost', onlyFullWords: false },
-            { name: 'vampire', onlyFullWords: false },
-            { name: 'werewolf', onlyFullWords: false },
-            { name: 'zombie', onlyFullWords: false },
-            { name: 'fright', onlyFullWords: false },
-            { name: 'halloween', onlyFullWords: false },
-            { name: 'witch', onlyFullWords: false },
-            { name: 'spider', onlyFullWords: false },
-            { name: 'skull', onlyFullWords: false },
-            { name: 'fear', onlyFullWords: false },
-            { name: 'mummy', onlyFullWords: false },
-            { name: 'trick or treat', onlyFullWords: false },
-            { name: 'wicked', onlyFullWords: false },
-            { name: 'soul', onlyFullWords: false },
-            { name: 'boo', onlyFullWords: true },
-            { name: 'haunt', onlyFullWords: false },
-            { name: 'slendy', onlyFullWords: false },
-            { name: 'wawa', onlyFullWords: false },
+            { name: 'spook', isRegex: false },
+            { name: 'scare', isRegex: false },
+            { name: 'scary', isRegex: false },
+            { name: 'horror', isRegex: false },
+            { name: 'horrify', isRegex: false },
+            { name: 'terror', isRegex: false },
+            { name: 'terrify', isRegex: false },
+            { name: 'scream', isRegex: false },
+            { name: 'skeleton', isRegex: false },
+            { name: 'creepy', isRegex: false },
+            { name: 'pumpkin', isRegex: false },
+            { name: 'ghost', isRegex: false },
+            { name: 'vampire', isRegex: false },
+            { name: 'werewolf', isRegex: false },
+            { name: 'zombie', isRegex: false },
+            { name: 'fright', isRegex: false },
+            { name: 'halloween', isRegex: false },
+            { name: /\b(be)?witch/, isRegex: true },
+            { name: 'spider', isRegex: false },
+            { name: 'skull', isRegex: false },
+            { name: 'fear', isRegex: false },
+            { name: 'mummy', isRegex: false },
+            { name: 'trick or treat', isRegex: false },
+            { name: 'wicked', isRegex: false },
+            { name: 'soul', isRegex: false },
+            { name: /\bboo\b/i, isRegex: true },
+            { name: 'haunt', isRegex: false },
+            { name: 'slendy', isRegex: false },
+            { name: /\bwawa/, isRegex: true },
+            { name: /dea(d|th)/, isRegex: true },
         ],
         reactions: [
             'https://c.tenor.com/EaQlLgHY9dwAAAAM/pumpkins-pumpkin.gif',
@@ -124,12 +125,11 @@ function testTrigger(reactionEvent, message) {
     if (reactionEvent.active) {
         const content = message.content.toLowerCase();
         if (reactionEvent.triggers.some((e) => {
-            if (e.onlyFullWords) {
-                const regex = new RegExp(`\\b${e.name}\\b`, 'i');
-                return regex.test(content);
+            // replace links
+            const filteredContent = content.replace(/(ht|f)tps?:\/\/([!#$&-;=?-[\]_a-z~]|%[0-9a-fA-F]{2})+/ig, '');
+            if (e.isRegex) {
+                return e.name.test(content);
             } else if (content.includes(e.name)) {
-                // replace links
-                const filteredContent = content.replace(/(ht|f)tps?:\/\/([!#$&-;=?-[\]_a-z~]|%[0-9a-fA-F]{2})+/ig, '');
                 return filteredContent.includes(e.name);
             } else { return false; }
         })) {
