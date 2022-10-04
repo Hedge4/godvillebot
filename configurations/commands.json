@@ -1,7 +1,7 @@
 {
 	"godville": [
-        ["profile", ["god", "goddess", "showprofile"]],
-        ["gvprofile", ["godvilleprofile", "gvgod", "godvillegod", "gvgoddess", "godvillegoddess", "showgodvilleprofile", "showgvprofile"]],
+        ["profile", ["god", "goddess", "pf"]],
+        ["gvprofile", ["godvilleprofile", "gvgod", "godvillegod", "gvgoddess", "godvillegoddess", "gvpf"]],
         ["guides", []],
         ["godwiki", ["gw", "wiki"]],
         ["link", []],
