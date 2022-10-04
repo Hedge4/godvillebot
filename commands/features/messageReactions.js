@@ -106,6 +106,7 @@ const reactionEvents = [
             'https://tenor.com/view/heinzel-satanic-ritual-gif-17325845',
             'https://tenor.com/view/skeleton-skull-gif-18854593',
             'https://tenor.com/view/afraid-scared-spongebob-nightmare-anxious-gif-17742018',
+            'https://tenor.com/view/skelly-dance-funny-gif-25200784',
         ],
     },
 ];
@@ -126,9 +127,11 @@ function testTrigger(reactionEvent, message) {
             if (e.onlyFullWords) {
                 const regex = new RegExp(`\\b${e.name}\\b`, 'i');
                 return regex.test(content);
-            } else {
-                return content.includes(e.name);
-            }
+            } else if (content.includes(e.name)) {
+                // replace links
+                const filteredContent = content.replace(/(ht|f)tps?:\/\/([!#$&-;=?-[\]_a-z~]|%[0-9a-fA-F]{2})+/ig, '');
+                return filteredContent.includes(e.name);
+            } else { return false; }
         })) {
             message.channel.send(reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)]);
         }

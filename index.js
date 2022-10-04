@@ -205,7 +205,7 @@ client.on('messageCreate', (message) => {
         // TEMPORARY for Spooktober: bbq undead uprising stuff
         if (message.author.id === '785411625746169866') {
             // starts October 4th and one in 20 messages
-            if ((Date.now() > new Date(2022, 9, 3)) && (Math.random() * 20 > 19)) {
+            if (Math.random() * 20 > 19) {
                 message.reply('https://cdn.discordapp.com/attachments/353554102833250305/1026299634357915709/image0.gif');
             } else {
                 message.react('👻').catch(/* ignore */);
