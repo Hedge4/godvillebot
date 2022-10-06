@@ -6,6 +6,7 @@ const makevote = require('./makevote.js');
 const suggest = require('./suggest');
 const reminder = require('./reminder.js');
 const botTime = require('./botTime.js');
+const parseUrl = require('./urlParser.js');
 
 function redirect(cmd, content, message, client) {
     switch (cmd) {
@@ -25,6 +26,8 @@ function redirect(cmd, content, message, client) {
             return reminder.create(message, content);
         case 'bottime':
             return botTime(message);
+        case 'url':
+            return parseUrl(message, content);
         default:
             return message.reply(`The '${cmd}' command does not seem to be correctly set up.`);
     }

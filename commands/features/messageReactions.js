@@ -38,6 +38,7 @@ const reactionEvents = [
             { name: /\bbanana\b/, isRegex: true },
             { name: /\bhp\b/, isRegex: true },
             { name: /\bbbq\b/, isRegex: true },
+            { name: 'sapphy', isRegex: false },
         ],
         reactions: [
             'https://c.tenor.com/EaQlLgHY9dwAAAAM/pumpkins-pumpkin.gif',

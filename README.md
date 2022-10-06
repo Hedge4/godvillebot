@@ -1,5 +1,5 @@
 # GodBot
-Version: 5.10.5
+Version: 5.11.0
 
 I should probably include some sort of description here. Meh, I'll add it later (read: probably never).
 
@@ -19,6 +19,7 @@ Additionally, all files were updated to work with discord.js V13 instead of V12,
 * 5.8 Added the >hug command, similar to >nope and >bonk.
 * 5.9 Enabled spookmode, and added random messages that appear randomly and get deleted quickly.
 * 5.10 Added the >botTime command
+* 5.11 Added the >url/>parseURL command, not because it's useful but because I like it.
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.
