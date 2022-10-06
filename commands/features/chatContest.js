@@ -118,14 +118,14 @@ async function deleteMessage(message, client) {
     if (message.channel.id == chatContestChannel) { // we check this just for decreasing chatCombo later
         if (message.createdTimestamp > lastKillTimestamp) {
             // decrease chatCombo for messages not sent by bots + sent after last chat kill
-            logger.log('Message deleted in chat contest channel. ChatCombo was reduced by one.');
             chatCombo--;
 
             // if this was the latest message, find the now latest message
             if (message.id == lastMessage.id) {
+                logger.log('Last message deleted in chat contest channel. ChatCombo reduced and searching for new message.');
                 const newLastMessage = await getLastMessage(client);
                 if (message) {
-                    const elapsed = (Date.now() - newLastMessage.createdTimestamp) / 1000; // in seconds
+                    const elapsed = ~~((Date.now() - newLastMessage.createdTimestamp) / 1000); // in seconds
                     const minutes = `${~~(elapsed / 60)} ${quantiseWords(~~(elapsed / 60), 'minute')}`;
                     const seconds = `${elapsed % 60} ${quantiseWords(elapsed % 60, 'second')}`;
                     logger.log(`Found new chat kill eligible message by ${newLastMessage.author.tag}, sent ${minutes} and ${seconds} ago.`);
@@ -134,6 +134,8 @@ async function deleteMessage(message, client) {
                     logger.log('No new latest chat kill eligible message was found.');
                     lastMessage = null;
                 }
+            } else {
+                logger.log('Message deleted in chat contest channel. ChatCombo was reduced by one.');
             }
         }
     }
