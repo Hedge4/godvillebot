@@ -31,9 +31,9 @@ async function checkChatContest(client, userData) {
         timeRemaining = ~~(timeRemaining / 1000); // change timeremaining to seconds for the logs
         logger.log(`Last chat contest elligible message (by ${message.author.tag}) was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')} remaining until chat is dead.`);
     } else {
-    timeRemaining *= -1; // timeRemaining is negative in this case
-    timeRemaining = ~~(timeRemaining / 1000); // change timeremaining to seconds for the logs
-    logger.log(`Last chat contest elligible message was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, which means chat has been dead for ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')}.`);
+        timeRemaining *= -1; // timeRemaining is negative in this case
+        timeRemaining = ~~(timeRemaining / 1000); // change timeremaining to seconds for the logs
+        logger.log(`Last chat contest elligible message was sent ${elapsed} ${quantiseWords(elapsed, 'second')} ago, which means chat has been dead for ${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')} and ${timeRemaining % 60} ${quantiseWords(timeRemaining % 60, 'second')}.`);
     }
 
     setLastWinner(client);
@@ -64,8 +64,10 @@ async function getLastMessage(client) {
             foundMessage = message;
         }
     }
-    if (foundMessage) return foundMessage; // this may not be the first (consecutive) message by this user - but at least return something
-    return null; // if no suitable messages were found in the fetched collection
+
+    // If not returned yet, the last author or bots had more messages than the sample size amount of messages.
+    // return the earliest found message, or nothing if all messages were sent by bots
+    return foundMessage ? foundMessage : null;
 }
 
 async function setLastWinner(client) {
@@ -114,18 +116,25 @@ function checkMessage(message, client, userData) {
 
 async function deleteMessage(message, client) {
     if (message.channel.id == chatContestChannel) { // we check this just for decreasing chatCombo later
-        if (message.id == lastMessage.id) {
-            const newLastMessage = await getLastMessage(client);
-            if (message) {
-                lastMessage = newLastMessage;
-            } else {
-                lastMessage = null;
-            }
-        }
-
-        if (message.createdTimestamp > lastKillTimestamp) { // decrease chatCombo for messages not sent by bots + sent after last chat kill
+        if (message.createdTimestamp > lastKillTimestamp) {
+            // decrease chatCombo for messages not sent by bots + sent after last chat kill
             logger.log('Message deleted in chat contest channel. ChatCombo was reduced by one.');
             chatCombo--;
+
+            // if this was the latest message, find the now latest message
+            if (message.id == lastMessage.id) {
+                const newLastMessage = await getLastMessage(client);
+                if (message) {
+                    const elapsed = (Date.now() - newLastMessage.createdTimestamp) / 1000; // in seconds
+                    const minutes = `${~~(elapsed / 60)} ${quantiseWords(~~(elapsed / 60), 'minute')}`;
+                    const seconds = `${elapsed % 60} ${quantiseWords(elapsed % 60, 'second')}`;
+                    logger.log(`Found new chat kill eligible message by ${newLastMessage.author.tag}, sent ${minutes} and ${seconds} ago.`);
+                    lastMessage = newLastMessage;
+                } else {
+                    logger.log('No new latest chat kill eligible message was found.');
+                    lastMessage = null;
+                }
+            }
         }
     }
 }
@@ -172,7 +181,7 @@ async function winningChatContest(message, client, userData) {
 
             const userDoc = await userData.get();
             const User = {};
-            if(userDoc.data()[message.author.id] === undefined) {
+            if (userDoc.data()[message.author.id] === undefined) {
                 User[message.author.id] = {
                     godpower: 0,
                     gold: 0,
