@@ -52,7 +52,7 @@ async function getRanking(message, content, userData) {
 
     let ranking = `Total users registered: ${totalUsers} - Total godpower collected: ${serverTotal}\n------------------------------------------\n`;
     for (let i = 0; i < usersOnPage.length; i++) {
-        ranking += ` {${i + 1 + (page - 1) * 10}}    - "${usersOnPage[i][2]}", level ${usersOnPage[i][3]}.\n              Total godpower: ${usersOnPage[i][1]}\n`;
+        ranking += ` {${i + 1 + (page - 1) * 10}}    - "${usersOnPage[i][2]}", level ${usersOnPage[i][3]}.\n              Total godpower: ${usersOnPage[i][1]}\n`; // 4 spaces on purpose for better outlining
     }
     ranking += `------------------------------------------\nYour rank: {${ownRank}} - Level ${userDoc.data()[message.author.id].level}, total godpower: ${userDoc.data()[message.author.id].totalGodpower}`;
 

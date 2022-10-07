@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.11.1",
+  "version": "5.11.2",
   "updateMsg1": "5.10+5.11 Added the >botTime and >parseUrl commands",
   "updateMsg2": "5.9 Enabled spookmode, and added a little something on the side... :jack_o_lantern:",
   "updateMsg3": "5.6-5.8 Added the >hug and >bonk commands, similar to >nope.",

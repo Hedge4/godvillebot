@@ -32,7 +32,7 @@ function showGuidesList(message) {
     logger.log(`${message.author.tag} requested the list of guides in channel ${message.channel.name}`);
     let text = '```diff\n';
     for (let i = 0; i < guides_list.length; i++) {
-        text += `+ {${i + 1}}  ${guides_list[i][0]}\n`;
+        text += `+ {${i + 1}}  ${guides_list[i][0]}\n`; // two spaces on purpose for better outlining, + so line is green in diff format
     }
     text += `\nUse "${prefix}guides [number]" to get the URL to a specific guide. Contact Wawajabba to include your guide here, or use ${prefix}suggest. Be sure to include the URL, a short and an extended description and the guide authors.\n\`\`\``;
     message.reply(`Here are all ${guides_list.length} currently available guides:\n${text}`);

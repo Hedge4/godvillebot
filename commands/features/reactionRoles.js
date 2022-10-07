@@ -7,12 +7,6 @@ const roleData = {
         name: 'Server related channels',
         desc: 'These channels offer extra features in the server, and aren\'t specifically tailored to one particular topic or interest.',
         roles: {
-            '🌍': {
-                fullName: 'Covid-19',
-                roleName: null,
-                roleId: '771513616922968086',
-                desc: 'Discuss the pandemic',
-            },
             '<:r_godvoice:313795720123514880>': {
                 fullName: 'Eventping',
                 roleName: null,
@@ -70,7 +64,7 @@ const roleData = {
             '<:t_log:668185664650739723>': {
                 fullName: 'Dungeoning and digging',
                 roleName: null,
-                alts: ['dungeon', 'dig', 'dungeoning', 'digging'],
+                alts: ['dungeon', 'dig', 'dungeoning', 'digging', 'dungeonanddig', 'dungeoninganddigging'],
                 roleId: '321643163913551872',
                 desc: '',
             },
@@ -257,21 +251,20 @@ async function reactionUpdate(type, reaction, user, message) {
 
     // return if category isn't registered
     if (!roleData[message.id]) {
-        logger.log(`ReactionRoles: Detected a message in <#${channels.reactionRoles}>, but the message with id ${message.id} isn't registered in roleData.`);
-        return;
+        return logger.log(`ReactionRoles: Detected a reaction to a message in <#${channels.reactionRoles}>, but the message with id ${message.id} isn't registered in roleData.`);
     }
 
     // the role name in roleData - differs based on if this is a regular or guild emoji
     let roleIdentifier;
     if (reaction.emoji.id === null) roleIdentifier = reaction.emoji.name;
     else roleIdentifier = `<:${reaction.emoji.identifier}>`;
+    const roleInfo = roleData[message.id].roles[roleIdentifier];
 
     // return if role isn't registered
-    if (!roleData[message.id].roles[roleIdentifier]) {
-        logger.log(`ReactionRoles: Detected an unknown reaction to one of the messages in <#${channels.reactionRoles}>. The reaction was ${roleIdentifier} by user ${user.tag}.`);
-        return;
+    if (!roleInfo) {
+        return logger.log(`ReactionRoles: Detected an unknown reaction to one of the messages in <#${channels.reactionRoles}>. The reaction was ${roleIdentifier} by user ${user.tag}.`);
     }
-    const roleId = roleData[message.id].roles[roleIdentifier].roleId; // get roleId from roleData based on the identifier
+    const roleId = roleInfo.roleId; // get roleId from roleData based on the identifier
 
     const guild = reaction.message.guild;
     const memberWhoReacted = await guild.members.fetch(user);
@@ -279,8 +272,7 @@ async function reactionUpdate(type, reaction, user, message) {
 
     // return in case role doesn't exist (anymore)
     if (!role) {
-        logger.log(`ReactionRoles: Couldn't add role ${roleIdentifier} / ${roleId} to user ${user.tag} because the role couldn't be found.`);
-        return;
+        return logger.log(`ReactionRoles: Couldn't ${type} role ${roleInfo.fullName} / ${roleIdentifier} / ${roleId} to user ${user.tag} because the role couldn't be found.`);
     }
 
     if (type === 'add') {
@@ -295,7 +287,7 @@ async function reactionUpdate(type, reaction, user, message) {
 }
 
 async function commandUpdate() {
-    // to be added later
+    // to be added later to replace ?rank
 }
 
 exports.load = fetchToggleMessages;

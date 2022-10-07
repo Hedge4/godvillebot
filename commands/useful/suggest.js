@@ -10,14 +10,14 @@ async function suggest(client, message, content) {
         if (suggestion.length >= 1000) { return message.reply('Please be a bit more concise in your description and use less than 1000 characters!'); }
         const channel = await client.channels.cache.get(channels.botServer.suggestions);
         if (channel === undefined) { message.reply('The message couldn\'t be sent.'); }
-        channel.send(` --- ${message.author.tag} / ${message.author.id}  sent the following suggestion from channel ${message.channel.name}:`
+        channel.send(` --- ${message.author.tag} / ${message.author.id} sent the following suggestion from channel ${message.channel.name}:`
             + '```\n' + suggestion + '```' + message.url)
             .then(botMessage => {
                 botMessage.react('👍');
                 botMessage.react('🤷');
                 botMessage.react('👎');
             });
-        logger.log(`${message.author.tag} / ${message.author.id}  made a bot suggestion in ${message.channel.name} with text: ${suggestion}.`);
+        logger.log(`${message.author.tag} / ${message.author.id} made a bot suggestion in ${message.channel.name} with text: ${suggestion}.`);
         return message.reply('Thank you for your suggestion! You can view it here: https://discord.gg/dFC4sWv');
     } else {
         logger.log(`${message.author.tag} / ${message.author.id} tried to make a bot suggestion in ${message.channel.name}, but they're blocked from doing so.`);

@@ -139,19 +139,18 @@ function testTrigger(reactionEvent, message) {
         // ignore channels where this feature is disabled
         if (reactionEvent.disabled) {
             if (reactionEvent.disabled.includes(message.channel.id)) return;
-        // or the opposite, ignore if not enabled
         } else if (reactionEvent.enabled) {
+            // or the opposite mode, ignore if channel is not enabled
             if (!reactionEvent.disabled.includes(message.channel.id)) return;
         }
         const content = message.content.toLowerCase();
         if (reactionEvent.triggers.some((e) => {
             // replace links
-            const filteredContent = content.replace(/(ht|f)tps?:\/\/([!#$&-;=?-[\]_a-z~]|%[0-9a-fA-F]{2})+/ig, '');
+            const filteredContent = content.replace(/(ht|f)tps?:\/\/([!#$&-;=?-[\]_a-z~]|%[0-9a-f]{2})+/ig, '');
+
             if (e.isRegex) {
-                return e.name.test(content);
-            } else if (content.includes(e.name)) {
-                return filteredContent.includes(e.name);
-            } else { return false; }
+                return e.name.test(filteredContent);
+            } else { return filteredContent.includes(e.name); }
         })) {
             message.channel.send(reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)]);
         }
