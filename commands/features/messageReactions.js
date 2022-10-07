@@ -1,8 +1,11 @@
+const { channels } = require('../../configurations/config.json');
+
 // triggers the bot reacts to, and their possible reactions
 const reactionEvents = [
     {
         name: 'Spookmode',
         active() { return (new Date).getMonth() === 9; }, // only in October
+        disabled: [channels.venting, channels.appeals, channels.politicsDebate],
         triggers: [
             { name: 'spook', isRegex: false },
             { name: /\bscar(e|y)/, isRegex: true },
@@ -133,6 +136,13 @@ function messageReactions(message) {
 // test whether a message
 function testTrigger(reactionEvent, message) {
     if (reactionEvent.active) {
+        // ignore channels where this feature is disabled
+        if (reactionEvent.disabled) {
+            if (reactionEvent.disabled.includes(message.channel.id)) return;
+        // or the opposite, ignore if not enabled
+        } else if (reactionEvent.enabled) {
+            if (!reactionEvent.disabled.includes(message.channel.id)) return;
+        }
         const content = message.content.toLowerCase();
         if (reactionEvent.triggers.some((e) => {
             // replace links
