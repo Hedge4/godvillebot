@@ -5,7 +5,7 @@ const reactionEvents = [
         active() { return (new Date).getMonth() === 9; }, // only in October
         triggers: [
             { name: 'spook', isRegex: false },
-            { name: 'scare', isRegex: false },
+            { name: /\bscar(e|y)/, isRegex: true },
             { name: 'scary', isRegex: false },
             { name: 'horror', isRegex: false },
             { name: 'horrify', isRegex: false },
@@ -29,7 +29,7 @@ const reactionEvents = [
             { name: 'trick or treat', isRegex: false },
             { name: 'wicked', isRegex: false },
             { name: 'soul', isRegex: false },
-            { name: /\bboo\b/i, isRegex: true },
+            { name: /\bboo\b/, isRegex: true },
             { name: 'haunt', isRegex: false },
             { name: /\bslendy\b/, isRegex: true },
             { name: /\bwawa([^n]|\b)/, isRegex: true },
@@ -39,6 +39,11 @@ const reactionEvents = [
             { name: /\bhp\b/, isRegex: true },
             { name: /\bbbq\b/, isRegex: true },
             { name: 'sapphy', isRegex: false },
+            { name: /\bbones?\b/, isRegex: true },
+            { name: /\btal(\b|oumn)/, isRegex: true },
+            { name: 'merf', isRegex: false },
+            { name: 'shai', isRegex: false },
+            { name: /\bgermans?\b/, isRegex: true },
         ],
         reactions: [
             'https://c.tenor.com/EaQlLgHY9dwAAAAM/pumpkins-pumpkin.gif',

@@ -3,8 +3,8 @@ const messageEvents = [
     {
         name: 'BbqPfp',
         active: true,
-        minDelay: 1 * 60 * 1000,
-        maxDelay: 60 * 60 * 1000,
+        minDelay: 1 * (60 * 1000), // in minutes
+        maxDelay: 30 * (60 * 1000),
         autoDelete: true,
         deleteAfter: 3 * 1000,
         channelId: '313398424911347712',
