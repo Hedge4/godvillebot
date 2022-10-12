@@ -5,7 +5,7 @@ const reactionEvents = [
     {
         name: 'Spookmode',
         active() { return (new Date).getMonth() === 9; }, // only in October
-        disabled: [channels.venting, channels.appeals, channels.politicsDebate],
+        disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, '1020381945714200596'],
         triggers: [
             { name: 'spook', isRegex: false },
             { name: /\bscar(e|y)/, isRegex: true },
@@ -120,7 +120,6 @@ const reactionEvents = [
             'https://tenor.com/view/heinzel-satanic-ritual-gif-17325845',
             'https://tenor.com/view/skeleton-skull-gif-18854593',
             'https://tenor.com/view/afraid-scared-spongebob-nightmare-anxious-gif-17742018',
-            'https://tenor.com/view/skelly-dance-funny-gif-25200784',
         ],
     },
 ];
@@ -145,8 +144,11 @@ function testTrigger(reactionEvent, message) {
         }
         const content = message.content.toLowerCase();
         if (reactionEvent.triggers.some((e) => {
-            // replace links
-            const filteredContent = content.replace(/(ht|f)tps?:\/\/([!#$&-;=?-[\]_a-z~]|%[0-9a-f]{2})+/ig, '');
+
+            const customEmojiRegex = /<[^:>\s]*:[^:>\s]+:\d+>/g; // filter out custom emojis
+            const mentionRegex = /<(?:@(?:!|&)?|#)\d+>/g; // filter out member, person and channel mentions
+            const urlRegex = /(?:ht|f)tps?:\/\/([!#$&-;=?-[\]_a-z~]|%[0-9a-f]{2})+/ig; // filter out links
+            const filteredContent = content.replace(customEmojiRegex, '').replace(mentionRegex, '').replace(urlRegex, '');
 
             if (e.isRegex) {
                 return e.name.test(filteredContent);

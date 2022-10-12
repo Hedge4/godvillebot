@@ -55,7 +55,9 @@ async function getLastMessage(client) {
     // loop through messages until one not sent by a bot is found
     for (const message of messages.values()) {
         if (foundMessage) { // we do different stuff based on if we already found the last user or not
-            if (foundMessage.author.id === message.author.id) { // same author: keep searching for an even earlier message
+            if (message.author.bot) { // skip bot messages in between messages by the same author
+                continue;
+            } else if (foundMessage.author.id === message.author.id) { // same author: keep searching for an even earlier message
                 foundMessage = message;
                 continue;
             } else { return foundMessage; } // if the author changed, that means foundMessage was the earliest message by that author

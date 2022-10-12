@@ -20,18 +20,18 @@ async function giveGodpower(message, userData, Discord, client) {
     if (xpBlocked.includes(message.author.id)) return; // blocked from getting godpower
     if (noXpPrefixes.some(e => message.content.startsWith(e))) return; // these are likely commands => no godpower
 
-    const regexCustomEmoji = /<[^:>]*:[^:>]+:[0-9]+>/g; // filter out custom emojis
-    const regexMentions = /<(@(!|&)?|#)[0-9]+>/g; // filter out member, person and channel mentions
+    const regexCustomEmoji = /<[^:>\s]*:[^:>\s]+:\d+>/g; // filter out custom emojis
+    const regexMentions = /<(?:@(?:!|&)?|#)\d+>/g; // filter out member, person and channel mentions
     const regexEmoji = emoji_regex(); // filter out emojis
-    const regexUri1 = /<?(ht|f)tps?:\/\/[^\s]+/gi; // filter out most urls starting with http(s):// or ftp(s)://
-    const regexUri2 = /<?www2?\.[^\s]+/gi; // filter out urls starting with www(2).
+    const regexUri1 = /<?(?:ht|f)tps?:\/\/\S+/gi; // filter out most urls starting with http(s):// or ftp(s)://
+    const regexUri2 = /<?www?2?\.\S+/gi; // filter out urls starting with www(2).
 
     let validContent = message.content.replace(regexCustomEmoji, '');
     validContent = validContent.replace(regexMentions, '');
     validContent = validContent.replace(regexEmoji, '');
     validContent = validContent.replace(regexUri1, '');
     validContent = validContent.replace(regexUri2, '');
-    validContent = validContent.replace(/[\s]+/g, ' '); // filter out whitespace larger than 1 character
+    validContent = validContent.replace(/\s\s+/g, ' '); // filter out whitespace larger than 1 character
 
     // no godpower for messages shorter than 15 characters
     if (validContent.trim().length < 15) { return; }

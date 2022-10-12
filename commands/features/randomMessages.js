@@ -3,10 +3,10 @@ const messageEvents = [
     {
         name: 'BbqPfp',
         active: true,
-        minDelay: 1 * (60 * 1000), // in minutes
-        maxDelay: 30 * (60 * 1000),
+        minDelay: 0.5 * (60 * 1000), // in minutes
+        maxDelay: 15 * (60 * 1000),
         autoDelete: true,
-        deleteAfter: 3 * 1000,
+        deleteAfter: 2 * 1000,
         channelId: '313398424911347712',
         messages: [
             'https://cdn.discordapp.com/attachments/353554102833250305/1024788025168904243/bbq_pfp-2.png',
