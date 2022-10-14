@@ -127,6 +127,9 @@ const reactionEvents = [
 
 // react when someoene has a certain trigger in their message
 function messageReactions(message) {
+    // no message reactions for messages in which the bot is pinged
+    if (/<@!?666851479444783125>/.test(message.content)) return;
+
     reactionEvents.forEach(e => {
         testTrigger(e, message);
     });

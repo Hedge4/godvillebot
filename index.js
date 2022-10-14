@@ -338,7 +338,7 @@ client.on('messageCreate', (message) => {
 
 
     // respond with a randomly selected reaction when the bot is pinged
-    if (/<@666851479444783125>|<@!666851479444783125>/.test(message.content)) {
+    if (/<@!?666851479444783125>/.test(message.content)) {
         return onMention(message, client);
     }
 });
