@@ -47,15 +47,13 @@ function showGuide(message, guide_number, Discord) {
         .setDescription(guides_list[index_number][1])
         .setFooter({ text: `Guide by ${guides_list[index_number][3]}` });
     message.channel.send({ embeds: [guide_embed] });
-    logger.log(`${message.author.tag} requested the guide "${guides_list[index_number][0]}" in channel ${message.channel.name}.`);
+    logger.log(`${message.author.tag} requested guide ${guide_number}, "${guides_list[index_number][0]}", in channel ${message.channel.name}.`);
 }
 
 function listOrGuide(message, number, Discord) {
     if (!number.length) {
         showGuidesList(message);
     } else {
-        logger.log(`${message.author.tag} requested guide ${number} in channel ${message.channel.name}.`);
-
         if (isNaN(number)) {
             return message.reply('You need to enter the number of the guide you want to view.');
         }
