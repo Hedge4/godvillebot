@@ -1,6 +1,6 @@
 const logger = require('../features/logging');
 const { clientId } = require('../../configurations/config.json');
-const Discord = require('discord.js');
+const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const sharp = require('sharp');
 const https = require('https');
 
@@ -154,7 +154,7 @@ async function main(message) {
             .toBuffer(); // this is our final output
 
         // share the created image with the world
-        const attachment = new Discord.MessageAttachment(newImage);
+        const attachment = new Discord.AttachmentBuilder(newImage);
         message.channel.send({ files: [attachment] });
 
         // one big catch all because I'm lazy

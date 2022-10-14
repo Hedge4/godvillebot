@@ -1,5 +1,5 @@
 const { prefix } = require('../../configurations/config.json');
-const Discord = require('discord.js');
+const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const main = require('../../index');
 const logger = require('../features/logging');
 const omnibusManager = require('./omnibusManager');
@@ -161,13 +161,15 @@ async function solveHtmlRequest(message) {
 
     const client = main.getClient();
 
-    const crosswordEmbed = new Discord.MessageEmbed()
+    const crosswordEmbed = new Discord.EmbedBuilder()
         .setTitle('Godville Times crossword solution')
         .setDescription(`Solved using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
             + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago. If not all words are`
             + ` solved, add them to the [Omnibus List](https://wiki.godvillegame.com/Omnibus_List) and use command \`${prefix}refreshomnibus\`.\n`)
-        .addField('Horizontal solutions', `||${solvedHorizontals.join('\n')}||`)
-        .addField('Vertical solutions', `||${solvedVerticals.join('\n')}||`)
+        .addFields([
+            { name: 'Horizontal solutions', value: `||${solvedHorizontals.join('\n')}||` },
+            { name: 'Vertical solutions', value: `||${solvedVerticals.join('\n')}||` },
+        ])
         .setColor(0x78de79) // noice green
         .setURL('https://godvillegame.com/news')
         .setThumbnail('https://i.imgur.com/t5udHzR.jpeg')

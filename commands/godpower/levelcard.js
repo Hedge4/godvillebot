@@ -17,7 +17,7 @@ async function displayLevel(message, msgContent, userData, Discord, client) {
     let requestedUser = user.tag;
     const userDoc = await userData.get();
     const User = {};
-    if(userDoc.data()[user.id] === undefined) {
+    if (userDoc.data()[user.id] === undefined) {
         User[user.id] = {
             godpower: 0,
             total_godpower: 0,
@@ -30,8 +30,8 @@ async function displayLevel(message, msgContent, userData, Discord, client) {
         User[user.id] = userDoc.data()[user.id];
     }
 
-    if (User[user.id].total_godpower <= 0) {rank = 'Unranked';}
-    if (rank !== 'Unranked') {rank = await getOwnRanking(user.id, userDoc.data());}
+    if (User[user.id].total_godpower <= 0) { rank = 'Unranked'; }
+    if (rank !== 'Unranked') { rank = await getOwnRanking(user.id, userDoc.data()); }
     const curGodpower = User[user.id].godpower;
     const curLevel = User[user.id].level;
     let reqGodpower = Math.floor(100 * 1.2 ** (curLevel ** (4 / 5)));
@@ -44,14 +44,16 @@ async function displayLevel(message, msgContent, userData, Discord, client) {
         requestedUser = requestedUser + ' / ' + member.displayName;
     }
 
-    const lvlEmbed = new Discord.MessageEmbed()
-    .setAuthor({ name: requestedUser })
-    .setColor('32cd32')
-    .addField('Level', curLevel.toString(), true)
-    .addField('Godpower <:stat_godpower:401412765232660492>', curGodpower.toString(), true)
-    .addField('Total godpower', User[user.id].total_godpower.toString(), true)
-    .addField('Rank', rank.toString(), true)
-    .setFooter({ text: `${difference} godpower needed for level ${nextLevel}.`, iconURL: user.displayAvatarURL() });
+    const lvlEmbed = new Discord.EmbedBuilder()
+        .setAuthor({ name: requestedUser })
+        .setColor('32cd32')
+        .addFields([
+            { name: 'Level', value: curLevel.toString(), inline: true },
+            { name: 'Godpower <:stat_godpower:401412765232660492>', value: curGodpower.toString(), inline: true },
+            { name: 'Total godpower', value: User[user.id].total_godpower.toString(), inline: true },
+            { name: 'Rank', value: rank.toString(), inline: true },
+        ])
+        .setFooter({ text: `${difference} godpower needed for level ${nextLevel}.`, iconURL: user.displayAvatarURL() });
 
     logger.log(`${message.author.tag} requested the level card for ${user.tag}.`);
     message.channel.send({ embeds: [lvlEmbed] });
@@ -66,7 +68,7 @@ async function getOwnRanking(userID, userDocData) {
         return b[1] - a[1];
     });
     const rank = sortable.findIndex((element) => element[0] === userID);
-    if (rank === -1) {return 'Not found';}
+    if (rank === -1) { return 'Not found'; }
     return rank;
 }
 

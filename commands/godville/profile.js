@@ -1,5 +1,5 @@
 const https = require('https');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 const { prefix, channels } = require('../../configurations/config.json');
 const logger = require('../features/logging');
@@ -92,11 +92,11 @@ function generateEmbed(god, godURL, godvilleData, footer = undefined) {
     }
 
     if (!godvilleData) {
-        const godEmbed = new MessageEmbed()
+        const godEmbed = new EmbedBuilder()
             .setTitle(god)
             .setURL(godURL)
             .setDescription('Click the god(dess)\'s username to open their Godville page.')
-            .addField('ERROR', 'I couldn\'t found any data for this god(dess). Either my parsing code is outdated, the bot can\'t acces this page, or it was linked incorrectly. Click the blue link to check if the latter is the cause of this problem.')
+            .addFields([{ name: 'ERROR', value: 'I couldn\'t found any data for this god(dess). Either my parsing code is outdated, the bot can\'t acces this page, or it was linked incorrectly. Click the blue link to check if the latter is the cause of this problem.' }])
             .setColor('006600')
             .setFooter(footer);
         return godEmbed;
@@ -104,30 +104,32 @@ function generateEmbed(god, godURL, godvilleData, footer = undefined) {
 
     // we return so there's no need for an else statement
 
-    const godEmbed = new MessageEmbed()
+    const godEmbed = new EmbedBuilder()
         .setTitle(`${godvilleData.godGender} ${god}`)
         .setURL(godURL)
         .setThumbnail(godvilleData.avatarUrl)
         .setDescription('Not coming soon: Badges!')
-        .addField(`${godvilleData.gender}`, `${godvilleData.name}, level ${godvilleData.level}\n${godvilleData.age} old`, true)
-        .addField('Motto', godvilleData.motto, true)
+        .addFields([
+            { name: `${godvilleData.gender}`, value: `${godvilleData.name}, level ${godvilleData.level}\n${godvilleData.age} old`, inline: true },
+            { name: 'Motto', value: godvilleData.motto, inline: true },
+        ])
         .setColor('006600')
         .setFooter(footer);
 
     if (godvilleData.guildName) {
-        godEmbed.addField('Guild', `[${godvilleData.guildName}](${godvilleData.guildUrl})`, true);
+        godEmbed.addFields([{ name: 'Guild', value: `[${godvilleData.guildName}](${godvilleData.guildUrl})`, inline: true }]);
     }
     if (godvilleData.petType) {
-        godEmbed.addField('Pet', `[${godvilleData.petType}](${godvilleData.petUrl})\n${godvilleData.petName}`, true);
+        godEmbed.addFields([{ name: 'Pet', value: `[${godvilleData.petType}](${godvilleData.petUrl})\n${godvilleData.petName}`, inline: true }]);
     }
     if (godvilleData.bossName) {
-        godEmbed.addField('Boss', `${godvilleData.bossName}\n${godvilleData.bossPower} power`, true);
+        godEmbed.addFields([{ name: 'Boss', value: `${godvilleData.bossName}\n${godvilleData.bossPower} power`, inline: true }]);
     }
     if (godvilleData.shop) {
-        godEmbed.addField('Shop', godvilleData.shop, true);
+        godEmbed.addFields([{ name: 'Shop', value: godvilleData.shop, inline: true }]);
     }
 
-    godEmbed.addField('Medals', godvilleData.achievements, false);
+    godEmbed.addFields([{ name: 'Medals', value: godvilleData.achievements, inline: false }]);
 
     return godEmbed;
 }

@@ -16,7 +16,7 @@ async function displayGold(message, msgContent, userData, Discord, client) {
     let userName = user.tag;
     const userDoc = await userData.get();
     const User = {};
-    if(userDoc.data()[user.id] === undefined) {
+    if (userDoc.data()[user.id] === undefined) {
         User[user.id] = {
             godpower: 0,
             total_godpower: 0,
@@ -34,11 +34,11 @@ async function displayGold(message, msgContent, userData, Discord, client) {
         userName = userName + ' / ' + member.displayName;
     }
 
-    const goldEmbed = new Discord.MessageEmbed()
-    .setAuthor({ name: userName })
-    .setColor('ffd700')
-    .addField('Gold <:stat_gold:401414686651711498>', User[user.id].gold.toString(), true)
-    .setThumbnail(user.displayAvatarURL());
+    const goldEmbed = new Discord.EmbedBuilder()
+        .setAuthor({ name: userName })
+        .setColor('ffd700')
+        .addFields([{ name: 'Gold <:stat_gold:401414686651711498>', value: User[user.id].gold.toString(), inline: true }])
+        .setThumbnail(user.displayAvatarURL());
 
     logger.log(`${message.author.tag} requested the gold amount for ${user.tag}.`);
     message.channel.send({ embeds: [goldEmbed] });

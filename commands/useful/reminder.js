@@ -1,5 +1,5 @@
 const { channels } = require('../../configurations/config.json');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const getters = require('../../index');
 const logger = require('../features/logging');
 const scheduler = require('../features/scheduler');
@@ -36,12 +36,11 @@ function create(message, content) {
         logger.log(`Created a reminder with id ${reminderId} for ${message.author.tag} in ${message.channel.name}, scheduled for ${thenDate.toUTCString()}.`);
         const client = getters.getClient();
         message.channel.send({
-            embeds: [new MessageEmbed({
+            embeds: [new EmbedBuilder({
                 title: 'Succesfully scheduled reminder :white_check_mark:',
                 description: `I will remind you ${thenDate.toUTCString()}.`,
-                color: 'AQUA',
                 footer: { text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() },
-            }).setTimestamp()],
+            }).setColor('Aqua').setTimestamp()],
         });
     }).catch(error => {
         logger.log(`Error creating reminder for ${message.author.tag} in ${message.channel.name}: ${error}`);
@@ -51,13 +50,12 @@ function create(message, content) {
 
 async function sendReminder(reminder) {
     const client = getters.getClient();
-    const embed = new MessageEmbed({
+    const embed = new EmbedBuilder({
         title: 'Reminder',
         url: reminder.messageUrl,
         description: reminder.content,
-        color: 'AQUA',
         footer: { text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() },
-    }).setTimestamp();
+    }).setColor('Aqua').setTimestamp();
 
     const user = await client.users.fetch(reminder.authorId);
     let failMessage;

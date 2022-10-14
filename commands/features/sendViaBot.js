@@ -1,5 +1,5 @@
 //const { prefix } = require('../../configurations/config.json');
-const Discord = require('discord.js');
+const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const getters = require('../../index');
 
 function main(message) {
@@ -132,12 +132,12 @@ function constructEmbeds(rawEmbeds) {
                 const type = body.shift().toLowerCase();
                 body = body.join(' ');
                 if (!type) throw `TypeError: ${embedParts} isn't a valid argument to construct an embed.`;
-                embedParts[i] = { type : type, body : body };
+                embedParts[i] = { type: type, body: body };
             }
 
             const client = getters.getClient();
-            const embed = new Discord.MessageEmbed()
-            .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
+            const embed = new Discord.EmbedBuilder()
+                .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
 
             // bob the builder
             embedParts.forEach(e => {
@@ -153,8 +153,8 @@ function constructEmbeds(rawEmbeds) {
                         const secondIndex = e.body.indexOf('|||', index + 3);
                         // if there's no third parameter or if it doesn't say 'true' (e.g. 'false') that means no inline
                         if (secondIndex < 0 || e.body.slice(secondIndex + 3).trim() !== 'true') {
-                            embed.addField(e.body.slice(0, index).trim(), e.body.slice(index + 3).trim(), false);
-                        } else { embed.addField(e.body.slice(0, index).trim(), e.body.slice(index + 3, secondIndex).trim(), true); }
+                            embed.addFields([{ name: e.body.slice(0, index).trim(), value: e.body.slice(index + 3).trim(), inline: false }]);
+                        } else { embed.addFields([{ name: e.body.slice(0, index).trim(), value: e.body.slice(index + 3, secondIndex).trim(), inline: true }]); }
                         break;
                     }
                     case 'timestamp':

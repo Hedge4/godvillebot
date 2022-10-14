@@ -3,7 +3,7 @@ const { botOwners } = require('../../configurations/config.json');
 const main = require('../../index');
 const logger = require('../features/logging');
 
-const Discord = require('discord.js');
+const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const https = require('https');
 const fs = require('fs');
 
@@ -24,7 +24,7 @@ function loadBackup() {
         });
 
         // error if the file is empty
-        if(!backup.length || backup.every(function(e) {
+        if (!backup.length || backup.every(function(e) {
             return !e.length ? true : false; // check if every item in backup has no length
         })) {
             logger.log('OmniBackup: Failed to load in omnibus backup file - Loaded file was empty.');
@@ -121,11 +121,11 @@ async function refreshOmnibus(message) {
 
     // create nice embed for the update message, which we can add to
     const client = main.getClient();
-    const updateEmbed = new Discord.MessageEmbed()
-    .setTitle(`⏫ Successfully refreshed online Omnibus list with ${list.length} total entries!`)
-    .setColor(0x0092db) // noice blue
-    .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
-    .setTimestamp();
+    const updateEmbed = new Discord.EmbedBuilder()
+        .setTitle(`⏫ Successfully refreshed online Omnibus list with ${list.length} total entries!`)
+        .setColor(0x0092db) // noice blue
+        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
+        .setTimestamp();
     // we also update a message for the logs
     let updateMessage = `Omnibus: Successfully refreshed online Omnibus list with ${list.length} total entries!`;
 
@@ -142,11 +142,11 @@ async function refreshOmnibus(message) {
 
 
         if (notInOld.length !== 0 && notInOld.length < 50) {
-            updateEmbed.addField('Added:', `${notInOld.join(', ')}`);
+            updateEmbed.addFields([{ name: 'Added:', value: `${notInOld.join(', ')}` }]);
             updateMessage += '\n - Added: ' + `${notInOld.join(', ')}`;
         }
         if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) {
-            updateEmbed.addField('Removed:', `${notInOmnibus.join(', ')}`);
+            updateEmbed.addFields([{ name: 'Removed:', value: `${notInOmnibus.join(', ')}` }]);
             updateMessage += '\n - Removed: ' + `${notInOmnibus.join(', ')}`;
         }
     }
@@ -193,18 +193,18 @@ async function downloadOmnibus() {
     });
 
     const res = await Promise.race([dataPromise, timeoutPromise])
-    .then((result) => {
-        if (!result) {
-            logger.log(`Omnibus: Oops! Something went wrong when downloading from url ${URL}! No data was received.`);
+        .then((result) => {
+            if (!result) {
+                logger.log(`Omnibus: Oops! Something went wrong when downloading from url ${URL}! No data was received.`);
+                return null;
+            }
+            logger.toChannel(`Omnibus: Successfully received html from <${URL}>`); // need separate log to prevent an embed
+            logger.toConsole(`Omnibus: Successfully received html from ${URL}`);
+            return result;
+        }).catch((error) => {
+            logger.log(`Omnibus: Oops! Something went wrong when downloading from url ${URL}! Error: ` + error);
             return null;
-        }
-        logger.toChannel(`Omnibus: Successfully received html from <${URL}>`); // need separate log to prevent an embed
-        logger.toConsole(`Omnibus: Successfully received html from ${URL}`);
-        return result;
-    }).catch((error) => {
-        logger.log(`Omnibus: Oops! Something went wrong when downloading from url ${URL}! Error: ` + error);
-        return null;
-    });
+        });
 
     return res;
 }
@@ -258,16 +258,16 @@ async function createBackup(message) {
 
     // create nice embed for the backup update message
     const client = main.getClient();
-    const backupUpdateEmbed = new Discord.MessageEmbed()
-    .setTitle(result.Title)
-    .setDescription(result.Description)
-    .setColor(0x0092db) // noice blue
-    .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
-    .setTimestamp();
+    const backupUpdateEmbed = new Discord.EmbedBuilder()
+        .setTitle(result.Title)
+        .setDescription(result.Description)
+        .setColor(0x0092db) // noice blue
+        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
+        .setTimestamp();
 
     // lastly, add fields based on if the object has them, then send
-    if (result.Added) backupUpdateEmbed.addField('Added:', result.Added);
-    if (result.Removed) backupUpdateEmbed.addField('Removed:', result.Removed);
+    if (result.Added) backupUpdateEmbed.addFields([{ name: 'Added:', value: result.Added }]);
+    if (result.Removed) backupUpdateEmbed.addFields([{ name: 'Removed:', value: result.Removed }]);
     return reply.edit({ embeds: [backupUpdateEmbed] }).catch(error => console.log(error));
 }
 

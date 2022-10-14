@@ -136,7 +136,7 @@ function constructHelp(message, Discord, client) {
     for (let i = 0; i < commands_list.length; i++) {
         text += `\`${commands_list[i][1]}\` ${commands_list[i][2]}\n`;
     }
-    const helpEmbed = new Discord.MessageEmbed()
+    const helpEmbed = new Discord.EmbedBuilder()
         .setTitle('GodBot commands')
         .setColor(0x63CCBE) // Soft blue
         .setDescription(`GodBot gives XP, or 'godpower' for talking, and provides several other Godville related functions, such as linking your profile and daily crossword solutions. Use \`${prefix}help [command]\` for more information on a specific command/function.\n\n` + text)
@@ -149,7 +149,7 @@ function constructHelp(message, Discord, client) {
 
 function constructSpecificHelp(message, Discord, client, element) {
     if (!element[4]) {
-        const specificHelpEmbed = new Discord.MessageEmbed()
+        const specificHelpEmbed = new Discord.EmbedBuilder()
             .setTitle(`Help for ${element[1]}`)
             .setColor(0x63CCBE) // Soft blue
             .setDescription(element[3])
@@ -170,7 +170,7 @@ function constructSpecificHelp(message, Discord, client, element) {
         }
         if (examplesList.length) examplesList.push(examples); // if we made use of examplesList, add the last examples as well
 
-        const specificHelpEmbed = new Discord.MessageEmbed()
+        const specificHelpEmbed = new Discord.EmbedBuilder()
             .setTitle(`Help for ${element[1]}`)
             .setColor(0x63CCBE) // Soft blue
             .setDescription(element[3] + '\n\u200B')
@@ -181,10 +181,10 @@ function constructSpecificHelp(message, Discord, client, element) {
         if (examplesList.length) {
             for (let i = 0; i < examplesList.length; i++) {
                 const e = examplesList[i];
-                specificHelpEmbed.addField(`__Usage examples ${i + 1}:__`, `${e}`);
+                specificHelpEmbed.addFields([{ name: `__Usage examples ${i + 1}:__`, value: `${e}` }]);
             }
         } else {
-            specificHelpEmbed.addField('__Usage examples:__', `${examples}`);
+            specificHelpEmbed.addFields([{ name: '__Usage examples:__', value: `${examples}` }]);
         }
 
         logger.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);

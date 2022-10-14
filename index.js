@@ -4,19 +4,21 @@ exports.getClient = function() { return client; };
 exports.getGodData = function() { return godData; };
 
 // discord connection setup, bot login is at bottom of file
-const Discord = require('discord.js');
-const client = new Discord.Client({
+const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
+const { Client, GatewayIntentBits, Partials } = require('discord.js');
+const client = new Client({
     intents: [
-        'GUILD_MESSAGES',
-        'DIRECT_MESSAGES',
-        'GUILDS',
-        'GUILD_MEMBERS',
-        'GUILD_MESSAGE_REACTIONS',
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.MessageContent,
     ], partials: [
-        'CHANNEL', // CHANNEL needed to receive DMs
-        'MESSAGE', // Needed to listen for reactions on uncached messages
-        'REACTION', // Needed to listen for reactions on uncached messages
-        'USER', // Apparently need this too (?) to listen for reactions on uncached messages
+        Partials.Channel, // CHANNEL needed to receive DMs
+        Partials.Message, // Needed to listen for reactions on uncached messages
+        Partials.Reaction, // Needed to listen for reactions on uncached messages
+        Partials.User, // Apparently need this too (?) to listen for reactions on uncached messages
     ],
 });
 
@@ -102,7 +104,7 @@ client.on('ready', () => {
     // do some caching and stuff for each guild in advance I guess
     Object.values(serversServed).forEach(guildID => {
         const guild = client.guilds.cache.get(guildID);
-        guild.me.setNickname('GoddessBot');
+        guild.members.me.setNickname('GoddessBot');
         guild.members.fetch();
     });
 
@@ -128,7 +130,7 @@ client.on('ready', () => {
     }
 
     // oh right now we actually say the bot is online in the main bot channel
-    const startEmbed = new Discord.MessageEmbed()
+    const startEmbed = new Discord.EmbedBuilder()
         .setTitle('**Successfully restarted!**')
         .setColor('ffffff')
         .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.

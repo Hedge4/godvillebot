@@ -128,11 +128,11 @@ async function accept(message, client, Discord, userData) {
         goldEarnedMsg = `I couldn't find a user with username ${username}, so they missed out on ${goldEarned} gold :(`;
     }
 
-    const acceptedEmbed = new Discord.MessageEmbed()
+    const acceptedEmbed = new Discord.EmbedBuilder()
         .setTitle('<:i_accepted:700766526713888849> Suggestion content:')
         .setColor(0xaafb1a) // light blue
         .setDescription(suggestion)
-        .addField('Gold earned <:stat_gold:401414686651711498>', goldEarnedMsg, true)
+        .addFields([{ name: 'Gold earned <:stat_gold:401414686651711498>', value: goldEarnedMsg, inline: true }])
         .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/joypixels/291/check-mark-button_2705.png')
         .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
         .setTimestamp();
@@ -189,11 +189,11 @@ async function reject(message, client, Discord) {
     }
     const author = message.author.tag; // person who accepted/rejected the suggestion
 
-    const acceptedEmbed = new Discord.MessageEmbed()
+    const acceptedEmbed = new Discord.EmbedBuilder()
         .setTitle('<:i_rejected:700766050345549884> Suggestion content:')
         .setColor(0xce4321) // dark orange
         .setDescription(suggestion)
-        .addField('Thank you! <:stat_gold:401414686651711498>', 'Although your suggestion was rejected, thank you for coming up with new ideas for the bot!', true)
+        .addFields([{ name: 'Thank you! <:stat_gold:401414686651711498>', value: 'Although your suggestion was rejected, thank you for coming up with new ideas for the bot!', inline: true }])
         .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/whatsapp/302/cross-mark_274c.png')
         .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
         .setTimestamp();

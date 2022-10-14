@@ -1,6 +1,6 @@
 const logger = require('../features/logging');
 const { clientId } = require('../../configurations/config.json');
-const Discord = require('discord.js');
+const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const sharp = require('sharp');
 const https = require('https');
 
@@ -55,7 +55,7 @@ async function main(message) {
                 throw ('Error: ', err);
             });
 
-        const attachment = new Discord.MessageAttachment(imageToEdit);
+        const attachment = new Discord.AttachmentBuilder(imageToEdit);
 
         message.channel.send({ files: [attachment] });
 
