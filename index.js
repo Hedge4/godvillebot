@@ -411,6 +411,22 @@ client.on('messageReactionRemove', async (reaction, user) => {
     reactionRoles.reaction('remove', reaction, user, message);
 });
 
+// handle new threads being created
+client.on('threadCreate', async (threadChannel, newlyCreated) => {
+    if (!newlyCreated) { return; } // for now we don't do anything with older threads (this shouldn't happen anyway since bot is admin)
+    if (!threadChannel.guildId || !Object.values(serversServed).includes(threadChannel.guildId)) { return; } // eww DM or wrong guild
+
+    threadChannel.join().then(joinedChannel => {
+        // make Dyno join the channel too, for moderation
+        joinedChannel.send('<@155149108183695360> quick, bot takeover!').catch(/* do nothing */);
+    }).catch(/* do nothing */);
+    const adminChannel = await client.channels.fetch(channels.losAdminos);
+    const threadCreator = await client.users.fetch(threadChannel.ownerId);
+
+    adminChannel.send(`New thread ${threadChannel.name}/<#${threadChannel.id}> created by ${threadCreator.tag}/<@${threadChannel.ownerId}> in channel ${threadChannel.parent.name}/<#${threadChannel.parentId}>.`);
+    logger.log(`New thread ${threadChannel.name}/${threadChannel.id} created by ${threadCreator.tag}/${threadChannel.ownerId} in channel ${threadChannel.parent.name}/${threadChannel.parentId}.`);
+});
+
 
 // log in to Discord after any setup is done
 client.login(token);
