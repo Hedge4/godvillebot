@@ -312,6 +312,7 @@ async function getGodData(URL, message) {
         });
     }
 
+
     // PROGRESS
     const progress = {};
     const rxBricks = /label">Bricks for Temple[\s\S]*?name">([^<]*)</i;
@@ -320,6 +321,7 @@ async function getGodData(URL, message) {
     const rxPairs = /label">Twos of Every Kind[\s\S]*?name">[^<()]*\((.*?)\)</i;
     const rxWords = /label">Words in Book[\s\S]*?name">([^<]*)</i;
     const rxSavings = /label">Savings[\s\S]*?name">[^<()]*\((.*?)\)</i;
+    const rxSouls = /label">Souls Gathered[\s\S]*?name">([^<]*)</i;
 
     progress.bricks = rxBricks.exec(html);
     if (!ark) progress.logs = rxLogs1.exec(html);
@@ -327,6 +329,7 @@ async function getGodData(URL, message) {
     progress.pairs = rxPairs.exec(html);
     progress.words = rxWords.exec(html);
     progress.savings = rxSavings.exec(html);
+    progress.souls = rxSouls.exec(html);
 
     const progressActive = [];
     Object.keys(progress).forEach(key => {
