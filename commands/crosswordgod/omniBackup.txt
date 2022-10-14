@@ -1,4 +1,4 @@
-1663164824408
+1665785922090
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -678,6 +678,7 @@ Chocolate bar graph
 Chocolate bunny ear
 Chocolate dust bunny
 Chocolate microchip
+Chocolate rebar
 Chopping list
 Chordless guitar
 Christmas card
@@ -1614,6 +1615,7 @@ Hippocratic oats
 History eraser
 History repeater
 Hive of activity
+Hobgoblet
 Hog wash
 Hog's wart
 Holey pail
@@ -2525,6 +2527,7 @@ Pig-tail sock
 Pilates license
 Pile of debt
 Pile of game solutions
+Pile of social credit
 Pile of stardust
 Pillar of society
 Pillow of eternal sleep
@@ -4125,6 +4128,7 @@ Confused E-bowler
 Conga Lion
 Constantinoble
 Continental Drifter
+Contraband Mule
 Contraband Snuggler
 Contrabandit
 Cookie Mobster
@@ -4167,6 +4171,7 @@ Croaking Vamplifier
 Crooked Ruler
 Croquet Mullet
 Cross Checker
+Cross Hare
 Cross-Eyed Basilisk
 Crouching Tiger
 Crowbard
@@ -4399,6 +4404,7 @@ Fault Dueler
 Faux Hawk
 Fearfighter
 Feathered Boa Constrictor
+Fedora Rat
 Fee-Fi Foe
 Felinethropist
 Feral Hero
@@ -4893,6 +4899,7 @@ Level Boss
 Lexiconnoisseur
 Liar Wolf
 Life Insurance Salesman
+Lifelong Fiend
 Ligerian Prince
 Lightning Colt
 Lightning Dolt
@@ -4989,6 +4996,7 @@ Menthol Camel
 Meowntain Cat
 Merchant of Menace
 Merit Badger
+Mermalade
 Mermelly
 Metal Slug
 Methylated Spirit
@@ -5635,6 +5643,7 @@ Slightly Invisible Man
 Slim Reaper
 Slime Shady
 Slithy Tove
+Slow Wight
 Smackerel
 Smashing Pumpkin
 Smoke Detective
@@ -5705,6 +5714,7 @@ Spywarewolf
 Square Groot
 Squid Pro Quo
 Squirmisher
+Stag of Holding
 Stalactitan
 Stalking Horse
 Standard Deviant
@@ -5905,6 +5915,7 @@ Uncertainty Principal
 Unchangeling
 Unchosen One
 Uncivil Servant
+Uncivillian
 Uncommon Ancestor
 Uncountable Sheep
 Undead Pixel
