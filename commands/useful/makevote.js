@@ -1,46 +1,44 @@
 const { botOwners, roles } = require('../../configurations/config.json');
-let reacting = false;
 const logger = require('../features/logging');
+let reacting = false;
 
 async function main(message, content) {
     if (reacting) {
         return message.reply('I\'m already working on a different message! Try again in a few seconds.');
     }
 
-    if (content.trim().length < 1) {
-        return message.reply('You need to use this command with the ID of the message you want to make into a vote.'
-            + '\n\nTo get the ID of a message, you need to enable Developer Mode in the \'Behavior\' tab of your User Settings.'
-            + ' Once you\'ve done this, right click/hold the message and a \'Copy ID\' option will appear.');
-    }
-
-    let messageID;
-    let reactionList;
-    const splitIndex = content.indexOf(' ');
-    if (splitIndex < 1) {
-        messageID = content.trim();
-        reactionList = ['313788789787197441', '313798262484107274', '313788834640953346'];
-    } else {
-        messageID = content.substring(0, splitIndex);
-        const numberOfChoices = content.substring(splitIndex).trim();
-        if (isNaN(numberOfChoices) || numberOfChoices < 2 || numberOfChoices > 10) {
-            return message.reply('To create a multiple choice poll, you can pass a number (2-10) into the command as the second argument.'
-                + ` You passed '${numberOfChoices}'. If you don't want a multiple choice poll, only provide a message ID.`);
-        } else if (numberOfChoices == 10) {
-            reactionList = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'];
-        } else { reactionList = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'].slice(0, numberOfChoices); }
-    }
-
-    if (isNaN(messageID)) {
-        return message.reply(`A message ID has to be a number, which '${messageID}' isn't.`
-            + '\n\nTo get the ID of a message, you need to enable Developer Mode in the \'Behavior\' tab of your User Settings.'
-            + ' Once you\'ve done this, right click/hold the message and a \'Copy ID\' option will appear.');
+    // if this regex passes, the input is correct. We don't need to check anything else
+    const parsedArgs = /^(?:https?:\/\/discord\.com\/channels\/\d+\/\d+\/(\d+)|(\d{2,}))?\s*([2-9]|10)?$/i.exec(content);
+    if (!parsedArgs) {
+        return message.reply('Your command appears to be incorrect. First write down the ID or URL to the message you want to make into a poll, or write nothing to use the most recent message. Then write a number 2-10 for a multiple-choice poll, or nothing for an encourage/miracle/punish poll. Make sure there are no extra characters.');
     }
 
     let targetMsg;
-    try {
-        targetMsg = await message.channel.messages.fetch(messageID);
-    } catch (error) {
-        return message.reply('I couldn\'t find a message with that ID in this channel.');
+    if (parsedArgs[1] || parsedArgs[2]) {
+        // set messageId to the id group that isn't null
+        const messageId = parsedArgs[1] ? parsedArgs[1] : parsedArgs[2];
+        try {
+            targetMsg = await message.channel.messages.fetch(messageId);
+        } catch (error) {
+            return message.reply(`I couldn't find a message with id ${messageId} in this channel.`);
+        }
+    } else {
+        // if no messageId was found use second latest message in channel (skip the command)
+        const latestMessages = await message.channel.messages.fetch({ limit: 2 });
+        if (latestMessages.size < 2) return message.reply('Couldn\'t find the latest message in this channel to reply to.');
+        targetMsg = latestMessages.last();
+    }
+
+    let reactionList;
+    const amount = parsedArgs[3];
+    if (!amount) {
+        // if no amount is given, make enc/mir/pun poll
+        reactionList = ['313788789787197441', '313798262484107274', '313788834640953346'];
+    } else if (amount == 10) {
+        // the regex already makes sure the amount is in the range 2-10
+        reactionList = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'];
+    } else {
+        reactionList = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣'].slice(0, amount);
     }
 
     let logsText = `${message.author.tag} made a message from ${targetMsg.author.tag} in ${message.channel.name} into a vote.`;
@@ -59,7 +57,7 @@ async function main(message, content) {
             reacting = true;
             react(targetMsg, reactionList);
         } else {
-            return message.reply('This message already has reactions. This command will clear those, so only a moderator can do this.');
+            return message.reply('This message already has reactions. This command would clear those, so only mods can do this.');
         }
     } else {
         reacting = true;
