@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.13.7",
+  "version": "5.13.8",
   "updateMsg1": "5.13 GoddessBot now automatically joins new threads :robot:",
   "updateMsg2": "5.12 Updated to discord.js v14.6 and updated all outdated packages.",
   "updateMsg3": "5.10+5.11 Added the >botTime and >parseUrl commands",
