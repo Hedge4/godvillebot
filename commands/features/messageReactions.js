@@ -5,7 +5,7 @@ const reactionEvents = [
     {
         name: 'Spookmode',
         active() { return (new Date).getMonth() === 9; }, // only in October
-        disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, '1020381945714200596'],
+        disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, '1020381945714200596'],
         triggers: [
             { name: 'spook', isRegex: false },
             { name: /\bscar(e|y)/, isRegex: true },
