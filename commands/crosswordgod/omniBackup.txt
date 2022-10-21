@@ -1,4 +1,4 @@
-1665785922090
+1666313695796
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -92,6 +92,7 @@ Apocalypse date generator
 Apocalypse insurance
 Apocalypstick
 Apothecary in a bottle
+Apple cipher
 Aqua vitae
 Aqueduct tape
 Arcade token
@@ -1410,6 +1411,7 @@ Gibberish translator
 Gif card
 Gift horse mouthwash
 Gift of fate
+Giggler counter
 Gilded fleece
 Gilt complex
 Glass eye
@@ -1606,6 +1608,7 @@ Hidden content
 Hidden depths gauge
 Hidden folder
 Hidden gem
+Hide of wanted monster
 High-definition dictionary
 High-definition pixel
 High-hanging fruit
@@ -1676,8 +1679,8 @@ Hypocritical mass
 "I am Hero's Name Here" badge
 “I have a T-shirt” T-shirt
 ‘I Love Godville’ T-shirt
-"I Love Godville" T-shirt
-'I Survived the Rapture' T-shirt
+“I Love Godville” T-shirt
+'I survived the Rapture' T-shirt
 I.O.U. note
 Iambic thermometer
 Ice cream sculpture
@@ -1931,7 +1934,7 @@ List of stupid ideas
 List of symptoms
 List of true lies
 List of unproven facts
-"Literacy for Dummies" book
+“Literacy for Dummies” book
 "Little Alchemist" starter kit
 "Little Hero" night-light
 Little white lye
@@ -2194,7 +2197,7 @@ Mystery box
 Mystery meat
 Mystery meatball
 Myth duster
-Name calling card
+Name-calling card
 Nano screw bolt
 Nap sack
 Narscissors
@@ -2259,6 +2262,7 @@ Novel tea
 Nuclear energy drink
 Nuclear fuchsia plant
 Nuclear wastebasket
+Nudist costume
 Nugget of freeze-dried steam
 Nugget of wisdom
 Nukulele
@@ -2285,6 +2289,7 @@ Oil of “olé!”
 Old diary
 Old piece of equipment
 Old wife's tail
+Olympic Mentalist
 Omnicillin
 Omnipotentiometer
 Omnipresent wrapper
@@ -2413,6 +2418,7 @@ Parallel cross
 Parallel universe navigator
 Parallel university map
 Parallel world map
+Paranoid camera
 Parched paper
 Parental guidelines
 Parental lock
@@ -2641,7 +2647,7 @@ Pre-threaded needle
 Preapocalyptic guide
 Precautionary measure
 Precautionary measuring jug
-Preemptive stroke
+Preemptive strike
 Preheated debate
 Preidiotic table
 Premarital hex
@@ -2965,7 +2971,7 @@ Shamerock
 Shape of things
 “Share your password” button
 Sharp wit
-Shattered dream fragment
+Shattered dream fragments
 Shavings account
 Sheet of ink-proof paper
 Sheet of personal information
@@ -2994,7 +3000,7 @@ Shortcut lengthener
 Shortest suicide note
 Shoulder blade sharpener
 Shred of dignity
-Shreds of the %monster%
+Shred of the %monster%
 Shrinking violet
 Shrubbery
 Shrunken head
@@ -3642,7 +3648,7 @@ Wireless cutter
 Wireless seatbelt
 Wirt's other leg
 Wish for good luck
-"Wish you were beer" postcard
+“Wish you were beer” postcard
 Wisdom toothpick
 Wishing well coin
 Wishy-washy machine
@@ -3852,6 +3858,7 @@ Balding Scentipede
 Ballistic Slug
 Balloonatic
 Ballpoint Penguin
+Balrogue
 Bananaconda
 Bandwidth Devourer
 Bandwidth Hog
@@ -3961,6 +3968,7 @@ Bodily Ogre
 Bodybuilding Skeleton
 Bone Corrector
 Boneless Skeleton
+Boneyard Dog
 Bonfirefly
 Bonsai Treant
 Boogie Woogie Man
@@ -3973,6 +3981,7 @@ Borderline Collie
 Born-Again Zombie
 Bossferatu
 Bossquito
+Bosstard
 Bosstradamus
 Bottled Water Elemental
 Bottomless Pitbull
@@ -3985,7 +3994,7 @@ Brainstorm Trooper
 Brand Newt
 Brass Monkey
 Brassquatch
-Brat out of Hell
+Brat Out of Hell
 Brawlrog
 Breaking Badger
 <span style="white-space:pre;"><span style="display:inline-block;margin-right:0.2em">🦌</span>Brewpid the Reindeer</span>
@@ -4002,7 +4011,7 @@ Bubonic Plagiarist
 Bulletproof Monk
 Bulletproof Pest
 Bully Mammoth
-Bureau-cat
+Bureau-Cat
 Business Monkey
 Busted Ghost
 Butter Jellyfish
@@ -4094,7 +4103,7 @@ Civic Centaur
 Civil Serpent
 Civil Warlord
 Civil Warrior
-Clam before the Storm
+Clam Before the Storm
 Clambassador
 Clamity
 Clawstrophobic Crab
@@ -4154,6 +4163,7 @@ Count Spatula
 Counter Shrike
 Court Martial Artist
 Cow Lich
+Cowlossus
 CPU Hog
 Crabbessa
 Crabomination
@@ -4296,6 +4306,7 @@ Dramatic Chipmunk
 Dreaded Gazebo
 Dreadnautilus
 Dreadneck
+Dreadwinner
 Dream Shatterer
 Dream Weaver
 Dress Code Decrypter
@@ -4324,7 +4335,7 @@ Early Bird
 Earthworm Djinn
 Earworm
 E-book Worm
-E-bowler
+E-Bowler
 Eclectic Eel
 Edible Jelly
 Educated Flea
@@ -4335,11 +4346,13 @@ Eight-bit Thief
 Electric Fencer
 Electric Monk
 Electric Orc Welder
-Electro Magnate
 Electro-Cutie
+Electro Magnate
+Electromagnetic Specter
 Elemental of Surprise
 Elephant of Surprise
 Elephantom
+Elite Worrier
 E-Mailman
 Emotional Baggage Handler
 Enchanted Florist
@@ -4347,9 +4360,11 @@ Encryption Keeper
 Encyclopedia Salesman
 Enemy of My Enemy
 Enemy of the People
+Energizer Bully
 Energizer Bunny
 Enforcement Droid 209
 Ent of the World
+Entreprenerd
 Entry-Level Enemy
 Epic Flailer
 Equine Ox
@@ -4431,7 +4446,7 @@ Fisherman's Fiend
 Five o'clock Shadow
 Five-Alarm Friar
 Flagrant Mispeller
-Flame-ingo
+Flame-Ingo
 Flaming Snowman
 Flamingo Dancer
 Flappy Bard
@@ -4457,6 +4472,7 @@ Flying Skull
 Flying Spaghetti Monster
 Flying Swordfish
 Fnord
+Foever
 Forbidden Fruit Fly
 Forest Grump
 Forget-Me Gnat
@@ -4474,6 +4490,7 @@ Frankenfurter
 Frankintestine
 Freed Radical
 Freelancelot
+Freezard
 Frequent Flayer
 Fridge Magnate
 Fridge Raider
@@ -4694,7 +4711,7 @@ Holykeeper
 Homicidal Brainiac
 Horse Majeure
 Horse of Babylon
-Horse with No Shame
+Horse With No Shame
 Horseless Headsman
 Hostile Environmentalist
 Hostile NPC
@@ -4741,6 +4758,7 @@ Igpay Atinlay
 Illeagle
 Illegal Guardian
 Illuminaughty Agent
+Imbossible
 Immoral Porpoise
 Immunogoblin
 Impaladin
@@ -4804,7 +4822,7 @@ Itsy-Bitsy Spider
 Jabberwookie
 Jack Lantern
 Jack the Tripper
-Jackal-of-all-Trades
+Jackal-of-All-Trades
 Jackalope
 Jacked Sparrow
 Jack-of-All-Blades
@@ -4817,6 +4835,7 @@ Jaywalking Chicken
 Jealous Sidekick
 Jelly Golem
 Jellydancer
+Jerkules
 Jibber-Jabberwocky
 Jitter-Bug
 Jugglernaut
@@ -4866,6 +4885,7 @@ Labracadabrador
 Labrador Deceiver
 Lady's Knight
 Lag Monster
+Lagviathan
 Lame Duck
 Lampless Genie
 <span style="white-space:pre;"><span style="display:inline-block;margin-right:0.2em">🦌</span>Lancer the Reindeer</span>
@@ -4906,6 +4926,7 @@ Lightning Dolt
 Lightningale
 Lightsaber-Toothed Tiger
 Like-a-Boss Monster
+Limberjack
 Lip Servant
 Lip Smacker
 Litterbug
@@ -4949,6 +4970,7 @@ MacDeath
 Machiavillain
 Mad Clown
 Mad Hacker
+Madmiral
 Mad Scientist
 Magnum Octopus
 Magnum Opossum
@@ -4965,6 +4987,7 @@ Malignant Tutor
 Maniacrobat
 Margarine Fly
 Marital Artist
+Marshal Lawyer
 Marquis de Sad
 Mascarpony
 Masqueraider
@@ -4986,9 +5009,10 @@ Medieval Knieval
 Mediocrates
 Mediogre
 Medusa's Hairdresser
-Mega Pixel
+Megatribble
 Megahurtz
 Megaphony
+Mega Pixel
 Meh-Warrior
 Melee Archer
 Mental Hygienist
@@ -5025,6 +5049,7 @@ Mis-Conductor
 Miss Information
 Misfortune Teller
 Misguidance Counsellor
+Missile Blower
 Missing-in-Action Figure
 Mission Creep
 Misspellcaster
@@ -5045,6 +5070,7 @@ Molotov Cockatrice
 Mona Lizard
 Monocled Penguin
 Monophobic Hermit
+Monopony
 Monorail Cat
 Monotonous Drone
 Monster Hangover
@@ -5091,6 +5117,7 @@ Murphy's Lawmaker
 Music Pirate
 Musketdeer
 Mutating Algorithm
+Mystery Guest
 Nachomancer
 Name-with-no-Horse
 Nanomanager
@@ -5148,12 +5175,14 @@ Nostradamoose
 Not a Big Dealer
 Notary of Death
 Nothing
+Not-of-this-Earth Worm
 Not-So-Brave Knight
 Nuclear Overreactor
 Nuclear Watchdog
 Nuclear-Powered Plant
 Numbarina
 Nun of Your Business
+Nursery Mime
 Nutjob Cracker
 Nutkraken
 Obituarian
@@ -5167,6 +5196,7 @@ OctoBear
 Octopella
 Octopus' Guardian
 Octopuss in Boots
+Oddzilla
 Offense Attorney
 Ogre Achiever
 Ogrelord
@@ -5193,7 +5223,7 @@ Optical Illusionist
 Optimus Slime
 Optimystic
 Orangutank
-Orc-in-the-road
+Orc-in-the-Road
 Orc Angel
 Orc Bishop
 Orc De Triomphe
@@ -5483,6 +5513,7 @@ Rock Lobster
 Rock'em Sock'em Robot
 Rocket Propelled Gremlin
 Rockin' Troll
+Rock 'n Gnoll
 Rocktopus
 Rocky Raccoon
 Rocky Roadie
@@ -5598,6 +5629,7 @@ Sharkshooter
 Sharp Dressed Mandrill
 Sheep in a Wolf's Clothes
 Sheepshifter
+Sheepwalker
 Shetland Phony
 Shift-Shaper
 Shipwreckley
@@ -5623,6 +5655,7 @@ Silent Knight
 Silent Lamb
 Silly Goose
 Sillymander
+Sinfluencer
 Singing Shark
 Single Mummy
 Sir Caustic
@@ -5632,6 +5665,7 @@ Sitcom Pilot
 Sitting Duck
 Sixth Sensei
 Skelebrity
+Skeletaur
 Skeletoff
 Sketchy Artist
 Skilleton
@@ -5687,6 +5721,7 @@ Spaghetti Elemental
 Spaghetti Westerner
 Spag-Yeti
 Spambot
+Spamurai
 Spanish Inquisitor
 Spark Pug
 Special Character
@@ -5997,6 +6032,7 @@ Wal-Martian
 Walrietta
 Wanna Bee
 Wannabeast
+Warchef
 Warlock Holmes
 Warmongrel
 Warrior Of Attrition
@@ -6100,6 +6136,7 @@ All-terrain sandals
 All-terrain slippers
 All-thumbs gloves
 Amethyst collar
+Amulet of false hope
 Amulet of industrial strength
 Amulet of omni-impotence
 Amulet of refraction
@@ -6121,6 +6158,7 @@ Anti-trust suit
 Antibodies
 Antigravity boots
 Antimatter horn
+Antlers helmet
 Apollo's sunshade
 Arctic circle
 Armadillo shield
@@ -6173,7 +6211,7 @@ Bank vault door
 Bartenderizer
 Basilisk jaw
 Basilisk's ear
-Basilisk's feet
+Basilisk's foot
 Basswood shield
 Bast boots of richness
 Bastion shield
@@ -6396,6 +6434,7 @@ Data mining headlamp
 Data spike
 Dead poets club
 Deadly shins
+Death-perception goggles
 Death rattle
 Death's door
 Death's sickle
@@ -6996,6 +7035,7 @@ Platformer shoes
 Platinum platter
 Platonic armor
 Plausible deniability
+Plot armor
 Plothole cover
 Plumber's plunger
 Plumsoles
@@ -7022,7 +7062,7 @@ Privacy screen
 Protective custody
 Protective pentagram
 Proxy protection
-Psychological defence mechanism
+Psychological defense mechanism
 Psychotic brakes
 Puffy pirate sleeves
 Punchline gloves
@@ -7321,6 +7361,7 @@ Traffic cone
 Traffic jammies
 Tramp's shoes
 Transmogrifier gun
+Trapper keeper
 Trenchant obtusenator of boorishness
 Trenchcoat of arms
 Tribble toupee
@@ -7417,6 +7458,7 @@ Wristlets of bad luck
 Wunderwaffle
 X-ray glasses
 XXL sword
+Yellow-brick robe
 Yellow polka dot bikini
 Yellow raincoat
 Yeti slippers

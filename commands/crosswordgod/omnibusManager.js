@@ -76,8 +76,8 @@ async function loadOmnibus(startup = false) {
             const notInOmnibus = backup.filter(x => !omnibus.includes(x));
             const notInBackup = omnibus.filter(x => !backup.includes(x));
             updateMessage += `\nOmnibus: Compared to the backup, ${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
-            if (notInBackup.length !== 0 && notInBackup.length < 50) updateMessage += `\n - Added: ${notInBackup.join(', ')}`;
-            if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) updateMessage += `\n - Removed: ${notInOmnibus.join(', ')}`;
+            if (notInBackup.length !== 0) updateMessage += `\n - Added: ${notInBackup.join(', ')}`;
+            if (notInOmnibus.length !== 0) updateMessage += `\n - Removed: ${notInOmnibus.join(', ')}`;
             updateMessage += '\n';
         }
     }
@@ -141,12 +141,18 @@ async function refreshOmnibus(message) {
         updateMessage += `\nOmnibus: Compared to the previous list, ${notInOld.length} ${quantiseWords(notInOld.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
 
 
-        if (notInOld.length !== 0 && notInOld.length < 50) {
-            updateEmbed.addFields([{ name: 'Added:', value: `${notInOld.join(', ')}` }]);
+        if (notInOld.length !== 0) {
+            let addedText = notInOld.join(', ');
+            // there is a 1024 character limit so limit the text to 903 chars to be safe
+            if (addedText.length > 1000) addedText = addedText.substring(0, 900) + ' (...)';
+            updateEmbed.addFields([{ name: 'Added:', value: `${addedText}` }]);
             updateMessage += '\n - Added: ' + `${notInOld.join(', ')}`;
         }
-        if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) {
-            updateEmbed.addFields([{ name: 'Removed:', value: `${notInOmnibus.join(', ')}` }]);
+        if (notInOmnibus.length !== 0) {
+            let removedText = notInOmnibus.join(', ');
+            // there is a 1024 character limit so limit the text to 903 chars to be safe
+            if (removedText.length > 1000) removedText = removedText.substring(0, 900) + ' (...)';
+            updateEmbed.addFields([{ name: 'Removed:', value: `${removedText}` }]);
             updateMessage += '\n - Removed: ' + `${notInOmnibus.join(', ')}`;
         }
     }
@@ -289,13 +295,20 @@ async function createBackupFile() {
         const notInBackup = omnibus.filter(x => !backup.includes(x));
         embedContent.Description = `${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
         successMessage += `\nOmnibus: ${embedContent.Description}`;
-        if (notInBackup.length !== 0 && notInBackup.length < 50) {
-            embedContent.Added = notInBackup.join(', ');
-            successMessage += `\n - Added: ${embedContent.Added}`;
+
+        if (notInBackup.length !== 0) {
+            let addedText = notInBackup.join(', ');
+            // there is a 1024 character limit so limit the text to 903 chars to be safe
+            if (addedText.length > 1000) addedText = addedText.substring(0, 900) + ' (...)';
+            embedContent.Added = addedText;
+            successMessage += `\n - Added: ${addedText}`;
         }
-        if (notInOmnibus.length !== 0 && notInOmnibus.length < 50) {
-            embedContent.Removed = notInOmnibus.join(', ');
-            successMessage += `\n - Removed: ${embedContent.Removed}`;
+        if (notInOmnibus.length !== 0) {
+            let removedText = notInOmnibus.join(', ');
+            // there is a 1024 character limit so limit the text to 903 chars to be safe
+            if (removedText.length > 1000) removedText = removedText.substring(0, 900) + ' (...)';
+            embedContent.Removed = removedText;
+            successMessage += `\n - Removed: ${removedText}`;
         }
     }
 
