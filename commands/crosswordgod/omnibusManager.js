@@ -75,9 +75,16 @@ async function loadOmnibus(startup = false) {
         } else {
             const notInOmnibus = backup.filter(x => !omnibus.includes(x));
             const notInBackup = omnibus.filter(x => !backup.includes(x));
+
+            let addedText = notInBackup.join(', ');
+            let removedText = notInOmnibus.join(', ');
+            // there is a 2000 characters limit so cap the added/removed parts to 906 chars to be safe
+            if (addedText.length > 900) addedText = addedText.substring(0, 900) + ' (...)';
+            if (removedText.length > 900) removedText = removedText.substring(0, 900) + ' (...)';
+
             updateMessage += `\nOmnibus: Compared to the backup, ${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
-            if (notInBackup.length !== 0) updateMessage += `\n - Added: ${notInBackup.join(', ')}`;
-            if (notInOmnibus.length !== 0) updateMessage += `\n - Removed: ${notInOmnibus.join(', ')}`;
+            if (notInBackup.length !== 0) updateMessage += `\n - Added: ${addedText}`;
+            if (notInOmnibus.length !== 0) updateMessage += `\n - Removed: ${removedText}`;
             updateMessage += '\n';
         }
     }
@@ -93,8 +100,7 @@ async function refreshOmnibus(message) {
         const minutes = ~~(howLongAgo / (60 * 1000));
         const minutesLeft = refreshBreak - minutes;
         logger.log(`${message.author.tag} requested the Omnibus list to be refreshed, but the command was on cooldown: ${minutesLeft} ${quantiseWords(minutesLeft, 'minute')} left.`);
-        return message.reply(`The last attempt at updating the Omnibus list was ${minutes} ${quantiseWords(minutes, 'minute')} ago.`
-            + ` To make sure the devs don't get mad at me, please wait ${minutesLeft} more ${quantiseWords(minutesLeft, 'minute')}.`);
+        return message.reply(`The last attempt at updating the Omnibus list was ${minutes} ${quantiseWords(minutes, 'minute')} ago.` + ` To make sure the devs don't get mad at me, please wait ${minutesLeft} more ${quantiseWords(minutesLeft, 'minute')}.`);
     }
 
     logger.log(message.author.tag + ' requested the stored Omnibus list to be refreshed.');
@@ -143,17 +149,17 @@ async function refreshOmnibus(message) {
 
         if (notInOld.length !== 0) {
             let addedText = notInOld.join(', ');
-            // there is a 1024 character limit so limit the text to 903 chars to be safe
-            if (addedText.length > 1000) addedText = addedText.substring(0, 900) + ' (...)';
+            // there is a 1024 character limit so limit the text to 906 chars to be safe
+            if (addedText.length > 900) addedText = addedText.substring(0, 900) + ' (...)';
             updateEmbed.addFields([{ name: 'Added:', value: `${addedText}` }]);
-            updateMessage += '\n - Added: ' + `${notInOld.join(', ')}`;
+            updateMessage += '\n - Added: ' + `${addedText}`;
         }
         if (notInOmnibus.length !== 0) {
             let removedText = notInOmnibus.join(', ');
-            // there is a 1024 character limit so limit the text to 903 chars to be safe
-            if (removedText.length > 1000) removedText = removedText.substring(0, 900) + ' (...)';
+            // there is a 1024 character limit so limit the text to 906 chars to be safe
+            if (removedText.length > 900) removedText = removedText.substring(0, 900) + ' (...)';
             updateEmbed.addFields([{ name: 'Removed:', value: `${removedText}` }]);
-            updateMessage += '\n - Removed: ' + `${notInOmnibus.join(', ')}`;
+            updateMessage += '\n - Removed: ' + `${removedText}`;
         }
     }
 
@@ -298,15 +304,15 @@ async function createBackupFile() {
 
         if (notInBackup.length !== 0) {
             let addedText = notInBackup.join(', ');
-            // there is a 1024 character limit so limit the text to 903 chars to be safe
-            if (addedText.length > 1000) addedText = addedText.substring(0, 900) + ' (...)';
+            // there is a 1024 character limit so limit the text to 906 chars to be safe
+            if (addedText.length > 900) addedText = addedText.substring(0, 900) + ' (...)';
             embedContent.Added = addedText;
             successMessage += `\n - Added: ${addedText}`;
         }
         if (notInOmnibus.length !== 0) {
             let removedText = notInOmnibus.join(', ');
-            // there is a 1024 character limit so limit the text to 903 chars to be safe
-            if (removedText.length > 1000) removedText = removedText.substring(0, 900) + ' (...)';
+            // there is a 1024 character limit so limit the text to 906 chars to be safe
+            if (removedText.length > 900) removedText = removedText.substring(0, 900) + ' (...)';
             embedContent.Removed = removedText;
             successMessage += `\n - Removed: ${removedText}`;
         }
