@@ -47,6 +47,7 @@ const reactionEvents = [
             { name: 'merf', isRegex: false },
             { name: 'shai', isRegex: false },
             { name: /\bgermans?\b/, isRegex: true },
+            { name: /\bevil\b/, isRegex: true },
         ],
         reactions: [
             'https://c.tenor.com/EaQlLgHY9dwAAAAM/pumpkins-pumpkin.gif',
@@ -108,7 +109,6 @@ const reactionEvents = [
             'https://tenor.com/view/pennywise-it-scary-smile-gif-12240248',
             'https://cdn.discordapp.com/attachments/872456115676393512/1024788384692047932/image0.gif',
             'https://cdn.discordapp.com/attachments/872456115676393512/1024788447929577552/image0.gif',
-            'https://cdn.discordapp.com/attachments/872456115676393512/1024788199626780732/image0.gif',
             'https://tenor.com/view/imagen-animada-gif-18874126',
             'https://tenor.com/view/horror-gif-5045237',
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC39EgG5Mpeh3XIOzyVRLypp_BKq3nIbRlug',
