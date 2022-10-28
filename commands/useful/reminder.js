@@ -39,7 +39,7 @@ function create(message, content) {
             embeds: [new EmbedBuilder({
                 title: 'Succesfully scheduled reminder :white_check_mark:',
                 description: `I will remind you ${thenDate.toUTCString()}.`,
-                footer: { text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() },
+                footer: { text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() },
             }).setColor('Aqua').setTimestamp()],
         });
     }).catch(error => {
@@ -54,7 +54,7 @@ async function sendReminder(reminder) {
         title: 'Reminder',
         url: reminder.messageUrl,
         description: reminder.content,
-        footer: { text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() },
+        footer: { text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() },
     }).setColor('Aqua').setTimestamp();
 
     const user = await client.users.fetch(reminder.authorId);

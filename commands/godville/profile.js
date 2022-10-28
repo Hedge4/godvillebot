@@ -88,7 +88,7 @@ async function showGodvilleProfile(message, godURL) {
 function generateEmbed(god, godURL, godvilleData, footer = undefined) {
     if (!footer) {
         const client = getters.getClient();
-        footer = { text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() };
+        footer = { text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() };
     }
 
     if (!godvilleData) {

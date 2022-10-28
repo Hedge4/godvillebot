@@ -104,7 +104,7 @@ client.on('ready', () => {
     // do some caching and stuff for each guild in advance I guess
     Object.values(serversServed).forEach(guildID => {
         const guild = client.guilds.cache.get(guildID);
-        guild.members.me.setNickname('GoddessBot');
+        guild.members.me.setNickname('PraqueueBot');
         guild.members.fetch();
     });
 
@@ -118,10 +118,10 @@ client.on('ready', () => {
     logger.start(logsChannel);
     logger.toConsole(`\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!`);
     logger.toConsole(`Logged in to the following guilds: ${loggedInGuilds}`);
-    logger.toConsole(`\nNewly added:\n• ${updateMsg1}\n• ${updateMsg2}\n• ${updateMsg3}`);
+    logger.toConsole(`\nNew insights:\n• ${updateMsg1}\n• ${updateMsg2}\n• ${updateMsg3}`);
     logger.toChannel(`\`\`\`fix\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!
         \nLogged in to the following guilds: ${loggedInGuilds}
-        \nNewly added:\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}\`\`\``);
+        \nNew insights:\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}\`\`\``);
     client.user.setActivity(`${prefix}help | By Wawajabba`);
 
     // idk why I have this if this is undefined this isn't even a fix it just makes it worse lol
@@ -133,9 +133,9 @@ client.on('ready', () => {
     const startEmbed = new Discord.EmbedBuilder()
         .setTitle('**Successfully restarted!**')
         .setColor('ffffff')
-        .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.
-            \n**Newly added:**\n• ${updateMsg1}\n• ${updateMsg2}\n• ${updateMsg3}`)
-        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
+        .setDescription(`PraqueueBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.
+            \n**New insights:**\n• ${updateMsg1}\n• ${updateMsg2}\n• ${updateMsg3}`)
+        .setFooter({ text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
         .setTimestamp();
     client.channels.cache.get(channels.botville).send({ embeds: [startEmbed] });
     const delay1 = crosswordTimers.getUpdateDelay(); // delay before news automatically updates

@@ -130,7 +130,7 @@ async function refreshOmnibus(message) {
     const updateEmbed = new Discord.EmbedBuilder()
         .setTitle(`⏫ Successfully refreshed online Omnibus list with ${list.length} total entries!`)
         .setColor(0x0092db) // noice blue
-        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
+        .setFooter({ text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
         .setTimestamp();
     // we also update a message for the logs
     let updateMessage = `Omnibus: Successfully refreshed online Omnibus list with ${list.length} total entries!`;
@@ -274,7 +274,7 @@ async function createBackup(message) {
         .setTitle(result.Title)
         .setDescription(result.Description)
         .setColor(0x0092db) // noice blue
-        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
+        .setFooter({ text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
         .setTimestamp();
 
     // lastly, add fields based on if the object has them, then send
