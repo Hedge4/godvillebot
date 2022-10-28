@@ -205,12 +205,11 @@ client.on('messageCreate', (message) => {
         }
 
         // TEMPORARY for Spooktober: bbq undead uprising stuff
+        // bot is now possessed by bbq or something like that
         if (message.author.id === '785411625746169866') {
-            // starts October 4th and one in 20 messages
-            if (Math.random() * 20 > 19) {
-                message.reply('https://cdn.discordapp.com/attachments/353554102833250305/1026299634357915709/image0.gif');
-            } else {
-                message.react('👻').catch(/* ignore */);
+            // ends after October
+            if ((new Date).getMonth() === 9) {
+                message.react('❤️').catch(/* ignore */);
             }
         }
 
