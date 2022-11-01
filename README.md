@@ -22,6 +22,7 @@ Additionally, all files were updated to work with discord.js V13 instead of V12,
 * 5.11 Added the >url/>parseURL command, not because it's useful but because I like it.
 * 5.12 Updated to discord.js V14.6, and updated other outdated packages.
 * 5.13 GoddessBot now automatically joins new threads, adds Dyno and notifies #los-adminos
+* 5.14 Added >roleColour command
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.

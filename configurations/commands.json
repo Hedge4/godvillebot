@@ -41,7 +41,8 @@
         ["block", []],
         ["unblock", []],
         ["blocklist", []],
-        ["purge", []]
+        ["purge", []],
+        ["rolecolour", ["rc", "colour", "rolecolor", "color"]]
     ],
 
     "crossword": [
