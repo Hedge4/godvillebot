@@ -299,7 +299,7 @@ async function createBackup(message) {
     // lastly, add fields based on if the object has them, then send
     if (result.Added) backupUpdateEmbed.addFields([{ name: 'Added:', value: result.Added }]);
     if (result.Removed) backupUpdateEmbed.addFields([{ name: 'Removed:', value: result.Removed }]);
-    reply.edit({ embeds: [backupUpdateEmbed] }).catch(error => console.log(error));
+    reply.edit({ embeds: [backupUpdateEmbed] }).catch(error => logger.log(error));
     return;
 }
 

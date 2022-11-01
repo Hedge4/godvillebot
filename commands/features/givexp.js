@@ -53,7 +53,7 @@ async function giveGodpower(message, userData, Discord, client) {
     }
 
     const gpLogsChannel = client.channels.cache.get(channels.godpowerLogs);
-    console.log(`${godpowerAdd} godpower added for user ${message.author.tag} in channel ${message.channel.name}.`);
+    logger.toConsole(`${godpowerAdd} godpower added for user ${message.author.tag} in channel ${message.channel.name}.`);
     gpLogsChannel.send(`${godpowerAdd} godpower added for user ${message.author.tag} in channel ${message.channel.name}.`);
     godpowerCooldown.add(message.author.id);
 

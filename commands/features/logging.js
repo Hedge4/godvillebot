@@ -10,7 +10,6 @@ class FakeQueue {
     #elements = [];
 
     #totalLength() {
-        console.log(this);
         let sum = 0;
         this.#elements.forEach(element => {
             sum += element.length;
@@ -19,7 +18,6 @@ class FakeQueue {
     }
 
     enqueue(elem) {
-        console.log(this);
         if (this.#totalLength() + elem.length > maxQueueSize) {
             // empty queue first if it would become too large
             this.#empty();

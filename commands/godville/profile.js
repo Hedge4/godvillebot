@@ -174,7 +174,6 @@ async function getGodData(URL, message) {
     const myFirstPromise = new Promise((resolve, reject) => {
         https.get(URL, (res) => {
             res.on('data', (d) => {
-                //console.log(String(d));
                 resolve(String(d));
             });
         }).on('error', (e) => {
@@ -186,7 +185,6 @@ async function getGodData(URL, message) {
     let html = '';
     await myFirstPromise.then((result) => {
         html = result;
-        //console.log(html);
     }).catch((error) => {
         logger.log(`Oops! Couldn't get god page for url ${URL}!` + error);
         message.channel.send('Could not obtain online data. This is most likely a connection error, or the linked URL is incorrect.');

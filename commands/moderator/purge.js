@@ -1,3 +1,4 @@
+const logger = require('../features/logging');
 const { channels } = require('../../configurations/config.json');
 
 const purgeable = [channels.appeals];
@@ -8,7 +9,7 @@ async function purge(client, message) {
         message.channel.bulkDelete(100, true)
             .then(messages => {
                 client.channels.cache.get(channels.modLogs).send(`Purged ${messages.size} ${quantiseWords(messages.size, 'message')} in ${message.channel.name}. Command used by ${message.author.tag}.`);
-                console.log(`Purged ${messages.size} ${quantiseWords(messages.size, 'message')} in ${message.channel.name}. Command used by ${message.author.tag}.`);
+                logger.toConsole(`Purged ${messages.size} ${quantiseWords(messages.size, 'message')} in ${message.channel.name}. Command used by ${message.author.tag}.`);
                 message.reply(`Purged ${messages.size} ${quantiseWords(messages.size, 'message')}.`);
             })
             .catch(console.error);

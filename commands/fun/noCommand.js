@@ -43,13 +43,12 @@ async function main(message) {
         await sharp('./images/nope.png')
             .resize(resizeSize, resizeSize)
             .toBuffer({ resolveWithObject: true }) // buffers all the waaaaaaay
-            .then(({ data, info }) => { // We now have the data / info of that buffer
+            .then(({ data }) => { // We now have the data / info of that buffer
                 imageToEdit
                     .composite([{
                         input: data, // Pass in the buffer data to the composite function
                     }])
                     .toBuffer();
-                //console.log(info); // idk I might want this sometime
             })
             .catch(err => {
                 throw ('Error: ', err);
