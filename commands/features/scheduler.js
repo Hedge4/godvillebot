@@ -67,10 +67,21 @@ function scheduleEvent(event, timestamp) {
     const now = new Date().getTime();
     const delay = timestamp - now;
 
-    // timeout delay is stored as a 32-bit signed int, which is a little over 25 days
-    // we filter those edge cases out now, but if the hosting/database ever changes we need an alternative
-    if (delay > 7 * 24 * 60 * 60 * 1000) return; // 7 days
+    // timeout delay is stored as a 32-bit signed int, which is a little over 24 days
+    // plan events 3 days into the future at most for accuracy
+    if (delay > 3 * 24 * 60 * 60 * 1000) {
+        let reducedDelay = ~~(delay / 2);
+        // use either the halfway point to the timestamp, or the max timeout possible
+        reducedDelay = reducedDelay > Math.pow(2, 31) - 1 ? Math.pow(2, 31) - 1 : reducedDelay;
 
+        // run scheduleEvent again closer to the intended timestamp
+        setTimeout(() => {
+            scheduleEvent(event, timestamp);
+        }, reducedDelay);
+        return;
+    }
+
+    // schedule the actual execution of the event (if it's within 3 days)
     setTimeout(() => {
         executeEvent(event);
     }, delay);
