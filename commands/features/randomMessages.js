@@ -2,7 +2,7 @@
 const messageEvents = [
     {
         name: 'GodvilleHalloween',
-        active: false,
+        active() { return (new Date).getMonth() === 9; }, // only in October for Halloween
         minDelay: 0.5 * (60 * 1000), // in minutes
         maxDelay: 15 * (60 * 1000),
         autoDelete: true,
@@ -19,7 +19,7 @@ const messageEvents = [
 async function setup(client) {
     // set a timer for each messageEvent according to the stored delays
     messageEvents.forEach(async e => {
-        if (!e.active) return;
+        if (!e.active()) return;
 
         const channel = await client.channels.fetch(e.channelId);
         const timeout = e.minDelay + Math.round(Math.random() * e.maxDelay);

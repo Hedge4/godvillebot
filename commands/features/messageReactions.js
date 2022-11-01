@@ -4,7 +4,7 @@ const { channels } = require('../../configurations/config.json');
 const reactionEvents = [
     {
         name: 'Spookmode',
-        active() { return (new Date).getMonth() === 9; }, // only in October
+        active() { return (new Date).getMonth() === 9; }, // only in October for Halloween
         disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, '1020381945714200596'],
         triggers: [
             { name: 'spook', isRegex: false },
@@ -127,7 +127,7 @@ function messageReactions(message) {
 
 // test whether a message
 function testTrigger(reactionEvent, message) {
-    if (reactionEvent.active) {
+    if (reactionEvent.active()) {
         // ignore channels where this feature is disabled
         if (reactionEvent.disabled) {
             if (reactionEvent.disabled.includes(message.channel.id)) return;
