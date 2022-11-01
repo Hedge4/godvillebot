@@ -15,7 +15,9 @@ const refreshBreak = 30;
 const expectedAmount = 6000; // right now, the omnibus list has 7357 items.
 
 
-function loadBackup() {
+async function loadOnStartup() {
+    // first try to load the backup file
+    logger.log('OmniBackup: Trying to load the Omnibus backup file...');
     try {
         // read backup file
         backup = [];
@@ -27,8 +29,7 @@ function loadBackup() {
         if (!backup.length || backup.every(function(e) {
             return !e.length ? true : false; // check if every item in backup has no length
         })) {
-            logger.log('OmniBackup: Failed to load in omnibus backup file - Loaded file was empty.');
-            return false;
+            throw ('Loaded file was empty.');
         }
 
         backupLastUpdated = parseInt(backup.shift()); // first line is the timestamp
@@ -41,18 +42,51 @@ function loadBackup() {
         logger.log(`OmniBackup: Successfully loaded omnibus backup file with ${backup.length} entries, `
             + `from ${days} ${quantiseWords(days, 'day')} and ${hours} ${quantiseWords(hours, 'hour')} ago.`);
 
-        return true; // true means loaded successfully
     } catch (error) {
         logger.log('OmniBackup: Failed to load in omnibus backup file. ' + error);
         backup = undefined;
-
-        return false; // this means the backup failed to load
     }
+
+    // then load the online list and compare it to the backup
+    logger.log('Omnibus: Trying to download and parse the Omnibus list from online...');
+    if (!await loadOmnibus()) {
+        logger.log('Omnibus: Something went wrong loading the online omnibus list.');
+        return;
+    }
+
+    // send statistics about how far ahead the omnibus list is.
+    let updateMessage = `Omnibus: Successfully loaded online Omnibus list with ${omnibus.length} entries.`;
+    // get difference between previous backup and new one
+    if (!backup || backup.length < expectedAmount) {
+        updateMessage += ' The Omnibus backup file was not loaded in (correctly), so I can\'t give information about the differences between the backup and current list.';
+    } else {
+        const notInOmnibus = backup.filter(x => !omnibus.includes(x));
+        const notInBackup = omnibus.filter(x => !backup.includes(x));
+
+        let addedText = notInBackup.join(', ');
+        let removedText = notInOmnibus.join(', ');
+        // there is a 2000 characters limit so cap the added/removed parts to 906 chars to be safe
+        if (addedText.length > 900) addedText = addedText.substring(0, 900) + ' (...)';
+        if (removedText.length > 900) removedText = removedText.substring(0, 900) + ' (...)';
+
+        updateMessage += `\nOmnibus: Compared to the backup, ${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
+        if (notInBackup.length !== 0) updateMessage += `\n - Added: ${addedText}`;
+        if (notInOmnibus.length !== 0) updateMessage += `\n - Removed: ${removedText}`;
+        updateMessage += '\n';
+    }
+    logger.log(updateMessage);
 }
 
-async function loadOmnibus(startup = false) {
+// loading the omnibus is always logged, just not always here
+async function loadOmnibus() {
+    // any attempt counts, so we don't access the wiki too often
+    lastUpdated = Date.now();
+
     const html = await downloadOmnibus();
-    if (!html) return false; // we don't log jackshit because downloadOmnibus() already does it
+    if (!html) {
+        // we don't log anything because downloadOmnibus() already does it
+        return false;
+    }
 
     // now we get the individual omnibus entries
     const list = parseOmnibusEntries(html);
@@ -64,76 +98,43 @@ async function loadOmnibus(startup = false) {
 
     // actually update the list and the timestamp
     omnibus = Array.from(list);
-    lastUpdated = Date.now();
-    let updateMessage = `Omnibus: Successfully loaded online Omnibus list with ${list.length} entries.`;
 
-    // on startup, also send statistics about how far ahead the omnibus list is.
-    if (startup) {
-        // get difference between previous backup and new one
-        if (!backup || backup.length < expectedAmount) {
-            updateMessage += ' The Omnibus backup file was not loaded in (correctly), so I can\'t give information about the differences between the backup and current list.';
-        } else {
-            const notInOmnibus = backup.filter(x => !omnibus.includes(x));
-            const notInBackup = omnibus.filter(x => !backup.includes(x));
-
-            let addedText = notInBackup.join(', ');
-            let removedText = notInOmnibus.join(', ');
-            // there is a 2000 characters limit so cap the added/removed parts to 906 chars to be safe
-            if (addedText.length > 900) addedText = addedText.substring(0, 900) + ' (...)';
-            if (removedText.length > 900) removedText = removedText.substring(0, 900) + ' (...)';
-
-            updateMessage += `\nOmnibus: Compared to the backup, ${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
-            if (notInBackup.length !== 0) updateMessage += `\n - Added: ${addedText}`;
-            if (notInOmnibus.length !== 0) updateMessage += `\n - Removed: ${removedText}`;
-            updateMessage += '\n';
-        }
-    }
-
-    logger.log(updateMessage);
     return true;
 }
 
 
 async function refreshOmnibus(message) {
     const howLongAgo = Date.now() - lastUpdated;
-    if (howLongAgo < refreshBreak * 60 * 1000) {
+    if (!Object.values(botOwners).includes(message.author.id) && howLongAgo < refreshBreak * 60 * 1000) {
         const minutes = ~~(howLongAgo / (60 * 1000));
         const minutesLeft = refreshBreak - minutes;
         logger.log(`${message.author.tag} requested the Omnibus list to be refreshed, but the command was on cooldown: ${minutesLeft} ${quantiseWords(minutesLeft, 'minute')} left.`);
-        return message.reply(`The last attempt at updating the Omnibus list was ${minutes} ${quantiseWords(minutes, 'minute')} ago.` + ` To make sure the devs don't get mad at me, please wait ${minutesLeft} more ${quantiseWords(minutesLeft, 'minute')}.`);
+        message.reply(`The last attempt at updating the Omnibus list was ${minutes} ${quantiseWords(minutes, 'minute')} ago.` + ` To make sure the devs don't get mad at me, please wait ${minutesLeft} more ${quantiseWords(minutesLeft, 'minute')}.`);
+        return;
     }
 
-    logger.log(message.author.tag + ' requested the stored Omnibus list to be refreshed.');
+    logger.log(`Omnibus: ${message.author.tag} requested the stored Omnibus list to be refreshed.`);
     const reply = await message.reply('I\'m working on it...'); // we edit this reply when we're done.
 
-    // get html
-    lastUpdated = Date.now(); // attempts count as well
-    const html = await downloadOmnibus();
-    if (!html) {
-        return reply.edit('Something went wrong while trying to get the Omnibus list\'s HTML. Try again later or contact the bot owner.');
-    }
-
-    // now we get the individual omnibus entries
-    const list = parseOmnibusEntries(html);
-    if (!list || list.length < expectedAmount) {
-        logger.log('Something went wrong parsing omnibus entries from the html.');
-        if (list) logger.log(`There were only ${list.length} items, expected at least ${expectedAmount}.`);
-        return reply.edit('Something went wrong while parsing the HTML. Try again later or contact the bot owner.');
+    // try to refresh the omnibus list
+    if (!await loadOmnibus()) {
+        logger.log('Omnibus: Something went wrong loading the online omnibus list. Try again later or contact the bot owner.');
+        reply.edit('Something went wrong loading the online omnibus list. Try again later or contact the bot owner.');
+        return;
     }
 
     // actually update the list and the timestamp
     const oldOmnibus = Array.from(omnibus);
-    omnibus = Array.from(list);
 
     // create nice embed for the update message, which we can add to
     const client = main.getClient();
     const updateEmbed = new Discord.EmbedBuilder()
-        .setTitle(`⏫ Successfully refreshed online Omnibus list with ${list.length} total entries!`)
+        .setTitle(`⏫ Successfully refreshed online Omnibus list with ${omnibus.length} total entries!`)
         .setColor(0x0092db) // noice blue
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() })
         .setTimestamp();
     // we also update a message for the logs
-    let updateMessage = `Omnibus: Successfully refreshed online Omnibus list with ${list.length} total entries!`;
+    let updateMessage = `Omnibus: Successfully refreshed online Omnibus list with ${omnibus.length} total entries!`;
 
     // get difference between previous list and refreshed one
     if (!oldOmnibus || oldOmnibus.length < expectedAmount) {
@@ -258,14 +259,18 @@ function parseOmnibusEntries(omnibusHtml) {
 
 
 async function createBackup(message) {
-    if (!Object.values(botOwners).includes(message.author.id)) return message.reply('Only the bot owner can create new backups.'); // hehe nope
-    logger.log(`${message.author.tag} is trying to create a new omnibus backup file...`);
+    if (!Object.values(botOwners).includes(message.author.id)) {
+        message.reply('Only the bot owner can create new backups.'); // hehe nope
+        return;
+    }
+    logger.log(`Omnibus: ${message.author.tag} is trying to create a new omnibus backup file...`);
     const reply = await message.reply('Trying to create a new omnibus backup file...');
     const result = await createBackupFile();
 
     // if there was no error then Error property will be undefined
     if (result.Error) {
-        return reply.edit(result.Error);
+        reply.edit(result.Error);
+        return;
     }
 
     // create nice embed for the backup update message
@@ -280,7 +285,8 @@ async function createBackup(message) {
     // lastly, add fields based on if the object has them, then send
     if (result.Added) backupUpdateEmbed.addFields([{ name: 'Added:', value: result.Added }]);
     if (result.Removed) backupUpdateEmbed.addFields([{ name: 'Removed:', value: result.Removed }]);
-    return reply.edit({ embeds: [backupUpdateEmbed] }).catch(error => console.log(error));
+    reply.edit({ embeds: [backupUpdateEmbed] }).catch(error => console.log(error));
+    return;
 }
 
 async function createBackupFile() {
@@ -344,9 +350,7 @@ async function createBackupFile() {
 const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;
 
 
-exports.loadOnline = loadOmnibus;
-exports.loadBackup = loadBackup;
+exports.startup = loadOnStartup;
 exports.refresh = refreshOmnibus;
 exports.get = getOmnibus;
 exports.createBackup = createBackup;
-exports.createBackupFile = createBackupFile;

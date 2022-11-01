@@ -27,7 +27,10 @@ function logBoth(text) {
 function logChannel(text) {
     if (started) {
         logsChannel.send(text)
-        .catch(e => console.log('ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!! ' + e));
+            .catch(e => {
+                console.log('ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!! ' + e);
+                console.log(`Message: ${text}`);
+            });
     } else {
         // restart or something?
     }
@@ -37,9 +40,14 @@ function logConsole(text) {
     console.log(text);
 }
 
+function getChannel() {
+    return logsChannel;
+}
+
 // add recent memory that can be requested by bot owner (keep track of console only / channel only)
 
 exports.start = startup;
 exports.log = logBoth;
 exports.toChannel = logChannel;
 exports.toConsole = logConsole;
+exports.getChannel = getChannel;

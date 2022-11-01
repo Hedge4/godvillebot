@@ -161,25 +161,10 @@ client.on('ready', () => {
     randomMessages(client);
 
     // load data such as the newspaper and the omnibus list
-    logger.log('\nOmniBackup: Trying to load the Omnibus backup file...'); // linebreak for all of the newspaper/omnibus parsing spam
-    if (!omnibus.loadBackup()) { // returns false if failed, so try again.
-        logger.log('OmniBackup, attempt 2: Trying to load the Omnibus backup file...');
-        omnibus.loadBackup();
-    }
+    logger.toConsole('\n'); // linebreak for separation
+    omnibus.startup(); // loads the online omnibus list and its backup .txt file
     logger.log('News: Trying to load today\'s Godville Times...');
-    newspaper.load(false).then((success) => {
-        if (!success) { // returns false if failed, so try again.
-            logger.log('News, attempt 2: Trying to load today\'s Godville Times...');
-            newspaper.load(false); // these two parameters are false because we don't want newspaper logs on startup
-        }
-    });
-    logger.log('Omnibus: Trying to download and parse the Omnibus list from online...');
-    omnibus.loadOnline(true).then((success) => {
-        if (!success) { // returns false if failed, so try again.
-            logger.log('Omni, attempt 2: Trying to download and parse the Omnibus list from online...');
-            omnibus.loadOnline(true);
-        }
-    });
+    newspaper.load(false); // 'false' disables logging
 });
 
 

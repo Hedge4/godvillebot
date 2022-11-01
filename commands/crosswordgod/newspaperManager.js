@@ -15,12 +15,12 @@ const news = {
 // used when a user requests the newspaper to send a reply before sending the newspaper
 function sendNewspaperRequest(message) {
     message.reply('Here is today\'s Godville Times summary!');
-    logger.log(`${message.author.tag} requested the Godville Times summary in ${message.channel.name}.`);
+    logger.log(`News: ${message.author.tag} requested the Godville Times summary in ${message.channel.name}.`);
     sendNewspaper(message.channel);
 }
 
 // sends newspaper to specified channel using upper scope variable + formats it nicely as multiple embeds
-function sendNewspaper(channel, renewed = false) {
+function sendNewspaper(channel, mentionGods = false) {
     const embedsList = [];
     const missingEmbedsList = [];
 
@@ -85,7 +85,7 @@ function sendNewspaper(channel, renewed = false) {
     // send a message with an explanation about the parts of the newspaper that couldn't be sent
     if (missingEmbedsList.length) channel.send(missingEmbedsList.join('\n'));
 
-    if (renewed && news.mentionedGods) { // mention any gods who are in the news, but only if the newspaper was renewed
+    if (mentionGods && news.mentionedGods) { // mention any gods who are in the news, but only if the newspaper was renewed
         const godIDs = [];
         const godNames = [];
         const godData = main.getGodData();
@@ -111,21 +111,25 @@ function sendNewspaper(channel, renewed = false) {
     if (news.edition) {
         logger.log(`News: Edition ${news.edition} of the Godville Times was sent to ${channel.name}.`);
     } else {
-        logger.log(`News: The daily newspaper was sent to ${channel.name}.`);
+        logger.log(`News: Today's Godville Times was sent to ${channel.name}.`);
     }
 }
 
 
 // method used when a user renews the newspaper, not the automatic timer. Doesn't send in logs
 async function renewNewspaperRequest(message) {
-    if (!message.member.roles.cache.has(roles.admin) && !Object.values(botOwners).includes(message.author.id)) return message.reply('Only moderators can forcefully renew the newspaper.');
-    logger.log(`${message.author.tag} forcefully started the newspaper renewing process in ${message.channel}.`);
+    if (!message.member.roles.cache.has(roles.admin) && !Object.values(botOwners).includes(message.author.id)) {
+        message.reply('Only moderators can forcefully renew the newspaper.');
+        return;
+    }
+    logger.log(`News: ${message.author.tag} forcefully started the newspaper renewing process in ${message.channel}.`);
     const reply = await message.reply('I\'m working on it...');
 
-    await loadNewspaper().then((success) => {
+    await loadNewspaper(true).then((success) => {
         if (!success) { // on fail, just let whoever used the command know. loadNewspaper() does the logging already
             reply.delete();
-            return message.reply('Something went wrong while trying to renew the newspaper content. You can check the logs to find out what happened.');
+            message.reply('Something went wrong while trying to renew the newspaper content. You can check the logs to find out what happened.');
+            return;
         }
     });
 
@@ -141,8 +145,7 @@ async function renewNewspaperAutomatic(channel) {
 
     await loadNewspaper(true).then((success) => {
         if (!success) {
-            channel.send('⚠️ Oops! ⚠️ Something went wrong, and I couldn\'t load the new newspaper edition...'
-                + ` You can ask a moderator to force another update with \`${prefix}refreshnews\`.`);
+            channel.send(`⚠️ Oops! ⚠️ Something went wrong, and I couldn't load the new newspaper edition... You can ask a moderator to force another update with \`${prefix}refreshnews\`.`);
             return;
         }
     });
@@ -166,13 +169,19 @@ async function loadNewspaper(sendLogs = false) {
         return false; // no need to log anything, this is done in parseNewspaper()
     }
 
-    if (sendLogs) { // send the news to the logs for timed renews
-        logger.log('---===-----===-----===-----===-----===-----===-----===-----===-----===-----===---'
-            + `\n\nUpdated the Godville Times summary to issue ${news.edition} on day ${news.date} g.e.`);
-        if (news.forecast) logger.log('\n • **Daily Forecast**\n' + news.forecast);
-        if (news.famousHeroes) logger.log('\n • **Famous Heroes**\n' + news.famousHeroes);
-        if (news.guildSpotlight) logger.log('\n • **Guild Spotlight**\n' + news.guildSpotlight);
-        logger.log('\n---===-----===-----===-----===-----===-----===-----===-----===-----===-----===---');
+    // if (sendLogs) { // send the news to the logs for timed renews
+    //     logger.log('---===-----===-----===-----===-----===-----===-----===-----===-----===-----===---'
+    //         + `\n\nUpdated the Godville Times summary to issue ${news.edition} on day ${news.date} g.e.`);
+    //     if (news.forecast) logger.log('\n • **Daily Forecast**\n' + news.forecast);
+    //     if (news.famousHeroes) logger.log('\n • **Famous Heroes**\n' + news.famousHeroes);
+    //     if (news.guildSpotlight) logger.log('\n • **Guild Spotlight**\n' + news.guildSpotlight);
+    //     logger.log('\n---===-----===-----===-----===-----===-----===-----===-----===-----===-----===---');
+    // }
+
+    if (sendLogs) { // true for >renewnews and daily renews
+        // send newspaper to logChannel in embed format, don't send it at all in the logs
+        sendNewspaper(logger.getChannel());
+        logger.toConsole(`News: Updated the Godville Times summary to issue ${news.edition} on day ${news.date} g.e.`);
     }
 
     return true;
@@ -355,7 +364,7 @@ function parseNewspaper(html) {
         guilds = parseHtmlEntities(guilds);
         guildSuccess = true;
     } catch (error) {
-        logger.log('News: Couldn\'t parse newspaper guild spotlight correctly. Error: ' + error);
+        logger.log(`News: Couldn't parse newspaper guild spotlight correctly. Error: ${error}`);
     }
 
     // store in upper scope after finding - make undefined if not found
@@ -368,7 +377,7 @@ function parseNewspaper(html) {
 
     // return true/false if at least one of the main parts succeeded
     if (editionSuccess && dateSuccess && forecastSuccess && heroesSuccess && guildSuccess) {
-        logger.log('News: All parts of the daily newspaper managed to load correctly.');
+        logger.log('News: All parts of the daily newspaper were loaded correctly.');
         return true;
     } else if (forecastSuccess || heroesSuccess || guildSuccess) {
         logger.log('News: Some parts of the daily newspaper failed to load correctly.');
