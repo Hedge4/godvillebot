@@ -78,21 +78,30 @@ const limitedCommandsData = db.collection('data').doc('limited uses');
 const blockedData = db.collection('data').doc('blocked');
 const plannedEvents = db.collection('data').doc('schedule');
 
+// set up our globals because stuff being undefined sucks
+global.totalGodpower = 0;
+global.usedDaily = [];
+global.imageBlocked = [];
+global.botBlocked = [];
+global.reactionRolesBlocked = [];
+global.suggestBlocked = [];
+global.xpBlocked = [];
+
 // create important based on data in the database
 userData.get()
     .then(doc => {
-        global.totalGodpower = doc.data()[1];
+        totalGodpower = doc.data()[1];
     });
 limitedCommandsData.get()
     .then(doc => {
-        global.usedDaily = doc.data()['daily'];
+        usedDaily = doc.data()['daily'];
     });
 blockedData.get().then(doc => {
-    global.imageBlocked = doc.data()['image'];
-    global.botBlocked = doc.data()['bot'];
-    global.reactionRolesBlocked = doc.data()['reactionRoles'];
-    global.suggestBlocked = doc.data()['suggest'];
-    global.xpBlocked = doc.data()['xp'];
+    imageBlocked = doc.data()['image'];
+    botBlocked = doc.data()['bot'];
+    reactionRolesBlocked = doc.data()['reactionRoles'];
+    suggestBlocked = doc.data()['suggest'];
+    xpBlocked = doc.data()['xp'];
 });
 
 // =========================================================
@@ -123,8 +132,9 @@ client.on('ready', () => {
         \nNewly added:\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}\`\`\``);
     client.user.setActivity(`${prefix}help | By Wawajabba`);
 
-    // idk why I have this if this is undefined this isn't even a fix it just makes it worse lol
-    if (!totalGodpower) {
+    // this isn't even necessary anymore as I define it as zero by default now so it's never undefined
+    // but I'm keeping it here because it's hilarious that my solution to this would be to make it worse and reset it
+    if (!totalGodpower || totalGodpower === 0) {
         totalGodpower = 0;
     }
 
