@@ -9,15 +9,16 @@ const fs = require('fs');
 
 let backupLastUpdated;
 let lastUpdated;
+let nextUpdateTimer;
 let backup = [];
 let omnibus;
-const refreshBreak = 30;
+const refreshBreak = 15;
+const autoUpdateDelay = 60 * 24;
 const expectedAmount = 6000; // right now, the omnibus list has 7357 items.
 
 
-async function loadOnStartup() {
-    // first try to load the backup file
-    logger.log('OmniBackup: Trying to load the Omnibus backup file...');
+async function backupStartup() {
+    // try to load the backup file
     try {
         // read backup file
         backup = [];
@@ -46,9 +47,12 @@ async function loadOnStartup() {
         logger.log('OmniBackup: Failed to load in omnibus backup file. ' + error);
         backup = undefined;
     }
+}
 
-    // then load the online list and compare it to the backup
-    logger.log('Omnibus: Trying to download and parse the Omnibus list from online...');
+async function omnibusStartup(auto = false) {
+    if (auto) logger.log('Omnibus: Automatically trying to download and parse a newer Omnibus list...');
+
+    // load the online list and compare it to the backup
     if (!await loadOmnibus()) {
         logger.log('Omnibus: Something went wrong loading the online omnibus list.');
         return;
@@ -81,6 +85,16 @@ async function loadOnStartup() {
 async function loadOmnibus() {
     // any attempt counts, so we don't access the wiki too often
     lastUpdated = Date.now();
+
+    // cancel next update attempt
+    if (nextUpdateTimer && !nextUpdateTimer._destroyed) {
+        clearTimeout(nextUpdateTimer);
+    }
+    // schedule new automatic update
+    nextUpdateTimer = setTimeout(function() {
+        omnibusStartup(true);
+    }, autoUpdateDelay * 1000);
+    logger.log(`Omnibus: Scheduled next automatic update ${autoUpdateDelay} minutes from now.`);
 
     const html = await downloadOmnibus();
     if (!html) {
@@ -350,7 +364,8 @@ async function createBackupFile() {
 const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;
 
 
-exports.startup = loadOnStartup;
+exports.loadBackup = backupStartup;
+exports.loadOmnibus = omnibusStartup;
 exports.refresh = refreshOmnibus;
 exports.get = getOmnibus;
 exports.createBackup = createBackup;
