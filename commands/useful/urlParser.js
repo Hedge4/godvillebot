@@ -67,7 +67,7 @@ async function main(message, content) {
         .setColor(0x632db4) // purpleee
         .setDescription(embedBody)
         .setTimestamp()
-        .setFooter({ text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
+        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
 
     message.reply({ embeds: [embed] });
     logger.log(`${message.author.tag} / ${message.author.id} used the ${prefix}parseUrl command in ${message.channel.name}, for this URL: <${content}>`);

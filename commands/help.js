@@ -15,11 +15,11 @@ const commands_list = [
     ['newspaper',
         'newspaper',
         `Get extra information about the newspaper funcions and the commands you can use for it using \`${prefix}help newspaper\`.`,
-        'Every day, at 22:10 UTC (5 minutes after it changes), PraqueueBot automatically downloads and summarises the Godville Times, and then sends it in <#431305701021974539>. These commands also work in that channel.',
+        'Every day, at 22:10 UTC (5 minutes after it changes), GodBot automatically downloads and summarises the Godville Times, and then sends it in <#431305701021974539>. These commands also work in that channel.',
         [[`${prefix}solve`, 'Solves one or more crossword words using the Omnibus List. Use a dot ( . ) for unknown characters, and commas to separate different words. You can also use * to match 1 or more characters.'],
         [`${prefix}solvehtml`, 'Download the newspaper page (**while logged in, otherwise the crossword is hidden**) and add the file to the message with this command. The bot will automatically extract and solve the crossword.'],
         [`${prefix}newspaper`, 'Sends today\'s Godville Time\'s summary. Please note the bot updates five minutes after the (normal) daily reset.'],
-        [`${prefix}newsdelay`, 'Shows the time remaining before PraqueueBot automatically updates its Godville Time\'s summary.'],
+        [`${prefix}newsdelay`, 'Shows the time remaining before GodBot automatically updates its Godville Time\'s summary.'],
         [`${prefix}refreshomnibus`, 'Downloads a newer version of the Omnibus List (the bot uses this to solve the crossword). The bot automatically updates its own Omnibus List reference every day, so only use this in case this update failed or if there was a recent addition to the Omnibus List.'],
         ['?rank newsping', 'Toggles whether you\'ll be mentioned to complete the bingo and crossword an hour before the newspaper updates.'],
         [`${prefix}refreshnews`, '(Admin only.) Forcefully updates the bot\'s summary of today\'s Godville Times. Use only when the bot fails to update, or if the newspaper refreshed later than usual.'],
@@ -112,7 +112,7 @@ const commands_list = [
     ['react',
         `${prefix}react [message ID | message URL] <reaction>`,
         'Add letter emojis as a reaction to a message.',
-        'Have PraqueueBot easily react multiple emojis for you to a message. You can enter a message URL or message ID to indicate the message you want to react to, or none of those to react to the most recent message in that channel.'],
+        'Have godbot easily react multiple emojis for you to a message. You can enter a message URL or message ID to indicate the message you want to react to, or none of those to react to the most recent message in that channel.'],
     ['makevote',
         `${prefix}makevote [message ID | message URL] [number]`,
         'Make a message into a vote. Support multiple choice votes if you specify a number of votes (2 to 10).',
@@ -137,12 +137,12 @@ function constructHelp(message, Discord, client) {
         text += `\`${commands_list[i][1]}\` ${commands_list[i][2]}\n`;
     }
     const helpEmbed = new Discord.EmbedBuilder()
-        .setTitle('PraqueueBot commands')
+        .setTitle('GodBot commands')
         .setColor(0x63CCBE) // Soft blue
-        .setDescription(`PraqueueBot gives XP, or 'godpower' for talking, and provides several other Godville related functions, such as linking your profile and daily crossword solutions. Use \`${prefix}help [command]\` for more information on a specific command/function.\n\n` + text)
+        .setDescription(`GodBot gives XP, or 'godpower' for talking, and provides several other Godville related functions, such as linking your profile and daily crossword solutions. Use \`${prefix}help [command]\` for more information on a specific command/function.\n\n` + text)
         .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
         .setTimestamp()
-        .setFooter({ text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
+        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
     logger.log(`${message.author.tag} requested the help message in ${message.channel.name}.`);
     return helpEmbed;
 }
@@ -155,7 +155,7 @@ function constructSpecificHelp(message, Discord, client, element) {
             .setDescription(element[3])
             .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
             .setTimestamp()
-            .setFooter({ text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
+            .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
         logger.log(`${message.author.tag} requested the ${element[0]} help message in ${message.channel.name}.`);
         return specificHelpEmbed;
     } else {
@@ -176,7 +176,7 @@ function constructSpecificHelp(message, Discord, client, element) {
             .setDescription(element[3] + '\n\u200B')
             .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/a/a4/Cute-Ball-Help-icon.png')
             .setTimestamp()
-            .setFooter({ text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
+            .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
 
         if (examplesList.length) {
             for (let i = 0; i < examplesList.length; i++) {

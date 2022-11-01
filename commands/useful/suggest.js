@@ -134,7 +134,7 @@ async function accept(message, client, Discord, userData) {
         .setDescription(suggestion)
         .addFields([{ name: 'Gold earned <:stat_gold:401414686651711498>', value: goldEarnedMsg, inline: true }])
         .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/joypixels/291/check-mark-button_2705.png')
-        .setFooter({ text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
+        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
         .setTimestamp();
 
     old_msg.delete();
@@ -195,7 +195,7 @@ async function reject(message, client, Discord) {
         .setDescription(suggestion)
         .addFields([{ name: 'Thank you! <:stat_gold:401414686651711498>', value: 'Although your suggestion was rejected, thank you for coming up with new ideas for the bot!', inline: true }])
         .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/whatsapp/302/cross-mark_274c.png')
-        .setFooter({ text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
+        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
         .setTimestamp();
 
     old_msg.delete();

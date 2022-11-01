@@ -137,7 +137,7 @@ function constructEmbeds(rawEmbeds) {
 
             const client = getters.getClient();
             const embed = new Discord.EmbedBuilder()
-                .setFooter({ text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
+                .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
 
             // bob the builder
             embedParts.forEach(e => {

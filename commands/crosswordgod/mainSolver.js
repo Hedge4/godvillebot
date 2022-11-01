@@ -173,7 +173,7 @@ async function solveHtmlRequest(message) {
         .setColor(0x78de79) // noice green
         .setURL('https://godvillegame.com/news')
         .setThumbnail('https://i.imgur.com/t5udHzR.jpeg')
-        .setFooter({ text: 'PraqueueBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
+        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
         .setTimestamp();
 
     logger.log(`Finished solving the crossword in ${message.channel.name}.`);
