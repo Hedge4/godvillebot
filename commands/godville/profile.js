@@ -1,7 +1,7 @@
 const https = require('https');
 const { EmbedBuilder } = require('discord.js');
 
-const { prefix, channels } = require('../../configurations/config.json');
+const { prefix, channels, botName } = require('../../configurations/config.json');
 const logger = require('../features/logging');
 const getUsers = require('../features/getUsers');
 const getters = require('../../index');
@@ -88,7 +88,7 @@ async function showGodvilleProfile(message, godURL) {
 function generateEmbed(god, godURL, godvilleData, footer = undefined) {
     if (!footer) {
         const client = getters.getClient();
-        footer = { text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() };
+        footer = { text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() };
     }
 
     if (!godvilleData) {

@@ -28,8 +28,7 @@ const client = new Client({
 
 // certain variables used in this file
 const { version, updateMsg1, updateMsg2, updateMsg3 } = require('./package.json');
-const { channels, prefix, token, serversServed, botOwners,
-    roles } = require('./configurations/config.json');
+const { channels, prefix, token, serversServed, botOwners, roles, botName } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator, crossword } = require('./configurations/commands.json');
 
 // load any dependencies here
@@ -104,7 +103,7 @@ client.on('ready', () => {
     // do some caching and stuff for each guild in advance I guess
     Object.values(serversServed).forEach(guildID => {
         const guild = client.guilds.cache.get(guildID);
-        guild.members.me.setNickname('GoddessBot');
+        guild.members.me.setNickname(`${botName}`);
         guild.members.fetch();
     });
 
@@ -133,9 +132,9 @@ client.on('ready', () => {
     const startEmbed = new Discord.EmbedBuilder()
         .setTitle('**Successfully restarted!**')
         .setColor('ffffff')
-        .setDescription(`GodBot version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.
+        .setDescription(`${botName} version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.
             \n**Newly added:**\n• ${updateMsg1}\n• ${updateMsg2}\n• ${updateMsg3}`)
-        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
+        .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() })
         .setTimestamp();
     client.channels.cache.get(channels.botville).send({ embeds: [startEmbed] });
     const delay1 = crosswordTimers.getUpdateDelay(); // delay before news automatically updates

@@ -1,4 +1,4 @@
-const { prefix } = require('../../configurations/config.json');
+const { prefix, botName } = require('../../configurations/config.json');
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const main = require('../../index');
 const logger = require('../features/logging');
@@ -173,7 +173,7 @@ async function solveHtmlRequest(message) {
         .setColor(0x78de79) // noice green
         .setURL('https://godvillegame.com/news')
         .setThumbnail('https://i.imgur.com/t5udHzR.jpeg')
-        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() })
+        .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() })
         .setTimestamp();
 
     logger.log(`Finished solving the crossword in ${message.channel.name}.`);

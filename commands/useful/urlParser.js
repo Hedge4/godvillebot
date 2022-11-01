@@ -1,5 +1,5 @@
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
-const { prefix } = require('../../configurations/config.json');
+const { prefix, botName } = require('../../configurations/config.json');
 const startupFile = require('../../index');
 const logger = require('../features/logging');
 
@@ -67,7 +67,7 @@ async function main(message, content) {
         .setColor(0x632db4) // purpleee
         .setDescription(embedBody)
         .setTimestamp()
-        .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
+        .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() });
 
     message.reply({ embeds: [embed] });
     logger.log(`${message.author.tag} / ${message.author.id} used the ${prefix}parseUrl command in ${message.channel.name}, for this URL: <${content}>`);

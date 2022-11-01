@@ -1,4 +1,4 @@
-//const { prefix } = require('../../configurations/config.json');
+const { botName } = require('../../configurations/config.json');
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const getters = require('../../index');
 
@@ -137,7 +137,7 @@ function constructEmbeds(rawEmbeds) {
 
             const client = getters.getClient();
             const embed = new Discord.EmbedBuilder()
-                .setFooter({ text: 'GodBot is brought to you by Wawajabba', iconURL: client.user.avatarURL() });
+                .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() });
 
             // bob the builder
             embedParts.forEach(e => {
