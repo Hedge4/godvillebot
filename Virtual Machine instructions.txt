@@ -1,0 +1,28 @@
+Updating godvillebot
+1. Push a new commit to the remote repository
+2. Log in to the Google Cloud console
+3. Navigate to Compute Engine (VM) instances and connect to the godvillebot-hosting VM with the SSH button
+4. Use the ls and cd commands to navigate to the godvillebot git repository
+5. Run git pull (and update GitHub access token if necessary)
+6. Run 'tmux a -t 0' to access the tmux shell (use 'tmux ls' to find the id if it isn't 0)
+7. Ctrl+c to exit the node.js process
+8. 'node .' to start the process again, with the updated files
+9. 'Ctrl+b' then 'd' to exit the tmux shell. You can close the VM window.
+
+Tmux commands
+- 'tmux' to create a new tmux session
+- 'tmux new -s <name>' create new named session
+- 'tmux ls' to list active sessions
+- 'tmux a' attach to most recent session
+- 'tmux a -t <name>' attach to a session
+- 'tmux kill-session –t <name>' kill a session
+
+While in tmux session
+- 'Ctrl+d' to end session
+- 'Ctrl+b' then 'Ctrl+b' to show prefix (default is 'Ctrl+b')
+- 'Ctrl+b' then 'b' to detach shell
+- 'Ctrl+b' then '$' to rename session
+- 'Ctrl+b' then 's' to list/scroll through sessions
+- 'Ctrl+b' then '?' to show all commands
+
+https://tmuxguide.readthedocs.io/en/latest/tmux/tmux.html
