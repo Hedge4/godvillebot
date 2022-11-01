@@ -161,7 +161,7 @@ client.on('ready', () => {
     randomMessages(client);
 
     // load data such as the newspaper and the omnibus list
-    logger.log('\nOmniBackup: Trying to load the Omnibus backup file...'); // newline for separation
+    logger.log('OmniBackup: Trying to load the Omnibus backup file...'); // newline for separation
     omnibus.loadBackup(); // loads the online omnibus list and its backup .txt file
     logger.log('News: Trying to load today\'s Godville Times...');
     newspaper.load(false); // 'false' disables logging

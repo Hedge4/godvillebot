@@ -4,9 +4,60 @@
 let logsChannel;
 let started = false;
 
-// make a queue of messages to log, clear this queue by 1 message every second and stop recursing if queue is empty
-// when clearing queue, try to combine 5 messages at most into 1 with newlines (<500 characters total)
-// if message in queue has more than 2000 chars, split it up in a smart way (find newline between 1900 and 2000? Then space?)
+// doesn't function like a queue but that's how I use it. Idk why I even made this
+class FakeQueue {
+    #timeout;
+    #elements = [];
+
+    #totalLength() {
+        console.log(this);
+        let sum = 0;
+        this.#elements.forEach(element => {
+            sum += element.length;
+        });
+        return sum;
+    }
+
+    enqueue(elem) {
+        console.log(this);
+        if (this.#totalLength() + elem.length > maxQueueSize) {
+            // empty queue first if it would become too large
+            this.#empty();
+        }
+
+        if (elem.length > maxQueueSize) {
+            // don't add too queue if the element is too large
+            sendChannel(elem);
+        } else {
+            // add to queue
+            this.#elements.push(elem);
+
+            // set clear timer if this is the first element
+            if (this.#elements.length === 1) {
+                // clear queue every x milliseconds
+                this.#timeout = setTimeout(function() {
+                    this.#empty();
+                }.bind(this), queueWaitTime);
+            }
+        }
+    }
+
+    #empty() {
+        // copy entire array and empty it
+        const logMessage = (this.#elements.splice(0, this.#elements.length)).join('\n');
+        // clear timer in case it wasn't cleared yet
+        if (this.#timeout && !this.#timeout._destroyed) {
+            clearTimeout(this.#timeout);
+        }
+
+        // in case something goes wrong and it has a length of 0
+        if (logMessage) sendChannel(logMessage);
+    }
+}
+
+const queueWaitTime = 0.5 * 1000; // ms
+const maxQueueSize = 500; // characters
+const channelQueue = new FakeQueue();
 
 // todo: if started == false for 5 minutes, try to reconfigure with client and logs (and login???)
 // if that fails as well, try again after 5 more minutes, et cetera
@@ -25,6 +76,10 @@ function logBoth(text) {
 }
 
 function logChannel(text) {
+    channelQueue.enqueue(text);
+}
+
+function sendChannel(text) {
     if (started) {
         logsChannel.send(text)
             .catch(e => {

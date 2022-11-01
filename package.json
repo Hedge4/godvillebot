@@ -1,9 +1,9 @@
 {
   "name": "godbot",
-  "version": "5.14.3",
-  "updateMsg1": "5.14 Added >roleColour command",
-  "updateMsg2": "5.13 GoddessBot now automatically joins new threads :robot:",
-  "updateMsg3": "5.12 Updated to discord.js v14.6 and updated all outdated packages.",
+  "version": "5.15.0",
+  "updateMsg1": "5.15 Multiple logs sent within 0.5 seconds are now sent as one message (to combat rate limits)",
+  "updateMsg2": "5.14 Added >roleColour command",
+  "updateMsg3": "5.13 GoddessBot now automatically joins new threads :robot:",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",
