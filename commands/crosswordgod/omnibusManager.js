@@ -93,7 +93,7 @@ async function loadOmnibus() {
     // schedule new automatic update
     nextUpdateTimer = setTimeout(function() {
         omnibusStartup(true);
-    }, autoUpdateDelay * 1000);
+    }, autoUpdateDelay * 60 * 1000);
     logger.log(`Omnibus: Scheduled next automatic update ${autoUpdateDelay} minutes from now.`);
 
     const html = await downloadOmnibus();
