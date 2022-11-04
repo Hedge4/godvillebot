@@ -5,7 +5,7 @@ exports.getGodData = function() { return godData; };
 
 // discord connection setup, bot login is at bottom of file
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
-const { Client, GatewayIntentBits, Partials } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, ChannelType } = require('discord.js');
 const client = new Client({
     intents: [
         GatewayIntentBits.GuildMessages,
@@ -180,7 +180,7 @@ client.on('messageCreate', (message) => {
     if (botBlocked.includes(message.author.id)) { return; }
 
     // handle DMs
-    if (message.channel.type === 'DM') {
+    if (message.channel.type === ChannelType.DM) {
         return botDMs.handleDMs(message, client);
 
         // handle messages in servers the bot is available in
