@@ -92,6 +92,12 @@ const roleData = {
                 roleId: '321643270515982347',
                 desc: '',
             },
+            '9️⃣': {
+                fullName: 'Ideaboxping',
+                roleName: null,
+                roleId: '1039853677101453362',
+                desc: 'Get a (daily) word prompt for ideabox inspiration',
+            },
             '📰': {
                 fullName: 'Newspaper and crossword',
                 roleName: null,
