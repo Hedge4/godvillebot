@@ -7,6 +7,8 @@ let contestTotal = 0, contestSetupDone = false;
 const contestRunning = true, contestMaxSubmissions = 15, contestMaxL = 80, contestMinL = 5;
 const contestAuthors = {}, eventName = 'Christmas images event', eventPrefix = '+';
 const contestSubmissions = '824031930562773046', contestTracking = '824031951911649330';
+// emojis to react with to contest submissions
+const reactList = ['1040369648551612487', '1040369978311987310'];
 
 // function to handle any received DMs
 function handleDMs(message, client) {
@@ -82,11 +84,10 @@ async function checkDMContest(client) {
     // when previous replies have been counted, we can start to accept submissions
     contestSetupDone = true;
     logger.log(`DM contest '${eventName}' is active, loaded ${contestTotal} entries.`);
-    console.log(contestAuthors);
 }
 
 // logic to determine if someone's submission is valid and add it to the previous submissions
-function enterDMContest(message, client) {
+async function enterDMContest(message, client) {
     if (!contestSetupDone) {
         message.reply('I haven\'t finished starting up yet, try again later. If this error remains, contact the bot owner.');
         return;
@@ -122,8 +123,14 @@ function enterDMContest(message, client) {
     message.reply(`Your entry was accepted. You have ${contestMaxSubmissions - newCount} entries left.`);
     contestTotal++; // increment total first so code is zero-based, but logs in channel are one-based
     logger.toConsole(`Someone made a submission for ${eventName}, which now has ${contestTotal} entries in total.`);
-    client.channels.cache.get(contestSubmissions).send(`${contestTotal} => ${msg}`);
+    const submission = await client.channels.cache.get(contestSubmissions).send(`${contestTotal} => ${msg}`);
     client.channels.cache.get(contestTracking).send(`${contestTotal}, ${message.author.tag}, ${message.author.id}`);
+
+    // add reactions if any are defined
+    for (let i = 0; i < reactList.length; i++) {
+        submission.react(reactList[i])
+            .catch(() => { /*Do nothing, this error is common and it clogs up the console. Me is lazy*/ });
+    }
 }
 
 exports.handleDMs = handleDMs;
