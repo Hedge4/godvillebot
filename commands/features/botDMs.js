@@ -4,7 +4,7 @@ const logger = require('./logging');
 
 // basic setup for contests through the bot's DMs
 let contestTotal = 0, contestSetupDone = false;
-const contestRunning = true, contestMaxSubmissions = 15, contestMaxL = 80, contestMinL = 5;
+const contestRunning = true, contestMaxSubmissions = 15, contestMaxL = 200, contestMinL = 5;
 const contestAuthors = {}, eventName = 'Christmas images event', eventPrefix = '+';
 const contestSubmissions = '824031930562773046', contestTracking = '824031951911649330';
 // emojis to react with to contest submissions
