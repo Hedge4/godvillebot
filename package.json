@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.15.4",
+  "version": "5.15.5",
   "updateMsg1": "5.15 Multiple logs sent within 0.5 seconds are now sent as one message (to combat rate limits)",
   "updateMsg2": "5.14 Added >roleColour command",
   "updateMsg3": "5.13 GoddessBot now automatically joins new threads :robot:",
