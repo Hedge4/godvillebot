@@ -8,7 +8,7 @@ async function main(message, content) {
     }
 
     // if this regex passes, the input is correct. We don't need to check anything else
-    const parsedArgs = /^(?:https?:\/\/discord\.com\/channels\/\d+\/\d+\/(\d+)|(\d{2,}))?\s*([2-9]|10)?$/i.exec(content);
+    const parsedArgs = /^(?:https?:\/\/discord\.com\/channels\/\d+\/\d+\/(\d{11,})|(\d{11,}))?\s*([2-9]|10)?$/i.exec(content);
     if (!parsedArgs) {
         return message.reply('Your command appears to be incorrect. First write down the ID or URL to the message you want to make into a poll, or write nothing to use the most recent message. Then write a number 2-10 for a multiple-choice poll, or nothing for an encourage/miracle/punish poll. Make sure there are no extra characters.');
     }

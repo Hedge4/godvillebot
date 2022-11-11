@@ -9,9 +9,9 @@ async function main(message, content) {
     }
 
     // if this regex passes, the input is correct. We only need to check the separate reactions
-    const parsedArgs = /^(?:(?:https?:\/\/discord\.com\/channels\/\d+\/\d+\/(\d+)|(\d{2,}))\s+)?(\S.*)/i.exec(content);
+    const parsedArgs = /^(?:https?:\/\/discord\.com\/channels\/\d+\/\d+\/(\d{11,})|(\d{11,}))?\s*(\S.*)$/i.exec(content);
     if (!parsedArgs) {
-        return message.reply('Your command appears to be incorrect. First write down the ID or url to the message you want me to react to, or write nothing to react to the latest message. Then write a number 2-10 for a multi-choice poll, or nothing for an encourage/miracle/punish poll. Make sure there are no extra characters.');
+        return message.reply('Your command appears to be incorrect. First write down the ID or url to the message you want me to react to, or write nothing to react to the latest message. Then use whatever unicode or custom discord emojis you want me to react with. I also support these regular characters: ' + Object.keys(alphabet).join(''));
     }
 
     let targetMsg;
