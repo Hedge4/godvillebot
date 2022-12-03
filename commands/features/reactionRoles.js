@@ -208,6 +208,13 @@ const roleData = {
                 roleId: '321021838362935300',
                 desc: '',
             },
+            '📺': {
+                fullName: 'Tv and movies',
+                roleName: null,
+                alts: ['tv', 'movies'],
+                roleId: '1048575366480023552',
+                desc: '',
+            },
             '📢': {
                 fullName: 'Venting and support',
                 roleName: null,
