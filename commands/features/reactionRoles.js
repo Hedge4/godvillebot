@@ -19,12 +19,6 @@ const roleData = {
                 roleId: '351507395949887488',
                 desc: 'Listen to Youtube via Discord!',
             },
-            '🗣️': {
-                fullName: 'Servertopics',
-                roleName: null,
-                roleId: '806200817387307109',
-                desc: 'Occasionally get a topic to vote on/discuss in general-chat',
-            },
         },
     },
     '817245315405053994': {
@@ -54,12 +48,6 @@ const roleData = {
                 roleName: null,
                 roleId: '653672864712491019',
                 desc: '',
-            },
-            '3️⃣': {
-                fullName: 'Dataping',
-                roleName: null,
-                roleId: '653669783346085919',
-                desc: 'Joint datamines',
             },
             '<:t_log:668185664650739723>': {
                 fullName: 'Dungeoning and digging',
@@ -143,12 +131,6 @@ const roleData = {
                 roleId: '321022003509460992',
                 desc: '',
             },
-            '🎲': {
-                fullName: 'Board Games',
-                roleName: null,
-                roleId: '814295752192032789',
-                desc: '',
-            },
             '🐿️': {
                 fullName: 'Dogville',
                 roleName: null,
@@ -200,12 +182,6 @@ const roleData = {
                 roleName: null,
                 alts: ['sports', 'nature'],
                 roleId: '818996395641798686',
-                desc: '',
-            },
-            '❔': {
-                fullName: 'Trivia questions',
-                roleName: null,
-                roleId: '321021838362935300',
                 desc: '',
             },
             '📺': {
