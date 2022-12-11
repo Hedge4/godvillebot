@@ -111,6 +111,61 @@ const reactionEvents = [
             'https://tenor.com/view/skeleton-skull-gif-18854593',
             'https://tenor.com/view/afraid-scared-spongebob-nightmare-anxious-gif-17742018',
         ],
+    }, {
+        name: 'Christmas',
+        active() {
+            // only active 24-26 December
+            const isDecember = (new Date).getMonth() === 11; // 0-based
+            const today = (new Date).getDate();
+            const correctDays = today >= 24 && today <= 26; // 1-based
+            return isDecember && correctDays;
+        },
+        disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, '1020381945714200596'],
+        triggers: [
+            { name: /\bgermans?\b/, isRegex: true },
+            { name: 'christmas', isRegex: false },
+            { name: 'holiday', isRegex: false },
+            { name: 'gift', isRegex: false },
+            { name: 'santa', isRegex: false },
+            { name: 'mistletoe', isRegex: false },
+            { name: 'festiv', isRegex: false },
+            { name: 'decoration', isRegex: false },
+            { name: 'holiday', isRegex: false },
+            { name: 'xmas', isRegex: false },
+            { name: /\bpresents?\b/, isRegex: true },
+            { name: 'santa', isRegex: false },
+            { name: 'winter wonderland', isRegex: false },
+            { name: 'jolly', isRegex: false },
+            { name: 'celebrat', isRegex: false },
+            { name: 'happy', isRegex: false },
+            { name: 'carol', isRegex: false },
+            { name: 'jesus', isRegex: false },
+            { name: 'christ', isRegex: false },
+            { name: 'chimney', isRegex: false },
+            { name: 'sleigh', isRegex: false },
+            { name: 'celebrate', isRegex: false },
+            { name: 'noel', isRegex: false },
+            { name: 'light', isRegex: false },
+            { name: 'stocking', isRegex: false },
+            { name: 'candy cane', isRegex: false },
+            { name: 'eve', isRegex: false },
+            { name: /\bel(f\b|v[^\b\s])/, isRegex: true },
+            { name: 'grinch', isRegex: false },
+            { name: 'snow', isRegex: false },
+            { name: 'tinsel', isRegex: false },
+            { name: 'reindeer', isRegex: false },
+            { name: 'red nose', isRegex: false },
+            { name: 'giving', isRegex: false },
+            { name: 'season', isRegex: false },
+            { name: 'saint', isRegex: false },
+            { name: 'sinterklaas', isRegex: false },
+            { name: 'all i want for christmas', isRegex: false },
+            { name: 'boxing day', isRegex: false },
+            { name: 'mistletoe', isRegex: false },
+        ],
+        reactions: [
+            'https://giphy.com/gifs/cute-animal-mood-9JrvLb0fnrn7k1ZjhX',
+        ],
     },
 ];
 
