@@ -13,7 +13,7 @@ function redirect(cmd, content, message, client) {
         case 'suggest':
             return suggest.suggestion(client, message, content);
         case 'spoiler':
-            return spoiler(message);
+            return spoiler(message, content);
         case 'code':
             return code(message);
         case 'ping':
