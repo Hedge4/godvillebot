@@ -23,4 +23,4 @@ async function resumeBot(client, message, mins) {
 
 const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;
 
-exports.break = pauseBot;
+module.exports = pauseBot;

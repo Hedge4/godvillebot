@@ -18,4 +18,4 @@ async function purge(client, message) {
 
 const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;
 
-exports.purge = purge;
+module.exports = purge;
