@@ -336,11 +336,15 @@ async function getGodData(URL, message) {
     });
 
     let progressString = progressActive.join(', ');
-    progressString = `*${progressString[0].toUpperCase()}${progressString.slice(1)}*`;
-    achievements += progressString; // there already is a newline before this added string
-    godData.achievements = achievements;
+    // is undefined if someone didn't start temple yet, or finished but didn't start ark yet
+    if (progressString) {
+        progressString = `*${progressString[0].toUpperCase()}${progressString.slice(1)}*`;
+        achievements += progressString; // there already is a newline before this added string
+        godData.achievements = achievements;
+    }
 
 
+    // return the final object!
     return (godData);
 }
 
