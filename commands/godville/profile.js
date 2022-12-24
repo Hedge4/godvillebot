@@ -40,7 +40,7 @@ async function showProfile(message, username, godData) {
 
     let godvilleData = null;
     try {
-        godvilleData = await getGodData(godURL, message);
+        godvilleData = await getGodData(godURL, message.channel);
     } catch (err) {
         logger.log(`Error while getting god data for ${godURL}! Error: \n` + err);
         godvilleData = null;
@@ -74,7 +74,7 @@ async function showGodvilleProfile(message, godURL) {
 
     let godvilleData = null;
     try {
-        godvilleData = await getGodData(godURL, message);
+        godvilleData = await getGodData(godURL, message.channel);
     } catch (err) {
         logger.log(`Error while getting god data for ${godURL}! Error: \n` + err);
         godvilleData = null;
@@ -170,7 +170,7 @@ async function showLink(message, username, client, godData) {
 }
 
 
-async function getGodData(URL, message) {
+async function getGodData(URL, channel) {
     const myFirstPromise = new Promise((resolve, reject) => {
         https.get(URL, (res) => {
             res.on('data', (d) => {
@@ -186,16 +186,12 @@ async function getGodData(URL, message) {
     await myFirstPromise.then((result) => {
         html = result;
     }).catch((error) => {
-        logger.log(`Oops! Couldn't get god page for url ${URL}!` + error);
-        message.channel.send('Could not obtain online data. This is most likely a connection error, or the linked URL is incorrect.');
-        return (null);
+        logger.log(`Failed to get any html for URL ${URL}. ` + error);
+        channel.send('Could not obtain online data. This is most likely a connection error, or the linked URL is incorrect.');
+        return null;
     });
 
-    if (!html) {
-        logger.log(`Failed to get any html for URL ${URL}.`);
-        message.channel.send('Could not obtain online data. This is most likely a connection error.');
-        return (null);
-    }
+    if (!html) return null;
 
 
     const godData = {};
@@ -289,27 +285,31 @@ async function getGodData(URL, message) {
     const rx_ark = />(Ark Owner since )(\d+)\/(\d+)\/(\d+)/;
     const rx_animalist = />(Animalist since )(\d+)\/(\d+)\/(\d+)/;
     const rx_trader = />(Trader since )(\d+)\/(\d+)\/(\d+)/;
-    const rx_creature_master = />(Creature Master since )(\d+)\/(\d+)\/(\d+)/;
+    const rx_creatureMaster = />(Creature Master since )(\d+)\/(\d+)\/(\d+)/;
     const rx_bookmaker = />(Bookmaker since )(\d+)\/(\d+)\/(\d+)/;
 
     const temple = rx_temple.exec(html);
     const ark = rx_ark.exec(html);
     const animalist = rx_animalist.exec(html);
     const trader = rx_trader.exec(html);
-    const creature_master = rx_creature_master.exec(html);
+    const creatureMaster = rx_creatureMaster.exec(html);
     const bookmaker = rx_bookmaker.exec(html);
+    const achievements = [temple, ark, animalist, trader, creatureMaster, bookmaker];
 
-    // achievements needs to end with \n because the progressString is added at the end
-    let achievements = '';
-    if (!temple && !animalist) {
-        achievements = `This ${godData.godGender} doesn't have any medals yet.\n`;
-    } else {
-        [temple, ark, animalist, trader, creature_master, bookmaker].forEach(e => {
-            // transform mm-dd-yy to dd-mm-yy
-            if (e) { achievements += `${e[1]}${e[3]}-${e[2]}-${e[4]}\n`; }
-        });
-    }
-
+    let achievementsString = function() {
+        // test if any achievements are defined
+        if (achievements.some((e => !!e == true))) {
+            let str = '';
+            achievements.forEach(e => {
+                // transform mm-dd-yy to dd-mm-yy
+                if (e) { str += `${e[1]}${e[3]}-${e[2]}-${e[4]}\n`; }
+            });
+            // embed fields can't end with a newline, remove it
+            return str.slice(0, -1);
+        } else {
+            return `This ${godData.godGender} doesn't have any medals yet.`;
+        }
+    }();
 
     // PROGRESS
     const progress = {};
@@ -336,12 +336,13 @@ async function getGodData(URL, message) {
     });
 
     let progressString = progressActive.join(', ');
-    // is undefined if someone didn't start temple yet, or finished but didn't start ark yet
+    // is undefined if hero has no ongoing projects (before temple, or in between temple/ark)
     if (progressString) {
+        // italicise, capitalise first letter
         progressString = `*${progressString[0].toUpperCase()}${progressString.slice(1)}*`;
-        achievements += progressString; // there already is a newline before this added string
-        godData.achievements = achievements;
+        achievementsString += '\n' + progressString;
     }
+    godData.achievements = achievementsString;
 
 
     // return the final object!
