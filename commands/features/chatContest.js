@@ -143,71 +143,74 @@ async function deleteMessage(message, client) {
     }
 }
 
-// check if this message is still the last message in general chat, and reward the author if it is
 async function winningChatContest(message, client, userData) {
-    if (lastMessage && message.id == lastMessage.id) { // first check if lastMessage even exists
-        if (message.author.id == lastWinner) {
-            message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but you already won the last chat-killing contest! :skull:`);
-            logger.log(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
-        } else {
-            lastWinner = message.author.id;
-            if (chatCombo < 0) chatCombo = 0; // in case it's negative for whatever reason
-            let chatMultiplier = (chatCombo / 75) + 0.5; // increases messages 0-300
-            if (chatMultiplier > 4.5) chatMultiplier = 4.5;
-            let chatMultiplierBonus = (chatCombo - 300) / 200; // increases messages 300-500
-            if (chatMultiplierBonus > 1) chatMultiplierBonus = 1;
-            if (chatMultiplierBonus < 0) chatMultiplierBonus = 0;
-            // round to 2 decimals
-            chatMultiplier = Math.round(chatMultiplier * 100) / 100;
-            chatMultiplierBonus = Math.round(chatMultiplierBonus * 100) / 100;
+    // check if this message is still the last message in general chat
+    if (!lastMessage || message.id !== lastMessage.id) {
+        return;
+    }
 
-            let gold;
-            switch (Math.floor(Math.random() * chatMultiplier + chatMultiplierBonus)) {
-                case 0:
-                    gold = Math.floor(Math.random() * 14) + 6;
-                    message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a small amount of gold <:t_gold:668200334933622794> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
-                    break;
-                case 1:
-                case 2:
-                case 4:
-                    gold = Math.floor(Math.random() * 21) + 22;
-                    message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a normal bag of gold <:t_goldbag:668202265777274890> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
-                    break;
-                case 3:
-                case 5:
-                    gold = Math.floor(Math.random() * 50) + 50;
-                    message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a big crate of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
-                    break;
-                default:
-                    gold = 100;
-                    message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but something went wrong calculating your reward. You were awarded a default amount of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:\n<@346301339548123136>`);
-            }
+    if (message.author.id == lastWinner) {
+        message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but you already won the last chat-killing contest! :skull:`);
+        logger.log(`${message.author.tag} / ${message.author.id} won the chat contest after ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
 
-            const userDoc = await userData.get();
-            const User = {};
-            if (userDoc.data()[message.author.id] === undefined) {
-                User[message.author.id] = {
-                    godpower: 0,
-                    gold: 0,
-                    total_godpower: 0,
-                    level: 0,
-                };
-                User[message.author.id].last_username = message.author.tag;
-                await userData.set(User, { merge: true });
-            } else {
-                User[message.author.id] = userDoc.data()[message.author.id];
-            }
-            const oldGold = User[message.author.id].gold;
-            const newGold = Math.floor(oldGold + gold);
-            User[message.author.id].gold = newGold;
-            User[message.author.id].last_username = message.author.tag;
-            userData.set(User, { merge: true });
-
-            logger.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, after a conversation with combo ${chatCombo}, tier multiplier ${chatMultiplier} and multiplier bonus ${chatMultiplierBonus}. Gold: ${oldGold} -> ${newGold}.`);
-        }
         lastMessage = null;
         chatCombo = 0;
+        return;
     }
+
+    lastWinner = message.author.id;
+    const limit = (val, minVal = 0, maxVal = 1) => Math.max(minVal, Math.min(maxVal, val));
+    const toPercent = (val) => Math.round(val * 1000) / 10 + '%';
+
+    let smallRewardChance = (250 - chatCombo) / 200;
+    let bigRewardChance = (chatCombo - 200) / 500;
+    smallRewardChance = limit(smallRewardChance);
+    bigRewardChance = limit(bigRewardChance, 0, 0.6);
+
+    let gold, tierChance;
+    const r = Math.random();
+
+    if (r < smallRewardChance) {
+        // small reward
+        gold = Math.floor(Math.random() * 14) + 6;
+        tierChance = toPercent(smallRewardChance);
+        message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a small amount of gold <:t_gold:668200334933622794> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+    } else if (r < 1 - bigRewardChance) {
+        // normal reward
+        gold = Math.floor(Math.random() * 21) + 22;
+        tierChance = toPercent(1 - smallRewardChance - bigRewardChance);
+        message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a normal bag of gold <:t_goldbag:668202265777274890> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+    } else {
+        // big reward
+        gold = Math.floor(Math.random() * 50) + 50;
+        tierChance = toPercent(bigRewardChance);
+        message.reply(`You were the last person to talk for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, and you won a big crate of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+    }
+
+    // update database
+    const userDoc = await userData.get();
+    const User = {};
+    if (userDoc.data()[message.author.id] === undefined) {
+        User[message.author.id] = {
+            godpower: 0,
+            gold: 0,
+            total_godpower: 0,
+            level: 0,
+        };
+        User[message.author.id].last_username = message.author.tag;
+        await userData.set(User, { merge: true });
+    } else {
+        User[message.author.id] = userDoc.data()[message.author.id];
+    }
+    const oldGold = User[message.author.id].gold;
+    const newGold = Math.floor(oldGold + gold);
+    User[message.author.id].gold = newGold;
+    User[message.author.id].last_username = message.author.tag;
+    userData.set(User, { merge: true });
+
+    logger.log(`${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${chatContestTime} ${quantiseWords(chatContestTime, 'minute')}, after a conversation with chatCombo ${chatCombo}. There was a ${tierChance} chance of getting the reward tier they got. Gold: ${oldGold} -> ${newGold}.`);
+    lastMessage = null;
+    chatCombo = 0;
 }
 
 const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;
