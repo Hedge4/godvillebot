@@ -3,7 +3,7 @@ const Discord = require('discord.js'); // TODO: remove, import only the specific
 const sharp = require('sharp');
 const https = require('https');
 
-const imgPath = './images/hug3.png';
+const imgPath = './resources/hug3.png';
 const imageSize = 200; // 216 would be more consistent, but starting res is 200px
 const pfpHuggeeSize = Math.round(0.33 * imageSize / 2) * 2;
 const pfpHuggerSize = Math.round(0.365 * imageSize / 2) * 2;

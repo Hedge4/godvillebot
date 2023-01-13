@@ -40,7 +40,7 @@ async function main(message) {
             .resize(resizeSize, resizeSize) // Resize the underside image
             .greyscale(); // we make it boring
 
-        await sharp('./images/nope.png')
+        await sharp('./resources/nope.png')
             .resize(resizeSize, resizeSize)
             .toBuffer({ resolveWithObject: true }) // buffers all the waaaaaaay
             .then(({ data }) => { // We now have the data / info of that buffer

@@ -92,7 +92,7 @@ async function main(message) {
             .toBuffer();
 
         // load our bonk image
-        const bonk = await sharp('./images/bonk.jpg')
+        const bonk = await sharp('./resources/bonk.jpg')
             .resize(imageSize, imageSize) // resize so we ensure the ratio between sizes is correct
             .png()
             .toBuffer(); // output to buffer to 'apply' changes (idk)
