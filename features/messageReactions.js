@@ -203,6 +203,17 @@ const reactionEvents = [
             'https://tenor.com/view/cat-pop-pop-pop-pop-pop-popping-mouth-cap-popping-gif-19400424',
             'https://tenor.com/view/merry-christmas-everyone-santa-clause-south-park-christmas-snow-s23e10-gif-19313199',
         ],
+    }, {
+        name: 'Innocent',
+        type: 'reaction',
+        active() { return true; },
+        disabled: [channels.venting, channels.appeals, channels.politicsDebate],
+        triggers: [
+            { name: 'innocent', isRegex: false },
+        ],
+        reactions: [
+            '1028903377544958114',
+        ],
     },
 ];
 
@@ -227,6 +238,7 @@ function testTrigger(reactionEvent, message) {
             // or the opposite mode, ignore if channel is not enabled
             if (!reactionEvent.disabled.includes(message.channel.id)) return;
         }
+
         const content = message.content.toLowerCase();
         if (reactionEvent.triggers.some((e) => {
 
@@ -239,7 +251,13 @@ function testTrigger(reactionEvent, message) {
                 return e.name.test(filteredContent);
             } else { return filteredContent.includes(e.name); }
         })) {
-            message.channel.send(reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)]);
+            // if the message contains the trigger
+            if (reactionEvent.type === 'reaction') {
+                message.react(reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)])
+                    .catch(() => { /* Do nothing */ });
+            } else {
+                message.channel.send(reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)]);
+            }
         }
     }
 }

@@ -23,6 +23,7 @@ const mentionReactions = [
     'Nobody summons me without my permission!',
     'It must be difficult for you, exhausting your entire vocabulary in one sentence',
     'shhh... That\'s the sound of no one caring',
+    'http://media.tenor.com/4IrGnLvq3B8AAAPo/dont-ping-me-dont-ping-me-every-again.mp4',
 ];
 
 const muteReactions = [
@@ -43,7 +44,7 @@ async function mentionReact(message, client) {
     if (Object.values(botOwners).includes(message.author.id)) return;
 
     if (botMentionCooldown.has(message.author.id)) {
-        botMentionCooldown.delete(message.author.id); // why do I bother doing this
+        botMentionCooldown.delete(message.author.id); // why do I bother deleting this
 
         // no fetch for the servers, they should be cached upon client initialisation
         const gvServer = client.guilds.cache.get(serversServed.godvilleServer);
@@ -65,12 +66,12 @@ async function mentionReact(message, client) {
                     text = text.replace('DISCNAME', `${message.author.tag}`);
                     text = text.replace('DISCID', `${message.author.id}`);
                     message.channel.send(text);
-                    logger.log(`Unmuted ${message.author.tag}. (Mute reason: Spam mentioning me).`);
+                    logger.log(`Unmuted ${message.author.tag}. (Mute reason: Spam mentioning me)`);
                 } catch (error) {
                     logger.log(`Couldn't unmute ${message.author.tag}, oopsie. Too bad for them I guess.`);
                 }
-            }, 60 * 1000);
-            logger.log(`Muted ${message.author.tag} for one minute for spam mentioning the bot.`);
+            }, 2 * 60 * 1000);
+            logger.log(`Muted ${message.author.tag} for two minutes for spam mentioning the bot.`);
         } catch (error) {
             logger.log(`Couldn't mute ${message.author.tag} for spam mentioning me.`);
         } finally {

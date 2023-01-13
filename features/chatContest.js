@@ -5,6 +5,7 @@ const logger = require('./logging.js');
 let lastMessage = null, lastWinner = '', chatCombo = 0;
 const chatContestChannel = '313398424911347712';
 const chatContestTime = 30;
+const checkMaxMessages = 2000;
 let lastKillTimestamp;
 
 // get the latest message applying for the chat contest
@@ -75,19 +76,24 @@ async function getLastMessage(client) {
 async function setLastWinner(client) {
     const channel = client.channels.cache.get(chatContestChannel);
 
-    let user;
+    chatCombo = 0;
+    let lastId; // to track consecutive authors
     let messages = await channel.messages.fetch({ limit: 100 });
-    chatCombo = -1;
 
-    // search back 1000 messages at most
-    for (let i = 0; i < 10; i++) {
+    // search back 2000 messages at most
+    for (let i = 0; i < ~~(checkMaxMessages / 100); i++) {
         for (const msg of messages.values()) {
-            chatCombo++;
-            if (!msg.author.bot) continue;
-            if (!msg.author.id == clientId) continue; // check if author is the bot
+            // chatCombo doesn't increase for bots or consecutive authors
+            if (!msg.author.bot && msg.author.id !== lastId) {
+                chatCombo++;
+                lastId = msg.author.id;
+            }
+
+            // ignore everything that isn't a message by the bot about killing chat
+            if (!msg.author.id === clientId) continue; // check if author is the bot
             if (!msg.content.includes('for successfully killing chat!')) continue;
 
-            user = msg.mentions.users.first();
+            const user = msg.mentions.users.first();
             lastWinner = user.id;
             lastKillTimestamp = msg.createdTimestamp;
             logger.log(`${user.tag} was found and set as the last chat-killer. ChatCombo is ${chatCombo}.`);
@@ -98,8 +104,7 @@ async function setLastWinner(client) {
         messages = await channel.messages.fetch({ limit: 100, before: messages.last().id });
     }
 
-    chatCombo = 500;
-    logger.log('ERROR: No successful chat-killer was found in the last 1000 messages. Perhaps something is wrong with the code? ChatCombo was set to 500.');
+    logger.log(`ERROR: No successful chat-killer was found in the last ${checkMaxMessages} messages. Perhaps something is wrong with the code? Within those messages, chatCombo got up to ${chatCombo}.`);
 }
 
 // run contest for the last message in general chat
