@@ -42,23 +42,23 @@ const moderatorModule = require('./commands/moderator/moderator.js');
 const crosswordModule = require('./commands/crosswordgod/crosswordgod.js');
 
 // functions/commands (partly) separate from the main modules
-const logger = require('./commands/features/logging');
-const scheduler = require('./commands/features/scheduler');
-const giveXP = require('./commands/features/givexp');
-const onMention = require('./commands/features/botMentions');
-const messageReactions = require('./commands/features/messageReactions');
-const randomMessages = require('./commands/features/randomMessages');
-const botDMs = require('./commands/features/botDMs');
-const chatContest = require('./commands/features/chatContest');
-const daily = require('./commands/godpower/daily');
-const suggest = require('./commands/useful/suggest');
+const logger = require('./commands/features/logging.js');
+const scheduler = require('./commands/features/scheduler.js');
+const giveXP = require('./commands/features/givexp.js');
+const onMention = require('./commands/features/botMentions.js');
+const messageReactions = require('./commands/features/messageReactions.js');
+const randomMessages = require('./commands/features/randomMessages.js');
+const botDMs = require('./commands/features/botDMs.js');
+const chatContest = require('./commands/features/chatContest.js');
+const daily = require('./commands/godpower/daily.js');
+const suggest = require('./commands/useful/suggest.js');
 const block = require('./commands/moderator/block.js');
 const reactionRoles = require('./commands/features/reactionRoles.js');
-const help = require('./commands/help');
+const help = require('./commands/help.js');
 const newspaper = require('./commands/crosswordgod/newspaperManager.js');
 const omnibus = require('./commands/crosswordgod/omnibusManager.js');
 const crosswordTimers = require('./commands/crosswordgod/newsUpdates.js');
-const sendViaBot = require('./commands/features/sendViaBot');
+const sendViaBot = require('./commands/features/sendViaBot.js');
 const hugCommand = require('./commands/fun/hugCommand.js');
 
 // ==========================================================

@@ -1,7 +1,7 @@
-const guide = require('./guides');
-const godWiki = require('./godwiki');
-const link = require('./link');
-const profile = require('./profile');
+const guide = require('./guides.js');
+const godWiki = require('./godwiki.js');
+const link = require('./link.js');
+const profile = require('./profile.js');
 
 function redirect(cmd, content, message, client, Discord, godData) {
     switch (cmd) {

@@ -1,4 +1,4 @@
-const logger = require('../features/logging');
+const logger = require('../features/logging.js');
 
 function main(message) {
     let size = 6;

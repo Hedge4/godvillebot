@@ -1,5 +1,5 @@
-const logger = require('../features/logging');
-const getUsers = require('../features/getUsers');
+const logger = require('../features/logging.js');
+const getUsers = require('../features/getUsers.js');
 
 async function displayLevel(message, msgContent, userData, Discord, client) {
 

@@ -1,5 +1,5 @@
 const { serversServed, botOwners, roles } = require('../../configurations/config.json');
-const logger = require('./logging');
+const logger = require('./logging.js');
 
 // setup for reacting to bot mentions in the godville server
 const botMentionCooldown = new Set();

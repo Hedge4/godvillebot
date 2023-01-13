@@ -1,9 +1,9 @@
 const { prefix, botName } = require('../../configurations/config.json');
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
-const main = require('../../index');
-const logger = require('../features/logging');
-const omnibusManager = require('./omnibusManager');
-const parseWords = require('./wordFinder');
+const main = require('../../index.js');
+const logger = require('../features/logging.js');
+const omnibusManager = require('./omnibusManager.js');
+const parseWords = require('./wordFinder.js');
 const maxWords = 25, maxContent = 400, maxWordSize = 75;
 
 async function solveWordsRequest(message, content) {

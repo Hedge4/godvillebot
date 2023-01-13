@@ -1,5 +1,5 @@
 const { channels } = require('../../configurations/config.json');
-const logger = require('./logging');
+const logger = require('./logging.js');
 let client;
 
 const roleData = {

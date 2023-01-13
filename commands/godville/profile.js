@@ -2,9 +2,9 @@ const https = require('https');
 const { EmbedBuilder } = require('discord.js');
 
 const { prefix, channels, botName } = require('../../configurations/config.json');
-const logger = require('../features/logging');
-const getUsers = require('../features/getUsers');
-const getters = require('../../index');
+const logger = require('../features/logging.js');
+const getUsers = require('../features/getUsers.js');
+const getters = require('../../index.js');
 
 
 async function showProfile(message, username, godData) {

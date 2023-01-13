@@ -1,8 +1,8 @@
 const { channels, botName } = require('../../configurations/config.json');
 const { EmbedBuilder } = require('discord.js');
-const getters = require('../../index');
-const logger = require('../features/logging');
-const scheduler = require('../features/scheduler');
+const getters = require('../../index.js');
+const logger = require('../features/logging.js');
+const scheduler = require('../features/scheduler.js');
 
 
 function create(message, content) {

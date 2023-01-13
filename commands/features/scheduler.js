@@ -1,7 +1,7 @@
 const FieldValue = require('firebase-admin').firestore.FieldValue;
-const logger = require('./logging');
+const logger = require('./logging.js');
 
-const reminder = require('../useful/reminder');
+const reminder = require('../useful/reminder.js');
 
 const allowedTypes = ['reminder'];
 let eventsDoc;

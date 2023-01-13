@@ -1,4 +1,4 @@
-const logger = require('../features/logging');
+const logger = require('../features/logging.js');
 
 async function main(message, url) {
     const rand = Date.now(); // new random filename

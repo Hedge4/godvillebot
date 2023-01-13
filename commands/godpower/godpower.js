@@ -1,9 +1,9 @@
-const toggleMentions = require('./togglementions');
-const displayLevel = require('./levelcard');
-const displayGold = require('./goldcard');
-const getRanking = require('./ranking');
-const limitedCommands = require('./daily');
-const changegold = require('./changegold');
+const toggleMentions = require('./togglementions.js');
+const displayLevel = require('./levelcard.js');
+const displayGold = require('./goldcard.js');
+const getRanking = require('./ranking.js');
+const limitedCommands = require('./daily.js');
+const changegold = require('./changegold.js');
 
 function redirect(cmd, content, message, Discord, client, userData, limitedCommandsData) {
     switch (cmd) {

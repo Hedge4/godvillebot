@@ -1,5 +1,5 @@
 const { prefix } = require('../../configurations/config.json');
-const logger = require('../features/logging');
+const logger = require('../features/logging.js');
 
 async function main(message) {
     let text = 'Here are the unix timestamp, UTC time, and my time:\n';

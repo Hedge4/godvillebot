@@ -1,5 +1,5 @@
 const { token, channels } = require('../../configurations/config.json');
-const logger = require('../features/logging');
+const logger = require('../features/logging.js');
 
 async function pauseBot(message, client) {
     let mins = message.content.slice(6).trim().split(' ')[0];

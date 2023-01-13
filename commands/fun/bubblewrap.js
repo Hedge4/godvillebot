@@ -1,4 +1,4 @@
-const logger = require('../features/logging');
+const logger = require('../features/logging.js');
 
 async function main(client, message) {
     logger.log(`${message.author.tag} used the bubblewrap command in ${message.channel.name}.`);

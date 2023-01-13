@@ -1,7 +1,7 @@
 const block = require('./block.js');
-const breakCmd = require('./break');
-const purge = require('./purge');
-const roleColour = require('./roleColour');
+const breakCmd = require('./break.js');
+const purge = require('./purge.js');
+const roleColour = require('./roleColour.js');
 
 function redirect(cmd, content, message, client, blockedData) {
     switch (cmd) {

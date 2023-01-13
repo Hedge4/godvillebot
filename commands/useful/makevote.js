@@ -1,5 +1,5 @@
 const { botOwners, roles } = require('../../configurations/config.json');
-const logger = require('../features/logging');
+const logger = require('../features/logging.js');
 let reacting = false;
 
 async function main(message, content) {

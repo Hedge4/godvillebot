@@ -1,5 +1,5 @@
 const https = require('https');
-//const logger = require('../features/logging');
+//const logger = require('../features/logging.js');
 
 async function main(attachment) {
     const fileContent = await downloadAttachment(attachment.url); // if something goes wrong it throws an error

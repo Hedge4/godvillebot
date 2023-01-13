@@ -1,4 +1,4 @@
-const logger = require('../features/logging');
+const logger = require('../features/logging.js');
 const { channels } = require('../../configurations/config.json');
 
 const purgeable = [channels.appeals];

@@ -1,6 +1,6 @@
 /* eslint-disable no-constant-condition */
 const { prefix, channels } = require('../../configurations/config.json');
-const logger = require('./logging');
+const logger = require('./logging.js');
 
 // basic setup for contests through the bot's DMs
 let contestTotal = 0, contestSetupDone = false;
