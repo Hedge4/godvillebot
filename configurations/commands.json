@@ -10,8 +10,8 @@
 
 	"godpower": [
         ["level", ["rank"]],
-        ["ranking", []],
-        ["gold", []],
+        ["ranking", ["rankings", "leaderboard"]],
+        ["gold", ["riches", "dabloons", "dabloon"]],
         ["daily", []],
         ["toggle-mentions", ["togglementions"]],
         ["changegold", ["modifygold", "addgold", "agold", "removegold", "rgold", "goldadd", "goldremove"]]
@@ -19,12 +19,12 @@
 
     "useful": [
         ["suggest", ["suggestion"]],
-        ["spoiler", []],
+        ["spoiler", ["sp"]],
         ["code", ["github"]],
         ["ping", ["pong", "latency"]],
         ["react", []],
         ["makevote", ["mv", "vote", "mp", "makepoll", "poll"]],
-        ["remindme", ["remind", "reminder"]],
+        ["remindme", ["remind", "reminder", "rm"]],
         ["bottime", ["bt", "time"]],
         ["url", ["parseurl", "urlparse", "urlparser"]]
     ],
