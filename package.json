@@ -1,7 +1,7 @@
 {
   "name": "godbot",
-  "version": "5.16.0",
-  "updateMsg1": "5.15 Multiple logs sent within 0.5 seconds are now sent as one message (to combat rate limits)",
+  "version": "5.16.1",
+  "updateMsg1": "5.16 Added >changegold command: if you ask a mod, you can now spend gold!",
   "updateMsg2": "5.15 Multiple logs sent within 0.5 seconds are now sent as one message (to combat rate limits)",
   "updateMsg3": "5.14 Added >roleColour command",
   "private": "true",
@@ -19,7 +19,7 @@
   "dependencies": {
     "discord.js": "~14.6.0",
     "find": "~0.3.0",
-    "firebase-admin": "^10.2.0",
+    "firebase-admin": "^11.4.1",
     "sharp": "^0.30.3"
   }
 }
