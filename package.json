@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.17.3",
+  "version": "5.17.4",
   "updateMsg1": "5.17 Added '>ranking gold' as a sub-command for >ranking",
   "updateMsg2": "5.16 Added >changegold command: if you ask a mod, you can now spend gold!",
   "updateMsg3": "5.15 Multiple logs sent within 0.5 seconds are now sent as one message (to combat rate limits)",

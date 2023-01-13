@@ -191,7 +191,7 @@ client.on('messageCreate', (message) => {
         }
 
         // ignore any channels in which the bot should not react to anything
-        const ignoredChannels = [channels.venting];
+        const ignoredChannels = [channels.venting, channels.appeals];
         if (ignoredChannels.includes(message.channel.id)) {
             const cmd = message.content.toLowerCase().slice(prefix.length).split(/\s+/)[0];
             if (message.channel.id === channels.venting && (cmd === fun[0][0] || fun[0][1].includes(cmd))) {
