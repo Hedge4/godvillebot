@@ -26,7 +26,8 @@
         ["makevote", ["mv", "vote", "mp", "makepoll", "poll"]],
         ["remindme", ["remind", "reminder", "rm"]],
         ["bottime", ["bt", "time"]],
-        ["url", ["parseurl", "urlparse", "urlparser"]]
+        ["url", ["parseurl", "urlparse", "urlparser"]],
+        ["pleasemuteme", ["plsmuteme", "mutemepls", "mutemeplease", "muteme"]]
     ],
 
     "fun": [
