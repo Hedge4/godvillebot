@@ -1,4 +1,4 @@
-const logger = require('../features/logging.js');
+const logger = require('../../features/logging.js');
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const sharp = require('sharp');
 const https = require('https');

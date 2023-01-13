@@ -1,7 +1,7 @@
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const { prefix, botName } = require('../../configurations/config.json');
 const startupFile = require('../../index.js');
-const logger = require('../features/logging.js');
+const logger = require('../../features/logging.js');
 
 const regex = /(?:([a-z][a-z0-9\-+.]*):(?:\/\/)?)?(?:([^<>\s]{2,})@)?((?:(?:[^<>\s.:/?#]+\.)+[^<>\s.:/?#]+)|(?:(?:[^<>\s.:/?#]+\.)?\[?[a-z0-9:]+\]?))(?::([\d]+))?(\/[^<>\s?#]+\/?)?(?:\?([^<>\s#]+))?(?:#([^<>\s]+))?/i;
 

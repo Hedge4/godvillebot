@@ -1,5 +1,5 @@
 const { prefix } = require('../../configurations/config.json');
-const logger = require('../features/logging.js');
+const logger = require('../../features/logging.js');
 
 const guides_list = [
     ['Extensive sailing guide by Blue Feather',

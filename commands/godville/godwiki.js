@@ -1,4 +1,4 @@
-const logger = require('../features/logging.js');
+const logger = require('../../features/logging.js');
 
 function searchWiki(search, message) {
     if (!search.length) { return message.reply('You have to input a search term to search the godwiki for.'); }

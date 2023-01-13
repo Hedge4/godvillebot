@@ -1,7 +1,7 @@
 const { channels } = require('../../configurations/config.json');
 const main = require('../../index.js');
-const logger = require('../features/logging.js');
-const timers = require('../features/timers.js');
+const logger = require('../../features/logging.js');
+const timers = require('../../features/timers.js');
 const newspaper = require('./newspaperManager.js');
 
 function dailyNewspaperUpdate() {

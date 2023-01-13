@@ -1,7 +1,7 @@
 /* eslint-disable no-prototype-builtins */
 const { botOwners, botName } = require('../../configurations/config.json');
 const main = require('../../index.js');
-const logger = require('../features/logging.js');
+const logger = require('../../features/logging.js');
 
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const https = require('https');

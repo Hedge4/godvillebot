@@ -1,6 +1,6 @@
 const { botOwners } = require('../../configurations/config.json');
-const logger = require('../features/logging.js');
-const getUsers = require('../features/getUsers.js');
+const logger = require('../../features/logging.js');
+const getUsers = require('../../features/getUsers.js');
 
 
 async function main(message, content, userData) {

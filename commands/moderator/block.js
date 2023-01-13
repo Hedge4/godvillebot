@@ -1,6 +1,6 @@
 const { channels, botOwners } = require('../../configurations/config.json');
-const logger = require('../features/logging.js');
-const getUsers = require('../features/getUsers.js');
+const logger = require('../../features/logging.js');
+const getUsers = require('../../features/getUsers.js');
 
 function hasImage(attachments) {
     const imgFormats = ['.png', '.jpeg', '.jpg', '.gif']; // maybe add more formats later

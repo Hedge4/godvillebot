@@ -1,7 +1,7 @@
 const { prefix, botOwners, roles, botName } = require('../../configurations/config.json');
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const main = require('../../index.js');
-const logger = require('../features/logging.js');
+const logger = require('../../features/logging.js');
 const https = require('https');
 const news = {
     edition: undefined,

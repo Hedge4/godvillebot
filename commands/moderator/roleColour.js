@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { prefix, botName } = require('../../configurations/config.json');
-const logger = require('../features/logging.js');
+const logger = require('../../features/logging.js');
 
 
 async function main(client, message, content) {

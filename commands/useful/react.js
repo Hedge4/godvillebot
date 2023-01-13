@@ -1,4 +1,4 @@
-const logger = require('../features/logging.js');
+const logger = require('../../features/logging.js');
 const maxReactions = 20;
 const skipChar = '~';
 let reacting = false;

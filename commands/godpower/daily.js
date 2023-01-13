@@ -1,5 +1,5 @@
-const logger = require('../features/logging.js');
-const timers = require('../features/timers.js');
+const logger = require('../../features/logging.js');
+const timers = require('../../features/timers.js');
 
 async function checkDaily(message, limitedCommandsData, userData) {
     if (!usedDaily.includes(message.author.id)) {

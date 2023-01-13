@@ -1,5 +1,5 @@
 const { prefix } = require('../../configurations/config.json');
-const logger = require('../features/logging.js');
+const logger = require('../../features/logging.js');
 
 async function getRanking(message, content, userData) {
     const args = content.split(' ');

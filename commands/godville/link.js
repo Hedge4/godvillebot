@@ -1,5 +1,5 @@
 const { prefix, channels } = require('../../configurations/config.json');
-const logger = require('../features/logging.js');
+const logger = require('../../features/logging.js');
 
 function linkProfile(message, link, godData) {
     if (!Object.values(channels.commandsAllowed).includes(message.channel.id)) {

@@ -1,5 +1,5 @@
 const { prefix } = require('../../configurations/config.json');
-const logger = require('../features/logging.js');
+const logger = require('../../features/logging.js');
 
 async function main(message, client) {
     const ping = Date.now() - message.createdTimestamp;

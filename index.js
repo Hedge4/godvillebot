@@ -42,23 +42,23 @@ const moderatorModule = require('./commands/moderator/moderator.js');
 const crosswordModule = require('./commands/crosswordgod/crosswordgod.js');
 
 // functions/commands (partly) separate from the main modules
-const logger = require('./commands/features/logging.js');
-const scheduler = require('./commands/features/scheduler.js');
-const giveXP = require('./commands/features/givexp.js');
-const onMention = require('./commands/features/botMentions.js');
-const messageReactions = require('./commands/features/messageReactions.js');
-const randomMessages = require('./commands/features/randomMessages.js');
-const botDMs = require('./commands/features/botDMs.js');
-const chatContest = require('./commands/features/chatContest.js');
+const logger = require('./features/logging.js');
+const scheduler = require('./features/scheduler.js');
+const giveXP = require('./features/givexp.js');
+const onMention = require('./features/botMentions.js');
+const messageReactions = require('./features/messageReactions.js');
+const randomMessages = require('./features/randomMessages.js');
+const botDMs = require('./features/botDMs.js');
+const chatContest = require('./features/chatContest.js');
 const daily = require('./commands/godpower/daily.js');
 const suggest = require('./commands/useful/suggest.js');
 const block = require('./commands/moderator/block.js');
-const reactionRoles = require('./commands/features/reactionRoles.js');
+const reactionRoles = require('./features/reactionRoles.js');
 const help = require('./commands/help.js');
 const newspaper = require('./commands/crosswordgod/newspaperManager.js');
 const omnibus = require('./commands/crosswordgod/omnibusManager.js');
 const crosswordTimers = require('./commands/crosswordgod/newsUpdates.js');
-const sendViaBot = require('./commands/features/sendViaBot.js');
+const sendViaBot = require('./features/sendViaBot.js');
 const hugCommand = require('./commands/fun/hugCommand.js');
 
 // ==========================================================

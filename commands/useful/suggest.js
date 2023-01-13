@@ -1,6 +1,6 @@
 const { channels, botOwners, botName } = require('../../configurations/config.json');
-const logger = require('../features/logging.js');
-const getUsers = require('../features/getUsers.js');
+const logger = require('../../features/logging.js');
+const getUsers = require('../../features/getUsers.js');
 
 async function suggest(client, message, content) {
     if (!suggestBlocked.includes(message.author.id)) {

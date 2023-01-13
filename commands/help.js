@@ -1,5 +1,5 @@
 const { prefix, channels, botName } = require('../configurations/config.json');
-const logger = require('./features/logging.js');
+const logger = require('./../features/logging.js');
 
 const commands_list = [
     ['help',
