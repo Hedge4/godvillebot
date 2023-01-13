@@ -1,5 +1,5 @@
-const { prefix, serversServed, channels } = require('../../configurations/config.json');
-const logger = require('../../features/logging.js');
+const { prefix, serversServed, channels } = require('../configurations/config.json');
+const logger = require('./logging.js');
 
 const noXpChannels = [
     channels.botville,

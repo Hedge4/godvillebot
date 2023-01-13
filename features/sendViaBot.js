@@ -1,6 +1,6 @@
-const { botName } = require('../../configurations/config.json');
+const { botName } = require('../configurations/config.json');
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
-const getters = require('../../index.js');
+const getters = require('../index.js');
 
 function main(message) {
     let content = message.content.trim();

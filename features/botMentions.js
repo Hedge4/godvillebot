@@ -1,4 +1,4 @@
-const { serversServed, botOwners, roles } = require('../../configurations/config.json');
+const { serversServed, botOwners, roles } = require('../configurations/config.json');
 const logger = require('./logging.js');
 
 // setup for reacting to bot mentions in the godville server

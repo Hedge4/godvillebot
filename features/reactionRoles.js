@@ -1,4 +1,4 @@
-const { channels } = require('../../configurations/config.json');
+const { channels } = require('../configurations/config.json');
 const logger = require('./logging.js');
 let client;
 

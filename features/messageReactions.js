@@ -1,4 +1,4 @@
-const { channels } = require('../../configurations/config.json');
+const { channels } = require('../configurations/config.json');
 
 // triggers the bot reacts to, and their possible reactions
 const reactionEvents = [

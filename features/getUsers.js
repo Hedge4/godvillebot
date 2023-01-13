@@ -1,4 +1,4 @@
-const getters = require('../../index.js');
+const getters = require('../index.js');
 
 // returns a user object (or undefined)
 // username should be selected beforehand, so no additional arguments get in

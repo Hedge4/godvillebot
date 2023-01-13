@@ -1,5 +1,5 @@
-// const { channels } = require('../../configurations/config.json');
-// const getters = require('../../index.js');
+// const { channels } = require('../configurations/config.json');
+// const getters = require('../index.js');
 
 let logsChannel;
 let started = false;

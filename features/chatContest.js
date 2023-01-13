@@ -1,5 +1,5 @@
-const { clientId } = require('../../configurations/config.json');
-const logger = require('../../features/logging.js');
+const { clientId } = require('../configurations/config.json');
+const logger = require('./logging.js');
 
 // basic setup for chat contests
 let lastMessage = null, lastWinner = '', chatCombo = 0;
