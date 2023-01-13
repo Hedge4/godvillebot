@@ -1,5 +1,5 @@
 # GodBot
-Version: 5.15.11
+Version: 5.16.0
 
 I should probably include some sort of description here. Meh, I'll add it later (read: probably never).
 
@@ -24,6 +24,7 @@ Additionally, all files were updated to work with discord.js V13 instead of V12,
 * 5.13 GoddessBot now automatically joins new threads, adds Dyno and notifies #los-adminos
 * 5.14 Added >roleColour command
 * 5.15 Multiple logs sent within 0.5 seconds are now sent as one message (to combat rate limits)
+* 5.16 Added >changegold command
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.

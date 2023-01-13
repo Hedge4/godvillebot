@@ -8,11 +8,13 @@
         ["showlink", ["showurl", "godlink"]]
     ],
 
-	"godpower": [["level", ["rank"]],
+	"godpower": [
+        ["level", ["rank"]],
         ["ranking", []],
         ["gold", []],
         ["daily", []],
-        ["toggle-mentions", ["togglementions"]]
+        ["toggle-mentions", ["togglementions"]],
+        ["changegold", ["modifygold", "addgold", "agold", "removegold", "rgold", "goldadd", "goldremove"]]
     ],
 
     "useful": [
