@@ -1,9 +1,9 @@
 {
   "name": "godbot",
-  "version": "5.16.1",
-  "updateMsg1": "5.16 Added >changegold command: if you ask a mod, you can now spend gold!",
-  "updateMsg2": "5.15 Multiple logs sent within 0.5 seconds are now sent as one message (to combat rate limits)",
-  "updateMsg3": "5.14 Added >roleColour command",
+  "version": "5.17.0",
+  "updateMsg1": "5.17 Added '>ranking gold' as a sub-command for >ranking",
+  "updateMsg2": "5.16 Added >changegold command: if you ask a mod, you can now spend gold!",
+  "updateMsg3": "5.15 Multiple logs sent within 0.5 seconds are now sent as one message (to combat rate limits)",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",
