@@ -66,6 +66,7 @@ const hugCommand = require('./commands/fun/hugCommand.js');
 // ==========================================================
 
 // firebase database setup and login
+/* TEMP disabled for feature development
 const admin = require('firebase-admin');
 const serviceAccount = require('./configurations/serviceAccountKey.json');
 admin.initializeApp({
@@ -77,6 +78,7 @@ const godData = db.collection('data').doc('gods');
 const limitedCommandsData = db.collection('data').doc('limited uses');
 const blockedData = db.collection('data').doc('blocked');
 const plannedEvents = db.collection('data').doc('schedule');
+*/
 
 // set up our globals because stuff being undefined sucks
 global.totalGodpower = 0;
@@ -88,6 +90,7 @@ global.suggestBlocked = [];
 global.xpBlocked = [];
 
 // create important based on data in the database
+/* TEMP disabled for feature development
 userData.get()
     .then(doc => {
         totalGodpower = doc.data()[1];
@@ -103,6 +106,7 @@ blockedData.get().then(doc => {
     suggestBlocked = doc.data()['suggest'];
     xpBlocked = doc.data()['xp'];
 });
+*/
 
 // =========================================================
 // ============ AFTER CONNECTION TO DISCORD API ============
@@ -415,4 +419,4 @@ client.on('threadCreate', async (threadChannel, newlyCreated) => {
 
 
 // log in to Discord after any setup is done
-client.login(token);
+// client.login(token); TEMP disabled for feature development
