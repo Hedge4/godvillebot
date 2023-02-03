@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.19.0",
+  "version": "5.19.1",
   "updateMsg1": "5.19 Added the >roll [amount] [type] command, which supports custom dice and is better than Dyno's command in every way",
   "updateMsg2": "5.18 Added >pleasemuteme to mute yourself should you want some extra help to avoid the server for a while",
   "updateMsg3": "5.17 Added '>ranking gold' as a sub-command for >ranking",
