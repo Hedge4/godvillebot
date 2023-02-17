@@ -45,7 +45,7 @@ async function main(client, message) {
             wrapped = wrapped + '||' + (tobewrapped.slice(0, 2) + '||||' + tobewrapped.slice(2)) + '||';
         } else {(wrapped = (wrapped + '||' + (tobewrapped)) + '||');}
         message.delete();
-        message.reply(wrapped);
+        message.channel.send(`<@${message.author.id}>: ${wrapped}`); // no reply, original message is deleted
     } else {message.reply('You can only bubblewrap messages longer than 3 characters and shorter than 500 characters.');}
 }
 
