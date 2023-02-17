@@ -36,7 +36,8 @@
         ["bubblewrap", []],
         ["randomnick", ["nick", "nickname", "changenick", "changenickname", "randomnickname"]],
         ["no", ["nope"]],
-        ["bonk", []]
+        ["bonk", []],
+        ["roll", ["dice"]]
     ],
 
     "moderator": [

@@ -6,6 +6,7 @@ const randomnickname = require('./randomnickname.js');
 const noCommand = require('./noCommand.js');
 const bonkCommand = require('./bonkCommand.js');
 const hugCommand = require('./hugCommand.js');
+const roll = require('./diceRoll.js');
 
 function redirect(cmd, content, message, Discord, client) {
     // these functions should only work in command channels
@@ -24,6 +25,8 @@ function redirect(cmd, content, message, Discord, client) {
             return bonkCommand(message);
         case 'hug':
             return hugCommand(message);
+        case 'roll':
+            return roll(message, content);
         default:
             return message.reply(`The '${cmd}' command does not seem to be correctly set up.`);
     }

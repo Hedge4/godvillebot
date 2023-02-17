@@ -1,4 +1,4 @@
-1667320984135
+1675395155927
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -77,6 +77,7 @@ Another brick from the wall
 Another man's shoes
 Anti-aliasing cream
 Anti-bacterial software
+Anti-dot
 Anti-glitch cream
 Anti-mattress
 Anti-social network
@@ -902,6 +903,7 @@ Declaration of dependence
 Declaration of impudence
 Deconstructive feedback
 Decoration of independence
+Decryption keychain
 Deductive seasoning
 Deep fried salad
 Deep space heater
@@ -1128,6 +1130,7 @@ Empty soulstone
 Empty treasure chest
 Emulator of a simulator
 Encrypted file
+Encryption Keychain
 Encyclopedia Godvillia
 Encyclopedia Heroica
 Encyclopedia Monsterica
@@ -1554,6 +1557,7 @@ Handful of nuts
 Handful of small change
 Handle on things
 Hangover cure pill
+Happily ever aftershave
 Happy death-day card
 Happy little tree
 Hard rocking chair
@@ -1844,6 +1848,7 @@ Kissing booth coupon
 Kitchen sink
 Kitchen synchrotron
 Klein bottle
+Kleptonite
 Knife blunter
 Knit-picking kit
 Kooky jar
@@ -2098,6 +2103,7 @@ Minstrel cycle
 Mint conditioner
 Mint-condition mint
 Mirror of self-reflection
+Mirth control pills
 Misantropical fruit
 Miscalculator
 Misconception pill
@@ -2238,6 +2244,7 @@ Noble gas can
 Noise-cancelling loudspeaker
 Noise whitener
 Non-absorbent napkin
+Non-descript legendary item
 Non-essential oil
 Non-Euclidean roadmap
 Non-existential spoon
@@ -2356,6 +2363,7 @@ Out-of-body lotion
 Out-of-breath mint
 Out of office reply
 Out-of-pocket expense
+Out-of-scope binoculars
 Out-of-the-blue print
 Out-of-time machine
 Overclocked watch
@@ -2674,6 +2682,7 @@ Prosthetic table leg
 Prototypewriter
 Prototypo
 Psalm lotion
+Pseudoscientific evidence
 Psionic tonic
 Psychotic brake
 Psychotic episode
@@ -2856,6 +2865,7 @@ Rubik's hypercube
 Ruffled feathers
 Ruined rune
 Rules of the Internet
+Rumor mill flour
 Russian roulette
 Rusty nailpolish
 Rusty toothbrush
@@ -2899,6 +2909,7 @@ Schrödinger's cat box
 Scoff syrup
 Scratch and sniff lotto ticket
 Scratch-proof lottery ticket
+Screenshaver
 Screwdriving license
 Scroll of false identity
 Scroll of Godville's anthem
@@ -2908,6 +2919,7 @@ Scroll of useless knowledge
 Sculpture of a rock
 Seal of approval
 Seal of disapproval
+Seapot
 Search engine
 Search-and-destroy engine
 Second nature guide
@@ -3007,6 +3019,7 @@ Shrunken head
 Sick note
 Side job bonus
 Sidekick stand
+Sidetracking device
 Sign of peace
 Sign of the times
 Signature dish
@@ -3344,8 +3357,10 @@ Token of friendship
 Token of gratitude
 Token of humility
 Token ring
+Tome of questing
 Tomorrow's newspaper
 Ton of fun
+Tongue-in-cheek depressor
 Toolbox of the trade
 Tooth of a fairy
 Tooth of a gift horse
@@ -3535,6 +3550,7 @@ Vanishing point
 Varmint julep
 Vegetable oil drill
 Vegetarian meatball
+Veiled treat
 Veneer of respectability
 Venetian blind spot
 Venn diaphragm
@@ -3759,6 +3775,7 @@ Alter Ego
 Aluminum Fowl
 American Dreamer
 Amiable Snowman
+Ammoknight
 Anaphylactic Shark
 Anarchitect
 Ancient Demon
@@ -3779,6 +3796,7 @@ Anti-Social Worker
 Antibody Builder
 Antihero
 Ape of Wrath
+Apex Vegetarian
 Apocalypse
 Apocalypse Cow
 Apocalyptic Bunny
@@ -3900,6 +3918,7 @@ Beathoven
 Beauti-Fool
 Bee Holder
 Beefed-Up Minotaur
+Beefy Jerk
 Beelzebieber
 Beelzebubba
 Beelzebubble
@@ -4073,6 +4092,7 @@ Chalk Outline
 Chaos Butterfly
 Chaos Forger
 Character Assassin
+Characterless Actor
 Charlie's Angel
 Cheap Skater
 Cheat Sheep
@@ -4193,6 +4213,7 @@ Crunchy Captain
 Crushtacean
 Crying Wolf
 Crypt Creeper
+Crypt Miner
 Crypto-Knight
 Crysanthemummy
 Ctrl Freak
@@ -4337,6 +4358,7 @@ Earthworm Djinn
 Earworm
 E-book Worm
 E-Bowler
+Eclairic
 Eclectic Eel
 Edible Jelly
 Educated Flea
@@ -4367,6 +4389,7 @@ Enforcement Droid 209
 Ent of the World
 Entreprenerd
 Entry-Level Enemy
+Enviro-Mentalist
 Epic Flailer
 Equine Ox
 Ergonomic Mouse
@@ -4412,6 +4435,7 @@ Fangless Vampire
 Fantasea
 Fantastic Foe
 Farce of Nature
+Fashion Insultant
 Fashion Offender
 Fat Cat
 Fat Chancellor
@@ -4541,7 +4565,9 @@ Genetic Throwback
 Genghis Leprechaun
 Geronimoose
 Ghost of Quests Past
+Ghostbusker
 GhostFace
+Ghostrich
 Ghoul of the Week
 Ghoul Scout
 Ghoulkeeper
@@ -4682,6 +4708,7 @@ Henforcer
 Hentaur
 Herbivorous Plant
 Hermetic Crab
+Hermitic Seal
 Heromnivore
 He-Who-Must-Be-Ashamed
 Hexplorer
@@ -4845,6 +4872,7 @@ Jungle Bookie
 Jurassic Lark
 Juxtaphysician
 Kamelkaze
+Karaoke Bard
 Karate Kitten
 Karate Squid
 Karma Chameleon
@@ -4886,6 +4914,7 @@ Labracadabrador
 Labrador Deceiver
 Lady's Knight
 Lag Monster
+Laguna Matata
 Lagviathan
 Lame Duck
 Lampless Genie
@@ -4986,6 +5015,7 @@ ManBearPig
 Manglerfish
 Malignant Tutor
 Maniacrobat
+Manufracturer
 Margarine Fly
 Marital Artist
 Marshal Lawyer
@@ -5020,6 +5050,7 @@ Mental Hygienist
 Menthol Camel
 Meowntain Cat
 Merchant of Menace
+Meringutan
 Merit Badger
 Mermalade
 Mermelly
@@ -5027,6 +5058,7 @@ Metal Slug
 Methylated Spirit
 Methylated Spiritualist
 Metro Gnome
+Microchimp
 Micromanager
 Middle Aged Mutant Turtle
 Midlife Crisis Negotiator
@@ -5047,6 +5079,7 @@ Misanthropic Lycanthrope
 Misanthropologist
 Mischieftain
 Mis-Conductor
+Misdirector
 Miss Information
 Misfortune Teller
 Misguidance Counsellor
@@ -5062,6 +5095,7 @@ Moby Duck
 Mocker Spaniel
 Mockerel
 Mockingnerd
+Mockodile
 Model Major General
 Modest Mouse
 Moist Owlette
@@ -5103,7 +5137,6 @@ Mouse Divided
 Mouse of Ill Repute
 Mouseferatu
 Moving Target
-Mud Golem
 Mudslinger
 Muffin Man
 Multidexterous Millipede
@@ -5286,6 +5319,7 @@ Peanut Butter Jellyfish
 Peekabull
 Peelinda
 Peking Duck
+Pelicannon
 Pentagoon
 Penultimate Samurai
 Pepper Oni
@@ -5312,6 +5346,7 @@ Photocopycat
 Photonegative Zebra
 Photoshoplifter
 Pianarchist
+Pickled Egghead
 Pie Assassin
 Piecemaker
 Pied Bagpiper
@@ -5410,6 +5445,7 @@ Public Anemone
 Pumpkinhead
 Pundamentalist
 Pundemonium
+Punfisher
 Pungeon Master
 Punk Croc
 Punk Flamingo
@@ -5665,6 +5701,7 @@ Sir Render
 Sitcom Pilot
 Sitting Duck
 Sixth Sensei
+Skateborg
 Skelebrity
 Skeletaur
 Skeletoff
@@ -5736,6 +5773,7 @@ Sphinx
 Spice Ghoul
 Spice Worm
 Spider Pig
+Spider Web Designer
 Spinal Columnist
 Spirit of Competition
 Spirit of Halloween
@@ -5750,6 +5788,7 @@ Spython
 Spywarewolf
 Square Groot
 Squid Pro Quo
+Squiderella
 Squirmisher
 Stag of Holding
 Stalactitan
@@ -5917,6 +5956,7 @@ Trend Settler
 Tribble Overlord
 Tribblemaker
 Tribbleshooter
+Triceracop
 Trick-or-Treater
 Trigger Happy Camper
 Triloblight
@@ -6005,8 +6045,6 @@ Vampirate
 Vampire Brat
 Vamplifier
 Vanillain
-Vegan Cannibal
-Vegetarian Cannibal
 Vegetarian Vulture
 Velcromancer
 Velcrow
@@ -6047,6 +6085,7 @@ Websurfing Spider
 Wedding Knight
 Wendidigo
 Werebeaver
+Werehouse
 Were-Panther
 Wererobot
 Weresmurf
@@ -6086,6 +6125,7 @@ Wookalar
 Woolverine
 Worcestershire Cat
 Worcestershire Sorcerer
+Worst Person Shooter
 Worthy Opponent
 Wounded Heroes
 Wounder Man

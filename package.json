@@ -1,9 +1,9 @@
 {
   "name": "godbot",
-  "version": "5.18.0",
-  "updateMsg1": "5.18 Added >pleasemuteme to mute yourself should you want some extra help to avoid the server for a while",
-  "updateMsg2": "5.17 Added '>ranking gold' as a sub-command for >ranking",
-  "updateMsg3": "5.16 Added >changegold command: if you ask a mod, you can now spend gold!",
+  "version": "5.19.2",
+  "updateMsg1": "5.19 Added the >roll [amount] [type] command, which supports custom dice and is better than Dyno's command in every way",
+  "updateMsg2": "5.18 Added >pleasemuteme to mute yourself should you want some extra help to avoid the server for a while",
+  "updateMsg3": "5.17 Added '>ranking gold' as a sub-command for >ranking",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",
