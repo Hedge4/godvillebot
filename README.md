@@ -1,5 +1,5 @@
 # GodBot
-Version: 5.19.2
+Version: 5.20.0
 
 I should probably include some sort of description here. Meh, I'll add it later (read: probably never).
 
@@ -28,6 +28,7 @@ Additionally, all files were updated to work with discord.js V13 instead of V12,
 * 5.17 Added '>ranking gold' as a sub-command for >ranking
 * 5.18 Added >pleasemuteme to mute yourself should you want some extra help to avoid the server for a while
 * 5.19 Added the >roll command, which supports custom dice and is better than Dyno's command in every way
+* 5.20 Revamped chatContext.js, fixing all errors and possible missed chatkills due to deleted messages.
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.

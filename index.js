@@ -2,6 +2,7 @@
 // this will crash if they are called before code is executed where the variable they return is declared and defined
 exports.getClient = function() { return client; };
 exports.getGodData = function() { return godData; };
+exports.getUserData = function() { return userData; };
 
 // discord connection setup, bot login is at bottom of file
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
@@ -156,7 +157,7 @@ client.on('ready', () => {
     setTimeout(daily.reset, delay2, limitedCommandsData);
     setTimeout(crosswordTimers.newsPing, delay3);
     botDMs.checkDMContest(client);
-    chatContest.startupCheck(client, userData);
+    chatContest.startupCheck();
     reactionRoles.load(client);
     randomMessages(client);
 
@@ -211,7 +212,7 @@ client.on('messageCreate', (message) => {
         giveXP(message, userData, Discord, client);
 
         // see if a message applies for the chat contest
-        chatContest.newMessage(message, client, userData);
+        chatContest.newMessage(message);
 
         // react to a message if it contains a certain (active) trigger
         messageReactions(message);
@@ -333,7 +334,7 @@ client.on('messageDelete', deletedMessage => {
     if (deletedMessage.partial) return; // we don't do anything with this and it'll crash the next line
     if (deletedMessage.author.bot) { return; } // when removing this add it to chatContest.deleteMessage()
 
-    chatContest.deleteMessage(deletedMessage, client);
+    chatContest.deleteMessage(deletedMessage);
 });
 
 // handle reactions added to (cached) messages
