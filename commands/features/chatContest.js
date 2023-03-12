@@ -78,28 +78,23 @@ async function getLastMessage(searchAmount = 20) {
         // these aren't valid messages
         if (message.author.bot) continue;
         if (!message.id) continue;
-        console.log(message.createdTimestamp + ' - ' + lastKillTimestamp + ' Smaller: ' + (message.createdTimestamp < lastKillTimestamp));
         if (message.createdTimestamp < lastKillTimestamp) continue;
 
         // store first (valid) message and keep looking for an older message by that author
         if (!foundMessage) {
             foundMessage = message;
-            console.log('TEMP - First find: ' + message.content);
             continue;
         }
 
         // stop looking if we find another author, the previous loop found the oldest message by that author
         if (foundMessage.author.id !== message.author.id) {
-            console.log('TEMP - FOUND: ' + foundMessage.content);
             return foundMessage;
         } else {
             // keep looking if we found an older message by the same author
-            console.log('TEMP - Still looking: ' + message.content);
             foundMessage = message;
             continue;
         }
     }
-    console.log('TEMP - Found end OUT: ' + foundMessage.content);
 
     // If not returned yet, the last author or bots had more messages than the sample size amount of messages.
     // Return the earliest found message, or nothing if no valid messages were found in the selection
@@ -176,7 +171,6 @@ async function onMessageDelete(deletedMessage) {
 
     // if we find a new potential last message to compare our stored lastMessage with
     if (potentialLastMessage) {
-        console.log(potentialLastMessage.content); // REMOVE
         const elapsed = ~~((Date.now() - potentialLastMessage.createdTimestamp) / 1000); // in seconds
         const minutes = `${~~(elapsed / 60)} ${quantiseWords(~~(elapsed / 60), 'minute')}`;
         const seconds = `${elapsed % 60} ${quantiseWords(elapsed % 60, 'second')}`;
