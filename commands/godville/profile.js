@@ -200,8 +200,8 @@ async function getGodData(URL, channel) {
     const rx_level = /(?:class="level">)[\s\S]*?(\d+)/;
     const rx_name = /essential_info">[\s\S]*?<h3>([\s\S]*?)</;
     const rx_age = /label">Age(?:[\s\S]+?>){2}([\s\S]+?)</;
-    const rx_gender = /caption">\s*(Hero(?:ine)?)/;
-    const rx_god_gender = /caption">\s*(God(?:ess)?)/;
+    const rx_gender = /id="god"[\s\S]*?(hero(?:ine)?)[\s\S]*?(?:<\/div>)/; // match only inside div
+    const rx_god_gender = /id="god"[\s\S]*?(God(?:dess)?)[\s\S]*?(?:<\/div>)/; // match only inside div
 
     godData.level = rx_level.exec(html)[1];
     godData.name = decodeURI(rx_name.exec(html)[1]).trim();
