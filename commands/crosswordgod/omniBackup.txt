@@ -1,4 +1,4 @@
-1675395155927
+1678649701505
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -42,6 +42,7 @@ Adjective noun generator
 Adjustable reference point
 Adult-proof bottle
 Advice device
+Advice grip
 Aerobics cube
 Aerosol bacon
 AFK suicide note
@@ -624,6 +625,7 @@ Catch-up bottle
 Catchy line
 Cattle driver's license
 Cautionary tail
+Cavity search warrant
 Cease-fire extinguisher
 Center of a donut
 Center of gravity
@@ -895,6 +897,7 @@ Debt ceiling fan
 Debt to society
 Decaf coffee table
 Decaffeinated water
+Decibell
 Decimal place holder
 Deck of 52 praying cards
 Deck of blood donor cards
@@ -1566,6 +1569,7 @@ Hard-boiled eggnog
 Hardware softener
 Hare remover
 Harshmellow
+Harsh pill to swallow
 Hatemail
 Haunted doll house
 Haymaker
@@ -2048,6 +2052,7 @@ Medical handwriting decoder
 Medicine dropper of holy water
 Medicine-flavoured fruit
 Medieval jukebox
+Medium-rare earth metal
 Medusa hairnet
 Mega-bite
 Melted icicle
@@ -2714,11 +2719,11 @@ Quantum wrench
 Quark-screw
 Quart of law
 Quart of milk
-Question marker
 Quest completion certificate
 Quest positioning system
 Quest randomizer
 Quest-a-day calendar
+Question marker
 "Quests for Dummies" book
 Queue Tip
 Quicksand castle
@@ -3378,7 +3383,6 @@ Tough love notepaper
 Tough luck softener
 Tough nut
 Tourist trap
-Towel
 Toxic antidote
 Toy train of thoughtlessness
 TPS report
@@ -3587,6 +3591,7 @@ Virtual loot
 Viscious circle
 Vitameatavegamin
 Voice of treason
+Voice strainer
 Voicebox
 Volcanic ashtray
 Volcanic rash
@@ -3864,6 +3869,7 @@ Backseat Dungeoner
 Backstage Pastor
 Backward Thinker
 Bad Hobbit
+Bad Influencer
 Bad News Bear
 Bad Samaritan
 Bad-Eye Deer
@@ -3947,7 +3953,6 @@ Biological Nightmare
 Biowolf
 Bipolar Bear
 Bipolar Opposite
-Bird of Paradise
 Bird of Paralyze
 Bird of Pray
 Biterina
@@ -4003,6 +4008,7 @@ Bossferatu
 Bossquito
 Bosstard
 Bosstradamus
+Bottle Droid
 Bottled Water Elemental
 Bottomless Pitbull
 Bounty Haunter
@@ -4156,6 +4162,7 @@ Compsognathus
 Concussionist
 Confused E-bowler
 Conga Lion
+Conglomerat
 Constantinoble
 Continental Drifter
 Contraband Mule
@@ -4179,7 +4186,6 @@ Cosmopolitician
 Cotton Candy Golem
 Couch Commando
 Count of Three
-Count of Three 21
 Count Spatula
 Counter Shrike
 Court Martial Artist
@@ -4196,6 +4202,7 @@ Creeping Beauty
 Crime Minister
 Criminal Master Mime
 Critical Bug
+Critical Drinker
 Critical Mastodon
 Croaking E-bowler
 Croaking Vamplifier
@@ -4449,6 +4456,7 @@ Fee-Fi Foe
 Felinethropist
 Feral Hero
 Feral Internet Meme
+Feral Muppet
 Feral Pet Rock
 Feral Rocking Horse
 Ferocita
@@ -4550,6 +4558,7 @@ Garlic Elemental
 Gas Giant
 Gastro Gnome
 Gastronaut
+Gazebra
 Gee Wizard
 Geek Mythologist
 Geek Squad
@@ -4795,6 +4804,7 @@ Imposterior
 Imp-Personator
 Incendiary Firefly
 Inceptionist
+Incognitoad
 Income Taxidermist
 Incomplete Idio
 Incredible Sulk
@@ -4905,6 +4915,7 @@ Knighting Gale
 Knightly Night
 Knightmare
 Knightning Gale
+Knitpicker
 Koalafied Expert
 Kooky Monster
 Kung Fool
@@ -4998,6 +5009,7 @@ Lunar Pyscho
 Lying King
 MacDeath
 Machiavillain
+Macroorganism
 Mad Clown
 Mad Hacker
 Madmiral
@@ -5187,9 +5199,10 @@ Nicelander
 Nine Inch Snail
 Ninja Pirate
 Ninja Tortoise
-Ninjabread Man
 Ninja-Starfish
+Ninjabread Man
 Nipinda
+Nitro Djinn
 No Holds Bard
 No Man's Landlord
 No One
@@ -5207,10 +5220,11 @@ Northpole Dancer
 Nosferatuna
 Nostradamoose
 Not a Big Dealer
-Notary of Death
-Nothing
 Not-of-this-Earth Worm
 Not-So-Brave Knight
+Notary of Death
+Nothing
+Novel Protagonist
 Nuclear Overreactor
 Nuclear Watchdog
 Nuclear-Powered Plant
@@ -5236,6 +5250,7 @@ Ogre Achiever
 Ogrelord
 Old Town Rogue
 Olfactory Worker
+Olympic Torturer
 Omegalodon
 Omnipoet
 Omniscient Ignoramus
@@ -5415,6 +5430,7 @@ Predatortoise
 Preemptive Shrike
 Pre-Mortem Surgeon
 Prescription Thug
+President Evil
 Presidential Seal
 Presidentist
 Pretzelcoatl
@@ -5507,6 +5523,7 @@ Recycloholic
 Recyclops
 Red Bull
 Red Robin Hood
+Red-Handed Thief
 Redaction Hero
 Redshirt
 Regenerating Degenerate
@@ -5582,6 +5599,7 @@ Sacrificial Prawn
 Sad Hatter
 Sad Panda
 Safety Dancer
+Sage of Thyme
 Salamandarin
 Salsamander
 Salt-Resistant Slug
@@ -5600,6 +5618,7 @@ Sawed-off Shogun
 Scape Goat
 Scare Bear
 Scare Tactician
+Scarecow
 Scared Crow
 Scarepion
 Scaretaker
@@ -5861,6 +5880,7 @@ Sycophantom
 Synchronized Swindler
 Syntax Terror
 Synthetic Organism
+Table Turner
 Tackle-U Elmo
 Tactical Joker
 Tae Kwon Dodo
@@ -5892,6 +5912,7 @@ Terror Bull
 Terror Dactyl
 Terror-aki Chicken
 Terrorbyte
+Terrorformer
 There-Wolf
 Thesaurus Rex
 Thief of Time
@@ -6895,7 +6916,6 @@ Manacles of freedom
 Manitou's moccasins
 Mantle of Mantis
 Mantle of Wasteland's ruler
-Mask
 Mask of a rabbit
 Masque of the red death
 Massive ego

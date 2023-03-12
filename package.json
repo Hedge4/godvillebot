@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.20.0",
+  "version": "5.20.1",
   "updateMsg1": "5.20 Revamped chatContext.js, fixing all errors and possible missed chatkills due to deleted messages.",
   "updateMsg2": "5.19 Added the >roll [amount] [type] command, which supports custom dice and is better than Dyno's command in every way",
   "updateMsg3": "5.18 Added >pleasemuteme to mute yourself should you want some extra help to avoid the server for a while",
