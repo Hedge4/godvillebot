@@ -322,7 +322,7 @@ client.on('messageCreate', (message) => {
     if (message.guild.id == serversServed.botServer) {
         // handle accepting or rejecting suggestions in the bot's suggestion/log server
         if (message.channel.id === channels.botServer.suggestions) {
-            return suggest.handleMessage(message, client, Discord, userData);
+            return suggest.handleMessage(message, client);
         }
 
         // handle messages that should be sent via the bot to a specific channel/user
