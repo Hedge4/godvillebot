@@ -6,23 +6,65 @@ const scheduler = require('../features/scheduler');
 
 
 function create(message, content) {
-    // separate the delay and reminder itself
-    const delayRegex = /([0-9]+)\s*([a-z]+)/i;
+    // const delayRegex = /([0-9]+)\s*([a-z]+)/i;
+    // matches at least one, but possibly two integers with a unit of time
+    const delayRegex = /^([0-9]+)\s*([a-z]+)\s*(?:([0-9]+)\s*([a-z]+))?/i;
     const regexRes = delayRegex.exec(content);
-    if (!regexRes) return message.reply('That\'s not the correct syntax you dumdum! Use a whole number and a regular unit of time. Also, fractions suck.');
+    if (!regexRes) {
+        message.reply('That\'s not the correct syntax you dumdum! Use a whole number and a regular unit of time.'
+            + ' Also, fractions suck so don\'t expect me to deal with them.');
+        return;
+    }
 
     content = content.slice(regexRes.index + regexRes[0].length).trim();
     if (!content.length) content = 'Empty reminder.';
-    if (content.length > 500) return message.reply('Just because I\'m mean, I only accept reminders of up to 500 characters. Try again you marshmallow.');
-    const amount = regexRes[1];
-    const unit = regexRes[2].toLowerCase();
+    if (content.length > 500) {
+        message.reply('I only accept reminders of up to 500 characters, try again you marshmallow.');
+        return;
+    }
+
+    let amount = regexRes[1];
+    let unit = regexRes[2].toLowerCase();
+    let convertedAmount = getDelay(amount, unit);
+
+    // check if the result is valid
+    if (convertedAmount !== 0 && !convertedAmount) {
+        message.reply('The unit you specified wasn\'t recognised, use a normal unit of time.');
+        return;
+    }
+    if (isNaN(convertedAmount)) {
+        message.reply('Your delay evaluated to NaN, which means that you probably gave some insane or funky input.');
+        return;
+    }
+
+    // if another time and unit were specified, evaluate those as well
+    let extraDelay;
+    if (regexRes[3] && regexRes[4]) {
+        amount = regexRes[3];
+        unit = regexRes[4].toLowerCase();
+        extraDelay = getDelay(amount, unit);
+
+        // check the extra delay
+        if (!extraDelay) {
+            message.reply(`I don't recognise ${unit} as a unit of time.`);
+            return;
+        }
+        if (isNaN(extraDelay)) {
+            message.reply(`${amount} ${unit} evaluates to NaN, please use a whole number.`);
+            return;
+        }
+    }
+    // add extra delay (if defined), and check if total doesn't exceed limit
+    if (extraDelay) convertedAmount += extraDelay;
 
     const maxDelay = getDelay(2, 'y');
-    const convertedAmount = getDelay(amount, unit);
-    if (convertedAmount !== 0 && !convertedAmount) return message.reply('The unit you specified wasn\'t recognised. Use a normal unit of time.');
-    if (isNaN(convertedAmount)) return message.reply('Your delay evaluated to NaN, which means that you probably gave some insane or funky input.');
-    if (convertedAmount > maxDelay) return message.reply('You can\'t schedule a reminder past 2 years in the future.');
-    const thenTimestamp = new Date().getTime() + convertedAmount;
+    if (convertedAmount > maxDelay) {
+        message.reply('You can\'t schedule a reminder past 2 years in the future.');
+        return;
+    }
+
+    const thenTimestamp = Date.now() + convertedAmount;
+    const secondTimestamp = ~~(thenTimestamp / 1000);
     const thenDate = new Date(thenTimestamp);
 
     scheduler.create({
@@ -33,12 +75,13 @@ function create(message, content) {
         messageUrl: message.url,
         content: content,
     }).then((reminderId) => {
-        logger.log(`Created a reminder with id ${reminderId} for ${message.author.tag} in ${message.channel.name}, scheduled for ${thenDate.toUTCString()}.`);
+        logger.toConsole(`Created a reminder with id ${reminderId} for ${message.author.tag} in ${message.channel.name}, scheduled for ${thenDate.toUTCString()}.`);
+        logger.toChannel(`Created a reminder with id ${reminderId} for ${message.author.tag} in ${message.channel.name}, scheduled <t:${secondTimestamp}:R>, at <t:${secondTimestamp}:F>.`);
         const client = getters.getClient();
         message.channel.send({
             embeds: [new EmbedBuilder({
                 title: 'Succesfully scheduled reminder :white_check_mark:',
-                description: `I will remind you ${thenDate.toUTCString()}.`,
+                description: `I will remind you <t:${secondTimestamp}:R>, at <t:${secondTimestamp}:F>.`,
                 footer: { text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() },
             }).setColor('Aqua').setTimestamp()],
         });

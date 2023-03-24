@@ -9,33 +9,19 @@ async function main(message, duration) {
         duration = '1h';
     }
 
-    // separate the delay and reminder itself
-    const delayRegex = /([0-9]+)\s*([a-z]+)/i;
+    // matches at least one, but possibly two integers with a unit of time
+    const delayRegex = /^([0-9]+)\s*([a-z]+)\s*(?:([0-9]+)\s*([a-z]+))?/i;
     const regexRes = delayRegex.exec(duration);
     if (!regexRes) {
         message.reply('That\'s not the correct syntax, use an integer and a regular unit of time.');
         return;
     }
 
-    const amount = parseInt(regexRes[1]);
-    const unit = regexRes[2].toLowerCase();
-    let delay;
-    let unitText;
+    let amount = parseInt(regexRes[1]);
+    let unit = regexRes[2].toLowerCase();
 
-    if (['ms', 'millisecond', 'milliseconds'].includes(unit)) {
-        delay = amount;
-        unitText = 'millisecond';
-    } else if (['s', 'sec', 'secs', 'second', 'seconds'].includes(unit)) {
-        delay = amount * 1000;
-        unitText = 'second';
-    } else if (['m', 'min', 'mins', 'minute', 'minutes'].includes(unit)) {
-        delay = amount * 60 * 1000;
-        unitText = 'minute';
-    } else if (['h', 'hr', 'hrs', 'hour', 'hours'].includes(unit)) {
-        delay = amount * 60 * 60 * 1000;
-        unitText = 'hour';
-    }
-
+    // check if the result is valid
+    let delay = getDelay(amount, unit);
     if (!delay) {
         message.reply(`I don't recognise ${unit} as a unit of time.`);
         return;
@@ -44,11 +30,34 @@ async function main(message, duration) {
         message.reply(`${amount} evaluates to NaN, please use a whole number.`);
         return;
     }
+
+    // if another time and unit were specified, evaluate those as well
+    let extraDelay;
+    if (regexRes[3] && regexRes[4]) {
+        amount = parseInt(regexRes[3]);
+        unit = regexRes[4].toLowerCase();
+        extraDelay = getDelay(amount, unit);
+
+        // check the extra delay
+        if (!extraDelay) {
+            message.reply(`I don't recognise ${unit} as a unit of time.`);
+            return;
+        }
+        if (isNaN(extraDelay)) {
+            message.reply(`${amount} ${unit} evaluates to NaN, please use a whole number.`);
+            return;
+        }
+    }
+
+    // add extra delay (if defined), and check if total doesn't exceed limit
+    if (extraDelay) delay += extraDelay;
     if (delay > maxMuteHours * 60 * 60 * 1000) {
         message.reply(`You can't mute yourself for longer than ${maxMuteHours} hours.`);
         return;
     }
-    unitText = quantiseWords(amount, unitText);
+
+    // convert the total delay amount back to text
+    const delayText = delayToText(delay);
 
     const client = getters.getClient();
 
@@ -78,13 +87,48 @@ async function main(message, duration) {
                 logger.log(`Couldn't unmute ${mutee}, someone fix please.`);
             }
         }, delay);
-        message.reply(`Got it, you were muted for ${amount} ${unitText}.`);
-        logger.log(`Muted ${mutee} for ${amount} ${unitText}, per their own request.`);
+        message.reply(`Got it, I'll unmute you after ${delayText}.`);
+        logger.log(`Muted ${mutee} for ${delayText}, per their own request.`);
     } catch (error) {
         message.reply('Something went wrong, and I couldn\'t mute you.');
         logger.log(`${mutee} wanted to mute themselves, but something went wrong: ` + error);
     }
 }
+
+const getDelay = (amount, unit) => {
+    if (['ms', 'millisecond', 'milliseconds'].includes(unit)) {
+        return (amount);
+    } else if (['s', 'sec', 'secs', 'second', 'seconds'].includes(unit)) {
+        return (amount * 1000);
+    } else if (['m', 'min', 'mins', 'minute', 'minutes'].includes(unit)) {
+        return (amount * 60 * 1000);
+    } else if (['h', 'hr', 'hrs', 'hour', 'hours'].includes(unit)) {
+        return (amount * 60 * 60 * 1000);
+    } else {
+        return undefined;
+    }
+};
+
+const delayToText = (delay) => {
+    const days = ~~(delay / 86400000);
+    const hours = ~~(delay % 86400000 / 3600000);
+    const minutes = ~~(delay % 3600000 / 60000);
+    const seconds = ~~(delay % 60000 / 1000);
+
+    const textParts = [];
+    if (days) textParts.push(`${days} ${quantiseWords(days, 'day')}`);
+    if (hours) textParts.push(`${hours} ${quantiseWords(hours, 'hour')}`);
+    if (minutes) textParts.push(`${minutes} ${quantiseWords(minutes, 'minute')}`);
+    if (seconds) textParts.push(`${seconds} ${quantiseWords(seconds, 'second')}`);
+
+    // join textParts such that the last item is added with 'and' instead of ', '
+    if (textParts.length > 1) {
+        const lastItem = textParts.pop();
+        return textParts.join(', ') + ' and ' + lastItem;
+    } else {
+        return textParts[0];
+    }
+};
 
 const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;
 
