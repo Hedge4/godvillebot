@@ -1,4 +1,4 @@
-1678649701505
+1679634233685
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -7,10 +7,10 @@
 19th hole
 1x magnifying glass
 2 pcs (2 pcs)
-“2B or not 2B” pencil
-2D hologram
 24k goldfish
 25-hour clock
+“2B or not 2B” pencil
+2D hologram
 🎉3000-days gold coin🎉
 “4000 days and counting” medal 🎉
 5-second ruler
@@ -49,6 +49,7 @@ AFK suicide note
 Afterlife survival guide
 Aglet
 Air guitar
+Air putrifier
 Alchemical transmuter
 Alchemy textbook
 Alcohol patch
@@ -72,7 +73,7 @@ Ancestral hair loom
 Ancient relic of modern art
 Anecdotal evidence
 Anglo-saxophone
-🎉anniversary gold coin🎉
+🎉Anniversary gold coin🎉
 Anonymous identity card
 Another brick from the wall
 Another man's shoes
@@ -88,7 +89,7 @@ Antifreeze-pop
 Antihysteriamine
 Antimatter of fact
 Antiskeptic hand wash
-“any” key
+“Any” key
 Apocalypse date generator
 "Apocalypse Herald" newspaper
 Apocalypse insurance
@@ -103,8 +104,8 @@ Archeological record album
 Archimedes' screwdriver
 Area 51 VIP pass
 Arena ticket
-Arenalin
 "Arena's Wackiest Bloopers" movie
+Arenalin
 Argyle sock puppet
 Ark registration form
 Ark safety checklist
@@ -205,8 +206,8 @@ Ballistic mistletoe
 Ballpark figurine
 Ballpoint quill
 Banana bomb
-Bananalyzer
 Banana splitter
+Bananalyzer
 Bank pen
 Bar of code
 Bar of liquid soap
@@ -235,14 +236,16 @@ Beardcrumbs
 Beaten bush
 Beauty mark
 Bed of snails
+Beehive of scum and villainy
 Beelzebubble gum
 Beer foam mattress
 Beer-battered beer
 Beer-scented soap
 Beginner's puck
 Behemoth-flavored tea
-Belated birthday cake
 Belated "get well" card
+Belated birthday cake
+Bellyjeans
 Bengal light
 Benjamin's button
 Berth certificate
@@ -253,8 +256,8 @@ Best boss pin
 Best boss statuette
 "Best of Monsters" mixtape
 "Best of the Rest" award
-Beta carrot
 Beta artifact
+Beta carrot
 "Better Luck Next Time" trophy
 Bi-polar compass
 Bible belt
@@ -311,12 +314,12 @@ Blast from the past
 Blazing saddle
 Blind spot
 Block of administratium
-Bloodbank loan
-Bloodbath salts
 Blood-curdling cream
 Blood-drinking straw
 Blood-flavored lollipop
 Blood-splattered smiley badge
+Bloodbank loan
+Bloodbath salts
 Bloodstained 'free hugs' sign
 Blown cover
 Blown gasket
@@ -329,9 +332,9 @@ Board of education
 Bobby prize
 Body language translator
 Bold item
-Boneless chicken eggs
 Bone of contention
 Bone to pick
+Boneless chicken eggs
 Bonus track
 Booby prize
 Bōõk öf Ãççêñts
@@ -432,8 +435,8 @@ Bottom of a barrel
 Bottomless cup
 Bottomless hole
 Bouncing checkbook
-Bouquet of heroic posies
 Bouquet of forget-me's
+Bouquet of heroic posies
 Bouquet of remember-me-nots
 Bouquet of ultraviolets
 Bouquet of whoopsy-daisies
@@ -469,6 +472,7 @@ Boxer briefcase
 Boy Scout's badge
 Braille “Do Not Touch!” sign
 Braille magnifying glove
+Brain cell generator
 Brainstorm forecast
 Brainwave
 Branch from an iron tree
@@ -527,6 +531,7 @@ Bull's eyeglasses
 Bull's horn
 Bulletproof grass
 Bullseye drops
+Bun of steel
 Bunch of baloney
 Bunch of gripes
 Bunch of hallucinogenic dill
@@ -536,7 +541,6 @@ Bundle of DNA-chains
 Bundle of nerves
 Bundle of seven deadly pins
 Bunny-shaped bath soap
-Bun of steel
 Buns of steel
 Buoyant anchor
 Burial voucher
@@ -548,8 +552,8 @@ Burst bubble
 Busy signal amplifier
 Butt of a joke
 Buttered finger
-Bytecode fragment
 Byte mark
+Bytecode fragment
 Cached check
 Caffeinated holy water
 Camouflask
@@ -609,13 +613,13 @@ Carton of juicy gossip
 Case closer
 Case of hiccups
 Case of indigestion
-Case of the Mondays
 Case of the feels
+Case of the Mondays
 Cat in the bag
 Cat scanner
+Cat-flavored mouse food
 Cat's 9 lives coupon
 Cat's tenth life
-Cat-flavored mouse food
 Cataclysmic converter
 Catalog of heroic poses
 Catalog of minor indiscretions
@@ -912,9 +916,9 @@ Deep fried salad
 Deep space heater
 Definite article
 Definite dupe
+Defoliating scrub
 Defrag mint
 Defragmentation grenade
-Defoliating scrub
 Degenerator
 Degree of freedom
 Degree of separation
@@ -945,11 +949,11 @@ Devil's handbasket
 Dewaffling iron
 Diamond in the rough
 Diamond in the rough draft
+Diary entry generator
 Diary of a feral hero
 Diary of a madman
 Diary of an abandoned hero
 Diary page 404
-Diary entry generator
 Dictionary of typos
 Dictionary of unspoken words
 Diddly squat
@@ -957,10 +961,10 @@ Diet coal
 Diet salt
 Different angle
 Diffraction grating
+Dig-your-own-tomb kit
 Digital abacus
 Digital hourglass
 Digital surfboard
-Dig-your-own-tomb kit
 Dihydrogen monoxide potion
 Dimensional destabilizer
 Director's cutlery
@@ -1001,10 +1005,10 @@ Divine whetstone
 Doc-in-a-box
 Dodged ball
 Dolphin towel
-Donation box
 "Don't be a noob" guide
 “Don't Contact Us” form
 Don't-do-it-yourself guide
+Donation box
 Donut hole puncher
 Doom-it-yourself manual
 Doormat
@@ -1020,11 +1024,11 @@ Double take
 Double-barreled shot glass
 Double-ended candle
 Downward spiral
-Dragonbreath mint
 Dragon Dungeon map
 Dragon egg incubator
 Dragon wheel
 Dragon's breathalyzer
+Dragonbreath mint
 Dragons Dungeons map
 Dramatic entrance fee receipt
 Dramatic flare
@@ -1041,9 +1045,9 @@ DRM-protected diary
 Drop of uncertainty
 Dropped hint
 Drug test cheat sheet
-Dry-erase quill
 Dry icicle
 “Dry Paint” sign
+Dry-erase quill
 Dual core apple
 Dual screen stone tablet
 Dub-stepladder
@@ -1051,15 +1055,15 @@ Dub-stepping stone
 Duct tape recorder
 Dug chest
 Dumb luck
-“Dummy's Guide to Dummies” guide
 Dummies' guide to guides
-Dupe detector
-"Dupe!" stamp
+“Dummy's Guide to Dummies” guide
 Dungeon air freshener
 Dungeon brew
 Dungeon driver's license
 Dungeon floor plan
 Dungeon travel brochure
+Dupe detector
+"Dupe!" stamp
 Duplicated copy
 Dust collector
 Dust trail
@@ -1102,6 +1106,7 @@ Element of surprise
 Elephant's memory stick
 Eleventh diary entry
 Elf-defense book
+Eligible bachelor's degree
 Elven ear sharpener
 Email envelope
 “Embalming for Mummies” book
@@ -1181,10 +1186,12 @@ Executable file
 Exhibit B
 Exhibitionist matches
 Existential bread
+Existential pane
 Exorcise ball
 Exorcise machine
 Exotic handbag
 Exotic seashell
+Expansive artifact
 Expected twist
 Expelbook
 Expensive freebie
@@ -1257,11 +1264,11 @@ Fight data recorder
 Fight-or-flight simulator
 Figment of procrastination
 Figment of the imagination
-Figure of speech
 Figure "5" in gold
+Figure of speech
 Filet o' satellite fish
-Fillet of the %monster%
 Fill-in-the-blanket
+Fillet of the %monster%
 Filthy trap
 Final aid kit
 Final countdown clock
@@ -1314,6 +1321,7 @@ Flute of the loom
 Flux incapacitor
 Flying carpet cleaner
 Flying fish feather
+Flying pig feather
 Flying toaster
 Foam rubber barbell
 Foe pass
@@ -1321,17 +1329,17 @@ Fog of war machine
 Folder N666
 Food colouring pencil
 Food pyramid
+Fool's goldfish
 Foolproof pan
 Foolproof plan
-Fool's goldfish
 Foot solder
 Forbidden fruit
 Forbidden scroll of moderate blasphemy
 Forged heat signature
 Forged signature
-Forgetful foam mattress
 Forget-me-knot
 Forget-me-now flower
+Forgetful foam mattress
 Forgotten memory
 Fork in the road
 Fortune-teller's kit
@@ -1361,9 +1369,9 @@ Frequent-fleeing club card
 Fresh lemonaid
 Freudian slip
 Friar alarm
+Friend-zoning permit
 Friendly fire
 Friends filter
-Friend-zoning permit
 “From Valhalla, with love” postcard
 Frontstage pass
 Frosted snowflake
@@ -1374,8 +1382,8 @@ Fruit loop
 Fruit of ignorance
 Fruit of knowledge
 Fruit of labor
-Full-size scale model
 Full-color blueprint
+Full-size scale model
 Fully automatic manual
 Fun-sized health potion
 Funeral home loyalty card
@@ -1405,11 +1413,10 @@ Genome map
 "Gentleman's Guide to Profanity" booklet
 Gently weeping guitar
 Genuine imitation
+Get well later card
 Get-into-jail-free card
 Get-out-of-jail-free card
-Get well later card
 Get-worse card
-Ghost of a chance
 Ghost pepper
 Ghostcard
 Giant miniature
@@ -1439,24 +1446,24 @@ Gobstarter
 God tags
 “God-Hero” dictionary
 Godpowder
-Godville's 10 Commandments scroll
 Godville Admin bobblehead
 Godville days counter (4000 pcs) 🎉
 'Godville' embroidered towel
 “Godville for atheists” travel guide
 "Godville or Bust!" sticker
-Godville particle
 "Godville Times" newspaper
+Godville particle
 Godville Times (anniversary edition) 🎉
+Godville's 10 Commandments scroll
 Godvoice jammer
 Gold brick mold
 Gold coin counter
 Gold farmer's almanac
 Gold fish
 Gold-plated fish
-Golden egg timer
 Golden brick
 Golden cinder block
+Golden egg timer
 Golden eye
 Golden facepalm
 Golden fiddle
@@ -1485,6 +1492,7 @@ Grape of mild irritation
 Grape of wrath
 Graphics engine
 Graphite dispenser
+Grassroots champagne
 Gravity-defying apple
 Gravy boat
 Grayscale color wheel
@@ -1518,9 +1526,9 @@ Guitar shredder
 Gullibility antidote
 Gulp of freedom
 Gum with a shoe on it
-Gummie bear claw
 Gummi bear trap
 Gummi bearskin rug
+Gummie bear claw
 Gummy monsters
 Gumpowder
 Gunpowder
@@ -1568,8 +1576,8 @@ Hard truth
 Hard-boiled eggnog
 Hardware softener
 Hare remover
-Harshmellow
 Harsh pill to swallow
+Harshmellow
 Hatemail
 Haunted doll house
 Haymaker
@@ -1581,12 +1589,12 @@ Headless matches
 Headphones of entanglement
 Healixir
 Health bar
-Heartifact
 Heart of gold
 Heart of the matter
 Heart of the %monster%
 Heart string
 Heart warmer
+Heartifact
 Heat-resistant snowball
 Heaven's sake
 Heavy burden
@@ -1602,8 +1610,8 @@ Helping hand
 Heptahedral nut
 "Hero of the Day" award
 Hero service survey
-Hero's Guide to Edible Monsters
 Hero-be-gone spray
+Hero's Guide to Edible Monsters
 “Heroes of Godville” calendar
 Herolympic torch
 HeroWorld magazine
@@ -1671,31 +1679,32 @@ Hubble Kaleidoscope
 Huckleberry gin
 Hug simulator
 Huggable cactus
+Hum drum
 'Human Gnome Project' folder
 Human pyramid scheme
-Hum drum
 Humor analysis machine
 Hunchbox
 Hungry tribble
 Hurricane in a bottle
 Hydraulic pumpkin
+Hyper-ventilation shaft
 Hyperallergenic pillow
 Hyperventi latte
-Hyper-ventilation shaft
-Hypothetical loot
 Hypocritical mass
+Hypothetical loot
 "I am Hero's Name Here" badge
 “I have a T-shirt” T-shirt
 ‘I Love Godville’ T-shirt
 “I Love Godville” T-shirt
 'I survived the Rapture' T-shirt
 I.O.U. note
+“I've been framed” photo frame
 Iambic thermometer
 Ice cream sculpture
 Ice pack
 Ice sculpture of a cube
-Iceburger
 Icebreaker
+Iceburger
 ID-10T form
 Idea polisher
 Ideabox rejection letter
@@ -1719,10 +1728,12 @@ Imperfect attendance award
 Implosive detonator
 Imported bookmark
 Imposing figurine
-Impulse purchase
 "Impress Your Deity 101" book
 Improbability drive
+Impulse purchase
 “In Godville We Trust” coin
+In-game currency
+In-your-face cream
 Inaction figurine
 Inactivity tracker
 Inanimate carbon rod
@@ -1749,7 +1760,6 @@ Inflatable voodoo doll
 Inflated self-image
 Infodumpling
 Infrared pen
-In-game currency
 Ink-proof paper
 Inner beauty cream
 Inner child safety seat
@@ -1769,6 +1779,7 @@ Insufficient fund
 Intangible item
 Intercontinental breakfast
 Intergalactic postage stamp
+Interstellar duster
 Interstellar postage stamp
 Intravenous flytrap
 Intrinsic value meal
@@ -1780,7 +1791,6 @@ Invisible bottle of ink
 Invisible ink eraser
 Invisible warning sign
 Invite to Godville
-In-your-face cream
 Iodine solution
 IP address book
 IQ degenerator
@@ -1794,7 +1804,6 @@ Irresistible charm
 Irreversible palindrome
 Item randomizer
 Ivory coaster
-“I've been framed” photo frame
 Jail bait
 Jam-packed sandwich
 Jammed panic-button
@@ -1867,7 +1876,6 @@ Larva lamp
 Laser bean
 Last drop of humanity
 Last gnome address
-Last laugh
 Last laugh record
 "Last meal" voucher
 Last of the mojitos
@@ -1901,8 +1909,8 @@ Left-handed screwdriver
 Legal mumbo-jumbo
 Legal nonsense
 Legal tenderloin
-Legally-smuggled goods
 Legally blinding contract
+Legally-smuggled goods
 Lemmings' guide to cliff diving
 Lemon limestone
 Less-than-stellar star chart
@@ -1943,7 +1951,8 @@ List of stupid ideas
 List of symptoms
 List of true lies
 List of unproven facts
-“Literacy for Dummies” book
+"Literacy for Dummies" book
+Litterbug repellent
 "Little Alchemist" starter kit
 "Little Hero" night-light
 Little white lye
@@ -1954,8 +1963,8 @@ Loading bar
 Loadstone
 Loaf of liquid bread
 Lock of %hero%'s hair
-Log-a-rhythm
 Log of rhythm
+Log-a-rhythm
 Logarithmic abacus
 Logic chain
 Logic gate
@@ -1977,18 +1986,18 @@ Lost scroll of finding
 Lost sole
 Lost will and testament
 Love handle
-Love-hate letter
 Love nest
 Love potion #8
 Love triangle
 Love triangulator
+Love-hate letter
 Lovely bunch of coconuts
 Low blood alcohol alarm
+Low profile
 Low-fat lard
 Low-fat poison
 Low-hanging loot
 Low-key card
-Low profile
 Lucky jackalope's foot
 Lucky paw of the %monster%
 Lucky penny
@@ -2039,9 +2048,9 @@ Mark of extinction
 Market bubble
 Marshmelon
 Masquerade mask
-Matter-antimatter converter
 Matter horn
 Matter of perspective
+Matter-antimatter converter
 Maximum security prism
 Mayan colander
 Mazeltov cocktail
@@ -2058,8 +2067,8 @@ Mega-bite
 Melted icicle
 Meme catcher
 Memeograph machine
-Memoirs of a goldfish
 Memoir of an amnesiac
+Memoirs of a goldfish
 Memory card
 Memory-erasing foam
 Mental block
@@ -2093,10 +2102,10 @@ Mime control device
 Mime's invisible box
 <span style="white-space:pre;"><span style="display:inline-block;margin-right:0.2em">🦃</span>Mince pie</span>
 Minced word
-Mind-cleansing wipes
+Mind opener
 Mind screw
 Mind screw up
-Mind opener
+Mind-cleansing wipes
 Mindless control device
 Miniature siege tower
 Minimizing glass
@@ -2146,18 +2155,18 @@ Mondae
 Money laundering basket
 Money-laundering detergent
 Money-tree sapling
-Monkey-back guarantee
 Monkey business suit
 Monkey tennis racket
+Monkey-back guarantee
 Monolingual translator
 Monopole magnet
-Monster colouring book
-Monster etiquette book
 “Monster Anatomy” appendix
+Monster colouring book
 "Monster Crossing" road sign
+Monster etiquette book
 “Monster Fancier” periodical
 %monster% identikit
-"Monster Interrogation 101" syllabus
+“Monster Interrogation 101” syllabus
 Monster magnet
 Monster repellent
 Monster University diploma
@@ -2200,8 +2209,8 @@ Mush-berry
 Mushmallow
 Musical note
 Musical saw
-Mustard cutter
 Must-have gadget
+Mustard cutter
 Mutafacient testudinate
 Mysterious rash
 Mystery box
@@ -2217,6 +2226,7 @@ Navigational breadcrumbs
 Necronomicomic
 Necronomnomnomicon
 Necrotelicomicon
+Nectar of the dogs
 Needle
 Needle from a haystack
 Negative feedback form
@@ -2234,20 +2244,20 @@ Newfangled doohickey
 Next big thing
 Nice cup of tea
 Nicotine eye patch
+Night watch
 Night-and-day switch
 Nightmare scenario
-Night watch
 Nine pieces of eight
 Nitty gritty
-“no pet parking” sign
+“No pet parking” sign
 No-leaf clover
 No-money-back guarantee
 No-pressure cooker
 No-thank-you note
 No-way ticket
 Noble gas can
-Noise-cancelling loudspeaker
 Noise whitener
+Noise-cancelling loudspeaker
 Non-absorbent napkin
 Non-descript legendary item
 Non-essential oil
@@ -2281,6 +2291,7 @@ Nukulele
 Null object
 Null string
 Numerical dictionary
+Nun chucking machine
 Nut on a string
 Object of affection
 Object of ridicule
@@ -2360,17 +2371,17 @@ Ounce of courage
 Ounce of credibility
 Ounce of decency
 Ounce of regret
-Outdated fossil
-Outlandish data bank
-Outlandish gold-oyster
-Outlandish hexbox
+Out of office reply
 Out-of-body lotion
 Out-of-breath mint
-Out of office reply
 Out-of-pocket expense
 Out-of-scope binoculars
 Out-of-the-blue print
 Out-of-time machine
+Outdated fossil
+Outlandish data bank
+Outlandish gold-oyster
+Outlandish hexbox
 Overclocked watch
 Overflow chart
 Overflowing cup of resentment
@@ -2384,6 +2395,7 @@ Overused meme
 Oyster egg
 Ozone layer cake
 Pack expansion slot
+Pack of "Are We There Yet?" stickers
 Pack of chewing bark
 Pack of chewing gum
 Pack of everlasting gobstoppers
@@ -2394,7 +2406,6 @@ Pack of lightsaber batteries
 Pack of long odds
 Pack of non-sticky notes
 Pack of unicorn meatballs
-Pack of "Are We There Yet?" stickers
 Package of instant karma
 Packed punch
 Packet of instant poodles
@@ -2404,8 +2415,8 @@ Packet of owl pellets
 Packet of splinters
 Pad of 365 tearable puns
 Pagan bible
-Paincake
 Pain enhancer
+Paincake
 Paint fattener
 Painting of gods playing poker
 Pair of concrete swimming trunks
@@ -2418,9 +2429,9 @@ Palindrome reverser
 Pan of uni-cornbread
 Pandora's box
 Pane in the glass
-Pantheon strategy guide
-Panic button
 Panic boutonniere
+Panic button
+Pantheon strategy guide
 Paper airplane engine
 Paper plane
 Paper trail
@@ -2486,8 +2497,8 @@ Personal space extender
 Personal space tissues
 Personal spacebar
 Personal theme tune generator
-Personality test kit
 Personality quark
+Personality test kit
 Pet brush
 "Pet Care for Heroes" book
 Pet peeve
@@ -2646,6 +2657,7 @@ Powder of attorney
 Powder of love
 Prayer receipt
 'Praying for Dummies' handbook
+“Praymate of the Month” calendar
 Praypal account
 Praystation
 Pre-dried glue stick
@@ -2665,6 +2677,7 @@ Preheated debate
 Preidiotic table
 Premarital hex
 Premature obituary
+Preschool diploma
 Pretty buoy
 Priceless gift
 Priceless tag
@@ -2678,8 +2691,8 @@ Private eye
 Problem solvent
 Productivity killer
 Progress bar
-Proof of a wanted monster's death
 Promised landmine
+Proof of a wanted monster's death
 Prophet margin
 "Prophets Gone Wild" calendar
 Prosthetic brain
@@ -2697,8 +2710,8 @@ Public key
 Public sphere
 Puddle jumper cables
 Pulp-free fiction
-Punch line
 Pun deconstructor
+Punch line
 Punk rocket
 Punlimited edition joke
 Pure mixture
@@ -2738,6 +2751,7 @@ Rainbow end locator
 Rainbow feather
 Rainbow suspenders
 Raisin for living
+Raisin-covered chocolate
 Random key
 Random labyrinth map
 Random lumber generator
@@ -2939,7 +2953,7 @@ Secondhand second hand
 Secret handshake instructions
 Secret identity card
 Secret ingredient
-’Secret lair is here’ sign
+‘Secret lair is here’ sign
 Secret milkshake
 Security blanket
 Security leek
@@ -2985,6 +2999,7 @@ Shadow of a doubt
 Shadow puppet
 Shameless plug
 Shamerock
+Shaming cream
 Shape of things
 “Share your password” button
 Sharp wit
@@ -3012,6 +3027,7 @@ Short end of a wishbone
 Short fuse
 Short shrift
 Short straw
+Short weekend stretcher
 Short-circuit board
 Shortcut lengthener
 Shortest suicide note
@@ -3111,11 +3127,11 @@ Soup basket
 Soup knife
 Space oddity
 Space stationery
+Space waster
 Space-time continuum glue
 Space-time fabric conditioner
 Space-timestamp
 Spacely sprocket
-Space waster
 Spare change
 Spare change of plans
 Spare liver
@@ -3149,12 +3165,12 @@ Spread sheet
 Spreadsheet music
 Sprig of unlucky heather
 Spy manual
-Squeaky floorboard
 SQL injection syringe
 Square foot
 Square router
 Square-shaped orb
 Squashed racket
+Squeaky floorboard
 St. Elmo's fire extinguisher
 Stained glasses
 Stainless wood
@@ -3258,6 +3274,7 @@ Sword in a scone
 Synonym bun
 Table of elementals
 Table of malcontents
+Tablet of contents
 Tablet of random numbers
 Tail of the %monster%
 Talking skull
@@ -3285,7 +3302,7 @@ Telemiscommunication device
 Teleportrait
 Tell-tale heart
 Telltale sign
-"Temple &amp; Garden" magazine
+“Temple &amp; Garden” magazine
 Temple extension planning permit
 Temple insurance plan
 Temple welcome mat
@@ -3299,14 +3316,13 @@ Text tile
 Textbook on material strength
 Texture map
 Thanks-for-nothing card
-The guide to the galaxy
 "The Top 100 Things I'd Do if I Ever Became an Evil Overlord" booklet
 Theory of relatives
 Thigh bone
 Thin blue lime
 Thing-in-itself
-Thingamajig
 “Things to Forget” list
+Thingamajig
 Think tankard
 Third ear
 Third eye
@@ -3431,7 +3447,7 @@ Trust tissue
 Truth embellisher
 Truth or dare serum
 Truthpick
-"try again" letter
+"Try again" letter
 "Try This At Home" guidebook
 Tub of permafrosting
 Tube of copy and paste
@@ -3439,9 +3455,9 @@ Tube of copy-paste
 Tube of plague-fighting toothpaste
 Tube of truthpaste
 Tumtum tree seed
+Tuning knife
 Turned-over leaf
 Tutorial walkthrough
-Tuning knife
 Twenty-sided dice
 Twisted pretzel
 Two tickets to paradise
@@ -3509,8 +3525,8 @@ Unlucky rabbit's foot
 Unmarked bill
 Unnatural 20
 Unnatural resource
-Unnecessary-hyphen
 Unnecessary paperwork
+Unnecessary-hyphen
 Unpaid bar tab
 Unpaired sock
 Unpleasant memory
@@ -3546,6 +3562,7 @@ Useful junk
 Useless artifact
 Vacant genie's lamp
 Vacuum tube sock
+Value-added tacks
 Vampire suntan lotion
 Vampire's dentures
 Vampire's mirror
@@ -3589,6 +3606,7 @@ Vinyl ringtone collection
 Viral meme vaccine
 Virtual loot
 Viscious circle
+Visible concern
 Vitameatavegamin
 Voice of treason
 Voice strainer
@@ -3613,8 +3631,8 @@ Warrior seasoning
 Waste of space
 Waste of time capsule
 Wasted talent
-Water-damaged umbrella
 Water gun silencer
+Water-damaged umbrella
 Water-soluble fish
 Watergun ammo
 Waterlemon
@@ -3652,6 +3670,7 @@ Whole shebang
 Wicked simile
 Wicked smile
 Wide berth
+Wife trophy
 Wiki basket
 "Will code HTML for food" tablet
 Willpower generator
@@ -3669,15 +3688,15 @@ Wireless cord
 Wireless cutter
 Wireless seatbelt
 Wirt's other leg
+Wisdom toothpick
 Wish for good luck
 “Wish you were beer” postcard
-Wisdom toothpick
 Wishing well coin
 Wishy-washy machine
 Wit sharpener
-Witchcrafting table
-Witch-doctor's prescription
 Witch doctoral degree
+Witch-doctor's prescription
+Witchcrafting table
 Withdrawn submission
 Wok of shame
 Wonderbox
@@ -3691,9 +3710,9 @@ World's tiniest violin
 Worn-out frog skin
 Worse of two goods
 Worship-o-meter
-Worst-aid kit
 Worst case scenario
 Worst set of circumstances
+Worst-aid kit
 Wreath of Khan
 Wristlet sundial
 Writer's block
@@ -3711,9 +3730,8 @@ Yesterday's horoscope
 Yesterday's newspaper
 'You are not here' dot
 "You Are Probably Here" sign
-“Your deity loves you!” poster
-“Your god loves you!” poster
 "You Shall Not" pass
+“Your deity loves you!” poster
 Z chromosome
 Zen diagram
 Zen energy pouch
@@ -3753,9 +3771,9 @@ Adminotaur
 Adoring Fan
 Advanced War-Hare
 AFK NPC
+After-Mathematician
 Afterlife Coach
 Afterlifeguard
-After-Mathematician
 Aftermoth
 Aggressive Pedestrian
 Aimless Archer
@@ -3879,7 +3897,6 @@ Badonkadonkey
 Bagstabber
 Bald Eagle Scout
 Bald Mammoth
-Balding Scentipede
 Ballistic Slug
 Balloonatic
 Ballpoint Penguin
@@ -3900,8 +3917,8 @@ Barking Catfish
 Barrel Fish
 Basement Cat
 Basement Dweller
-<span style="white-space:pre;"><span style="display:inline-block;margin-right:0.2em">🦌</span>Basher the Reindeer</span>
 Bash Ogre
+<span style="white-space:pre;"><span style="display:inline-block;margin-right:0.2em">🦌</span>Basher the Reindeer</span>
 Bastard Lunatic
 Bath-Bomber
 Battle Hamster
@@ -3915,8 +3932,8 @@ Bazookat
 Bean Stalker
 Bear Minimum
 Bear Witness
-Beardless Dwarf
 Bear-Faced Liar
+Beardless Dwarf
 Bearlock
 Bearskin Thug
 Beast Seller
@@ -3958,7 +3975,6 @@ Bird of Pray
 Biterina
 Bitter Chocoholic
 Black Belt Conveyor
-Black Belted Convoyeur
 Black Panzer
 Black Sheep
 Blade Runner
@@ -3971,8 +3987,8 @@ Blind Weresquirrel
 Blood Bank Robber
 Blood Curdler
 Blood Vassal
-Bloodcurdling Whale
 Blood-Sucking Lawyer
+Bloodcurdling Whale
 Bloodthirsty Mosquito
 Bloodthirsty Umpire
 Bloody Hellcat
@@ -3980,15 +3996,13 @@ Blue Occult Öyster
 Blue Ray
 Blue-Toothed Mouse
 Bluffalo
+<span style="white-space:pre;"><span style="display:inline-block;margin-right:0.2em">🦌</span>Blunder the Reindeer</span>
 Blunderachiever
 Blundertaker
-<span style="white-space:pre;"><span style="display:inline-block;margin-right:0.2em">🦌</span>Blunder the Reindeer</span>
 Blunt Instrumentalist
 Boa Conscriptor
 Boartender
-Bobble-Headed Godvilla
 Bobble-Headed Hydra
-Bobble-Headed Necropanzer
 Bodily Ogre
 Bodybuilding Skeleton
 Bone Corrector
@@ -4040,7 +4054,6 @@ Bully Mammoth
 Bureau-Cat
 Business Monkey
 Busted Ghost
-Butter Jellyfish
 Butter Troll
 Button Masher
 Buzz Bunny
@@ -4051,15 +4064,14 @@ Cannon Bull
 Cantankerous Chimaera
 Capeless Crusader
 Capitalist Overlord
-Caps Lock
 Captain Crunchy
 Captain Emo
 Captain Oblivious
 Carameleon
 Carbon Foot Prince
 Card Shark
-Cardboard Ox
 Card-Carrying Villain
+Cardboard Ox
 Caricature Witness
 Carjackal
 Carnage Patch Kid
@@ -4093,6 +4105,7 @@ Century Fox
 Cereal Killer
 Chain Male
 Chain-Mailman
+Chainsnail
 Chairman of the Bored
 Chalk Outline
 Chaos Butterfly
@@ -4160,7 +4173,6 @@ Commandodo
 Common Dominator
 Compsognathus
 Concussionist
-Confused E-bowler
 Conga Lion
 Conglomerat
 Constantinoble
@@ -4225,7 +4237,6 @@ Crypto-Knight
 Crysanthemummy
 Ctrl Freak
 Ctrl-Alt-Delinquent
-Ctrl-Freak
 Cucumbear
 Cursetacean
 Cutthroat Competitor
@@ -4294,6 +4305,7 @@ Difficultist
 Digested Reader
 Dire Squirrel
 Dirt Devil
+Dirty Cheetah
 Disarmadillo
 Disasterisk
 Disastronaut
@@ -4302,7 +4314,6 @@ Discordion Player
 Disenchanted Wizard
 Disgruntled Customer
 Disgruntled Postal Clerk
-Disrespectler
 Disrespectre
 Distilled Spirit
 Djinn-in-Tunic
@@ -4325,9 +4336,9 @@ Downward Facing Dog
 Doyouthinkhesaurus
 Draculator
 Dragon with a Girl Tattoo
+Dragon-Sized Fly
 Dragonandon
 Dragonella
-Dragon-Sized Fly
 Dragonspayer
 Drain Snake
 Dramagician
@@ -4358,13 +4369,14 @@ Dyna Mite
 Dysenterrier
 Dyslexic Agnostic
 Dyson Steer
+E-book Worm
+E-Bowler
+E-Mailman
 Eager Beaver
 Earlier Worm
 Early Bird
 Earthworm Djinn
 Earworm
-E-book Worm
-E-Bowler
 Eclairic
 Eclectic Eel
 Edible Jelly
@@ -4376,14 +4388,13 @@ Eight-bit Thief
 Electric Fencer
 Electric Monk
 Electric Orc Welder
-Electro-Cutie
 Electro Magnate
+Electro-Cutie
 Electromagnetic Specter
 Elemental of Surprise
 Elephant of Surprise
 Elephantom
 Elite Worrier
-E-Mailman
 Emotional Baggage Handler
 Enchanted Florist
 Encryption Keeper
@@ -4419,13 +4430,13 @@ Evil Twin
 Eviscerator
 Ewe Bastard
 Ex Uber Ant
-Excessive Hashtagger
-Executionerd
 Ex-Ghoulfriend
 Ex-Guildfriend
+Excessive Hashtagger
+Executionerd
 Exiled Vault Dweller
-Exoskeletor
 Exo-Skeleton
+Exoskeletor
 Expendable Crewman
 Extra Dry Djinn
 Fabergé Chicken
@@ -4463,6 +4474,7 @@ Ferocita
 Fiction Fairy
 Fiend of a Fiend
 Fifth Elephant
+Fight Cub
 Fighty Duck
 File Executioner
 Filefry
@@ -4484,7 +4496,6 @@ Flaming Snowman
 Flamingo Dancer
 Flappy Bard
 Flash Gorgon
-Flash Mobster
 Flashmobster
 Flattering Ram
 Flaw Enforcer
@@ -4514,7 +4525,6 @@ Former Transformer
 Fortune Seller
 Fortune Wookiee
 Foul Fowl
-Four Pedestrians of the Apocalypse
 Fractal Elf
 Fractaldactyl
 Fragmatist
@@ -4544,8 +4554,8 @@ Funeral Crasher
 Furinda
 G.I. Foe
 Gallows Humorist
-Game-changing Bug
 Game Overlord
+Game-changing Bug
 Gameplay Mechanic
 Gamma Stingray
 Gandolphin
@@ -4572,6 +4582,7 @@ Generic Enemy
 Generic Evil-doer
 Genetic Throwback
 Genghis Leprechaun
+Germicidal Maniac
 Geronimoose
 Ghost of Quests Past
 Ghostbusker
@@ -4601,7 +4612,6 @@ Gnomeland Security Agent
 Gnomewrecker
 Goat Of Arms
 Godbuster
-Godly Passion
 Godvilla
 Godvillain
 Godville Administrator
@@ -4685,30 +4695,29 @@ Harvester of Sorrow
 Hawaiian Puncher
 Hawktopus
 Hazmatador
+He-Who-Must-Be-Ashamed
 Headhaunter
 Headless Chicken
 Headless Honcho
 Headless Horsefly
 Headless Hydra
 Headless Oarsman
-Healium Baboon
 Heart Attacker
 Heating Elemental
 Heavenlowerer
 Heavy Machine Gnu
 Heavy Metal Bandit
-Hedge-Rouge
 Heedless Chicken
 Heffalump
 Heir of Superiority
 Helium Baboon
 Hell Kitty
 Hell Monitor
+Hell's Bell-Ringer
+Hell's Kitten
 Hellaphant
 Hellevangelist
 Hellevator Operator
-Hell's Bell-Ringer
-Hell's Kitten
 Hemogoblin
 Hemophiliac Skeleton
 Hemophobic Vampire
@@ -4719,7 +4728,6 @@ Herbivorous Plant
 Hermetic Crab
 Hermitic Seal
 Heromnivore
-He-Who-Must-Be-Ashamed
 Hexplorer
 Hickory Dickory Duck
 Hidden Dragon
@@ -4729,7 +4737,6 @@ High Horse
 Hindsight Seer
 Hiphopopotamus
 Hippo Crit
-Hippopotamouse
 Hired Goon
 Hired Mussel
 Hired Painkiller
@@ -4760,8 +4767,8 @@ Hound of Music
 Housekeeper of the Dead
 Howling Void
 HTMLephant
-Hugs Bison
 Huggernaut
+Hugs Bison
 Human Wrongs Activist
 Humanatee
 Humming Bard
@@ -4798,10 +4805,10 @@ Illuminaughty Agent
 Imbossible
 Immoral Porpoise
 Immunogoblin
+Imp-Personator
 Impaladin
 Impedimentor
 Imposterior
-Imp-Personator
 Incendiary Firefly
 Inceptionist
 Incognitoad
@@ -4814,8 +4821,8 @@ Indeterminator
 Industrial Park Ranger
 Industrial Revolutionary
 Inedible Hulk
-Ineptocrat
 Inept Antelope
+Ineptocrat
 Inevitable Hulk
 Infamouse
 Infernal Auditor
@@ -4860,10 +4867,10 @@ Itsy-Bitsy Spider
 Jabberwookie
 Jack Lantern
 Jack the Tripper
+Jack-of-All-Blades
 Jackal-of-All-Trades
 Jackalope
 Jacked Sparrow
-Jack-of-All-Blades
 Jägermonster
 Jaguardian
 Jalapeño Pauper
@@ -4894,6 +4901,7 @@ Keyless Sentry
 Khan Artist
 Khannibal
 Kill Joy
+Killamari
 Killdebeest
 Killer App
 Killer Migraine
@@ -4912,7 +4920,6 @@ Knight in Casual Clothes
 Knight in Shining Armoire
 Knight Who Says Ni
 Knighting Gale
-Knightly Night
 Knightmare
 Knightning Gale
 Knitpicker
@@ -4997,6 +5004,7 @@ Lost Action Hero
 Lost Spirit Guide
 Lost Viking
 Lounge Lizard
+Love Actuary
 Love Bug
 Low Blowfish
 Low-Flying Ostrich
@@ -5012,8 +5020,8 @@ Machiavillain
 Macroorganism
 Mad Clown
 Mad Hacker
-Madmiral
 Mad Scientist
+Madmiral
 Magnum Octopus
 Magnum Opossum
 Mail Escort
@@ -5023,15 +5031,15 @@ Maître Demon
 Major Buzzkill
 Major Disappointment
 Major Problem
+Malignant Tutor
 ManBearPig
 Manglerfish
-Malignant Tutor
 Maniacrobat
 Manufracturer
 Margarine Fly
 Marital Artist
-Marshal Lawyer
 Marquis de Sad
+Marshal Lawyer
 Mascarpony
 Masqueraider
 Master Chef
@@ -5052,10 +5060,10 @@ Medieval Knieval
 Mediocrates
 Mediogre
 Medusa's Hairdresser
-Megatribble
+Mega Pixel
 Megahurtz
 Megaphony
-Mega Pixel
+Megatribble
 Meh-Warrior
 Melee Archer
 Mental Hygienist
@@ -5087,14 +5095,14 @@ Mindsweeper
 Mine Sweeper
 Minitaur
 Minotourist
+Mis-Conductor
 Misanthropic Lycanthrope
 Misanthropologist
 Mischieftain
-Mis-Conductor
 Misdirector
-Miss Information
 Misfortune Teller
 Misguidance Counsellor
+Miss Information
 Missile Blower
 Missing-in-Action Figure
 Mission Creep
@@ -5125,8 +5133,8 @@ Monster in Training
 Monster of Ceremonies
 Monster Superior
 Monster-in-Law
-Monsters' Rights Activist
 Monster's Stunt Double
+Monsters' Rights Activist
 Monstrous Appetite
 Monterey Jackal
 Monty Python
@@ -5151,14 +5159,13 @@ Mouseferatu
 Moving Target
 Mudslinger
 Muffin Man
-Multidexterous Millipede
-Multilegged E-bowler
 Multi-Porpoise
 Multi-Tusked Mammoth
+Multidexterous Millipede
+Multitusker
 Mumble-bee
 Murdersquito
 Murphy's In-Law
-Murphy's Law
 Murphy's Lawmaker
 Music Pirate
 Musketdeer
@@ -5174,6 +5181,7 @@ Natural Selector
 Nature's Wraith
 Navi-Gator
 Nayslayer
+Ne'er-do-Whale
 Nearly Departed
 Nearsighted Sniper
 Necessary Evil
@@ -5181,7 +5189,6 @@ Neck Romancer
 Necromantis
 Necropanzer
 Necrophobic Zombie
-Ne'er-do-Whale
 Neferkitty
 Neighborhood Witch
 Nerd of Steel
@@ -5206,16 +5213,15 @@ Nitro Djinn
 No Holds Bard
 No Man's Landlord
 No One
+No-good Do-gooder
 Nobel Prizefighter
 Noble Ghast
 Nobodyguard
-No-good Do-gooder
 Nomad Scientist
-Nomadic Ghoulkeeper
 Non Sequiturtle
-Nondescript Villain
 Non-Euclidean Geomancer
 Non-Terminal Repeating Phantasm
+Nondescript Villain
 Northpole Dancer
 Nosferatuna
 Nostradamoose
@@ -5223,7 +5229,6 @@ Not a Big Dealer
 Not-of-this-Earth Worm
 Not-So-Brave Knight
 Notary of Death
-Nothing
 Novel Protagonist
 Nuclear Overreactor
 Nuclear Watchdog
@@ -5272,11 +5277,11 @@ Optical Illusionist
 Optimus Slime
 Optimystic
 Orangutank
-Orc-in-the-Road
 Orc Angel
 Orc Bishop
 Orc De Triomphe
 Orc of the Covenant
+Orc-in-the-Road
 Oreoboros
 Organ Grinder
 Origami Dragon
@@ -5293,12 +5298,12 @@ Out-of-Tuna
 Out-Sorcerer
 Outsourced Monster
 Oval Lord
+Over-seasoned Warrior
 Overbearing Waiter
 Overconfident Noob
-Over-seasoned Warrior
 Overtaker
-Oxydjinn
 Oxy-Moron
+Oxydjinn
 Ozone Slayer
 Pac Man
 Pacifist Mercenary
@@ -5324,13 +5329,11 @@ Passive Aggressor
 Pastafarian Prophet
 Pathological Friar
 Patronizing Saint
-Pawn of Satin
 Pawn of the Dead
 Peace Corpse
 Peacebreaker
 Peacelock
 Peanut Butler
-Peanut Butter Jellyfish
 Peekabull
 Peelinda
 Peking Duck
@@ -5352,7 +5355,6 @@ Perverse Engineer
 Pessimus Prime
 Pest of Both Worlds
 Petrified Dryad
-Phantasm
 Pharmadillo
 Philosoraptor
 Phlegm Fatale
@@ -5369,19 +5371,19 @@ Pied Pauper
 Pigasus
 Piggy Banker
 Piggybank Robber
+Pignoramus
 Pillager of Society
 Pillow Fighter
 Pillow-Fight Champion
 Pillsbury Homeboy
+Pin-up Ghoul
 Piñakoala
 Piñata Monster
 Pinball Wizard
 Pink Elephant
-Pin-up Ghoul
 Pipe Organ Donor
 Piraña Colada
 Pirate of the 7 Cs
-Pixel
 Pixel Hunter
 Placeboss
 Plaicea
@@ -5410,10 +5412,10 @@ Polycorn
 Polygloater
 Possessed Demon
 Possessed Exorcist
+Post-Mortem Artist
 Postal Snail
 Postman of the Apocalypse
 Postmonster General
-Post-Mortem Artist
 Postmortem Graduate
 Poulpy
 Poultry Geist
@@ -5426,9 +5428,9 @@ Prancing Pony
 Prankenstein
 Prawn of Satan
 Praying Manatee
+Pre-Mortem Surgeon
 Predatortoise
 Preemptive Shrike
-Pre-Mortem Surgeon
 Prescription Thug
 President Evil
 Presidential Seal
@@ -5529,6 +5531,7 @@ Redshirt
 Regenerating Degenerate
 Registered Hex Offender
 Registered Text Offender
+Regression Lion
 Rejected Monster
 Rejectionist
 Remorse Coder
@@ -5546,7 +5549,6 @@ Reverse Engineer
 Reverse Psychologist
 Revoltron
 Revolving Dormouse
-Rey-Eyed B-Bowler
 Rhinestoneceros
 Rhubarbarian
 Rifle Shrimp
@@ -5563,11 +5565,11 @@ Robber Chicken
 Robbing Hood
 Robbing Hoodlum
 Robot Chicken
+Rock 'n Gnoll
 Rock Lobster
 Rock'em Sock'em Robot
 Rocket Propelled Gremlin
 Rockin' Troll
-Rock 'n Gnoll
 Rocktopus
 Rocky Raccoon
 Rocky Roadie
@@ -5613,9 +5615,7 @@ Satan Claus
 Satan's Little Helper
 Satanic Mechanic
 Satyrant
-Savings Pantheon
 Sawed-off Shogun
-Scape Goat
 Scare Bear
 Scare Tactician
 Scarecow
@@ -5627,13 +5627,13 @@ Scentipede
 Schizoid Man
 Schizophrenic Hydra
 Schoolyard Bully
-Screen Slaver
 Schrödinger's Cat
 Schrödinger's Possum
-Scientific Method Actor
 Sci-Fly
+Scientific Method Actor
 Scorntrooper
 Scotch Guard
+Screen Slaver
 Screwfish
 Sea Harpoonia
 Sea Troll
@@ -5645,7 +5645,6 @@ Secretary of Fate
 Secretary of Offense
 Security Badger
 Security Chimera
-Security Gourd
 Seeing-Eye Mole
 Seethessa
 Seismimic
@@ -5675,6 +5674,7 @@ Seventh Lawyer of Hell
 Sewer Gator
 Sewer Horse
 Sewer Mermaid
+Shade Thrower
 Shadow Worrier
 Shaman Kong
 Shamaniac
@@ -5702,6 +5702,7 @@ Shoving Leopard
 Shrimposter
 Shrimpy
 Shrunken Headmaster
+Shudderbug
 Shyborg
 Sicklefish
 Sighborg
@@ -5757,7 +5758,6 @@ Social Security Guard
 Socialist Butterfly
 Sock Eating Machine
 Sock Elemental
-Sock Monkey
 Sock Puppetmaster
 Software Giant
 Software Pirate
@@ -5775,9 +5775,9 @@ Soul Proprietor
 Soul Supreme
 Space Invader
 Space Monkey
+Spag-Yeti
 Spaghetti Elemental
 Spaghetti Westerner
-Spag-Yeti
 Spambot
 Spamurai
 Spanish Inquisitor
@@ -5785,8 +5785,8 @@ Spark Pug
 Special Character
 Spectral Spectre
 Speed Sloth
-Spelling Bee
 Spell-Podcaster
+Spelling Bee
 Spelun King
 Sphinx
 Spice Ghoul
@@ -5812,19 +5812,19 @@ Squirmisher
 Stag of Holding
 Stalactitan
 Stalking Horse
-Standard Deviant
 Stand-up Chameleon
+Standard Deviant
 Staple Gunner
 Star Shrek
 Star-Crossed Astrologist
-Stare Master
 Starantula
+Stare Master
 Starfish Trooper
 Starless Knight
 Starving Artist
 Static Electrician
-Steamed Punk
 Steam-Powered Pleasurebot
+Steamed Punk
 Steel Rat
 Stem Cellmate
 Stereotypical Villain
@@ -5843,22 +5843,22 @@ Stuttering Mime
 Stuttering Spellcaster
 Stygian Pixie
 Styrofoam Cop
+Subconscientious Objector
 Subhero
 Subliminal Masseuse
 Subliminal Messenger
 Submaretta
 Submarine Star
-Subconscientious Objector
 Substitute Creature
 Subtracting Adder
 Sulkworm
 Sulphuric Aphid
 Sumo Ninja
 Sun Dog
+Sun-Dried Vampire
 Sunbathing Vampire
 Sunburned Shadow
 Sunday Driver
-Sun-Dried Vampire
 Superb Owl
 Superhighwayman
 Supermanimal
@@ -5945,8 +5945,8 @@ Time Consumer
 Time Fly
 Tin Foil Cat
 Tinkerhell
-Tinyfoot
 Tiny-Sized Giant
+Tinyfoot
 Tire Iron Lion
 Tireless Spambot
 Titanium Gingerbread Man
@@ -5990,6 +5990,7 @@ Troll Booth Attendant
 Tropical Yeti
 Trouble Shooter
 Truth-or-Dare Devil
+Tsarfish
 Tubercolossus
 Tunnel Visionary
 Turmerisk
@@ -6000,8 +6001,9 @@ Tusk Manager
 Tweedle Demon
 Tweedle Doom
 Tweeting Bird
-Two-Trick Pony
+Twinkle Tsar
 Two-Handed Swordfish
+Two-Trick Pony
 Typo Demon
 Tyrannosaurus-Ex
 Uberboss
@@ -6048,7 +6050,6 @@ Unprintable Character
 Unreal Estate Agent
 Unregistered Pet
 Unsolicited Adviser
-Unspeakable Words
 Unstable Constable
 Unsuitable Suitor
 Unsupported Character
@@ -6061,6 +6062,7 @@ Used Horse Salesman
 User-Friendly Enemy
 Utility Polecat
 Utopianist
+Utter Nonsensei
 Vampiranha
 Vampirate
 Vampire Brat
@@ -6086,10 +6088,10 @@ Voodoo Barbie
 Voodude
 Vorpal Wabbit
 Waking Nightmare
+Wal-Martian
 Walking Dead
 Walking Debt
 Wall Dog
-Wal-Martian
 Walrietta
 Wanna Bee
 Wannabeast
@@ -6105,9 +6107,9 @@ Weather Baboon
 Websurfing Spider
 Wedding Knight
 Wendidigo
+Were-Panther
 Werebeaver
 Werehouse
-Were-Panther
 Wererobot
 Weresmurf
 Western Broom Warlock
@@ -6120,8 +6122,8 @@ Wherewolf
 Whippersnapper
 Whistleblowing Referee
 Who Gnu
-Wicked Glitch of the West
 Wi-Fly
+Wicked Glitch of the West
 Wight Watcher
 Wiki Lynx
 Wild Balloon Animal
@@ -6249,7 +6251,6 @@ Athlete's feet
 Atomic high boots
 Atomizer
 Attachable limbs
-Attachable tentacles
 Augmented kevlar vest
 Automatic badaboom
 Automatic slingshot
@@ -6369,8 +6370,8 @@ Broomstick
 Bubble wrap breastplate
 Bucket of sensory deprivation
 Budget cutter
-Bull's eye
 Bull-shield
+Bull's eye
 Bulletproof T-shirt
 Bullyproof vest
 Bunny suit
@@ -6399,7 +6400,7 @@ Cast iron shield
 Cattlepult
 Cavalryman's bracers
 Cement shoes
-'censored' bar
+'Censored' bar
 Centipede's jogging boots
 Central parka
 Ceremonial cap
@@ -6497,8 +6498,8 @@ Data mining headlamp
 Data spike
 Dead poets club
 Deadly shins
-Death-perception goggles
 Death rattle
+Death-perception goggles
 Death's door
 Death's sickle
 Deck of Tarot cards
@@ -6590,8 +6591,8 @@ Epic flail
 Epic scale
 Escape root
 Ethereal shield
-'Evil rulez!' badge
 Exacto knife
+'Evil rulez!' badge
 Excaliper
 Executioner's hood
 Executioner's mask
@@ -6612,8 +6613,8 @@ Facehugger
 Fairy's battle axe
 Fake ID
 Fallen Angel's battle bracers
-Fancy monocle
 Fan-mail
+Fancy monocle
 Faraday cage
 Farcefield
 Feet of strength
@@ -7097,7 +7098,6 @@ Platformer shoes
 Platinum platter
 Platonic armor
 Plausible deniability
-Plot armor
 Plothole cover
 Plumber's plunger
 Plumsoles
@@ -7209,6 +7209,7 @@ Seat-back
 Seaweed wrap
 Secondhand glove
 Security breeches
+Security gourd
 Security question
 Self-cutting axe
 Self-portrait
@@ -7247,7 +7248,7 @@ Shield of the SWAT King
 Shield of utter stupidity
 Shining armor of darkness
 Shock absorber
-'shoulder angel and devil' set
+'Shoulder angel and devil' set
 Shoulder parrot
 Shoulders of fortune
 Shroud of clarity
@@ -7520,9 +7521,9 @@ Wristlets of bad luck
 Wunderwaffle
 X-ray glasses
 XXL sword
-Yellow-brick robe
 Yellow polka dot bikini
 Yellow raincoat
+Yellow-brick robe
 Yeti slippers
 Yin-yang earrings
 Zirconium bracelet
