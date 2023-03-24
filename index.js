@@ -41,6 +41,7 @@ const funModule = require('./commands/fun/fun.js');
 const usefulModule = require('./commands/useful/useful.js');
 const moderatorModule = require('./commands/moderator/moderator.js');
 const crosswordModule = require('./commands/crosswordgod/crosswordgod.js');
+const customCommands = require('./commands/customs');
 
 // functions/commands (partly) separate from the main modules
 const logger = require('./commands/features/logging');
@@ -78,6 +79,8 @@ const godData = db.collection('data').doc('gods');
 const limitedCommandsData = db.collection('data').doc('limited uses');
 const blockedData = db.collection('data').doc('blocked');
 const plannedEvents = db.collection('data').doc('schedule');
+const customCommandsCollection = db.collection('customCommands');
+customCommands.setup(customCommandsCollection);
 
 // set up our globals because stuff being undefined sucks
 global.totalGodpower = 0;
@@ -306,6 +309,9 @@ client.on('messageCreate', (message) => {
                     }
                 }
             }
+
+            // check for custom commands
+            customCommands.run(message, cmd, content);
         }
 
         // respond when the bot is in a server it shouldn't be in
