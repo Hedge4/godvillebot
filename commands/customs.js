@@ -195,7 +195,8 @@ function edit(message, content) {
     customCommands[command].reply = newReply;
     docRef.update({ reply: newReply });
 
-    logger.log(`CUSTOMS: ${message.author.tag} edited ${command}:\`\`\`\n${oldReply}\n— — —\n${newReply}\`\`\``);
+    logger.toChannel(`CUSTOMS: ${message.author.tag} edited ${command}:\`\`\`\n${oldReply}\n— — —\n${newReply}\`\`\``);
+    logger.toConsole(`CUSTOMS: ${message.author.tag} edited ${command}:\n${oldReply}\n— — —\n${newReply}`);
     message.reply('Done!');
 }
 
@@ -311,7 +312,8 @@ function add(message, content) {
     docRef.set(newCommand);
 
     updateCategories(); // update the categories
-    logger.log(`CUSTOMS: ${message.author.tag} added ${command} with reply:\`\`\`\n${cmdReply}\`\`\``);
+    logger.toChannel(`CUSTOMS: ${message.author.tag} added ${command} with reply:\`\`\`\n${cmdReply}\`\`\``);
+    logger.toConsole(`CUSTOMS: ${message.author.tag} added ${command} with reply:\n${cmdReply}`);
     message.reply('Done!');
 }
 

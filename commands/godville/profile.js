@@ -206,7 +206,8 @@ async function getGodData(URL, channel) {
     godData.level = rx_level.exec(html)[1];
     godData.name = decodeURI(rx_name.exec(html)[1]).trim();
     godData.age = rx_age.exec(html)[1];
-    godData.gender = rx_gender.exec(html)[1];
+    const heroGender = rx_gender.exec(html)[1];
+    godData.gender = heroGender.charAt(0).toUpperCase() + heroGender.slice(1); // capitalise first letter
     godData.godGender = rx_god_gender.exec(html)[1];
 
 
