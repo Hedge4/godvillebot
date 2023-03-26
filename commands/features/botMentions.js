@@ -51,29 +51,30 @@ async function mentionReact(message, client) {
         const testServer = client.guilds.cache.get(serversServed.botServer);
 
         // members are undefined if the try clause fails
-        let gvMember, botMember;
-        try { gvMember = await gvServer.members.fetch(message.author.id); } catch(_) { /*do nothing*/ }
-        try { botMember = await testServer.members.fetch(message.author.id); } catch(_) { /*do nothing*/ }
+        const gvMember = await gvServer.members.fetch(message.author.id).catch(() => { /*do nothing*/ });
+        const botMember = await testServer.members.fetch(message.author.id).catch(() => { /*do nothing*/ });
 
         try {
-            if (gvMember) gvMember.roles.add(roles.mutedMainServer);
-            if (botMember) botMember.roles.add(roles.mutedBotServer);
-            setTimeout(() => {
+            if (gvMember) await gvMember.roles.add(roles.mutedMainServer);
+            if (botMember) await botMember.roles.add(roles.mutedBotServer);
+            setTimeout(async () => {
                 try {
-                    if (gvMember) gvMember.roles.remove(roles.mutedMainServer);
-                    if (botMember) botMember.roles.remove(roles.mutedBotServer);
+                    if (gvMember) await gvMember.roles.remove(roles.mutedMainServer);
+                    if (botMember) await botMember.roles.remove(roles.mutedBotServer);
                     let text = unmuteReactions[Math.floor(Math.random() * unmuteReactions.length)];
                     text = text.replace('DISCNAME', `${message.author.tag}`);
                     text = text.replace('DISCID', `${message.author.id}`);
                     message.channel.send(text);
                     logger.log(`Unmuted ${message.author.tag}. (Mute reason: Spam mentioning me)`);
                 } catch (error) {
-                    logger.log(`Couldn't unmute ${message.author.tag}, oopsie. Too bad for them I guess.`);
+                    logger.log(`Couldn't unmute ${message.author.tag} here and/or in the bot's server, oopsie.`);
+                    logger.log(error);
                 }
             }, 2 * 60 * 1000);
             logger.log(`Muted ${message.author.tag} for two minutes for spam mentioning the bot.`);
         } catch (error) {
-            logger.log(`Couldn't mute ${message.author.tag} for spam mentioning me.`);
+            logger.log(`Couldn't mute ${message.author.tag} here and/or in the bot's server for spam mentioning me.`);
+            logger.log(error);
         } finally {
             let text = muteReactions[Math.floor(Math.random() * muteReactions.length)];
             text = text.replace('DISCNAME', `${message.author.tag}`);

@@ -67,30 +67,29 @@ async function main(message, duration) {
     const testServer = client.guilds.cache.get(serversServed.botServer);
 
     // members are undefined if the try clause fails
-    let gvMember, botMember;
     const mutee = message.author.tag;
-    try { gvMember = await gvServer.members.fetch(message.author.id); } catch (_) { /*do nothing*/ }
-    try { botMember = await testServer.members.fetch(message.author.id); } catch (_) { /*do nothing*/ }
+    const gvMember = await gvServer.members.fetch(message.author.id).catch(() => { /*do nothing*/ });
+    const botMember = await testServer.members.fetch(message.author.id).catch(() => { /*do nothing*/ });
     const botville = client.channels.cache.get(channels.botville);
 
     try {
-        if (gvMember) gvMember.roles.add(roles.mutedMainServer);
-        if (botMember) botMember.roles.add(roles.mutedBotServer);
-        setTimeout(() => {
+        if (gvMember) await gvMember.roles.add(roles.mutedMainServer);
+        if (botMember) await botMember.roles.add(roles.mutedBotServer);
+        setTimeout(async () => {
             try {
-                if (gvMember) gvMember.roles.remove(roles.mutedMainServer);
-                if (botMember) botMember.roles.remove(roles.mutedBotServer);
+                if (gvMember) await gvMember.roles.remove(roles.mutedMainServer);
+                if (botMember) await botMember.roles.remove(roles.mutedBotServer);
                 // I don't think this needs to be announced in #botville?
                 logger.log(`Unmuted ${mutee}. (Mute reason: Self mute)`);
             } catch (error) {
-                botville.send(`I couldn't unmute ${mutee}, someone fix please.`);
-                logger.log(`Couldn't unmute ${mutee}, someone fix please.`);
+                botville.send(`I couldn't unmute ${mutee} here and/or in the bot's server, someone fix please.`);
+                logger.log(`Couldn't unmute ${mutee} in Godville and/or the bot's server, someone fix please: ` + error);
             }
         }, delay);
         message.reply(`Got it, I'll unmute you after ${delayText}.`);
         logger.log(`Muted ${mutee} for ${delayText}, per their own request.`);
     } catch (error) {
-        message.reply('Something went wrong, and I couldn\'t mute you.');
+        message.reply('Something went wrong, and I couldn\'t mute you here and/or the bot\'s server.');
         logger.log(`${mutee} wanted to mute themselves, but something went wrong: ` + error);
     }
 }

@@ -120,8 +120,6 @@ function runCommands(message, cmd, content) {
             message.reply(`${command} isn't a defined command!`);
             break;
     }
-
-    message.react('✅');
 }
 
 
