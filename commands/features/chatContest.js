@@ -221,10 +221,18 @@ async function onMessageDelete(deletedMessage) {
 
     // NO POTENTIAL LAST MESSAGE FOUND AFTER LAST 'IF'-statement
 
-    // if lastMessage was the message that was deleted or undefined (e.g. right after chatKill)
-    if (!lastMessage || lastMessage.id === deletedMessage.id) {
+    // if lastMessage is undefined (e.g. right after chatKill)
+    if (!lastMessage) {
+        logger.log('A chatkill eligible message was deleted in the chat contest channel and chatCombo was reduced by one.'
+            + ' lastMessage was unknown and also can\'t be found; no messages eligible for chat kills.');
+        return;
+    }
+
+    // if lastMessage is the message that was deleted, and no new eligible messages are found
+    if (lastMessage.id === deletedMessage.id) {
+        lastMessage = null;
         logger.log('The last message was deleted in the chat contest channel and chatCombo was reduced by one.'
-            + ' lastMessage is unknown and also couldn\'t be found; no messages eligible for chat kills.');
+            + ' No new message(s) eligible for chat kills could be found.');
         return;
     }
 
@@ -250,7 +258,10 @@ async function winningChatContest(message, lateWin = false) {
     }
 
     if (message.author.id === lastWinner) {
-        message.reply(`You were the last person to talk for ${minutes}, but you already won the last chat-killing contest! :skull:`);
+        message.reply(`You were the last person to talk for ${minutes}, but you already won the last chat-killing contest! :skull:`)
+            .catch(() => {
+                message.channel.send(`<@${message.author.id}>: You were the last person to talk for ${minutes}, but you already won the last chat-killing contest! :skull:\n\nThis is a fallback reply since you (probably) deleted your message, which should make this scenario impossible. But since this is a bug you'll get gold anyway.`);
+            });
         logger.log(`${message.author.tag} / ${message.author.id} won the chat contest after ${minutes}, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
         chatCombo = 0;
         return;
@@ -265,25 +276,33 @@ async function winningChatContest(message, lateWin = false) {
     smallRewardChance = limit(smallRewardChance);
     bigRewardChance = limit(bigRewardChance, 0, 0.6);
 
-    let gold, tierChance;
+    let gold, tierChance, rewardText;
     const r = Math.random();
 
+    // determine tier-specific variables
     if (r < smallRewardChance) {
         // small reward
         gold = Math.floor(Math.random() * 14) + 6;
         tierChance = toPercent(smallRewardChance);
-        message.reply(`You were the last person to talk for ${minutes}, and you won a small amount of gold <:t_gold:668200334933622794> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+        rewardText = 'a small amount of gold <:t_gold:668200334933622794>';
     } else if (r < 1 - bigRewardChance) {
         // normal reward
         gold = Math.floor(Math.random() * 21) + 22;
         tierChance = toPercent(1 - smallRewardChance - bigRewardChance);
-        message.reply(`You were the last person to talk for ${minutes}, and you won a normal bag of gold <:t_goldbag:668202265777274890> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+        rewardText = 'a normal bag of gold <:t_goldbag:668202265777274890>';
     } else {
         // big reward
         gold = Math.floor(Math.random() * 50) + 50;
         tierChance = toPercent(bigRewardChance);
-        message.reply(`You were the last person to talk for ${minutes}, and you won a big crate of gold <:t_treasure:668203286330998787> for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`);
+        rewardText = 'a big crate of gold <:t_treasure:668203286330998787>';
     }
+
+    // send reward message
+    message.reply(`You were the last person to talk for ${minutes}, and you won ${rewardText} for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`)
+        .catch(() => {
+            // in case the last message was deleted
+            message.channel.send(`<@${message.author.id}>: You were the last person to talk for ${minutes}, and you won ${rewardText} for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:\n\nThis is a fallback reply since you (probably) deleted your message, which should make this scenario impossible. But since this is a bug you'll get gold anyway.`);
+        });
 
     // update database
     const userData = main.getUserData();
