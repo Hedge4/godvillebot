@@ -19,6 +19,12 @@ const roleData = {
                 roleId: '351507395949887488',
                 desc: 'Listen to Youtube via Discord!',
             },
+            '<:ms_godvillelogo:313789584720789505>': {
+                fullName: 'Simplify server',
+                roleName: null,
+                roleId: '1093884657830994032',
+                desc: 'Hide nonessential channels unrelated to Godville.',
+            },
         },
     },
     '817245315405053994': {

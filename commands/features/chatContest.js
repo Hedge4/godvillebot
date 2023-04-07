@@ -163,7 +163,8 @@ async function onMessageDelete(deletedMessage) {
     if (deletedMessage.channel.id !== chatContestChannel) { return; }
     if (deletedMessage.createdTimestamp <= lastKillTimestamp) { return; }
 
-    // decrease chatCombo for messages not sent by bots + sent after last chat kill
+    // decrease chatCombo for messages sent after last chat kill
+    // ! Also decreases for bot messages, or repeat messages by same user
     chatCombo--;
 
     // find the now latest eligible message to compare if it's different than what we had stored
@@ -198,14 +199,15 @@ async function onMessageDelete(deletedMessage) {
         }
 
         // if lastMessage and potentialLastMessage are different, but lastMessage is older
-        // this only happens if the deleted message came after lastMessage, but was sent by the same person
+        // this only happens if the order of requests gets messed up, and potentialLastMessage is outdated
         if (lastMessage.createdTimestamp < potentialLastMessage.createdTimestamp) {
             logger.log('(PL<) A message was deleted in the chat contest channel and chatCombo was reduced by one.');
             return;
         }
 
         // if potentialLastMessage is older (this means the deleted message previously interrupted a streak from one author)
-        logger.log('A message was deleted in the chat contest channel and chatCombo was reduced by one.'
+        // ! if lastMessage was updated in between and is now newer it'll be replaced by outdated potentialLastMessage
+        logger.log('(PL>) A message was deleted in the chat contest channel and chatCombo was reduced by one.'
             + ' The deleted message interrupted a message streak by one user, and an older lastMessage was found'
             + ` sent by ${potentialLastMessage.author.tag}, ${minutes} and ${seconds} ago.`);
         lastMessage = potentialLastMessage;
