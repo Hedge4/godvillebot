@@ -1,5 +1,5 @@
 # GodBot
-Version: 5.21.6
+Version: 5.22.0
 
 I should probably include some sort of description here. Meh, I'll add it later (read: probably never).
 
@@ -30,6 +30,7 @@ Additionally, all files were updated to work with discord.js V13 instead of V12,
 * 5.19 Added the >roll command, which supports custom dice and is better than Dyno's command in every way
 * 5.20 Revamped chatContext.js, fixing all errors and possible missed chatkills due to deleted messages.
 * 5.21 Added custom commands with categories to GodBot! And best of all: no limit (that we'd reach)!
+* 5.22 Added the autoPurge system, and through that server logs are now automatically deleted after 10 days.
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.

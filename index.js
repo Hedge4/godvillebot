@@ -52,6 +52,7 @@ const messageReactions = require('./commands/features/messageReactions');
 const randomMessages = require('./commands/features/randomMessages');
 const botDMs = require('./commands/features/botDMs');
 const chatContest = require('./commands/features/chatContest');
+const autoPurge = require('./commands/features/autoPurge');
 const daily = require('./commands/godpower/daily');
 const suggest = require('./commands/useful/suggest');
 const block = require('./commands/moderator/block.js');
@@ -162,6 +163,7 @@ client.on('ready', () => {
     botDMs.checkDMContest(client);
     chatContest.startupCheck();
     reactionRoles.load(client);
+    autoPurge.setup();
     randomMessages(client);
 
     // load data such as the newspaper and the omnibus list
