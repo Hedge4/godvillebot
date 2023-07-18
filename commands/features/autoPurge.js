@@ -6,16 +6,21 @@ const main = require('../../index');
 const logger = require('../features/logging');
 
 const PURGE_LIMIT = 100; // Discord API limit for bulk delete
+const DELAY_LIMIT = 14 * (24 * 60 * 60 * 1000); // Can not delete older than 2 weeks
 const DISCORD_EPOCH = 1420070400000; // Discord's epoch, milliseconds
 
 
 // channels the bot automatically purges, and the purge settings
 const autoPurged = [
     {
+        channelId: channels.oldLogville,
+        repeatDelay: 12 * (60 * 60 * 1000), // check every 12 hours
+        purgeDelay: 10 * (24 * 60 * 60 * 1000), // only purge older than 10 days
+    },
+    {
         channelId: channels.logville,
         repeatDelay: 12 * (60 * 60 * 1000), // check every 12 hours
         purgeDelay: 10 * (24 * 60 * 60 * 1000), // only purge older than 10 days
-        allowedMessages: 1, // keep the last message
     },
 ];
 
@@ -44,30 +49,37 @@ async function purgeMessages(purgeInstance, channel) {
         const beforeSnowflake = createDiscordSnowflake(purgeTimestamp);
         const messages = await channel.messages.fetch({ limit: PURGE_LIMIT, before: beforeSnowflake });
 
+        // filter out messages that are too old to be purged
+        const filteredMessages = messages.filter(message => Date.now() - message.createdTimestamp < DELAY_LIMIT); // true if newer than MAX_DELAY
+        const inaccessibleMessages = filteredMessages.size < messages.size; // true if there were inaccessible messages
+
         // bulk delete messages
-        const resMessages = await channel.bulkDelete(messages, true);
+        const resMessages = await channel.bulkDelete(filteredMessages, true);
         logger.log(`AutoPurge <#${purgeInstance.channelId}>: Purged ${resMessages.size} messages.`);
 
-        if ((purgeInstance.allowedMessages && messages.size > resMessages.size + purgeInstance.allowedMessages)
-            || (!purgeInstance.allowedMessages && messages.size > resMessages.size)
-        ) {
-            const logMsg = `AutoPurge <#${purgeInstance.channelId}>: Purged less messages than fetched (${resMessages.size} instead of ${messages.size}), some could not be deleted.`;
-            // const client = main.getClient();
-            // const adminChannel = await client.channels.fetch(channels.losAdminos);
-            // adminChannel.send(logMsg);
-            logger.log(logMsg);
+        // stop purging if less messages were deleted than the limit
+        if (resMessages.size < PURGE_LIMIT) {
             finished = true;
+
+            // throw error if messages were missed
+            const missedMessages = filteredMessages.difference(resMessages);
+            if (missedMessages.size > 0) {
+                const newestMessage = missedMessages.first();
+                const oldestMessage = missedMessages.last();
+                const errorMessage = `At least ${missedMessages.size} messages could not be purged, but they should have been deletable. Oldest message: ${oldestMessage.id} (${oldestMessage.createdTimestamp}), newest message: ${newestMessage.id} (${newestMessage.createdTimestamp}). Current timestamp: ${Date.now()}.`;
+                throw new Error(errorMessage);
+            }
+
+            // we've reached the end of the channel, stop purging
+            if (!inaccessibleMessages) logger.log(`AutoPurge <#${purgeInstance.channelId}>: No more messages to be deleted, channel is clean.`);
+            else logger.log(`AutoPurge <#${purgeInstance.channelId}>: No more messages to be deleted, channel is clean except for some inaccessible messages.`);
         }
 
-        // we've reached the end of the channel, stop purging
-        if (!finished && resMessages.size !== PURGE_LIMIT) {
-            logger.log(`AutoPurge <#${purgeInstance.channelId}>: No more messages to be deleted, channel is clean.`);
-            finished = true;
-        }
     } catch (error) {
         const client = main.getClient();
         const adminChannel = await client.channels.fetch(channels.losAdminos);
         adminChannel.send(`Error purging messages from <#${purgeInstance.channelId}>: ${error}`);
+        logger.log(`AutoPurge <#${purgeInstance.channelId}>: ${error}`);
     }
 
     // schedule next purge
