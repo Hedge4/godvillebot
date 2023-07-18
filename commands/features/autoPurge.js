@@ -32,6 +32,13 @@ async function onStartup() {
         const client = main.getClient();
         const channel = await client.channels.fetch(purgeInstance.channelId);
 
+        if (!channel) {
+            const adminChannel = await client.channels.fetch(channels.losAdminos);
+            adminChannel.send(`AutoPurge error: Could not fetch channel <#${purgeInstance.channelId}> (${purgeInstance.channelId})`);
+            logger.log(`AutoPurge <#${purgeInstance.channelId}> ERROR: Could not find channel ${purgeInstance.channelId}.`);
+            return;
+        }
+
         // immediately purge, which will also schedule the next purge
         purgeMessages(purgeInstance, channel);
     });
