@@ -314,13 +314,14 @@ async function getGodData(URL, channel) {
 
     // PROGRESS
     const progress = {};
-    const rxBricks = /label">Bricks for Temple[\s\S]*?name">([^<]*)</i;
-    const rxLogs1 = /label">Wood for Ark[\s\S]*?name">([^<]*)</i;
-    const rxLogs2 = /label">Ark Completed at[\s\S]*?name">[^<()]*\((.*?)\)</i;
-    const rxPairs = /label">Twos of Every Kind[\s\S]*?name">[^<()]*\((.*?)\)</i;
-    const rxWords = /label">Words in Book[\s\S]*?name">([^<]*)</i;
-    const rxSavings = /label">Savings[\s\S]*?name">[^<()]*\((.*?)\)</i;
-    const rxSouls = /label">Souls Gathered[\s\S]*?name">([^<]*)</i;
+    const rxBricks = /label">Bricks for Temple[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxLogs1 = /label">Wood for Ark[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxLogs2 = /label">Ark Completed at[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxPairs = /label">Twos of Every Kind[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxWords = /label">Words in Book[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxSavings = /label">Savings[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxSouls = /label">Souls Gathered[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxPercentage = /([\d,.\s]+%)/;
 
     progress.bricks = rxBricks.exec(html);
     if (!ark) progress.logs = rxLogs1.exec(html);
@@ -332,8 +333,11 @@ async function getGodData(URL, channel) {
 
     const progressActive = [];
     Object.keys(progress).forEach(key => {
-        const elem = progress[key];
-        if (elem) progressActive.push(`${key}: ${elem[1]}`);
+        if (!progress[key]) return;
+
+        const percentage = rxPercentage.exec(progress[key][0]);
+        if (!percentage) progressActive.push(`${key}: ???`);
+        else progressActive.push(`${key}: ${percentage[1]}`);
     });
 
     let progressString = progressActive.join(', ');
