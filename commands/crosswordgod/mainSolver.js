@@ -118,9 +118,9 @@ async function solveHtmlRequest(message) {
         return message.reply('You sent multiple attachments, but I only need the HTML of one page!'
             + ' Please only attach the HTML of <https://godvillegame.com/news> to the command.');
     }
-    if (message.attachments.first().size > 250000) { // people will definitely try to send weird stuff
-        return message.reply(`This file is surprisingly large for the <https://godvillegame.com/news> page ${message.attachments.first().size},`
-            + ' so please make sure you send the HTML of the right page. If this is an error, contact the bot owner.');
+    if (message.attachments.first().size > 800000) { // people will definitely try to send weird stuff
+        return message.reply(`This file is surprisingly large for the <https://godvillegame.com/news> page (${message.attachments.first().size} bytes),`
+            + ' so please make sure you send a raw HTML file of the correct page. If this is an error, contact the bot owner.');
     }
 
     // fetch the omnibus list from our manager thingy that isn't actually a manager
