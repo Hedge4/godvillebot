@@ -247,7 +247,7 @@ function testTrigger(reactionEvent, message) {
             if (reactionEvent.disabled.includes(message.channel.id)) return;
         } else if (reactionEvent.enabled) {
             // or the opposite mode, ignore if channel is not enabled
-            if (!reactionEvent.disabled.includes(message.channel.id)) return;
+            if (!reactionEvent.enabled.includes(message.channel.id)) return;
         }
 
         // if the reaction has a specified chance to activate
