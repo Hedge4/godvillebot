@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.22.3",
+  "version": "5.22.4",
   "updateMsg1": "5.22 Server logs are now automatically deleted after 10 days.",
   "updateMsg2": "5.21 Added custom commands with categories to GodBot! Try it with `>cc show all`!",
   "updateMsg3": "5.20 Revamped chatContext.js, fixing all errors and possible missed chatkills due to deleted messages.",

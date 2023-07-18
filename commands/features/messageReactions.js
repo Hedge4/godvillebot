@@ -214,6 +214,17 @@ const reactionEvents = [
         reactions: [
             '1028903377544958114',
         ],
+    }, {
+        name: 'Unflip',
+        active() { return true; },
+        enabled: [channels.botServer.general],
+        chance: 0.1,
+        triggers: [
+            { name: '(╯°□°)╯︵ ┻━┻', isRegex: false },
+        ],
+        reactions: [
+            '┬─┬ノ( º _ ºノ)',
+        ],
     },
 ];
 
@@ -238,6 +249,9 @@ function testTrigger(reactionEvent, message) {
             // or the opposite mode, ignore if channel is not enabled
             if (!reactionEvent.disabled.includes(message.channel.id)) return;
         }
+
+        // if the reaction has a specified chance to activate
+        if (reactionEvent.chance && Math.random() > reactionEvent.chance) return;
 
         const content = message.content.toLowerCase();
         if (reactionEvent.triggers.some((e) => {
