@@ -218,7 +218,7 @@ const reactionEvents = [
         name: 'Unflip',
         active() { return true; },
         enabled: [channels.botServer.general],
-        chance: 0.1,
+        chance: 0.2,
         triggers: [
             { name: '(╯°□°)╯︵ ┻━┻', isRegex: false },
         ],

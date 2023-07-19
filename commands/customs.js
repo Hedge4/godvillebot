@@ -69,70 +69,76 @@ function runCommands(message, cmd, content) {
     // get our module-specific command in lowercase for comparison
     const command = content.split(' ')[0].toLowerCase();
     content = content.slice(command.length + 1).trim();
+    const subcommandsList = `Available subcommands: \`${prefix}cc list\`, \`${prefix}cc categorise\`, \`${prefix}cc rename\`, \`${prefix}cc edit\`, \`${prefix}cc add\`, \`${prefix}cc delete\``;
+    const isAdmin = message.member.roles.cache.has(roles.admin);
 
-    if (!command.length) {
-        // if no arguments are given, show the available command categories
-        showAllCustoms(message, content);
+    // check if command is too long
+    if (command.length > 20) {
+        message.reply('That subcommand/category seems too long...');
         return;
     }
 
-    if (['show', 'list', 'category', 'showall', 'all'].includes(command)) {
+    // if no subcommand is specified, show available subcommands
+    if (!command.length) {
+        // for admins, list available subcommands in the message
+        showAllCustoms(message, '', isAdmin ? subcommandsList : '');
+        return;
+    }
+
+    // ADMIN PERMS check (these commands require admin perms)
+    if (isAdmin) {
+        switch (command) {
+            case 'categorise':
+            case 'categorize':
+                categorise(message, content);
+                return;
+            case 'rename':
+                rename(message, content);
+                return;
+            case 'edit':
+                edit(message, content);
+                return;
+            case 'create':
+            case 'add':
+                add(message, content);
+                return;
+            case 'delete':
+            case 'remove':
+                remove(message, content);
+                return;
+        }
+    }
+
+    // check for 'list' command type
+    if (['show', 'list', 'category', 'all', 'showall'].includes(command)) {
         // other options for showing available categories/commands
         showAllCustoms(message, content);
         return;
     }
 
-    // check admin perms for the other commands
-    if (!message.member.roles.cache.has(roles.admin)) {
-        message.reply('You need admin permissions for most customs-related commands.'
-            + `\nDid you mean \`${prefix}customs list ${command}\` or \`${prefix}${command}\`?`);
+    // check if user specified a category to show
+    const possibleCategory = command.charAt(0).toUpperCase() + command.slice(1); // capitalise first letter
+    if (Object.keys(categories).includes(possibleCategory)) {
+        // if yes, pass it to showAllCustoms
+        showAllCustoms(message, possibleCategory);
         return;
     }
 
-    // check the remaining commands, for which the user needs admin rights
-    switch (command) {
-        case 'show':
-        case 'list':
-        case 'category':
-        case 'showall':
-        case 'all':
-            showAllCustoms(message, content);
-            break;
-        case 'categorise':
-        case 'categorize':
-            categorise(message, content);
-            break;
-        case 'rename':
-            rename(message, content);
-            break;
-        case 'edit':
-            edit(message, content);
-            break;
-        case 'create':
-        case 'add':
-            add(message, content);
-            break;
-        case 'delete':
-        case 'remove':
-            remove(message, content);
-            break;
-        default:
-            message.reply(`${command} isn't a defined command!`);
-            break;
-    }
+    // if not returned yet, input isn't a valid command or category
+    message.reply(`"${command}" isn't a valid subcommand, category, or only works for admins! ${isAdmin ? subcommandsList : ''}`
+        + `\nDid you mean \`${prefix}cc list ${possibleCategory}\` or \`${prefix}${command}\`?`);
 }
 
 
-function showAllCustoms(message, content) {
+function showAllCustoms(message, content, explanationMessage = '') {
     // all lowercase to detect 'all', later make first letter uppercase for category matching
     let category = content.split(' ')[0].toLowerCase();
-    const options = Object.keys(categories).sort();
+    const options = Object.keys(categories).sort(); // sort alphabetically
 
     if (!category || !category.length) {
-        // list options if no argument was given
-        message.reply(`Specify one of these categories: \`${options.join('`, `')}\` or \`all\`.`
-            + `\nMake sure to use \`${prefix}customs list [category]\``);
-        return;
+        // list options if no argument was given, then show all categories
+        if (!explanationMessage) explanationMessage = `You can specify one of these categories: \`${options.join('`, `')}\` or \`all\`.\nMake sure to use \`${prefix}customs list [category]\``;
+        category = 'all';
     }
 
     if (category === 'all') {
@@ -143,16 +149,25 @@ function showAllCustoms(message, content) {
             .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: getters.getClient().user.avatarURL() })
             .setTimestamp();
 
+        // sort categories from most to least commands
+        options.sort((keyA, keyB) => {
+            if (categories[keyA].length > categories[keyB].length) return -1;
+            if (categories[keyA].length < categories[keyB].length) return 1;
+            return 0;
+        });
+
         options.forEach(option => {
             embed.addFields({ name: option, value: `${categories[option].join('\n')}`, inline: true });
         });
 
         logger.log(`${message.author.tag} viewed all custom commands categories in ${message.channel.name}.`);
-        message.reply({ embeds: [embed] }).catch(e => logger.log(e));
+        // if set, attach explanation message
+        if (explanationMessage) message.reply({ content: explanationMessage, embeds: [embed] }).catch(e => logger.log(e));
+        else message.reply({ embeds: [embed] }).catch(e => logger.log(e));
         return;
     }
 
-    // capitalise first letter for categories
+    // capitalise first letter to use as index for the categories array
     category = category.charAt(0).toUpperCase() + category.slice(1);
 
     if (!options.includes(category)) {
@@ -176,13 +191,21 @@ function showAllCustoms(message, content) {
 function edit(message, content) {
     // command is lowercase, rest of content isn't
     const command = content.split(' ')[0].toLowerCase();
+    if (!command) {
+        message.reply('You need to specify a custom command to edit!');
+        return;
+    }
 
     if (!customCommands[command]) {
-        message.reply(`I don't know ${command} whoopsie`);
+        message.reply(`I don't know \`${prefix}${command}\` whoopsie`);
         return;
     }
 
     const newReply = content.slice(command.length + 1).trim();
+    if (!newReply) {
+        message.reply(`You need to specify a new bot response for \`${prefix}${command}\`!`);
+        return;
+    }
     if (newReply.length > 200) {
         message.reply('Custom command reactions have an arbitrary limit of 200 characters!');
         return;
@@ -193,8 +216,8 @@ function edit(message, content) {
     customCommands[command].reply = newReply;
     docRef.update({ reply: newReply });
 
-    logger.toChannel(`CUSTOMS: ${message.author.tag} edited ${command}:\`\`\`\n${oldReply}\n— — —\n${newReply}\`\`\``);
-    logger.toConsole(`CUSTOMS: ${message.author.tag} edited ${command}:\n${oldReply}\n— — —\n${newReply}`);
+    logger.toChannel(`CUSTOMS: ${message.author.tag} edited ${prefix}${command}:\`\`\`\n${oldReply}\n— — —\n${newReply}\`\`\``);
+    logger.toConsole(`CUSTOMS: ${message.author.tag} edited ${prefix}${command}:\n${oldReply}\n— — —\n${newReply}`);
     message.reply('Done!');
 }
 
@@ -202,14 +225,22 @@ function rename(message, content) {
     // both current and new command name should be lowercase
     content = content.toLowerCase();
     const command = content.split(' ')[0];
+    if (!command) {
+        message.reply('You need to specify a custom command to rename!');
+        return;
+    }
     const commandObj = customCommands[command];
 
     if (!commandObj) {
-        message.reply(`I don't know ${command} whoopsie`);
+        message.reply(`I don't know \`${prefix}${command}\` whoopsie`);
         return;
     }
 
     const newName = content.slice(command.length + 1).trim().split(' ')[0];
+    if (!newName) {
+        message.reply(`You need to specify a new name for \`${prefix}${command}\`!`);
+        return;
+    }
     if (newName.length > 20) {
         message.reply('Custom command names have an arbitrary limit of 20 characters!');
         return;
@@ -230,7 +261,7 @@ function rename(message, content) {
     customCommands[newName] = commandObj;
 
     updateCategories(); // name changed so update our categories
-    logger.log(`CUSTOMS: ${message.author.tag} renamed ${command} to ${newName}.`);
+    logger.log(`CUSTOMS: ${message.author.tag} renamed ${prefix}${command} to ${newName}.`);
     message.reply('Done!');
 }
 
@@ -238,15 +269,22 @@ function categorise(message, content) {
     // commands and categories are always lowercase (categories have first letter made uppercase later)
     content = content.toLowerCase();
     const command = content.split(' ')[0];
+    if (!command) {
+        message.reply('You need to specify a custom command to categorise!');
+        return;
+    }
 
     if (!customCommands[command]) {
-        message.reply(`I don't know ${command} whoopsie`);
+        message.reply(`I don't know \`${prefix}${command}\` whoopsie`);
         return;
     }
 
     let newCategory = content.slice(command.length + 1).trim();
     newCategory = newCategory.charAt(0).toUpperCase() + newCategory.slice(1);
-
+    if (!command) {
+        message.reply(`You need to specify a new category for \`${prefix}${command}\`!`);
+        return;
+    }
     if (newCategory.length > 20) {
         message.reply('Category names can\'t be longer than 20 characters!');
         return;
@@ -258,16 +296,20 @@ function categorise(message, content) {
     docRef.update({ category: newCategory });
 
     updateCategories(); // update the categories
-    logger.log(`CUSTOMS: ${message.author.tag} (re)categorised ${command} from ${oldCategory} to ${newCategory}.`);
-    message.reply(`Done, ${command} was moved from ${oldCategory} to ${newCategory}!`);
+    logger.log(`CUSTOMS: ${message.author.tag} (re)categorised ${prefix}${command} from ${oldCategory} to ${newCategory}.`);
+    message.reply(`Done, \`${prefix}${command}\` was moved from ${oldCategory} to ${newCategory}!`);
 }
 
 function remove(message, content) {
     // commands are always lowercase
     const command = content.split(' ')[0].toLowerCase();
+    if (!command) {
+        message.reply('You need to specify a custom command to delete!');
+        return;
+    }
 
     if (!customCommands[command]) {
-        message.reply(`I don't know ${command} whoopsie`);
+        message.reply(`I don't know \`${prefix}${command}\` whoopsie`);
         return;
     }
 
@@ -277,14 +319,17 @@ function remove(message, content) {
     docRef.delete();
 
     updateCategories(); // update the categories
-    logger.log(`CUSTOMS: ${message.author.tag} deleted ${command}.`);
-    message.reply(`Yoink, ${command} has been deleted!`);
+    logger.log(`CUSTOMS: ${message.author.tag} deleted ${prefix}${command}.`);
+    message.reply(`Yoink, \`${prefix}${command}\` has been deleted!`);
 }
 
 function add(message, content) {
     // commands are always lowercase
     const command = content.split(' ')[0].toLowerCase();
-
+    if (!command) {
+        message.reply('You need to specify a command name and a bot response for it!');
+        return;
+    }
     if (command.length > 20) {
         message.reply('Custom command names have an arbitrary limit of 20 characters!');
         return;
@@ -297,6 +342,10 @@ function add(message, content) {
     }
 
     const cmdReply = content.slice(command.length + 1).trim();
+    if (!cmdReply) {
+        message.reply(`You need to specify a bot response for \`${prefix}${command}\`!`);
+        return;
+    }
     if (cmdReply.length > 200) {
         message.reply('Custom command reactions have an arbitrary limit of 200 characters!');
         return;
@@ -310,8 +359,8 @@ function add(message, content) {
     docRef.set(newCommand);
 
     updateCategories(); // update the categories
-    logger.toChannel(`CUSTOMS: ${message.author.tag} added ${command} with reply:\`\`\`\n${cmdReply}\`\`\``);
-    logger.toConsole(`CUSTOMS: ${message.author.tag} added ${command} with reply:\n${cmdReply}`);
+    logger.toChannel(`CUSTOMS: ${message.author.tag} added ${prefix}${command} with reply:\`\`\`\n${cmdReply}\`\`\``);
+    logger.toConsole(`CUSTOMS: ${message.author.tag} added ${prefix}${command} with reply:\n${cmdReply}`);
     message.reply('Done!');
 }
 
