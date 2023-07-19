@@ -1,4 +1,4 @@
-1688010722844
+1689726566447
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -175,6 +175,7 @@ Bacon powder
 Bacterial subculture
 Bad breathalyzer
 Bad fanfiction
+Bad habit remover
 Bad horoscope
 Bad juju
 Bad penny
@@ -1716,10 +1717,10 @@ Hot spot
 Hourglass figure
 House of cards
 'How to be a Monster' guide
-'How to Breed a Hero' manual
-"How to Drain Your Flagon" manual
+“How to Breed a Hero” manual
+“How to Drain Your Flagon” manual
 'How to Serve Heroes' cookbook
-"How to Taunt Monsters" handbook
+“How to Taunt Monsters” handbook
 Hubble Kaleidoscope
 Huckleberry gin
 Hug simulator
@@ -4987,6 +4988,7 @@ Inner Demon
 Innocent Bystander
 Insecurity Guard
 Inside Joker
+Insomni Yak
 Insomni-Yak
 Installation Wizard
 Insufferable Boar
@@ -6814,6 +6816,7 @@ Fig leaf
 Filibuster
 Finger puppets
 Fingertrap
+Finishing bow
 Fire arms
 Fire icicle
 Firewall
