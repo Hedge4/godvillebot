@@ -13,11 +13,6 @@ const DISCORD_EPOCH = 1420070400000; // Discord's epoch, milliseconds
 // channels the bot automatically purges, and the purge settings
 const autoPurged = [
     {
-        channelId: channels.oldLogville,
-        repeatDelay: 12 * (60 * 60 * 1000), // check every 12 hours
-        purgeDelay: 10 * (24 * 60 * 60 * 1000), // only purge older than 10 days
-    },
-    {
         channelId: channels.logville,
         repeatDelay: 12 * (60 * 60 * 1000), // check every 12 hours
         purgeDelay: 10 * (24 * 60 * 60 * 1000), // only purge older than 10 days
@@ -83,6 +78,7 @@ async function purgeMessages(purgeInstance, channel) {
         }
 
     } catch (error) {
+        finished = true; // break out of recursion
         const client = main.getClient();
         const adminChannel = await client.channels.fetch(channels.losAdminos);
         adminChannel.send(`Error purging messages from <#${purgeInstance.channelId}>: ${error}`);
