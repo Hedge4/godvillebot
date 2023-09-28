@@ -218,12 +218,23 @@ const reactionEvents = [
         name: 'Unflip',
         active() { return true; },
         enabled: [channels.botServer.general],
-        chance: 0.2,
+        chance: 0.3,
         triggers: [
             { name: '(╯°□°)╯︵ ┻━┻', isRegex: false },
         ],
         reactions: [
             '┬─┬ノ( º _ ºノ)',
+        ],
+    }, {
+        name: 'Flip',
+        active() { return true; },
+        enabled: [channels.botServer.general],
+        chance: 0.1,
+        triggers: [
+            { name: '┬─┬ノ( º _ ºノ)', isRegex: false },
+        ],
+        reactions: [
+            '(╯°□°)╯︵ ┻━┻',
         ],
     },
 ];
