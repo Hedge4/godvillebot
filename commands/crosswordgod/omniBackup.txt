@@ -1,4 +1,4 @@
-1689726566447
+1696270588283
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -622,6 +622,7 @@ Carbon-dated soda
 Cardboard coffin
 Cardboard shuriken
 Care spray
+Career growth hormone
 Carnivorous thimble
 Carriage of justice
 Carrot and stick gift set
@@ -1406,6 +1407,7 @@ Frequent-fleeing club card
 Fresh lemonaid
 Freudian slip
 Friar alarm
+Fried chicanery
 Friend-zoning permit
 Friendly fire
 Friends filter
@@ -1547,6 +1549,7 @@ Grenade pin
 Grenadine launcher
 Griddle of the Sphinx
 Gridkey
+Griefcase
 Grip on reality
 Grounded broomstick
 Grounds for complaint
@@ -2406,6 +2409,7 @@ One-eyed skull
 One-leaf clover
 One-letter anagram
 One-of-a-kind item
+One-page anthology
 One-sided story
 One-ton wonton
 One-way mirror
@@ -3875,6 +3879,7 @@ Abominable Sandman
 Abracadaver
 Abridged Troll
 Academia Nut
+Access Denier
 Achievement Hunter
 Achilles’ Healer
 Acid Reindeer
@@ -3939,7 +3944,6 @@ Antibody Builder
 Antihero
 Ape of Wrath
 Apex Vegetarian
-Apocalypse
 Apocalypse Cow
 Apocalyptic Bunny
 Aporkalyptic Pig
@@ -4034,6 +4038,7 @@ Barber of Godville
 Bard Against Humanity
 Bard of Prey
 Bardvark
+Bargoyle
 Baristocrat
 Barking Catfish
 Barrel Fish
@@ -4178,6 +4183,7 @@ Bully Mammoth
 Bureau-Cat
 Business Monkey
 Busted Ghost
+Butterfly Monarch
 Butter Troll
 Button Masher
 Buzz Bunny
@@ -4826,6 +4832,8 @@ Hangoverlord
 Hangry Hippo
 Hanker Chief
 Hanna-Barbarian
+Happy Little Accident
+Hare-Less Rabbit
 Harebrained Schemer
 Harlem Gnometrotter
 Harming Bird
@@ -5408,7 +5416,7 @@ Octopus' Guardian
 Octopuss in Boots
 Oddzilla
 Offense Attorney
-Ogre Achiever
+Ogreachiever
 Ogrelord
 Old Town Rogue
 Olfactory Worker
@@ -5687,6 +5695,7 @@ Recurring Foe
 Recycloholic
 Recyclops
 Red Bull
+Red Flagger
 Red Robin Hood
 Red-Handed Thief
 Redaction Hero
@@ -5806,6 +5815,7 @@ Sea Troll
 Search Engineer
 Seashelly
 Seasick Crocodile
+Seasoned Veterinarian
 Secret Satan
 Secretary of Fate
 Secretary of Offense
@@ -6009,6 +6019,7 @@ Steamed Punk
 Steel Rat
 Stem Cellmate
 Stereotypical Villain
+Stigmatador
 Stick Figure
 Stomach Bug
 Stoned Golem
@@ -6063,6 +6074,7 @@ Sycophantom
 Synchronized Swindler
 Syntax Terror
 Synthetic Organism
+System Demon
 Table Turner
 Tackle-U Elmo
 Tactical Joker
@@ -6298,6 +6310,7 @@ Weakest Lynx
 Weather Baboon
 Websurfing Spider
 Wedding Knight
+Well-Oiled Machinist
 Wendidigo
 Were-Panther
 Werebeaver
