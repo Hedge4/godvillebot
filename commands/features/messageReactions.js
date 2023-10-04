@@ -114,6 +114,13 @@ const reactionEvents = {
             'https://tenor.com/view/afraid-scared-spongebob-nightmare-anxious-gif-17742018',
             'https://i.pinimg.com/originals/8f/a8/c2/8fa8c22a2c6ceff2592920c83589bec7.gif',
             'https://images.squarespace-cdn.com/content/v1/59396fee59cc6877bacf5ab5/1666713542891-TZI9IXZQK0RHYXPSGLCA/pumpkins-halloween.gif',
+            'https://tenor.com/view/halloween-anime-cute-girls-twins-gif-26942686',
+            'https://tenor.com/view/halloween-jack-o-lantern-gif-7267670644237174261',
+            'https://tenor.com/view/tonight-see-you-moon-gif-13604557',
+            'https://tenor.com/view/costume-cat-lady-love-fashion-gif-23841593',
+            'https://tenor.com/view/muppets-kermit-fangs-vampire-twilight-gif-22289479',
+            'https://tenor.com/view/happy-halloween-halloween-music-halloween-party-rock-and-roll-gif-12790075',
+            'https://tenor.com/view/halloween-dancing-pumpkin-dancing-pumpkin-character-october31_st-gif-22667829',
         ],
     }, Christmas: {
         active() {
