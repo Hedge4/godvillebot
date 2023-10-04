@@ -1,9 +1,9 @@
 // IMPORTANT
 // No messages older than two weeks can be bulk deleted. This is a Discord limitation.
 
-const { channels } = require('../../configurations/config.json');
-const main = require('../../index');
-const logger = require('../features/logging');
+const { channels } = require('../configurations/config.json');
+const main = require('../index');
+const logger = require('./logging');
 
 const PURGE_LIMIT = 100; // Discord API limit for bulk delete
 const DELAY_LIMIT = 14 * (24 * 60 * 60 * 1000); // Can not delete older than 2 weeks
