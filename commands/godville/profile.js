@@ -200,13 +200,14 @@ async function getGodData(URL, channel) {
     const rx_level = /(?:class="level">)[\s\S]*?(\d+)/;
     const rx_name = /essential_info">[\s\S]*?<h3>([\s\S]*?)</;
     const rx_age = /label">Age(?:[\s\S]+?>){2}([\s\S]+?)</;
-    const rx_gender = /caption">\s*(Hero(?:ine)?)/;
-    const rx_god_gender = /caption">\s*(God(?:ess)?)/;
+    const rx_gender = /id="god"[\s\S]*?(hero(?:ine)?)[\s\S]*?(?:<\/div>)/; // match only inside div
+    const rx_god_gender = /id="god"[\s\S]*?(God(?:dess)?)[\s\S]*?(?:<\/div>)/; // match only inside div
 
     godData.level = rx_level.exec(html)[1];
     godData.name = decodeURI(rx_name.exec(html)[1]).trim();
     godData.age = rx_age.exec(html)[1];
-    godData.gender = rx_gender.exec(html)[1];
+    const heroGender = rx_gender.exec(html)[1];
+    godData.gender = heroGender.charAt(0).toUpperCase() + heroGender.slice(1); // capitalise first letter
     godData.godGender = rx_god_gender.exec(html)[1];
 
 
@@ -313,13 +314,14 @@ async function getGodData(URL, channel) {
 
     // PROGRESS
     const progress = {};
-    const rxBricks = /label">Bricks for Temple[\s\S]*?name">([^<]*)</i;
-    const rxLogs1 = /label">Wood for Ark[\s\S]*?name">([^<]*)</i;
-    const rxLogs2 = /label">Ark Completed at[\s\S]*?name">[^<()]*\((.*?)\)</i;
-    const rxPairs = /label">Twos of Every Kind[\s\S]*?name">[^<()]*\((.*?)\)</i;
-    const rxWords = /label">Words in Book[\s\S]*?name">([^<]*)</i;
-    const rxSavings = /label">Savings[\s\S]*?name">[^<()]*\((.*?)\)</i;
-    const rxSouls = /label">Souls Gathered[\s\S]*?name">([^<]*)</i;
+    const rxBricks = /label">Bricks for Temple[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxLogs1 = /label">Wood for Ark[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxLogs2 = /label">Ark Completed at[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxPairs = /label">Twos of Every Kind[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxWords = /label">Words in Book[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxSavings = /label">Savings[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxSouls = /label">Souls Gathered[\s\S]*?<\/td>[\s\S]*?<\/td>/i;
+    const rxPercentage = /([\d,.\s]+%)/;
 
     progress.bricks = rxBricks.exec(html);
     if (!ark) progress.logs = rxLogs1.exec(html);
@@ -331,8 +333,11 @@ async function getGodData(URL, channel) {
 
     const progressActive = [];
     Object.keys(progress).forEach(key => {
-        const elem = progress[key];
-        if (elem) progressActive.push(`${key}: ${elem[1]}`);
+        if (!progress[key]) return;
+
+        const percentage = rxPercentage.exec(progress[key][0]);
+        if (!percentage) progressActive.push(`${key}: ???`);
+        else progressActive.push(`${key}: ${percentage[1]}`);
     });
 
     let progressString = progressActive.join(', ');

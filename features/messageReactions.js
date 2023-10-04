@@ -1,43 +1,46 @@
 const { channels } = require('../configurations/config.json');
+const logger = require('./logging');
 
 // triggers the bot reacts to, and their possible reactions
-const reactionEvents = [
-    {
-        name: 'Spookmode',
+const reactionEvents = {
+    Spookmode: {
         active() { return (new Date).getMonth() === 9; }, // only in October for Halloween
+        cooldown: 42 * 1000, // 42 seconds
+        alternativeReaction: '🎃',
         disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, '1020381945714200596'],
         triggers: [
-            { name: 'spook', isRegex: false },
-            { name: /\bscar(e|y)/, isRegex: true },
-            { name: 'scary', isRegex: false },
-            { name: 'horror', isRegex: false },
-            { name: 'horrify', isRegex: false },
-            { name: 'terror', isRegex: false },
-            { name: 'terrify', isRegex: false },
-            { name: 'scream', isRegex: false },
-            { name: 'skeleton', isRegex: false },
-            { name: 'creepy', isRegex: false },
-            { name: 'pumpkin', isRegex: false },
-            { name: 'ghost', isRegex: false },
-            { name: 'vampire', isRegex: false },
-            { name: 'werewolf', isRegex: false },
-            { name: 'zombie', isRegex: false },
-            { name: 'fright', isRegex: false },
-            { name: 'halloween', isRegex: false },
-            { name: /\b(be)?witch/, isRegex: true },
-            { name: 'spider', isRegex: false },
-            { name: 'skull', isRegex: false },
-            { name: 'fear', isRegex: false },
-            { name: 'mummy', isRegex: false },
-            { name: 'trick or treat', isRegex: false },
-            { name: 'wicked', isRegex: false },
-            { name: 'soul', isRegex: false },
-            { name: /\bboo\b/, isRegex: true },
-            { name: 'haunt', isRegex: false },
-            { name: /dea(d|th)/, isRegex: true },
-            { name: /\bgermans?\b/, isRegex: true },
-            { name: /\bd?evil\b/, isRegex: true },
-            { name: /\bsatan\b/, isRegex: true },
+            { value: 'spook' },
+            { value: 'monster' },
+            { value: /\bscar(e|y)/, isRegex: true },
+            { value: 'jumpscare' },
+            { value: 'horror' },
+            { value: 'horrify' },
+            { value: 'terror' },
+            { value: 'terrify' },
+            { value: 'scream' },
+            { value: 'skeleton' },
+            { value: 'creepy' },
+            { value: /jack.o.{0,2}lantern/, isRegex: true },
+            { value: 'ghost' },
+            { value: 'vampire' },
+            { value: 'werewolf' },
+            { value: 'zombie' },
+            { value: 'fright' },
+            { value: 'halloween' },
+            { value: /\b(be)?witch/, isRegex: true },
+            { value: 'spider' },
+            { value: 'skull' },
+            { value: 'fear' },
+            { value: 'mummy' },
+            { value: 'trick or treat' },
+            { value: 'wicked' },
+            { value: 'soul' },
+            { value: /\bboo\b/, isRegex: true },
+            { value: 'haunt' },
+            { value: /dea(d|th)/, isRegex: true },
+            { value: /\bgermans?\b/, isRegex: true },
+            { value: /\bd?evil\b/, isRegex: true },
+            { value: /\bsatan\b/, isRegex: true },
         ],
         reactions: [
             'https://c.tenor.com/EaQlLgHY9dwAAAAM/pumpkins-pumpkin.gif',
@@ -96,7 +99,6 @@ const reactionEvents = [
             'https://c.tenor.com/-qYc88iSc9gAAAAM/huey-luey-and-duey-halloween.gif',
             'https://c.tenor.com/_0zRWyx38OYAAAAM/pumpkin-spice.gif',
             'https://c.tenor.com/jNn7kck6cYYAAAAM/the-office.gif',
-            'https://tenor.com/view/pennywise-it-scary-smile-gif-12240248',
             'https://cdn.discordapp.com/attachments/872456115676393512/1024788384692047932/image0.gif',
             'https://cdn.discordapp.com/attachments/872456115676393512/1024788447929577552/image0.gif',
             'https://tenor.com/view/imagen-animada-gif-18874126',
@@ -110,9 +112,17 @@ const reactionEvents = [
             'https://tenor.com/view/heinzel-satanic-ritual-gif-17325845',
             'https://tenor.com/view/skeleton-skull-gif-18854593',
             'https://tenor.com/view/afraid-scared-spongebob-nightmare-anxious-gif-17742018',
+            'https://i.pinimg.com/originals/8f/a8/c2/8fa8c22a2c6ceff2592920c83589bec7.gif',
+            'https://images.squarespace-cdn.com/content/v1/59396fee59cc6877bacf5ab5/1666713542891-TZI9IXZQK0RHYXPSGLCA/pumpkins-halloween.gif',
+            'https://tenor.com/view/halloween-anime-cute-girls-twins-gif-26942686',
+            'https://tenor.com/view/halloween-jack-o-lantern-gif-7267670644237174261',
+            'https://tenor.com/view/tonight-see-you-moon-gif-13604557',
+            'https://tenor.com/view/costume-cat-lady-love-fashion-gif-23841593',
+            'https://tenor.com/view/muppets-kermit-fangs-vampire-twilight-gif-22289479',
+            'https://tenor.com/view/happy-halloween-halloween-music-halloween-party-rock-and-roll-gif-12790075',
+            'https://tenor.com/view/halloween-dancing-pumpkin-dancing-pumpkin-character-october31_st-gif-22667829',
         ],
-    }, {
-        name: 'Christmas',
+    }, Christmas: {
         active() {
             // only active 24-26 December
             const isDecember = (new Date).getMonth() === 11; // 0-based
@@ -120,43 +130,45 @@ const reactionEvents = [
             const correctDays = today >= 24 && today <= 26; // 1-based
             return isDecember && correctDays;
         },
+        cooldown: 42 * 1000, // 42 seconds
+        alternativeReaction: '1040373925407891468',
         disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, '1020381945714200596'],
         triggers: [
-            { name: /\bgermans?\b/, isRegex: true },
-            { name: /\bchrist(mas)?\b/, isRegex: true },
-            { name: 'xmas', isRegex: false },
-            { name: 'holiday', isRegex: false },
-            { name: 'gift', isRegex: false },
-            { name: 'santa', isRegex: false },
-            { name: 'mistletoe', isRegex: false },
-            { name: 'festiv', isRegex: false },
-            { name: 'decoration', isRegex: false },
-            { name: 'holiday', isRegex: false },
-            { name: /\bpresents?\b/, isRegex: true },
-            { name: 'santa', isRegex: false },
-            { name: 'winter wonderland', isRegex: false },
-            { name: 'jolly', isRegex: false },
-            { name: 'celebrat', isRegex: false },
-            { name: 'happy', isRegex: false },
-            { name: 'happiness', isRegex: false },
-            { name: 'carol', isRegex: false },
-            { name: 'jesus', isRegex: false },
-            { name: 'chimney', isRegex: false },
-            { name: 'sleigh', isRegex: false },
-            { name: 'noel', isRegex: false },
-            { name: 'light', isRegex: false },
-            { name: 'stocking', isRegex: false },
-            { name: 'candy cane', isRegex: false },
-            { name: /\beve\b/, isRegex: true },
-            { name: /\bel(f\b|v[^\b\s])/, isRegex: true },
-            { name: 'grinch', isRegex: false },
-            { name: 'snow', isRegex: false },
-            { name: 'reindeer', isRegex: false },
-            { name: 'red nose', isRegex: false },
-            { name: 'saint', isRegex: false },
-            { name: 'sinterklaas', isRegex: false },
-            { name: 'boxing day', isRegex: false },
-            { name: 'mistletoe', isRegex: false },
+            { value: /\bgermans?\b/, isRegex: true },
+            { value: /\bchrist(mas)?\b/, isRegex: true },
+            { value: 'xmas' },
+            { value: 'holiday' },
+            { value: 'gift' },
+            { value: 'santa' },
+            { value: 'mistletoe' },
+            { value: 'festiv' },
+            { value: 'decoration' },
+            { value: 'holiday' },
+            { value: /\bpresents?\b/, isRegex: true },
+            { value: 'santa' },
+            { value: 'winter wonderland' },
+            { value: 'jolly' },
+            { value: 'celebrat' },
+            { value: 'happy' },
+            { value: 'happiness' },
+            { value: 'carol' },
+            { value: 'jesus' },
+            { value: 'chimney' },
+            { value: 'sleigh' },
+            { value: 'noel' },
+            { value: 'light' },
+            { value: 'stocking' },
+            { value: 'candy cane' },
+            { value: /\beve\b/, isRegex: true },
+            { value: /\bel(f\b|v[^\b\s])/, isRegex: true },
+            { value: 'grinch' },
+            { value: 'snow' },
+            { value: 'reindeer' },
+            { value: 'red nose' },
+            { value: 'saint' },
+            { value: 'sinterklaas' },
+            { value: 'boxing day' },
+            { value: 'mistletoe' },
         ],
         reactions: [
             'https://giphy.com/gifs/cute-animal-mood-9JrvLb0fnrn7k1ZjhX',
@@ -203,19 +215,53 @@ const reactionEvents = [
             'https://tenor.com/view/cat-pop-pop-pop-pop-pop-popping-mouth-cap-popping-gif-19400424',
             'https://tenor.com/view/merry-christmas-everyone-santa-clause-south-park-christmas-snow-s23e10-gif-19313199',
         ],
-    }, {
-        name: 'Innocent',
+    }, Innocent: {
         type: 'reaction',
         active() { return true; },
         disabled: [channels.venting, channels.appeals, channels.politicsDebate],
         triggers: [
-            { name: 'innocent', isRegex: false },
+            { value: 'innocent' },
         ],
         reactions: [
-            '1028903377544958114',
+            '1040373925407891468',
+        ],
+    }, Unflip: {
+        active() { return true; },
+        enabled: [channels.botServer.general],
+        chance: 0.3,
+        triggers: [
+            { value: '(╯°□°)╯︵ ┻━┻' },
+        ],
+        reactions: [
+            '┬─┬ノ( º _ ºノ)',
+        ],
+    }, Flip: {
+        active() { return true; },
+        enabled: [channels.botServer.general],
+        chance: 0.1,
+        triggers: [
+            { value: '┬─┬ノ( º _ ºノ)' },
+        ],
+        reactions: [
+            '(╯°□°)╯︵ ┻━┻',
+        ],
+    }, BotMention: {
+        active() { return true; },
+        disabled: [channels.venting, channels.appeals],
+        autoDelete: 5 * 1000, // 5 seconds
+        triggers: [
+            { value: 'goddessbot' },
+            { value: 'godbot' },
+        ],
+        reactions: [
+            'https://media2.giphy.com/media/KDQQcjwU0GBtcOecs9/giphy.gif',
+            'https://media.tenor.com/wt6iR2MLYJAAAAAM/raven-nervous.gif',
+            'https://media.tenor.com/mVPgKMQFIfsAAAAM/looking-around-guilty.gif',
+            'https://66.media.tumblr.com/85649825a5392e8cd3d832a4ed1534f5/tumblr_njpy6zj5by1tq4of6o1_500.gif',
+            'https://www.tingono.com/hs-fs/hubfs/Surprise!.gif',
         ],
     },
-];
+};
 
 
 // react when someoene has a certain trigger in their message
@@ -223,43 +269,80 @@ function messageReactions(message) {
     // no message reactions for messages in which the bot is pinged
     if (/<@!?666851479444783125>/.test(message.content)) return;
 
-    reactionEvents.forEach(e => {
-        testTrigger(e, message);
+    Object.values(reactionEvents).forEach(e => {
+        checkMessage(e, message);
     });
 }
 
-// test whether a message
-function testTrigger(reactionEvent, message) {
-    if (reactionEvent.active()) {
-        // ignore channels where this feature is disabled
-        if (reactionEvent.disabled) {
-            if (reactionEvent.disabled.includes(message.channel.id)) return;
-        } else if (reactionEvent.enabled) {
-            // or the opposite mode, ignore if channel is not enabled
-            if (!reactionEvent.disabled.includes(message.channel.id)) return;
-        }
+// test if this event should be triggered for this message
+function checkMessage(reactionEvent, message) {
+    // return if the event isn't active
+    if (!reactionEvent.active()) return;
 
-        const content = message.content.toLowerCase();
-        if (reactionEvent.triggers.some((e) => {
-
-            const customEmojiRegex = /<[^:>\s]*:[^:>\s]+:\d+>/g; // filter out custom emojis
-            const mentionRegex = /<(?:@(?:!|&)?|#)\d+>/g; // filter out member, person and channel mentions
-            const urlRegex = /(?:ht|f)tps?:\/\/([!#$&-;=?-[\]_a-z~]|%[0-9a-f]{2})+/ig; // filter out links
-            const filteredContent = content.replace(customEmojiRegex, '').replace(mentionRegex, '').replace(urlRegex, '');
-
-            if (e.isRegex) {
-                return e.name.test(filteredContent);
-            } else { return filteredContent.includes(e.name); }
-        })) {
-            // if the message contains the trigger
-            if (reactionEvent.type === 'reaction') {
-                message.react(reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)])
-                    .catch(() => { /* Do nothing */ });
-            } else {
-                message.channel.send(reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)]);
-            }
-        }
+    // ignore channels where this feature is disabled
+    if (reactionEvent.disabled) {
+        if (reactionEvent.disabled.includes(message.channel.id)) return;
+    } else if (reactionEvent.enabled) {
+        // or the opposite mode, ignore if channel is not enabled
+        if (!reactionEvent.enabled.includes(message.channel.id)) return;
     }
+
+    // if the reaction has a specified chance to activate
+    if (reactionEvent.chance && Math.random() > reactionEvent.chance) return;
+
+    // return if the message doesn't contain one of the triggers
+    const content = message.content.toLowerCase();
+    if (!reactionEvent.triggers.some(trigger => testTrigger(trigger, content))) return;
+
+    // if the reaction is on cooldown, return (and apply alternative reaction if set)
+    if (reactionEvent.onCooldown) {
+        if (reactionEvent.alternativeReaction) {
+            message.react(reactionEvent.alternativeReaction)
+                .catch(() => {
+                    logger.log(`ERROR messageReactions: Could not apply alternative (cooldown) reaction ${reactionEvent.alternativeReaction}.`);
+                });
+        }
+        return;
+    }
+
+    // set a new cooldown, if a cooldown is enabled
+    if (reactionEvent.cooldown) {
+        reactionEvent.onCooldown = true;
+        setTimeout(() => {
+            reactionEvent.onCooldown = false;
+        }, reactionEvent.cooldown);
+    }
+
+    // react to the message with either a reaction or a message
+    const chosenReaction = reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)];
+
+    if (reactionEvent.type === 'reaction') {
+        message.react(chosenReaction)
+            .catch(() => {
+                logger.log(`ERROR messageReactions: Could not apply reaction ${chosenReaction}.`);
+            });
+    } else {
+        const autoDelete = chosenReaction.autoDelete || reactionEvent.autoDelete; // object property has priority, falsy if both are undefined
+        const reactionContent = chosenReaction.value || chosenReaction; // value property if object, else it's the string itself
+
+        message.channel.send(reactionContent).then(msg => {
+            // if defined, delete the message after autoDelete milliseconds
+            if (!autoDelete) return;
+            setTimeout(() => {
+                msg.delete().catch(/* do nothing */);
+            }, autoDelete);
+        });
+    }
+}
+
+const customEmojiRegex = /<[^:>\s]*:[^:>\s]+:\d+>/g; // filter out custom emojis
+const mentionRegex = /<(?:@(?:!|&)?|#)\d+>/g; // filter out member, person and channel mentions
+const urlRegex = /(?:ht|f)tps?:\/\/([!#$&-;=?-[\]_a-z~]|%[0-9a-f]{2})+/ig; // filter out links
+function testTrigger(trigger, content) {
+    const filteredContent = content.replace(customEmojiRegex, '').replace(mentionRegex, '').replace(urlRegex, '');
+    if (trigger.isRegex) {
+        return trigger.value.test(filteredContent);
+    } else { return filteredContent.includes(trigger.value); }
 }
 
 module.exports = messageReactions;

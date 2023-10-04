@@ -2,6 +2,7 @@
 // this will crash if they are called before code is executed where the variable they return is declared and defined
 exports.getClient = function() { return client; };
 exports.getGodData = function() { return godData; };
+exports.getUserData = function() { return userData; };
 
 // discord connection setup, bot login is at bottom of file
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
@@ -40,6 +41,7 @@ const funModule = require('./commands/fun/fun.js');
 const usefulModule = require('./commands/useful/useful.js');
 const moderatorModule = require('./commands/moderator/moderator.js');
 const crosswordModule = require('./commands/crosswordgod/crosswordgod.js');
+const customCommands = require('./commands/customs');
 
 // functions/commands (partly) separate from the main modules
 const logger = require('./features/logging.js');
@@ -50,6 +52,7 @@ const messageReactions = require('./features/messageReactions.js');
 const randomMessages = require('./features/randomMessages.js');
 const botDMs = require('./features/botDMs.js');
 const chatContest = require('./features/chatContest.js');
+const autoPurge = require('./features/autoPurge');
 const daily = require('./commands/godpower/daily.js');
 const suggest = require('./commands/useful/suggest.js');
 const block = require('./commands/moderator/block.js');
@@ -78,6 +81,8 @@ const godData = db.collection('data').doc('gods');
 const limitedCommandsData = db.collection('data').doc('limited uses');
 const blockedData = db.collection('data').doc('blocked');
 const plannedEvents = db.collection('data').doc('schedule');
+const customCommandsCollection = db.collection('customCommands');
+customCommands.setup(customCommandsCollection);
 */
 
 // set up our globals because stuff being undefined sucks
@@ -160,8 +165,9 @@ client.on('ready', () => {
     setTimeout(daily.reset, delay2, limitedCommandsData);
     setTimeout(crosswordTimers.newsPing, delay3);
     botDMs.checkDMContest(client);
-    chatContest.startupCheck(client, userData);
+    chatContest.startupCheck();
     reactionRoles.load(client);
+    autoPurge.setup();
     randomMessages(client);
 
     // load data such as the newspaper and the omnibus list
@@ -215,7 +221,7 @@ client.on('messageCreate', (message) => {
         giveXP(message, userData, Discord, client);
 
         // see if a message applies for the chat contest
-        chatContest.newMessage(message, client, userData);
+        chatContest.newMessage(message);
 
         // react to a message if it contains a certain (active) trigger
         messageReactions(message);
@@ -309,6 +315,9 @@ client.on('messageCreate', (message) => {
                     }
                 }
             }
+
+            // check for custom commands
+            customCommands.run(message, cmd, content);
         }
 
         // respond when the bot is in a server it shouldn't be in
@@ -319,7 +328,7 @@ client.on('messageCreate', (message) => {
     if (message.guild.id == serversServed.botServer) {
         // handle accepting or rejecting suggestions in the bot's suggestion/log server
         if (message.channel.id === channels.botServer.suggestions) {
-            return suggest.handleMessage(message, client, Discord, userData);
+            return suggest.handleMessage(message, client);
         }
 
         // handle messages that should be sent via the bot to a specific channel/user
@@ -337,7 +346,7 @@ client.on('messageDelete', deletedMessage => {
     if (deletedMessage.partial) return; // we don't do anything with this and it'll crash the next line
     if (deletedMessage.author.bot) { return; } // when removing this add it to chatContest.deleteMessage()
 
-    chatContest.deleteMessage(deletedMessage, client);
+    chatContest.deleteMessage(deletedMessage);
 });
 
 // handle reactions added to (cached) messages

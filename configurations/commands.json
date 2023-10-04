@@ -31,7 +31,7 @@
     ],
 
     "fun": [
-        ["hug", ["hugs"]],
+        ["hug", []],
         ["minesweeper", []],
         ["bubblewrap", []],
         ["randomnick", ["nick", "nickname", "changenick", "changenickname", "randomnickname"]],

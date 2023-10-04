@@ -1,4 +1,6 @@
+const { EmbedBuilder } = require('discord.js');
 const { channels, botOwners, botName } = require('../../configurations/config.json');
+const getters = require('../../index');
 const logger = require('../../features/logging.js');
 const getUsers = require('../../features/getUsers.js');
 
@@ -26,18 +28,18 @@ async function suggest(client, message, content) {
 }
 
 // detect a message in the suggestion/log server. index.js already checks for the right channel
-function onMessage(message, client, Discord, userData) {
+function onMessage(message, client) {
     if (Object.values(botOwners).includes(message.author.id)) {
         if (message.content.toLowerCase().startsWith('accept')) {
-            return accept(message, client, Discord, userData);
+            return accept(message, client);
         }
         if (message.content.toLowerCase().startsWith('reject')) {
-            return reject(message, client, Discord);
+            return reject(message, client);
         }
     }
 }
 
-async function accept(message, client, Discord, userData) {
+async function accept(message, client) {
     message.delete(); // always delete the accept/reject command
 
     if (message.content.length > 1000) {
@@ -109,6 +111,7 @@ async function accept(message, client, Discord, userData) {
             break;
     }
     if (userFound) {
+        const userData = getters.getUserData();
         const userDoc = await userData.get();
         const User = {};
         if (userDoc.data()[user.id] === undefined) {
@@ -128,7 +131,7 @@ async function accept(message, client, Discord, userData) {
         goldEarnedMsg = `I couldn't find a user with username ${username}, so they missed out on ${goldEarned} gold :(`;
     }
 
-    const acceptedEmbed = new Discord.EmbedBuilder()
+    const acceptedEmbed = new EmbedBuilder()
         .setTitle('<:i_accepted:700766526713888849> Suggestion content:')
         .setColor(0xaafb1a) // light blue
         .setDescription(suggestion)
@@ -144,7 +147,7 @@ async function accept(message, client, Discord, userData) {
     botChannel.send({ content: `${author} accepted :white_check_mark: a suggestion by ${username}:`, embeds: [acceptedEmbed] });
 }
 
-async function reject(message, client, Discord) {
+async function reject(message, client) {
     message.delete(); // always delete the accept/reject command
 
     if (message.content.length > 1000) {
@@ -189,7 +192,7 @@ async function reject(message, client, Discord) {
     }
     const author = message.author.tag; // person who accepted/rejected the suggestion
 
-    const acceptedEmbed = new Discord.EmbedBuilder()
+    const acceptedEmbed = new EmbedBuilder()
         .setTitle('<:i_rejected:700766050345549884> Suggestion content:')
         .setColor(0xce4321) // dark orange
         .setDescription(suggestion)
