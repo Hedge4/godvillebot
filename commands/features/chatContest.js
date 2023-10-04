@@ -1,10 +1,10 @@
-const { clientId } = require('../../configurations/config.json');
+const { clientId, channels } = require('../../configurations/config.json');
 const main = require('../../index');
 const logger = require('../features/logging');
 
 // basic setup for chat contests
 let lastMessage = null, lastWinner = '', chatCombo = 0;
-const chatContestChannel = '313398424911347712';
+const chatContestChannel = channels.generalChat;
 const chatContestTime = 30;
 const checkMaxMessages = 2000;
 let lastKillTimestamp = 0;

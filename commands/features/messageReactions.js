@@ -1,4 +1,4 @@
-const { channels } = require('../../configurations/config.json');
+const { channels, botName, clientId } = require('../../configurations/config.json');
 const logger = require('../features/logging');
 
 // triggers the bot reacts to, and their possible reactions
@@ -250,6 +250,7 @@ const reactionEvents = {
         disabled: [channels.venting, channels.appeals],
         autoDelete: 5 * 1000, // 5 seconds
         triggers: [
+            { value: botName.toLowerCase() },
             { value: 'goddessbot' },
             { value: 'godbot' },
         ],
@@ -267,7 +268,7 @@ const reactionEvents = {
 // react when someoene has a certain trigger in their message
 function messageReactions(message) {
     // no message reactions for messages in which the bot is pinged
-    if (/<@!?666851479444783125>/.test(message.content)) return;
+    if (RegExp(`<@!?${clientId}>`).test(message.content)) return;
 
     Object.values(reactionEvents).forEach(e => {
         checkMessage(e, message);

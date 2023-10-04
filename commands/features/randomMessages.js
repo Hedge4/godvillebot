@@ -1,3 +1,5 @@
+const { channels } = require('../../configurations/config.json');
+
 // triggers the bot reacts to, and their possible reactions
 const messageEvents = {
     GodvilleHalloween: {
@@ -5,7 +7,7 @@ const messageEvents = {
         minDelay: 0.5 * (60 * 1000), // in minutes
         maxDelay: 15 * (60 * 1000),
         autoDelete: 2 * 1000,
-        channelId: '313398424911347712',
+        channelId: channels.generalChat,
         messages: [
             'https://cdn.discordapp.com/attachments/353554102833250305/1025469102912966756/IMG_20220930_140327.jpg',
             'https://cdn.discordapp.com/attachments/313398424911347712/1158945920461844642/IMG_20220930_140729.jpg',
@@ -21,7 +23,7 @@ const messageEvents = {
         minDelay: 0.5 * (60 * 60 * 1000), // in hours
         maxDelay: 18 * (60 * 60 * 1000),
         autoDelete: 4 * 1000,
-        channelId: '313398424911347712',
+        channelId: channels.generalChat,
         messages: [
             'https://cdn.discordapp.com/attachments/353554102833250305/1025469102912966756/IMG_20220930_140327.jpg',
         ],

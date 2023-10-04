@@ -29,7 +29,7 @@ const client = new Client({
 
 // certain variables used in this file
 const { version, updateMsg1, updateMsg2, updateMsg3 } = require('./package.json');
-const { channels, prefix, token, serversServed, botOwners, roles, botName } = require('./configurations/config.json');
+const { channels, prefix, token, serversServed, botOwners, roles, botName, clientId } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator, crossword } = require('./configurations/commands.json');
 
 // load any dependencies here
@@ -333,7 +333,7 @@ client.on('messageCreate', (message) => {
 
 
     // respond with a randomly selected reaction when the bot is pinged
-    if (/<@!?666851479444783125>/.test(message.content)) {
+    if (RegExp(`<@!?${clientId}>`).test(message.content)) {
         return onMention(message, client);
     }
 });
