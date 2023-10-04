@@ -10,6 +10,7 @@ const reactionEvents = {
         disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, '1020381945714200596'],
         triggers: [
             { value: 'spook' },
+            { value: 'monster' },
             { value: /\bscar(e|y)/, isRegex: true },
             { value: 'jumpscare' },
             { value: 'horror' },
@@ -111,6 +112,8 @@ const reactionEvents = {
             'https://tenor.com/view/heinzel-satanic-ritual-gif-17325845',
             'https://tenor.com/view/skeleton-skull-gif-18854593',
             'https://tenor.com/view/afraid-scared-spongebob-nightmare-anxious-gif-17742018',
+            'https://i.pinimg.com/originals/8f/a8/c2/8fa8c22a2c6ceff2592920c83589bec7.gif',
+            'https://images.squarespace-cdn.com/content/v1/59396fee59cc6877bacf5ab5/1666713542891-TZI9IXZQK0RHYXPSGLCA/pumpkins-halloween.gif',
         ],
     }, Christmas: {
         active() {
@@ -235,6 +238,21 @@ const reactionEvents = {
         reactions: [
             '(╯°□°)╯︵ ┻━┻',
         ],
+    }, BotMention: {
+        active() { return true; },
+        disabled: [channels.venting, channels.appeals],
+        autoDelete: 5 * 1000, // 5 seconds
+        triggers: [
+            { value: 'goddessbot' },
+            { value: 'godbot' },
+        ],
+        reactions: [
+            'https://media2.giphy.com/media/KDQQcjwU0GBtcOecs9/giphy.gif',
+            'https://media.tenor.com/wt6iR2MLYJAAAAAM/raven-nervous.gif',
+            'https://media.tenor.com/mVPgKMQFIfsAAAAM/looking-around-guilty.gif',
+            'https://66.media.tumblr.com/85649825a5392e8cd3d832a4ed1534f5/tumblr_njpy6zj5by1tq4of6o1_500.gif',
+            'https://www.tingono.com/hs-fs/hubfs/Surprise!.gif',
+        ],
     },
 };
 
@@ -265,39 +283,48 @@ function checkMessage(reactionEvent, message) {
     // if the reaction has a specified chance to activate
     if (reactionEvent.chance && Math.random() > reactionEvent.chance) return;
 
+    // return if the message doesn't contain one of the triggers
     const content = message.content.toLowerCase();
-    // test whether the message contains one of the triggers
-    if (reactionEvent.triggers.some(trigger => testTrigger(trigger, content))) {
+    if (!reactionEvent.triggers.some(trigger => testTrigger(trigger, content))) return;
 
-        // if the reaction is on cooldown, return (and apply alternative reaction if set)
-        if (reactionEvent.onCooldown) {
-            if (reactionEvent.alternativeReaction) {
-                message.react(reactionEvent.alternativeReaction)
-                    .catch(() => {
-                        logger.log(`ERROR messageReactions: Could not apply alternative (cooldown) reaction ${reactionEvent.alternativeReaction}.`);
-                    });
-            }
-            return;
-        }
-
-        // set a new cooldown, if a cooldown is enabled
-        if (reactionEvent.cooldown) {
-            reactionEvent.onCooldown = true;
-            setTimeout(() => {
-                reactionEvent.onCooldown = false;
-            }, reactionEvent.cooldown);
-        }
-
-        // react to the message with either a reaction or a message
-        if (reactionEvent.type === 'reaction') {
-            const chosenReaction = reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)];
-            message.react(chosenReaction)
+    // if the reaction is on cooldown, return (and apply alternative reaction if set)
+    if (reactionEvent.onCooldown) {
+        if (reactionEvent.alternativeReaction) {
+            message.react(reactionEvent.alternativeReaction)
                 .catch(() => {
-                    logger.log(`ERROR messageReactions: Could not apply reaction ${chosenReaction}.`);
+                    logger.log(`ERROR messageReactions: Could not apply alternative (cooldown) reaction ${reactionEvent.alternativeReaction}.`);
                 });
-        } else {
-            message.channel.send(reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)]);
         }
+        return;
+    }
+
+    // set a new cooldown, if a cooldown is enabled
+    if (reactionEvent.cooldown) {
+        reactionEvent.onCooldown = true;
+        setTimeout(() => {
+            reactionEvent.onCooldown = false;
+        }, reactionEvent.cooldown);
+    }
+
+    // react to the message with either a reaction or a message
+    const chosenReaction = reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)];
+
+    if (reactionEvent.type === 'reaction') {
+        message.react(chosenReaction)
+            .catch(() => {
+                logger.log(`ERROR messageReactions: Could not apply reaction ${chosenReaction}.`);
+            });
+    } else {
+        const autoDelete = chosenReaction.autoDelete || reactionEvent.autoDelete; // object property has priority, falsy if both are undefined
+        const reactionContent = chosenReaction.value || chosenReaction; // value property if object, else it's the string itself
+
+        message.channel.send(reactionContent).then(msg => {
+            // if defined, delete the message after autoDelete milliseconds
+            if (!autoDelete) return;
+            setTimeout(() => {
+                msg.delete().catch(/* do nothing */);
+            }, autoDelete);
+        });
     }
 }
 

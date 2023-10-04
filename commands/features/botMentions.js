@@ -19,11 +19,14 @@ const mentionReactions = [
     'stand still while I tie your shoelaces together!',
     'The desperation is strong in this one.',
     'How long does it take for you to realise that you\'re irrelevant to me?',
-    'You\'re not very well liked, are you?',
     'Nobody summons me without my permission!',
     'It must be difficult for you, exhausting your entire vocabulary in one sentence',
     'shhh... That\'s the sound of no one caring',
     'http://media.tenor.com/4IrGnLvq3B8AAAPo/dont-ping-me-dont-ping-me-every-again.mp4',
+    'https://66.media.tumblr.com/85649825a5392e8cd3d832a4ed1534f5/tumblr_njpy6zj5by1tq4of6o1_500.gif',
+    'https://media.tenor.com/nt19-OsRRY0AAAAM/inside-out-joy.gif',
+    'What\'s up **DISCNAME** :sunglasses:',
+    'https://media.tenor.com/mV75yoDbITYAAAAM/joey-tribbiani-friends.gif',
 ];
 
 const muteReactions = [

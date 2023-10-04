@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.23.1",
+  "version": "5.23.2",
   "updateMsg1": "5.23 Spookmode and Christmas reactions now have a cooldown, and an alternative emoji reaction.",
   "updateMsg2": "5.22 Server logs are now automatically deleted after 10 days.",
   "updateMsg3": "5.21 Added custom commands with categories to GodBot! Try it with `>cc show all`!",
