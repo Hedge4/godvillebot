@@ -422,6 +422,17 @@ client.on('threadCreate', async (threadChannel, newlyCreated) => {
     logger.log(`New thread ${threadChannel.name}/${threadChannel.id} created by ${threadCreator.tag}/${threadChannel.ownerId} in channel ${threadChannel.parent.name}/${threadChannel.parentId}.`);
 });
 
+// handle new members joining and send them a welcome message
+client.on('guildMemberAdd', (member) => {
+    // make sure this is the main Godville server
+    if (member.guild.id !== serversServed.godvilleServer) return;
+
+    const channel = member.guild.channels.cache.get(channels.botville);
+    channel.send(
+        `Welcome to the unofficial Godville Discord server, <@${member.id}>! To get started, please read the <#${channels.rules}> to learn how to access the rest of the server. If you have any issues just let the moderators know and we'll help you as soon as possible.`,
+    );
+});
+
 
 // log in to Discord after any setup is done
 client.login(token);
