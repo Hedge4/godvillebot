@@ -19,6 +19,7 @@
 
     "useful": [
         ["suggest", ["suggestion"]],
+        ["ireadtherules", []],
         ["spoiler", ["sp"]],
         ["code", ["github"]],
         ["ping", ["pong", "latency"]],

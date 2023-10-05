@@ -8,6 +8,7 @@ const reminder = require('./reminder.js');
 const botTime = require('./botTime.js');
 const parseUrl = require('./urlParser.js');
 const selfMute = require('./selfMute.js');
+const ireadtherules = require('./ireadtherules.js');
 
 function redirect(cmd, content, message, client) {
     switch (cmd) {
@@ -31,6 +32,8 @@ function redirect(cmd, content, message, client) {
             return parseUrl(message, content);
         case 'pleasemuteme':
             return selfMute(message, content);
+        case 'ireadtherules':
+            return ireadtherules(message);
         default:
             return message.reply(`The '${cmd}' command does not seem to be correctly set up.`);
     }
