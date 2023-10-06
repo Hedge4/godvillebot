@@ -1,11 +1,13 @@
 const { channels, botName, clientId } = require('../../configurations/config.json');
 const logger = require('../features/logging');
 
+let tableState;
+
 // triggers the bot reacts to, and their possible reactions
 const reactionEvents = {
     Spookmode: {
         active() { return (new Date).getMonth() === 9; }, // only in October for Halloween
-        cooldown: 42 * 1000, // 42 seconds
+        cooldown: { delay: 42 * 1000 }, // 42 seconds
         alternativeReaction: '🎃',
         disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, '1020381945714200596'],
         triggers: [
@@ -35,7 +37,7 @@ const reactionEvents = {
             { value: 'trick or treat' },
             { value: 'wicked' },
             { value: 'soul' },
-            { value: /\bboo\b/, isRegex: true },
+            { value: /\bboo(\b|o)/, isRegex: true },
             { value: 'haunt' },
             { value: /dea(d|th)/, isRegex: true },
             { value: /\bgermans?\b/, isRegex: true },
@@ -130,7 +132,7 @@ const reactionEvents = {
             const correctDays = today >= 24 && today <= 26; // 1-based
             return isDecember && correctDays;
         },
-        cooldown: 42 * 1000, // 42 seconds
+        cooldown: { delay: 42 * 1000 }, // 42 seconds
         alternativeReaction: '1040373925407891468',
         disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, '1020381945714200596'],
         triggers: [
@@ -225,12 +227,36 @@ const reactionEvents = {
         reactions: [
             '1040373925407891468',
         ],
+    }, DoubleFlip: {
+        active(message) {
+            // check channel before changing state
+            if (channels.botServer.general !== message.channel.id) return false;
+
+            // active if (final) state in message is not the same as the current state
+            const oldTableState = tableState;
+            const matches = message.content.match(/(┬─┬|┻━┻)/g);
+            if (!matches) return false; // triggers haven't been checked yet at this point
+            tableState = matches.pop(); // take last occurrence
+            return oldTableState === tableState;
+        },
+        // active() already checks all conditions
+        triggers: [
+            '┬─┬',
+            '┻━┻',
+        ],
+        reactions: [
+            'OI HOW DARE YOU YA DOUBLE-FLIPPIN\' BASTARD',
+        ],
     }, Unflip: {
         active() { return true; },
         enabled: [channels.botServer.general],
         chance: 0.3,
+        executeAfter() {
+            tableState = '┬─┬';
+        },
         triggers: [
-            { value: '(╯°□°)╯︵ ┻━┻' },
+            '┻━┻',
+            // { value: '(╯°□°)╯︵ ┻━┻' },
         ],
         reactions: [
             '┬─┬ノ( º _ ºノ)',
@@ -239,8 +265,12 @@ const reactionEvents = {
         active() { return true; },
         enabled: [channels.botServer.general],
         chance: 0.1,
+        executeAfter() {
+            tableState = '┻━┻';
+        },
         triggers: [
-            { value: '┬─┬ノ( º _ ºノ)' },
+            '┬─┬',
+            // { value: '┬─┬ノ( º _ ºノ)' },
         ],
         reactions: [
             '(╯°□°)╯︵ ┻━┻',
@@ -278,7 +308,7 @@ function messageReactions(message) {
 // test if this event should be triggered for this message
 function checkMessage(reactionEvent, message) {
     // return if the event isn't active
-    if (!reactionEvent.active()) return;
+    if (!reactionEvent.active(message)) return;
 
     // ignore channels where this feature is disabled
     if (reactionEvent.disabled) {
@@ -295,28 +325,30 @@ function checkMessage(reactionEvent, message) {
     const content = message.content.toLowerCase();
     if (!reactionEvent.triggers.some(trigger => testTrigger(trigger, content))) return;
 
-    // if the reaction is on cooldown, return (and apply alternative reaction if set)
-    if (reactionEvent.onCooldown) {
-        if (reactionEvent.alternativeReaction) {
-            message.react(reactionEvent.alternativeReaction)
-                .catch(() => {
-                    logger.log(`ERROR messageReactions: Could not apply alternative (cooldown) reaction ${reactionEvent.alternativeReaction}.`);
-                });
+    if (reactionEvent.cooldown) {
+        // don't execute if reaction (for this channel) is on cooldown
+        if (reactionEvent.cooldown[message.channel.id]) {
+            // apply alternative reaction if set
+            if (reactionEvent.alternativeReaction) {
+                message.react(reactionEvent.alternativeReaction)
+                    .catch(() => {
+                        logger.log(`ERROR messageReactions: Could not apply alternative (cooldown) reaction ${reactionEvent.alternativeReaction}.`);
+                    });
+            }
+            return;
         }
-        return;
+        // set a new cooldown (for this channel)
+        reactionEvent.cooldown[message.channel.id] = true;
+        setTimeout(() => {
+            reactionEvent.cooldown[message.channel.id] = false;
+        }, reactionEvent.cooldown.delay);
     }
 
-    // set a new cooldown, if a cooldown is enabled
-    if (reactionEvent.cooldown) {
-        reactionEvent.onCooldown = true;
-        setTimeout(() => {
-            reactionEvent.onCooldown = false;
-        }, reactionEvent.cooldown);
-    }
+    const chosenReaction = reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)];
+    // execute a function after the reaction, if defined
+    if (reactionEvent.executeAfter) reactionEvent.executeAfter();
 
     // react to the message with either a reaction or a message
-    const chosenReaction = reactionEvent.reactions[Math.floor(Math.random() * reactionEvent.reactions.length)];
-
     if (reactionEvent.type === 'reaction') {
         message.react(chosenReaction)
             .catch(() => {
@@ -340,10 +372,12 @@ const customEmojiRegex = /<[^:>\s]*:[^:>\s]+:\d+>/g; // filter out custom emojis
 const mentionRegex = /<(?:@(?:!|&)?|#)\d+>/g; // filter out member, person and channel mentions
 const urlRegex = /(?:ht|f)tps?:\/\/([!#$&-;=?-[\]_a-z~]|%[0-9a-f]{2})+/ig; // filter out links
 function testTrigger(trigger, content) {
+    const triggerValue = trigger.value || trigger; // value property if object, else 'trigger' is a string
+
     const filteredContent = content.replace(customEmojiRegex, '').replace(mentionRegex, '').replace(urlRegex, '');
     if (trigger.isRegex) {
-        return trigger.value.test(filteredContent);
-    } else { return filteredContent.includes(trigger.value); }
+        return triggerValue.test(filteredContent);
+    } else { return filteredContent.includes(triggerValue); }
 }
 
 module.exports = messageReactions;
