@@ -411,15 +411,27 @@ client.on('threadCreate', async (threadChannel, newlyCreated) => {
     if (!newlyCreated) { return; } // for now we don't do anything with older threads (this shouldn't happen anyway since bot is admin)
     if (!threadChannel.guildId || !Object.values(serversServed).includes(threadChannel.guildId)) { return; } // eww DM or wrong guild
 
-    threadChannel.join().then(joinedChannel => {
-        // make Dyno join the channel too, for moderation
-        joinedChannel.send('<@155149108183695360> quick, bot takeover!').catch(/* do nothing */);
-    }).catch(/* do nothing */);
-    const adminChannel = await client.channels.fetch(channels.losAdminos);
-    const threadCreator = await client.users.fetch(threadChannel.ownerId);
-
+    // log thread creation
     adminChannel.send(`New thread ${threadChannel.name}/<#${threadChannel.id}> created by ${threadCreator.tag}/<@${threadChannel.ownerId}> in channel ${threadChannel.parent.name}/<#${threadChannel.parentId}>.`);
     logger.log(`New thread ${threadChannel.name}/${threadChannel.id} created by ${threadCreator.tag}/${threadChannel.ownerId} in channel ${threadChannel.parent.name}/${threadChannel.parentId}.`);
+
+    threadChannel.join().then(joinedChannel => {
+        // make Dyno join the channel too, for moderation
+        // timeout because Discord API has a bug where it might throw a permissions error if you message too quickly
+        setTimeout(() => {
+            joinedChannel.send('<@155149108183695360> quick, bot takeover!').catch(err => {
+                // log error sending first message (likely API error, or lack of permissions)
+                adminChannel.log(`Error! Couldn't message ${threadChannel.name}/<#${threadChannel.id}> to add Dyno: ${err}`);
+                logger.log(`ERROR: Couldn't message ${threadChannel.name}/${threadChannel.id} to add Dyno: ${err}`);
+            });
+        }, 2000);
+    }).catch(err => {
+        // log errors joining channel (shouldn't happen, but just in case)
+        adminChannel.log(`Error! Couldn't join thread ${threadChannel.name}/<#${threadChannel.id}>: ${err}`);
+        logger.log(`ERROR: Couldn't join thread ${threadChannel.name}/${threadChannel.id}: ${err}`);
+    });
+    const adminChannel = await client.channels.fetch(channels.losAdminos);
+    const threadCreator = await client.users.fetch(threadChannel.ownerId);
 });
 
 // handle new members joining and send them a welcome message
