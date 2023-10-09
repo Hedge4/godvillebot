@@ -2,25 +2,34 @@ const { prefix, botName } = require('../../configurations/config.json');
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const main = require('../../index');
 const logger = require('../features/logging');
+const timers = require('../features/timers');
 const omnibusManager = require('./omnibusManager');
 const parseWords = require('./wordFinder');
+
 const maxWords = 25, maxContent = 400, maxWordSize = 75;
+const disabledAfterReset = 5 * 60 * 1000; // 5 minutes
 
 async function solveWordsRequest(message, content) {
+    // test whether the solver is enabled
+    if (!solverEnabled(message)) return;
+
     // first we check if the provided content is at least somewhat valid
     if (!content.length) {
         // bitch boi why u do dis
-        return message.reply('You need to provide at least one word you want me to solve.');
+        message.reply('You need to provide at least one word you want me to solve.');
+        return;
     } else if (content.length > 400) {
         // that's a lot of letters my man
-        return message.reply(`You can provide at most ${maxContent} characters for this command, but you used ${content.length}`);
+        message.reply(`You can provide at most ${maxContent} characters for this command, but you used ${content.length}`);
+        return;
     }
 
     // provided content becomes an array here, and we check for too many words
     content = content.split(',');
     if (content.length > 25) {
         // yooo dude you like spamming commas or what
-        return message.reply(`This command can solve ${maxWords} at most, but you provided ${content.length}.`);
+        message.reply(`This command can solve ${maxWords} at most, but you provided ${content.length}.`);
+        return;
     }
 
     // check for various mistakes people can make in a word
@@ -63,8 +72,9 @@ async function solveWordsRequest(message, content) {
 
     // fetch the omnibus list from our manager thingy that isn't actually a manager
     const omnibus = omnibusManager.get();
-    if (!omnibus) { // previous line returns null if there is no omnibus list to use
-        return message.reply(`I couldn't download the Omnibus list or find a backup of it. Try refreshing it with \`${prefix}refreshomnibus\`.`);
+    if (!omnibus) {
+        message.reply(`I couldn't download the Omnibus list or find a backup of it. Try refreshing it with \`${prefix}refreshomnibus\`.`);
+        return;
     }
 
     // checks are done, now we update the channel + log that we're getting to work
@@ -101,33 +111,41 @@ async function solveWordsRequest(message, content) {
     solution += '```';
 
     if (solution.length > 1800) {
-        return reply.edit('I found your words, but in total there were too many results for one message.'
+        reply.edit('I found your words, but in total there were too many results for one message.'
             + ' If you try solving for less words, the results will probably fit in one message.');
+        return;
     }
     reply.edit(solution);
 }
 
 async function solveHtmlRequest(message) {
+    // test whether the solver is enabled
+    if (!solverEnabled(message)) return;
+
     // check whether the message has exactly one attachment / swear at user if not
     if (!message.attachments.size) {
-        return message.reply('Your message didn\'t have an attachment! You need to send me the HTML of <https://godvillegame.com/news>,'
+        message.reply('Your message didn\'t have an attachment! You need to send me the HTML of <https://godvillegame.com/news>,'
             + ' or I won\'t have any data about the crossword. You can download the HTML by visiting the page on a computer,'
             + ' and holding Control+S or Command+S. Download the file, and use the command in a message with that attachment.');
+        return;
     }
     if (message.attachments.size > 1) { // nuh uh I just want one
-        return message.reply('You sent multiple attachments, but I only need the HTML of one page!'
+        message.reply('You sent multiple attachments, but I only need the HTML of one page!'
             + ' Please only attach the HTML of <https://godvillegame.com/news> to the command.');
+        return;
     }
     if (message.attachments.first().size > 800000) { // people will definitely try to send weird stuff
-        return message.reply(`This file is surprisingly large for the <https://godvillegame.com/news> page (${message.attachments.first().size} bytes),`
+        message.reply(`This file is surprisingly large for the <https://godvillegame.com/news> page (${message.attachments.first().size} bytes),`
             + ' so please make sure you send a raw HTML file of the correct page. If this is an error, contact the bot owner.');
+        return;
     }
 
     // fetch the omnibus list from our manager thingy that isn't actually a manager
     const omnibus = omnibusManager.get();
     if (!omnibus) { // previous line returns null if there is no omnibus list to use
         logger.log(`${message.author.tag} tried to solve the crossword using an HTML file, but the Omnibus list was missing.`);
-        return message.reply(`I couldn't download the Omnibus list or find a backup of it. Try refreshing it with \`${prefix}refreshomnibus\`.`);
+        message.reply(`I couldn't download the Omnibus list or find a backup of it. Try refreshing it with \`${prefix}refreshomnibus\`.`);
+        return;
     }
 
     const timeSinceUpdate = Date.now() - omnibus.timestamp;
@@ -147,10 +165,11 @@ async function solveHtmlRequest(message) {
         // we don't do any logging in wordFinder.js and just throw errors (finally doing logging in a way that makes sense lol)
         reply.edit(`Something went wrong, and I couldn't find the crossword words in your file!\n${error}`);
         logger.toConsole(`Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`);
-        return logger.toChannel({
+        logger.toChannel({
             content: `Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`,
             files: [{ attachment: message.attachments.first().url, name: message.attachments.first().name }],
         });
+        return;
     }
 
     // BOOM solved
@@ -208,7 +227,7 @@ function solveWord(word, omnibus) {
  */
 function createRegExp(text) {
     // escapes all special characters beside the . (we use that as a wildcard)
-    let regExpString = text.replace(/…/g, '...'); // fuck ellipses
+    let regExpString = text.replace(/…/g, '...'); // three dots might have been autocorrected to an ellipsis
     regExpString = regExpString.replace(/[-[\]{}()*+?,\\^$|#\s]/g, '\\$&');
     regExpString = '^' + regExpString + '$'; // ^ and $ match the beginning and end of a line
     regExpString = regExpString.replace(/\\[ -]/g, '[ -]'); // we don't differentiate between hyphens and spaces
@@ -216,6 +235,22 @@ function createRegExp(text) {
     const regExp = new RegExp(regExpString, 'i'); // i = case insensitive flag
 
     return regExp;
+}
+
+/**
+ * Check whether the solver is disabled because the crossword was just reset.
+ * @param {Discord.Message} message The message to reply to, if disabled
+ * @returns True or false
+ */
+function solverEnabled(message) {
+    const enableTime = timers.getDelay(22, 5 + disabledAfterReset);
+    const disabled = enableTime.hoursFromNow === 0 && enableTime.minutesFromNow <= disabledAfterReset;
+
+    if (!disabled) return true;
+
+    const timestamp = Math.floor(enableTime.goalDate.valueOf() / 1000);
+    message.reply(`This feature will be enabled again <t:${timestamp}:R>.`);
+    return false;
 }
 
 /**
