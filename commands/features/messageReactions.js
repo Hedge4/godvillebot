@@ -17,7 +17,7 @@ const reactionEvents = Object.values({
             const matches = message.content.match(/(┬─+┬|┻━+┻)/g);
             if (!matches) return false; // triggers haven't been checked yet at this point
             tableState = matches.pop(); // take last occurrence
-            return oldTableState === tableState;
+            return oldTableState[0] === tableState[0]; // compare first leg of table so length doesn't matter
         },
         // active() already checks all conditions
         triggers: [
