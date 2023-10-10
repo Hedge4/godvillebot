@@ -314,7 +314,7 @@ function messageReactions(message) {
         if (e.noDoubleReactions && reactionMessageSent) continue;
 
         // checkMessage returns true if a text message was sent
-        reactionMessageSent = reactionMessageSent || checkMessage(e, message);
+        reactionMessageSent = checkMessage(e, message) || reactionMessageSent;
     }
 }
 
