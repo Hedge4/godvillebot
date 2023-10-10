@@ -1,7 +1,7 @@
 const { channels, botName, clientId } = require('../../configurations/config.json');
 const logger = require('../features/logging');
 
-let tableState;
+let tableState = '';
 
 // triggers the bot reacts to, and their possible reactions
 // sorted by priority, as some are deactivated if a higher priority event sent a message
