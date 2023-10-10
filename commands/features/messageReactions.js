@@ -5,7 +5,8 @@ let tableState;
 
 // triggers the bot reacts to, and their possible reactions
 // sorted by priority, as some are deactivated if a higher priority event sent a message
-const reactionEvents = {
+const reactionEvents = Object.values({
+    // object for clarity, but converted to array
     DoubleFlip: {
         active(message) {
             // check channel before changing state
@@ -298,23 +299,23 @@ const reactionEvents = {
             'https://www.tingono.com/hs-fs/hubfs/Surprise!.gif',
         ],
     },
-};
+});
 
 
 // react when someoene has a certain trigger in their message
 function messageReactions(message) {
     let reactionMessageSent;
 
-    Object.values(reactionEvents).forEach(e => {
+    for (const e of reactionEvents) {
         // if true, no reactions for messages in which the bot is pinged
-        if (e.ignoreBotPings && RegExp(`<@!?${clientId}>`).test(message.content)) return;
+        if (e.ignoreBotPings && RegExp(`<@!?${clientId}>`).test(message.content)) continue;
 
         // if true, no text reactions if another text reaction was sent already
-        if (e.noDoubleReactions && reactionMessageSent) return;
+        if (e.noDoubleReactions && reactionMessageSent) continue;
 
         // checkMessage returns true if a text message was sent
         reactionMessageSent = reactionMessageSent || checkMessage(e, message);
-    });
+    }
 }
 
 // test if this event should be triggered for this message
