@@ -4,9 +4,60 @@ const logger = require('../features/logging');
 let tableState;
 
 // triggers the bot reacts to, and their possible reactions
+// sorted by priority, as some are deactivated if a higher priority event sent a message
 const reactionEvents = {
-    Spookmode: {
+    DoubleFlip: {
+        active(message) {
+            // check channel before changing state
+            if (channels.botServer.general !== message.channel.id) return false;
+
+            // active if (final) state in message is not the same as the current state
+            const oldTableState = tableState;
+            const matches = message.content.match(/(┬─+┬|┻━+┻)/g);
+            if (!matches) return false; // triggers haven't been checked yet at this point
+            tableState = matches.pop(); // take last occurrence
+            return oldTableState === tableState;
+        },
+        // active() already checks all conditions
+        triggers: [
+            { value: /┬─+┬/, isRegex: true },
+            { value: /┻━+┻/, isRegex: true },
+        ],
+        reactions: [
+            'OI HOW DARE YOU YA DOUBLE-FLIPPIN\' BASTARD',
+        ],
+    }, Unflip: {
+        active() { return true; },
+        enabled: [channels.botServer.general],
+        chance: 0.3,
+        executeAfter() {
+            tableState = '┬─┬';
+        },
+        triggers: [
+            { value: /┻━+┻/, isRegex: true },
+            // { value: '(╯°□°)╯︵ ┻━┻' },
+        ],
+        reactions: [
+            '┬─┬ノ( º _ ºノ)',
+        ],
+    }, Flip: {
+        active() { return true; },
+        enabled: [channels.botServer.general],
+        chance: 0.1,
+        executeAfter() {
+            tableState = '┻━┻';
+        },
+        triggers: [
+            { value: /┬─+┬/, isRegex: true },
+            // { value: '┬─┬ノ( º _ ºノ)' },
+        ],
+        reactions: [
+            '(╯°□°)╯︵ ┻━┻',
+        ],
+    }, Spookmode: {
         active() { return (new Date).getMonth() === 9; }, // only in October for Halloween
+        ignoreBotPings: true, // no reaction if bot was pinged
+        noDoubleReactions: true, // no reaction if another text reaction was sent already
         cooldown: { delay: 42 * 1000 }, // 42 seconds
         alternativeReaction: '🎃',
         disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, '1020381945714200596'],
@@ -132,6 +183,8 @@ const reactionEvents = {
             const correctDays = today >= 24 && today <= 26; // 1-based
             return isDecember && correctDays;
         },
+        ignoreBotPings: true, // no reaction if bot was pinged
+        noDoubleReactions: true, // no reaction if another text reaction was sent already
         cooldown: { delay: 42 * 1000 }, // 42 seconds
         alternativeReaction: '1040373925407891468',
         disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, '1020381945714200596'],
@@ -225,58 +278,11 @@ const reactionEvents = {
             { value: 'innocent' },
         ],
         reactions: [
-            '1040373925407891468',
-        ],
-    }, DoubleFlip: {
-        active(message) {
-            // check channel before changing state
-            if (channels.botServer.general !== message.channel.id) return false;
-
-            // active if (final) state in message is not the same as the current state
-            const oldTableState = tableState;
-            const matches = message.content.match(/(┬─┬|┻━┻)/g);
-            if (!matches) return false; // triggers haven't been checked yet at this point
-            tableState = matches.pop(); // take last occurrence
-            return oldTableState === tableState;
-        },
-        // active() already checks all conditions
-        triggers: [
-            '┬─┬',
-            '┻━┻',
-        ],
-        reactions: [
-            'OI HOW DARE YOU YA DOUBLE-FLIPPIN\' BASTARD',
-        ],
-    }, Unflip: {
-        active() { return true; },
-        enabled: [channels.botServer.general],
-        chance: 0.3,
-        executeAfter() {
-            tableState = '┬─┬';
-        },
-        triggers: [
-            '┻━┻',
-            // { value: '(╯°□°)╯︵ ┻━┻' },
-        ],
-        reactions: [
-            '┬─┬ノ( º _ ºノ)',
-        ],
-    }, Flip: {
-        active() { return true; },
-        enabled: [channels.botServer.general],
-        chance: 0.1,
-        executeAfter() {
-            tableState = '┻━┻';
-        },
-        triggers: [
-            '┬─┬',
-            // { value: '┬─┬ノ( º _ ºノ)' },
-        ],
-        reactions: [
-            '(╯°□°)╯︵ ┻━┻',
+            '1028903377544958114',
         ],
     }, BotMention: {
         active() { return true; },
+        ignoreBotPings: true, // no reaction if bot was pinged
         disabled: [channels.venting, channels.appeals],
         autoDelete: 5 * 1000, // 5 seconds
         triggers: [
@@ -297,11 +303,17 @@ const reactionEvents = {
 
 // react when someoene has a certain trigger in their message
 function messageReactions(message) {
-    // no message reactions for messages in which the bot is pinged
-    if (RegExp(`<@!?${clientId}>`).test(message.content)) return;
+    let reactionMessageSent;
 
     Object.values(reactionEvents).forEach(e => {
-        checkMessage(e, message);
+        // if true, no reactions for messages in which the bot is pinged
+        if (e.ignoreBotPings && RegExp(`<@!?${clientId}>`).test(message.content)) return;
+
+        // if true, no text reactions if another text reaction was sent already
+        if (e.noDoubleReactions && reactionMessageSent) return;
+
+        // checkMessage returns true if a text message was sent
+        reactionMessageSent = reactionMessageSent || checkMessage(e, message);
     });
 }
 
@@ -337,7 +349,7 @@ function checkMessage(reactionEvent, message) {
             }
             return;
         }
-        // set a new cooldown (for this channel)
+        // set a new cooldown (for this channel) if not on cooldown
         reactionEvent.cooldown[message.channel.id] = true;
         setTimeout(() => {
             reactionEvent.cooldown[message.channel.id] = false;
@@ -365,6 +377,9 @@ function checkMessage(reactionEvent, message) {
                 msg.delete().catch(/* do nothing */);
             }, autoDelete);
         });
+
+        // return true if a (text) reaction was sent
+        return true;
     }
 }
 
