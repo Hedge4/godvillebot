@@ -1,5 +1,5 @@
+const { EmbedBuilder } = require('discord.js');
 const { botName } = require('../../configurations/config.json');
-const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const getters = require('../../index');
 
 function main(message) {
@@ -21,16 +21,29 @@ function main(message) {
         const secondIndex = content.indexOf('}', index);
         if (secondIndex < 0) return sendHelp(message, 'The reply{} tag wasn\'t closed with a curly bracket.');
         replyID = content.slice(index + 6, secondIndex).trim();
+        // remove the reply{} tag, trim both parts, and put them back together with a space in between
         content = content.slice(0, index).trim() + ' ' + content.slice(secondIndex + 1).trim();
     }
 
+    // create embeds specified
     const rawEmbeds = [];
     while (content.trim().indexOf('embed{') >= 0) {
         index = content.trim().indexOf('embed{');
         const secondIndex = content.indexOf('}', index);
         if (secondIndex < 0) return sendHelp(message, 'An embed{} tag wasn\'t closed with a curly bracket.');
         rawEmbeds.push(content.slice(index + 6, secondIndex).trim());
+        // remove the embed{} tag, trim both parts, and put them back together with a space in between
         content = content.slice(0, index).trim() + ' ' + content.slice(secondIndex + 1).trim();
+    }
+
+    // used to send text that would otherwise be changed by Discord
+    while (content.trim().indexOf('{`') >= 0) {
+        index = content.trim().indexOf('{`');
+        const secondIndex = content.indexOf('`}', index);
+        if (secondIndex < 0) return sendHelp(message, 'A {`...`} tag wasn\'t closed properly.');
+        const literalText = content.slice(index + 2, secondIndex);
+        // remove the {`...`} tag, no trim, and replace with everything in between the tags
+        content = content.slice(0, index) + literalText + content.slice(secondIndex + 2);
     }
 
     content = content.trim(); // in case a space was added in front when removing reply{} or embed{} tags in front
@@ -136,7 +149,7 @@ function constructEmbeds(rawEmbeds) {
             }
 
             const client = getters.getClient();
-            const embed = new Discord.EmbedBuilder()
+            const embed = new EmbedBuilder()
                 .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() });
 
             // bob the builder
