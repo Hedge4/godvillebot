@@ -46,7 +46,7 @@ async function showProfile(message, username, godData) {
     try {
         godvilleData = await getGodData(godURL, message.channel);
     } catch (err) {
-        logger.log(`Error while getting god data for ${godURL}! Error: \n` + err);
+        logger.log(`Profile: Error while getting god data for ${godURL}!\n` + err);
         godvilleData = null;
     }
 
@@ -80,7 +80,7 @@ async function showGodvilleProfile(message, godURL) {
     try {
         godvilleData = await getGodData(godURL, message.channel);
     } catch (err) {
-        logger.log(`Error while getting god data for ${godURL}! Error: \n` + err);
+        logger.log(`Profile: Error while getting god data for ${godURL}!\n` + err);
         godvilleData = null;
     }
 
@@ -173,8 +173,16 @@ async function showLink(message, username, client, godData) {
     logger.log(`${message.author.tag} requested the profile URL for god(dess) ${god} AKA ${user.tag} in channel ${message.channel.name}.`);
 }
 
+async function downloadGodPage(URL) {
+    // Promise to timeout after 10 seconds
+    const timeout = 10;
+    const timeoutPromise = new Promise((resolve, reject) => {
+        setTimeout(() => { // this only needs to reject because if it returns in time that means there is an error
+            reject(`Profile: Timed out after ${timeout} seconds while getting data from ${URL}.`);
+        }, timeout * 1000);
+    });
 
-async function getGodData(URL, channel) {
+    // Promise to get the html
     const myFirstPromise = new Promise((resolve, reject) => {
         https.get(URL, (res) => {
             res.on('data', (d) => {
@@ -186,12 +194,27 @@ async function getGodData(URL, channel) {
         });
     });
 
-    let html = '';
-    await myFirstPromise.then((result) => {
-        html = result;
-    }).catch((error) => {
-        logger.log(`Failed to get any html for URL ${URL}. ` + error);
-        channel.send('Could not obtain online data. This is most likely a connection error, or the linked URL is incorrect.');
+    // timeoutPromise rejects after 10 seconds, otherwise this function resolves with the html
+    const res = await Promise.race([myFirstPromise, timeoutPromise])
+        .then((result) => {
+            if (!result) {
+                logger.log(`Profile: Something went wrong when downloading from url ${URL}! No data was received.`);
+                return null;
+            }
+            logger.log(`Profile: Received html from ${URL} successfully.`);
+            return result;
+        }).catch((error) => {
+            throw error;
+        });
+
+    return res;
+}
+
+
+async function getGodData(URL, channel) {
+    const html = await downloadGodPage(URL).catch((error) => {
+        logger.log(`Profile: Failed to get any html for URL ${URL}.\n` + error);
+        channel.send('Could not obtain online data. If the URL is correct, this is most likely a connection error, or I was blocked from accessing the website.');
         return null;
     });
 
