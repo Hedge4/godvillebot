@@ -125,16 +125,22 @@ async function renewNewspaperRequest(message) {
     logger.log(`News: ${message.author.tag} forcefully started the newspaper renewing process in ${message.channel}.`);
     const reply = await message.reply('I\'m working on it...');
 
-    await loadNewspaper(true).then((success) => {
-        if (!success) { // on fail, just let whoever used the command know. loadNewspaper() does the logging already
-            reply.delete();
-            message.reply('Something went wrong while trying to renew the newspaper content. You can check the logs to find out what happened.');
-            return;
-        }
-    });
+    const success = await loadNewspaper(true);
+
+    // on fail, just let whoever used the command know. loadNewspaper() does the logging already
+    if (!success) {
+        const manualRenewFail = 'Something went wrong while trying to renew the newspaper content. You can check the logs to find out what happened, or check the newspaper yourself.\nhttps://godvillegame.com/news';
+        reply.edit(manualRenewFail).catch(() => {
+            message.channel.send(manualRenewFail);
+        });
+        return;
+    }
 
     // we end by sending the newspaper to the channel
-    reply.edit(`<@${message.author.id}>, done! Here is the renewed Godville Times:`);
+    const manualRenewSuccess = `<@${message.author.id}>, done! Here is the renewed Godville Times:`;
+    reply.edit(manualRenewSuccess).catch(() => {
+        message.channel.send(manualRenewSuccess);
+    });
     sendNewspaper(message.channel, true);
 }
 
@@ -143,15 +149,21 @@ async function renewNewspaperAutomatic(channel) {
     const reply = await channel.send('♻️ Renewing my Godville Times summary... ♻️');
     // upper method allready logged that this process is starting
 
-    await loadNewspaper(true).then((success) => {
-        if (!success) {
-            channel.send(`⚠️ Oops! ⚠️ Something went wrong, and I couldn't load the new newspaper edition... You can ask a moderator to force another update with \`${prefix}refreshnews\`.`);
-            return;
-        }
-    });
+    const success = await loadNewspaper(true);
+
+    if (!success) {
+        const autoRenewFail = `⚠️ Oops! ⚠️ Something went wrong, and I couldn't load the new newspaper edition... You can ask a moderator to force another update with \`${prefix}refreshnews\`, or check the newspaper yourself.\nhttps://godvillegame.com/news'`;
+        reply.edit(autoRenewFail).catch(() => {
+            channel.send(autoRenewFail);
+        });
+        return;
+    }
 
     // we end by sending the newspaper to the channel
-    reply.edit('Successfully renewed my Godville Times summary! Here is the new edition: 🗞️');
+    const autoRenewSuccess = 'Successfully renewed my Godville Times summary! Here is the new edition: 🗞️';
+    reply.edit(autoRenewSuccess).catch(() => {
+        channel.send(autoRenewSuccess);
+    });
     sendNewspaper(channel, true);
 }
 
