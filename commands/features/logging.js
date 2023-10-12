@@ -75,12 +75,14 @@ function logBoth(text) {
 
 function logChannel(text) {
     const urlRegex = /https?:\/\/\S+/g;
+    // characters at the end of a sentence shouldn't be part of the URL
+    const urlBreakoffChars = ['\'', '.', '"', '!', '?', ':', ';', ')', ']', '}'];
 
-    // Add <> brackets around URL, preserve final character if it's one of [.'"]
+    // Add <> brackets around URL, preserve final character if it's typically at the end of a sentence
     const result = text.replace(urlRegex, function(match) {
-        // Check if the final character is one of [.'"]
+        // Check if the final character is one in the list
         const finalChar = match.slice(-1);
-        if (['\'', '.', '"'].includes(finalChar)) {
+        if (urlBreakoffChars.includes(finalChar)) {
             match = `<${match.slice(0, -1)}>${finalChar}`;
         } else {
             match = `<${match}>`;
