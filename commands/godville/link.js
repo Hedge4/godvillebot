@@ -10,8 +10,7 @@ function linkProfile(message, link, godData) {
     if (link.startsWith('https://godvillegame.com/gods/')) {
         const godName = link.slice(30).replace(/%20/g, ' '); // the name part can have spaces instead of %20, also for counting characters
         link = 'https://godvillegame.com/gods/' + godName.replace(/ /g, '%20'); // we want %20 instead of spaces in the actual link
-        logger.toConsole(`${message.author.tag} tried to link their account to '${link}'.`);
-        logger.toChannel(`${message.author.tag} tried to link their account to '<${link}>'.`);
+        logger.log(`${message.author.tag} tried to link their account to '${link}'.`);
 
         // test if god name meets Godville naming requirements
         if (/^[A-Z][a-zA-Z0-9- ]{2,29}$/.test(godName)) {

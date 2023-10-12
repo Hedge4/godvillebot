@@ -74,7 +74,21 @@ function logBoth(text) {
 }
 
 function logChannel(text) {
-    channelQueue.enqueue(text);
+    const urlRegex = /https?:\/\/\S+/g;
+
+    // Add <> brackets around URL, preserve final character if it's one of [.'"]
+    const result = text.replace(urlRegex, function(match) {
+        // Check if the final character is one of [.'"]
+        const finalChar = match.slice(-1);
+        if (['\'', '.', '"'].includes(finalChar)) {
+            match = `<${match.slice(0, -1)}>${finalChar}`;
+        } else {
+            match = `<${match}>`;
+        }
+        return match;
+    });
+
+    channelQueue.enqueue(result);
 }
 
 function sendChannel(text) {

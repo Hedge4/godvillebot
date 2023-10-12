@@ -225,11 +225,10 @@ async function downloadOmnibus() {
                 logger.log(`Omnibus: Oops! Something went wrong when downloading from url ${URL}! No data was received.`);
                 return null;
             }
-            logger.toChannel(`Omnibus: Successfully received html from <${URL}>`); // need separate log to prevent an embed
-            logger.toConsole(`Omnibus: Successfully received html from ${URL}`);
+            logger.log(`Omnibus: Successfully received html from ${URL}`);
             return result;
         }).catch((error) => {
-            logger.log(`Omnibus: Oops! Something went wrong when downloading from url ${URL}! Error: ` + error);
+            logger.log(`Omnibus: Oops! Something went wrong when downloading from url ${URL}!\nError: ` + error);
             return null;
         });
 

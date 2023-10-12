@@ -70,7 +70,7 @@ async function main(message, content) {
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() });
 
     message.reply({ embeds: [embed] });
-    logger.log(`${message.author.tag} / ${message.author.id} used the ${prefix}parseUrl command in ${message.channel.name}, for this URL: <${content}>`);
+    logger.log(`${message.author.tag} / ${message.author.id} used the ${prefix}parseUrl command in ${message.channel.name}, for this URL: ${content}`);
 }
 
 module.exports = main;

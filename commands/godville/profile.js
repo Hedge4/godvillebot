@@ -30,8 +30,12 @@ async function showProfile(message, username, godData) {
     const godDoc = await godData.get();
     if (godDoc.data()[user.id] === undefined) {
         if (!self) {
-            return message.reply(`<@${user.id}> hasn't linked their Godville account yet. They can do so using the \`${prefix}link\` command in <#${channels.botville}>.`);
-        } else { return message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#${channels.botville}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``); }
+            message.reply(`<@${user.id}> hasn't linked their Godville account yet. They can do so using the \`${prefix}link\` command in <#${channels.botville}>.`);
+            return;
+        } else {
+            message.reply(`You haven't linked your Godville account yet. You can do that with the following command in <#${channels.botville}>: \`${prefix}link GODNAME\` or \`${prefix}link https://godvillegame.com/gods/GOD_NAME\``);
+            return;
+        }
     }
     const godURL = godDoc.data()[user.id];
     let god = godURL.slice(30);

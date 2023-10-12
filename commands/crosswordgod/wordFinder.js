@@ -151,7 +151,7 @@ async function downloadAttachment(URL) {
 
     const timeoutPromise = new Promise((resolve, reject) => {
         setTimeout(() => { // this only needs to reject because if it returns in time that means there is an error
-            reject(`Error: Timed out after ${timeout} seconds while getting data from <${URL}>.`);
+            reject(`Error: Timed out after ${timeout} seconds while getting data from ${URL}.`);
         }, timeout * 1000);
     });
 
@@ -172,13 +172,11 @@ async function downloadAttachment(URL) {
     const res = await Promise.race([dataPromise, timeoutPromise])
     .then((result) => {
         if (!result) {
-            throw(`Error: Something went wrong when downloading from url <${URL}>! No data was received.`);
+            throw(`Error: Something went wrong when downloading from url ${URL}! No data was received.`);
         }
-        //logger.toChannel(`Successfully received file content from <${URL}>`); // need separate log to prevent automatic embed
-        //logger.toConsole(`Successfully received file content from ${URL}`);
         return result;
     }).catch((error) => {
-        throw(`Error: Something went wrong when downloading from url <${URL}>! Error: ` + error);
+        throw(`Error: Something went wrong when downloading from url ${URL}!\nError: ` + error);
     });
 
     return res;

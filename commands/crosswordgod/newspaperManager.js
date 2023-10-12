@@ -230,11 +230,10 @@ async function downloadNewspaper() {
                 logger.log(`News: Oops! Something went wrong when downloading from url ${URL}! No data was received.`);
                 return null;
             }
-            logger.toChannel(`News: Received html from <${URL}> successfully.`); // need separate log to prevent an embed
-            logger.toConsole(`News: Received html from ${URL} successfully.`);
+            logger.log(`News: Received html from ${URL} successfully.`);
             return result;
         }).catch((error) => {
-            logger.log(`News: Oops! Something went wrong when downloading from url ${URL}! Error: ` + error);
+            logger.log(`News: Oops! Something went wrong when downloading from url ${URL}!\nError: ` + error);
             return null;
         });
 
