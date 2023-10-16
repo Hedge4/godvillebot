@@ -7,7 +7,7 @@ const omnibusManager = require('./omnibusManager');
 const parseWords = require('./wordFinder');
 
 const maxWords = 25, maxContent = 400, maxWordSize = 75;
-const disabledAfterReset = 5 * 60 * 1000; // 5 minutes
+const disabledAfterReset = 5; // in minutes
 
 async function solveWordsRequest(message, content) {
     // test whether the solver is enabled
