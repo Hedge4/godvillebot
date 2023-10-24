@@ -17,39 +17,63 @@ class FakeQueue {
         return sum;
     }
 
-    enqueue(elem) {
-        if (this.#totalLength() + elem.length > maxQueueSize) {
-            // empty queue first if it would become too large
-            this.#empty();
+    async enqueue(logMessage) {
+        let queueEmptied = Promise.resolve();
+
+        // empty queue first if it would become too large
+        if (this.#totalLength() + logMessage.length > maxQueueSize) {
+            queueEmptied = this.#empty();
         }
 
-        if (elem.length > maxQueueSize) {
-            // don't add too queue if the element is too large
-            sendChannel(elem);
-        } else {
-            // add to queue
-            this.#elements.push(elem);
+        // if logMessage is not a string, don't cocatenate content but immediately send as is
+        if (typeof logMessage !== 'string') {
+            // empty queue first if it already has elements
+            if (this.#elements.length > 0) queueEmptied = this.#empty();
+            // await emptying (if emptying started and queueEmptied is now pending)
+            await queueEmptied;
+            queueEmptied = sendChannel(logMessage); // store Promise if we need to await again
+            return;
+        }
 
-            // set clear timer if this is the first element
-            if (this.#elements.length === 1) {
-                // clear queue every x milliseconds
-                this.#timeout = setTimeout(function() {
-                    this.#empty();
-                }.bind(this), queueWaitTime);
-            }
+        // don't queue if the element is too large, send immediately and return
+        if (logMessage.length > maxQueueSize) {
+            // empty queue first if it already has elements
+            if (this.#elements.length > 0) queueEmptied = this.#empty();
+            // await emptying (if emptying started and queueEmptied is now pending)
+            await queueEmptied;
+            queueEmptied = sendChannel(logMessage); // store Promise if we need to await again
+            return;
+        }
+
+        // not too large, so add to queue
+        this.#elements.push(logMessage);
+
+        // set clear timer if this is the first element
+        if (this.#elements.length === 1) {
+            // set timer if not already active to clear queue every x milliseconds
+            this.#timeout = setTimeout(function() {
+                this.#empty();
+            }.bind(this), queueWaitTime);
         }
     }
 
-    #empty() {
+    /**
+     * Empties the queue and sends the messages to the channel.
+     * returns {Promise} - A promise that resolves when the queue is empty.
+     */
+    async #empty() {
         // copy entire array and empty it
-        const logMessage = (this.#elements.splice(0, this.#elements.length)).join('\n');
+        const combinedMessage = (this.#elements.splice(0, this.#elements.length)).join('\n');
         // clear timer in case it wasn't cleared yet
         if (this.#timeout && !this.#timeout._destroyed) {
             clearTimeout(this.#timeout);
         }
 
-        // in case something goes wrong and it has a length of 0
-        if (logMessage) sendChannel(logMessage);
+        // in case queue was empty
+        if (!combinedMessage) return;
+
+        // we can await #empty() function before sending another logMessage
+        await sendChannel(combinedMessage);
     }
 }
 
@@ -61,25 +85,25 @@ const channelQueue = new FakeQueue();
 // if that fails as well, try again after 5 more minutes, et cetera
 // maybe make method for this in index.js instead and just activate that instead - other source would be failed startup
 
-function startup(input) {
-    if (input) {
-        logsChannel = input;
+function startup(channel) {
+    if (channel) {
+        logsChannel = channel;
         started = true;
     }
 }
 
-function logBoth(text) {
-    logConsole(text);
-    logChannel(text);
+function logBoth(logMessage) {
+    logConsole(logMessage);
+    logChannel(logMessage);
 }
 
 /**
  * Takes an object or string and adds it to the queue.
- * @param {Object|String} text - The object or string to be logged.
+ * @param {Object|String} logMessage - The object or string to be logged.
  */
-function logChannel(message) {
-    // get text from object if it's an object
-    const logText = message.content || message;
+function logChannel(logMessage) {
+    // get text from object if it's an object, empty string if there is no text
+    const logText = typeof logMessage === 'string' ? logMessage : logMessage.content || '';
 
     const urlRegex = /https?:\/\/\S+/g;
     // characters at the end of a sentence shouldn't be part of the URL
@@ -98,21 +122,27 @@ function logChannel(message) {
     });
 
     // add to queue
-    if (message.content) {
-        // replace content with result if the message was an object
-        message.content = result;
-        channelQueue.enqueue(message);
-    } else {
+    if (logMessage === 'string') {
+        // replace content with result if the logMessage was an object
         channelQueue.enqueue(result);
+    } else {
+        // result is falsy if logMessage didn't have a property 'content'
+        if (result) logMessage.content = result;
+        channelQueue.enqueue(logMessage);
     }
 }
 
-function sendChannel(text) {
+async function sendChannel(logMessage) {
     if (started) {
-        logsChannel.send(text)
+        // we can await sendChannel() before sending another logMessage
+        // we use Promise.race() to make sure we don't wait forever if something goes wrong
+        await Promise.race([
+            logsChannel.send(logMessage),
+            new Promise(resolve => setTimeout(resolve, queueWaitTime)),
+        ])
             .catch(e => {
                 console.log('ERROR: LOGGER MODULE DOESN\'T LOG TO LOG CHANNEL!!! ' + e);
-                console.log(`Message: ${text}`);
+                console.log(`Message: ${logMessage}`);
             });
     } else {
         // restart or something?
