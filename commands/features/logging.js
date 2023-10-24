@@ -73,13 +73,20 @@ function logBoth(text) {
     logChannel(text);
 }
 
-function logChannel(text) {
+/**
+ * Takes an object or string and adds it to the queue.
+ * @param {Object|String} text - The object or string to be logged.
+ */
+function logChannel(message) {
+    // get text from object if it's an object
+    const logText = message.content || message;
+
     const urlRegex = /https?:\/\/\S+/g;
     // characters at the end of a sentence shouldn't be part of the URL
     const urlBreakoffChars = ['\'', '.', '"', '!', '?', ':', ';', ')', ']', '}'];
 
     // Add <> brackets around URL, preserve final character if it's typically at the end of a sentence
-    const result = text.replace(urlRegex, function(match) {
+    const result = logText.replace(urlRegex, function(match) {
         // Check if the final character is one in the list
         const finalChar = match.slice(-1);
         if (urlBreakoffChars.includes(finalChar)) {
@@ -90,7 +97,14 @@ function logChannel(text) {
         return match;
     });
 
-    channelQueue.enqueue(result);
+    // add to queue
+    if (message.content) {
+        // replace content with result if the message was an object
+        message.content = result;
+        channelQueue.enqueue(message);
+    } else {
+        channelQueue.enqueue(result);
+    }
 }
 
 function sendChannel(text) {
