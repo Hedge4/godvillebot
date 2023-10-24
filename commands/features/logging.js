@@ -103,7 +103,8 @@ function logBoth(logMessage) {
  */
 function logChannel(logMessage) {
     // get text from object if it's an object, empty string if there is no text
-    const logText = typeof logMessage === 'string' ? logMessage : logMessage.content || '';
+    const isPlainString = typeof logMessage === 'string';
+    const logText = isPlainString ? logMessage : logMessage.content || '';
 
     const urlRegex = /https?:\/\/\S+/g;
     // characters at the end of a sentence shouldn't be part of the URL
@@ -122,11 +123,10 @@ function logChannel(logMessage) {
     });
 
     // add to queue
-    if (logMessage === 'string') {
-        // replace content with result if the logMessage was an object
+    if (isPlainString) {
         channelQueue.enqueue(result);
     } else {
-        // result is falsy if logMessage didn't have a property 'content'
+        // result is only truthy if logMessage had a property 'content'
         if (result) logMessage.content = result;
         channelQueue.enqueue(logMessage);
     }
