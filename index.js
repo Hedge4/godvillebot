@@ -412,6 +412,8 @@ client.on('threadCreate', async (threadChannel, newlyCreated) => {
     if (!threadChannel.guildId || !Object.values(serversServed).includes(threadChannel.guildId)) { return; } // eww DM or wrong guild
 
     // log thread creation
+    const adminChannel = await client.channels.fetch(channels.losAdminos);
+    const threadCreator = await client.users.fetch(threadChannel.ownerId);
     adminChannel.send(`New thread ${threadChannel.name}/<#${threadChannel.id}> created by ${threadCreator.tag}/<@${threadChannel.ownerId}> in channel ${threadChannel.parent.name}/<#${threadChannel.parentId}>.`);
     logger.log(`New thread ${threadChannel.name}/${threadChannel.id} created by ${threadCreator.tag}/${threadChannel.ownerId} in channel ${threadChannel.parent.name}/${threadChannel.parentId}.`);
 
@@ -430,8 +432,6 @@ client.on('threadCreate', async (threadChannel, newlyCreated) => {
         adminChannel.log(`Error! Couldn't join thread ${threadChannel.name}/<#${threadChannel.id}>: ${err}`);
         logger.log(`ERROR: Couldn't join thread ${threadChannel.name}/${threadChannel.id}: ${err}`);
     });
-    const adminChannel = await client.channels.fetch(channels.losAdminos);
-    const threadCreator = await client.users.fetch(threadChannel.ownerId);
 });
 
 // handle new members joining and send them a welcome message

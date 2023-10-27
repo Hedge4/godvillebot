@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.24.10",
+  "version": "5.24.11",
   "updateMsg1": "5.24 Ported >ireadtherules from Dyno, and bot now sends welcome messages to new members.",
   "updateMsg2": "5.23 Spookmode and Christmas reactions now have a cooldown, and an alternative emoji reaction.",
   "updateMsg3": "5.22 Server logs are now automatically deleted after 10 days.",
