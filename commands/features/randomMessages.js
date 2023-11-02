@@ -20,12 +20,12 @@ const messageEvents = {
         ],
     }, GodBotIsWatching: {
         active() { return true; },
-        minDelay: 0.5 * (60 * 60 * 1000), // in hours
-        maxDelay: 18 * (60 * 60 * 1000),
+        minDelay: 1 * (60 * 60 * 1000), // in hours
+        maxDelay: 23 * (60 * 60 * 1000),
         autoDelete: 5 * 1000,
         channelId: channels.generalChat,
         messages: [
-            'https://cdn.discordapp.com/attachments/353554102833250305/1025469102912966756/IMG_20220930_140327.jpg',
+            '👀',
         ],
     },
 };

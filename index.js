@@ -208,8 +208,8 @@ client.on('messageCreate', (message) => {
 
         // people without Admin or Deities role need to activate their access to the server first
         if (message.content.toLowerCase().startsWith('?rank')) {
-            if (!message.member.roles.cache.has('313453649315495946') && !message.member.roles.cache.has(roles.admin) && message.guild.id === serversServed.godvilleServer) {
-                return message.reply('Use the `?ireadtherules` command to unlock core server functionality before adding any extra channels!');
+            if (!message.member.roles.cache.has(roles.deities) && !message.member.roles.cache.has(roles.admin) && message.guild.id === serversServed.godvilleServer) {
+                return message.reply(`Use the \`${prefix}ireadtherules\` command to unlock core server functionality before adding any extra channels!`);
             }
         }
 
