@@ -4,10 +4,11 @@ const main = require('../../index');
 const logger = require('../features/logging');
 const timers = require('../features/timers');
 const omnibusManager = require('./omnibusManager');
-const parseWords = require('./wordFinder');
+const extractWords = require('./wordFinder');
 
 const maxWords = 25, maxContent = 400, maxWordSize = 75;
 const disabledAfterReset = 5; // in minutes
+const maxHtmlSize = 200; // in kB
 
 async function solveWordsRequest(message, content) {
     // test whether the solver is enabled
@@ -77,27 +78,17 @@ async function solveWordsRequest(message, content) {
         return;
     }
 
-    // checks are done, now we update the channel + log that we're getting to work
-    const multiple = words.length > 1 ? true : false; // used later for singular/plural forms
-    const timeSinceUpdate = Date.now() - omnibus.timestamp;
-    const daysAgo = ~~(timeSinceUpdate / (24 * 3600 * 1000));
-    const hoursAgo = ~~(timeSinceUpdate % (24 * 3600 * 1000) / (3600 * 1000));
-    const minsAgo = ~~(timeSinceUpdate % (3600 * 1000) / (60 * 1000));
-    // lmao this string below is a nightmare
-    const reply = await message.reply(`Using my ${omnibus.version} version of the Omnibus list from`
-        + ` ${daysAgo} ${quantiseWords(daysAgo, 'day')}, ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and`
-        + ` ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago to get your ${words.length} solution${multiple ? 's' : ''}... 🤔`);
-    logger.log(`${message.author.tag} asked for ${words.length} ${quantiseWords(words.length, 'word')}`
-        + ` to be solved in ${message.channel.name}. Omnibus version used: ${omnibus.version}`);
+    const lastUpdateTexts = lastOmnibusUpdateTexts(omnibus, message, words);
+    const waitMessage = await message.reply(lastUpdateTexts.startText);
+    logger.log(lastUpdateTexts.logText);
+    // we'll add the solved words to this string
+    let solution = lastUpdateTexts.finishText + '```\n';
 
-    // after sending that monster we actually solve the words and send them to the channel along with another monster string
-    let solution = `Done! I tried to solve ${words.length} ${quantiseWords(words.length, 'word')}`
-        + ` using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
-        + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago.` + '```\n';
-
+    // after sending startText we actually solve the words and send them to the channel along with another monster string
     const solvedWords = [];
     words.forEach(word => {
-        solvedWords.push(solveWord(word, omnibus.omnibusEntries));
+        // solveWord() returns an object with an answer property with either the answer or an explanation
+        solvedWords.push(solveWord({ searchString: word }, omnibus.omnibusEntries).answer);
     });
 
     // get the longest word that is equal to or shorter than 21 characters, then use it to create the message
@@ -111,11 +102,11 @@ async function solveWordsRequest(message, content) {
     solution += '```';
 
     if (solution.length > 1800) {
-        reply.edit('I found your words, but in total there were too many results for one message.'
-            + ' If you try solving for less words, the results will probably fit in one message.');
+        waitMessage.edit('I found your words, but in total there were too many results for one message.'
+            + ' If you solve less words or give more information, the results will probably fit in one message.');
         return;
     }
-    reply.edit(solution);
+    waitMessage.edit(solution);
 }
 
 async function solveHtmlRequest(message) {
@@ -134,39 +125,31 @@ async function solveHtmlRequest(message) {
             + ' Please only attach the HTML of <https://godvillegame.com/news> to the command.');
         return;
     }
-    if (message.attachments.first().size > 800000) { // people will definitely try to send weird stuff
-        message.reply(`This file is surprisingly large for the <https://godvillegame.com/news> page (${message.attachments.first().size} bytes),`
-            + ' so please make sure you send a raw HTML file of the correct page. If this is an error, contact the bot owner.');
-        return;
-    }
 
     // fetch the omnibus list from our manager thingy that isn't actually a manager
     const omnibus = omnibusManager.get();
     if (!omnibus) { // previous line returns null if there is no omnibus list to use
-        logger.log(`${message.author.tag} tried to solve the crossword using an HTML file, but the Omnibus list was missing.`);
+        logger.log(`Crossword: ${message.author.tag} tried to solve the crossword using an HTML file, but the Omnibus list was missing.`);
         message.reply(`I couldn't download the Omnibus list or find a backup of it. Try refreshing it with \`${prefix}refreshomnibus\`.`);
         return;
     }
 
-    const timeSinceUpdate = Date.now() - omnibus.timestamp;
-    const daysAgo = ~~(timeSinceUpdate / (24 * 3600 * 1000));
-    const hoursAgo = ~~(timeSinceUpdate % (24 * 3600 * 1000) / (3600 * 1000));
-    const minsAgo = ~~(timeSinceUpdate % (3600 * 1000) / (60 * 1000));
-    const reply = await message.reply('I\'m working on it...');
-    logger.log(`${message.author.tag} used the command to solve the crossword from an HTML file in #${message.channel.name}.`
-        + ` Using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
-        + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago.`);
+    const lastUpdateTexts = lastOmnibusUpdateTexts(omnibus, message);
+    const waitMessage = await message.reply(lastUpdateTexts.startText);
+    logger.log(lastUpdateTexts.logText);
+    const solutionText = lastUpdateTexts.finishText;
 
     // get words from that attachment
-    let wordsObject;
+    let extractedWords;
     try {
-        wordsObject = await parseWords(message.attachments.first()); // need to send the attached file to this function somehow
+        // extractWords() downloads the attachment, extracts words, and throws an error if something goes wrong
+        extractedWords = await extractWords(message.attachments.first(), maxHtmlSize * 1000);
     } catch (error) {
         // we don't do any logging in wordFinder.js and just throw errors (finally doing logging in a way that makes sense lol)
-        reply.edit(`Something went wrong, and I couldn't find the crossword words in your file!\n${error}`);
-        logger.toConsole(`Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`);
+        waitMessage.edit(`Something went wrong, and I couldn't find the crossword words in the first ${maxHtmlSize} kB of your file!\n${error}`);
+        logger.toConsole(`Crossword: Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`);
         logger.toChannel({
-            content: `Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`,
+            content: `Crossword: Something went wrong, and the crossword words couldn't be found in the attachment. ${error}`,
             files: [{ attachment: message.attachments.first().url, name: message.attachments.first().name }],
         });
         return;
@@ -174,20 +157,18 @@ async function solveHtmlRequest(message) {
 
     // BOOM solved
     const solvedHorizontals = [], solvedVerticals = [];
-    wordsObject.Horizontal.forEach(word => { solvedHorizontals.push(solveWord(word, omnibus.omnibusEntries)); });
-    wordsObject.Vertical.forEach(word => { solvedVerticals.push(solveWord(word, omnibus.omnibusEntries)); });
-
+    extractedWords.horizontal.forEach(wordObj => { solvedHorizontals.push(solveWord(wordObj, omnibus.omnibusEntries)); });
+    extractedWords.vertical.forEach(wordObj => { solvedVerticals.push(solveWord(wordObj, omnibus.omnibusEntries)); });
+    const textGrid = createSolutionGrid(solvedHorizontals, solvedVerticals);
 
     const client = main.getClient();
-
     const crosswordEmbed = new Discord.EmbedBuilder()
         .setTitle('Godville Times crossword solution')
-        .setDescription(`Solved using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
-            + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago. If not all words are`
-            + ` solved, add them to the [Omnibus List](https://wiki.godvillegame.com/Omnibus_List) and use command \`${prefix}refreshomnibus\`.\n`)
+        .setDescription(solutionText)
         .addFields([
-            { name: 'Horizontal solutions', value: `||${solvedHorizontals.join('\n')}||` },
-            { name: 'Vertical solutions', value: `||${solvedVerticals.join('\n')}||` },
+            { name: 'Horizontal solutions', value: `||${solvedHorizontals.map(h => `${h.num}D. ${h.answer}`).join('\n')}||` },
+            { name: 'Vertical solutions', value: `||${solvedVerticals.map(v => `${v.num}A. ${v.answer}`).join('\n')}||` },
+            { name: 'Grid solution', value: textGrid },
         ])
         .setColor(0x78de79) // noice green
         .setURL('https://godvillegame.com/news')
@@ -195,25 +176,44 @@ async function solveHtmlRequest(message) {
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() })
         .setTimestamp();
 
-    logger.log(`Finished solving the crossword in ${message.channel.name}.`);
-    reply.edit({ content: 'Here you go!', embeds: [crosswordEmbed] });
+    logger.log(`Crossword: Finished solving the crossword in ${message.channel.name}.`);
+    waitMessage.edit({ content: 'Here you go!', embeds: [crosswordEmbed] });
 }
 
-function solveWord(word, omnibus) {
-    const regExp = createRegExp(word);
+
+/**
+ * Solves a single word using the omnibus list.
+ * @param {object} wordObj An object containing the word to solve and other information
+ * @param {string[]} omnibus The omnibus list to use to search for solutions
+ * @returns The wordObj with the answer and solved properties set
+ */
+function solveWord(wordObj, omnibus) {
+    const regExp = createRegExp(wordObj.searchString);
     const foundWords = [];
-    // we don't have to watch for duplicates here, because the way the omnibus list gets loaded removes all duplicates
+    // omnibus list won't have duplicates, so we can just loop through it
     omnibus.forEach(entry => {
-        if (regExp.test(entry)) { // returns true if we get a match
+        if (regExp.test(entry)) {
+            // add to possible solutions on match
             foundWords.push(entry);
         }
     });
-    if (!foundWords.length) return 'No results found.';
-    if (foundWords.length === 1) return foundWords[0];
-    if (foundWords.length > 20) return '20+ results.'; // Any more than this definitely shouldn't be necessary
-    return `[${foundWords.join(', ')}]`;
-}
 
+    if (!foundWords.length) {
+        wordObj.answer = 'No results found.';
+    } else if (foundWords.length === 1) {
+        wordObj.answer = foundWords[0];
+        wordObj.solved = true;
+    } else if (foundWords.length <= 20) {
+        wordObj.answer = `[${foundWords.join(', ')}]`;
+        wordObj.potentialSolution = foundWords[0];
+    } else {
+        // Any more than this definitely shouldn't be necessary
+        wordObj.answer = '20+ results.';
+        wordObj.potentialSolution = foundWords[0];
+    }
+
+    return wordObj;
+}
 
 /**
  * Creates a regular expression matching the provided word following these rules:
@@ -237,6 +237,64 @@ function createRegExp(text) {
     return regExp;
 }
 
+function createSolutionGrid(solvedHorizontals, solvedVerticals) {
+    const grid = [];
+    const comments = [];
+
+    solvedVerticals.forEach(wordObj => {
+        for (let i = 0; i < wordObj.searchString.length; i++) {
+            // add empty row if it doesn't exist yet
+            if (!grid[wordObj.startY + i]) grid[wordObj.startY + i] = [];
+
+            // add word to grid, or potential solution/unsolved word if it's not solved
+            if (wordObj.solved) {
+                grid[wordObj.startY + i][wordObj.startX] = wordObj.answer[i];
+            } else if (wordObj.potentialSolution) {
+                grid[wordObj.startY + i][wordObj.startX] = wordObj.potentialSolution[i];
+            } else {
+                grid[wordObj.startY + i][wordObj.startX] = wordObj.searchString[i];
+            }
+        }
+        if (!wordObj.solved) comments.push(`${wordObj.num}D: ${wordObj.answer}`);
+    });
+
+    solvedHorizontals.forEach(wordObj => {
+        if (!wordObj.num) wordObj.num = '?';
+        // no need to add empty row, verticals should have added all rows already
+        for (let i = 0; i < wordObj.searchString.length; i++) {
+            // add word to grid, or potential solution/unsolved word if it's not solved
+            if (wordObj.solved) {
+                grid[wordObj.startY][wordObj.startX + i] = wordObj.answer[i];
+            } else if (wordObj.potentialSolution) {
+                grid[wordObj.startY][wordObj.startX + i] = wordObj.potentialSolution[i];
+            } else {
+                grid[wordObj.startY][wordObj.startX + i] = wordObj.searchString[i];
+            }
+        }
+        if (!wordObj.solved) comments.push(`${wordObj.num}A: ${wordObj.answer}`);
+    });
+
+    // convert grid into text message
+    // TODO create image instead, so it can be sent spoilered
+    let gridText = '```fix\n';
+    // add > to top left corner if it's empty, so the first spaces don't get truncated by Discord on mobile
+    if (!grid[0][0]) grid[0][0] = '>';
+
+    // concatenate all cells for each row, then concatenate all rows
+    grid.forEach(row => {
+        for (let i = 0; i < row.length; i++) {
+            // if cell is undefined (whitespace), replace with space
+            gridText += (row[i] || ' ') + ' ';
+        }
+        gridText += '\n';
+    });
+    gridText += '```';
+    if (comments.length) gridText += `\n||${comments.join('\n')}||\n`;
+    gridText += '\nDo you prefer the list of answers, or grid? Let me know!';
+
+    return gridText;
+}
+
 /**
  * Check whether the solver is disabled because the crossword was just reset.
  * @param {Discord.Message} message The message to reply to, if disabled
@@ -251,6 +309,41 @@ function solverEnabled(message) {
     const timestamp = Math.floor(enableTime.goalDate.valueOf() / 1000);
     message.reply(`This feature will be enabled again <t:${timestamp}:R>.`);
     return false;
+}
+
+function lastOmnibusUpdateTexts(omnibus, message, words) {
+    let startText;
+    let logText;
+    let finishText;
+    const timeSinceUpdate = Date.now() - omnibus.timestamp;
+    const daysAgo = ~~(timeSinceUpdate / (24 * 3600 * 1000));
+    const hoursAgo = ~~(timeSinceUpdate % (24 * 3600 * 1000) / (3600 * 1000));
+    const minsAgo = ~~(timeSinceUpdate % (3600 * 1000) / (60 * 1000));
+
+    // if words are not defined, this is a HTML solve request
+    if (words) {
+        const multiple = words.length > 1 ? true : false; // used later for singular/plural forms
+        startText = `Using my ${omnibus.version} version of the Omnibus list from`
+            + ` ${daysAgo} ${quantiseWords(daysAgo, 'day')}, ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and`
+            + ` ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago to get your ${words.length} solution${multiple ? 's' : ''}... 🤔`;
+        logText = `Crossword: ${message.author.tag} asked for ${words.length} ${quantiseWords(words.length, 'word')} to be solved in`
+            + ` ${message.channel.name}. Omnibus version used: ${omnibus.version} from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
+            + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago.`;
+        finishText = `Done! I tried to solve ${words.length} ${quantiseWords(words.length, 'word')}`
+            + ` using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
+            + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago.`;
+    } else {
+        startText = 'I\'m working on it...';
+        logText = `Crossword: ${message.author.tag} used the command to solve the crossword from an HTML file in #${message.channel.name}.`
+            + ` Using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
+            + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago.`;
+        finishText = `Solved using a ${omnibus.version} version of the Omnibus list from ${daysAgo} ${quantiseWords(daysAgo, 'day')},`
+            + ` ${hoursAgo} ${quantiseWords(hoursAgo, 'hour')} and ${minsAgo} ${quantiseWords(minsAgo, 'minute')} ago. If not all words are`
+            + ` solved, add them to the [Omnibus List](https://wiki.godvillegame.com/Omnibus_List) and use command \`${prefix}refreshomnibus\`.\n`;
+    }
+
+    // lmao these strings are nightmares
+    return { startText, logText, finishText };
 }
 
 /**
