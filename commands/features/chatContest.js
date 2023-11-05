@@ -20,7 +20,6 @@ async function onStartup() {
     if (!message) {
         logger.log('The last 20 messages were either retrieved incorrectly, were too old, or were all sent by bots.'
             + ' No chat killing timers were set.');
-        setLastWinner();
         return;
     }
 
