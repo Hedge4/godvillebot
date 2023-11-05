@@ -2,26 +2,43 @@ const { channels } = require('../../configurations/config.json');
 const logger = require('./logging');
 let client;
 
-const roleData = {
+/* example categoryData with explanations:
+message id: {
+    name: category name for display in >getrole command
+    desc: category description for display in >getrole command
+    availableAsCommand: boolean, set availability through >getrole command
+    roles: {
+        reaction id or emote: {
+            roleId: role id as string
+            fullName: role name for display in >getrole command
+            alts: array of alternative names for >getrole command, commands will always be simplified to lowercase without spaces,
+                underscores or dashes, and the role name is automatically added as well
+            desc: role description for >getrole command
+        },
+    },
+}, */
+
+const categoryData = {
     '817245288208007189': {
         name: 'Server related channels',
         desc: 'These channels offer extra features in the server, and aren\'t specifically tailored to one particular topic or interest.',
+        availableAsCommand: true,
         roles: {
             '<:r_godvoice:313795720123514880>': {
                 fullName: 'Eventping',
-                roleName: null,
+                alts: ['event', 'events'],
                 roleId: '801205667565273108',
                 desc: 'Get notified about server events',
             },
             '🎧': {
                 fullName: 'Music bot',
-                roleName: null,
+                alts: ['musicbot'],
                 roleId: '351507395949887488',
-                desc: 'Listen to Youtube via Discord!',
+                desc: 'Listen to music from Youtube via Discord!',
             },
             '<:ms_godvillelogo:313789584720789505>': {
                 fullName: 'Simplify server',
-                roleName: null,
+                alts: ['godvilleonly', 'simplify'],
                 roleId: '1093884657830994032',
                 desc: 'Hide nonessential channels unrelated to Godville.',
             },
@@ -30,195 +47,173 @@ const roleData = {
     '817245315405053994': {
         name: 'Godville related channels',
         desc: 'These channels are about specific features of the game, for in-depth discussion. You have access to these channels by default, but can remove those you\'re not interested in.',
+        availableAsCommand: true,
         roles: {
             '<:t_goldbrick:668184145276436491>': {
                 fullName: 'Arena',
-                roleName: null,
                 roleId: '321586849464188929',
-                desc: '',
+                desc: 'Get arena advice, or organise a fight',
             },
             '1️⃣': {
                 fullName: 'Arenaping',
-                roleName: null,
                 roleId: '385257763649093633',
                 desc: 'Schedule arena fights',
             },
             '2️⃣': {
                 fullName: 'Sparping',
-                roleName: null,
                 roleId: '901969781589176330',
+                alts: ['spar', 'sparring', 'spars'],
                 desc: 'Schedule friendly sparring matches',
             },
             '<:t_book:668225252999954442>': {
                 fullName: 'Datamining',
-                roleName: null,
+                alts: ['data', 'datamine'],
                 roleId: '653672864712491019',
-                desc: '',
+                desc: 'Help with datamining, or book progress',
             },
             '<:t_log:668185664650739723>': {
-                fullName: 'Dungeoning and digging',
-                roleName: null,
-                alts: ['dungeon', 'dig', 'dungeoning', 'digging', 'dungeonanddig', 'dungeoninganddigging'],
+                fullName: 'Dungeons and digging',
+                alts: ['dungeon', 'dig', 'dungeons', 'digging', 'dungeonanddig'],
                 roleId: '321643163913551872',
-                desc: '',
+                desc: 'Ask about dungeons, or organise a joint adventure',
             },
             '4️⃣': {
                 fullName: 'Digping',
-                roleName: null,
                 roleId: '403594583864377347',
                 desc: 'Fight a dig boss together',
             },
             '5️⃣': {
                 fullName: 'Dungeonping',
-                roleName: null,
                 roleId: '385257678936473600',
                 desc: 'Find a team to dungeon with',
             },
             '8️⃣': {
                 fullName: 'Basementping',
-                roleName: null,
                 roleId: '1018664221115940895',
                 desc: 'Find a dungeon team to explore the basement',
             },
             '<:i_rejected:700766050345549884>': {
                 fullName: 'Ideaboxing',
-                roleName: null,
+                alts: ['ideabox'],
                 roleId: '321643270515982347',
-                desc: '',
+                desc: 'Talk about the ideabox, and improve your prompts',
             },
             '9️⃣': {
                 fullName: 'Ideaboxping',
-                roleName: null,
                 roleId: '1039853677101453362',
                 desc: 'Get a (daily) word prompt for ideabox inspiration',
             },
             '📰': {
                 fullName: 'Newspaper and crossword',
-                roleName: null,
                 alts: ['news', 'newspaper', 'crossword'],
                 roleId: '429354829266288661',
-                desc: '',
+                desc: 'Discuss the news, and get crossword help',
             },
             '6️⃣': {
                 fullName: 'Newsping',
-                roleName: null,
                 roleId: '677288625301356556',
                 desc: 'Get a daily newspaper reminder',
             },
             '<:t_ark:668206710413852730>': {
                 fullName: 'Sailing',
-                roleName: null,
+                alts: ['sail', 'sails'],
                 roleId: '321643133983260676',
-                desc: '',
+                desc: 'Ask for sailing advice or discuss sail adventures',
             },
             '7️⃣': {
                 fullName: 'Sailping',
-                roleName: null,
                 roleId: '385257725845831682',
-                desc: 'Ensure matching for sails',
+                desc: 'Ensure you match for sailing adventures',
             },
         },
     },
     '817245331095158817': {
         name: 'Miscellaneous channels',
         desc: 'These channels are about specific topics not related to the server or Godville that you might be interested in.',
+        availableAsCommand: true,
         roles: {
             '⛩️': {
                 fullName: 'Anime and manga',
-                roleName: null,
                 alts: ['anime', 'manga'],
                 roleId: '321022037688582144',
                 desc: '',
             },
             '🎨': {
                 fullName: 'Art and photography',
-                roleName: null,
-                alts: ['art', 'photography'],
+                alts: ['art', 'photography', 'ert'],
                 roleId: '321022003509460992',
                 desc: '',
             },
             '🐿️': {
                 fullName: 'Dogville',
-                roleName: null,
                 alts: ['animals', 'animal'],
                 roleId: '371494991253733377',
                 desc: 'Animal pictures',
             },
             '🍲': {
                 fullName: 'Food and cooking',
-                roleName: null,
                 alts: ['food', 'cooking'],
                 roleId: '418276015480242178',
                 desc: '',
             },
             '🚨': {
                 fullName: 'Memezone',
-                roleName: null,
                 roleId: '321021476352294912',
                 desc: '',
             },
             '🎤': {
                 fullName: 'Music and recordings',
-                roleName: null,
-                alts: ['music', 'recordings'],
+                alts: ['music', 'recordings', 'recording'],
                 roleId: '321021944432689153',
                 desc: '',
             },
             '⚖️': {
                 fullName: 'Philosophy',
-                roleName: null,
                 roleId: '733458541418905603',
                 desc: '',
             },
             '🗞️': {
                 fullName: 'Politics and debate',
-                roleName: null,
                 alts: ['politics', 'debate'],
                 roleId: '321022131083280385',
                 desc: '',
             },
             '📚': {
                 fullName: 'Reading',
-                roleName: null,
                 roleId: '1021573139584524338',
                 desc: '',
             },
             '🏞️': {
                 fullName: 'Sports and nature',
-                roleName: null,
                 alts: ['sports', 'nature'],
                 roleId: '818996395641798686',
                 desc: '',
             },
             '📺': {
                 fullName: 'Tv and movies',
-                roleName: null,
                 alts: ['tv', 'movies'],
                 roleId: '1048575366480023552',
                 desc: '',
             },
             '📢': {
                 fullName: 'Venting and support',
-                roleName: null,
                 alts: ['venting', 'support'],
                 roleId: '322398869524840448',
                 desc: '',
             },
             '🎮': {
                 fullName: 'Videogames',
-                roleName: null,
                 roleId: '325190743608131584',
                 desc: '',
             },
             '<:cbc_kittyhug:669704540433416192>': {
                 fullName: 'Wholesome content',
-                roleName: null,
+                alts: ['wholesome'],
                 roleId: '734018519443701770',
                 desc: '',
             },
             '✍️': {
                 fullName: 'Writing',
-                roleName: null,
                 roleId: '369320944101097475',
                 desc: '',
             },
@@ -231,7 +226,7 @@ function fetchToggleMessages(clientVar) {
     client = clientVar;
 
     client.channels.fetch(channels.reactionRoles).then(channel => {
-        Object.values(roleData).forEach(msg => {
+        Object.values(categoryData).forEach(msg => {
             channel.messages.fetch(msg);
         });
     });
@@ -245,21 +240,21 @@ async function reactionUpdate(type, reaction, user, message) {
     if (reactionRolesBlocked.includes(message.author.id)) { return; }
 
     // return if category isn't registered
-    if (!roleData[message.id]) {
-        return logger.log(`ReactionRoles: Detected a reaction to a message in <#${channels.reactionRoles}>, but the message with id ${message.id} isn't registered in roleData.`);
+    if (!categoryData[message.id]) {
+        return logger.log(`ReactionRoles: Detected a reaction to a message in <#${channels.reactionRoles}>, but the message with id ${message.id} isn't registered in categoryData.`);
     }
 
-    // the role name in roleData - differs based on if this is a regular or guild emoji
+    // the role name in categoryData - differs based on if this is a regular or guild emoji
     let roleIdentifier;
     if (reaction.emoji.id === null) roleIdentifier = reaction.emoji.name;
     else roleIdentifier = `<:${reaction.emoji.identifier}>`;
-    const roleInfo = roleData[message.id].roles[roleIdentifier];
+    const roleInfo = categoryData[message.id].roles[roleIdentifier];
 
     // return if role isn't registered
     if (!roleInfo) {
         return logger.log(`ReactionRoles: Detected an unknown reaction to one of the messages in <#${channels.reactionRoles}>. The reaction was ${roleIdentifier} by user ${user.tag}.`);
     }
-    const roleId = roleInfo.roleId; // get roleId from roleData based on the identifier
+    const roleId = roleInfo.roleId; // get roleId from categoryData based on the identifier
 
     const guild = reaction.message.guild;
     const memberWhoReacted = await guild.members.fetch(user);
@@ -288,3 +283,4 @@ async function commandUpdate() {
 exports.load = fetchToggleMessages;
 exports.reaction = reactionUpdate;
 exports.command = commandUpdate;
+exports.categories = categoryData;

@@ -28,6 +28,8 @@
         ["remindme", ["remind", "reminder", "rm"]],
         ["bottime", ["bt", "time"]],
         ["url", ["parseurl", "urlparse", "urlparser"]],
+        ["listroles", ["roles", "listrole", "ranks"]],
+        ["getrole", ["getroles", "rank", "role"]],
         ["pleasemuteme", ["plsmuteme", "mutemepls", "mutemeplease", "muteme"]]
     ],
 

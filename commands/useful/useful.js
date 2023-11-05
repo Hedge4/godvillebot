@@ -9,6 +9,7 @@ const botTime = require('./botTime.js');
 const parseUrl = require('./urlParser.js');
 const selfMute = require('./selfMute.js');
 const ireadtherules = require('./ireadtherules.js');
+const getRoles = require('./getRoles.js');
 
 function redirect(cmd, content, message, client) {
     switch (cmd) {
@@ -34,6 +35,10 @@ function redirect(cmd, content, message, client) {
             return selfMute(message, content);
         case 'ireadtherules':
             return ireadtherules(message);
+        case 'listroles':
+            return getRoles.list(message, content);
+        case 'getrole':
+            return getRoles.get(message, content);
         default:
             return message.reply(`The '${cmd}' command does not seem to be correctly set up.`);
     }

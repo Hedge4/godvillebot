@@ -57,6 +57,7 @@ const daily = require('./commands/godpower/daily');
 const suggest = require('./commands/useful/suggest');
 const block = require('./commands/moderator/block.js');
 const reactionRoles = require('./commands/features/reactionRoles.js');
+const getRoles = require('./commands/useful/getRoles.js');
 const help = require('./commands/help');
 const newspaper = require('./commands/crosswordgod/newspaperManager.js');
 const omnibus = require('./commands/crosswordgod/omnibusManager.js');
@@ -163,16 +164,17 @@ client.on('ready', () => {
     botDMs.checkDMContest(client);
     chatContest.startupCheck();
     reactionRoles.load(client);
+    getRoles.setup(client);
     autoPurge.setup();
     randomMessages(client);
 
     // load data such as the newspaper and the omnibus list
     logger.log('OmniBackup: Trying to load the Omnibus backup file...'); // newline for separation
-    omnibus.loadBackup(); // loads the online omnibus list and its backup .txt file
+    omnibus.loadBackup(); // load the omnibus list's backup .txt file
     logger.log('News: Trying to load today\'s Godville Times...');
     newspaper.load(false); // 'false' disables logging
     logger.log('Omnibus: Trying to download and parse the Omnibus list from online...');
-    omnibus.loadOmnibus(); // loads the online omnibus list and its backup .txt file
+    omnibus.loadOmnibus(); // downloads the current omnibus list from online
 });
 
 
