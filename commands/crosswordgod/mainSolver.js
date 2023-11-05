@@ -243,33 +243,35 @@ function createSolutionGrid(solvedHorizontals, solvedVerticals) {
 
     solvedVerticals.forEach(wordObj => {
         for (let i = 0; i < wordObj.searchString.length; i++) {
-            // add empty row if it doesn't exist yet
-            if (!grid[wordObj.startY + i]) grid[wordObj.startY + i] = [];
+            // add either the solved word, the potential solution, or unsolved word
+            const valueToAdd = wordObj.solved
+                ? wordObj.answer[i]
+                : wordObj.potentialSolution
+                    ? wordObj.potentialSolution[i]
+                    : wordObj.searchString[i];
 
-            // add word to grid, or potential solution/unsolved word if it's not solved
-            if (wordObj.solved) {
-                grid[wordObj.startY + i][wordObj.startX] = wordObj.answer[i];
-            } else if (wordObj.potentialSolution) {
-                grid[wordObj.startY + i][wordObj.startX] = wordObj.potentialSolution[i];
-            } else {
-                grid[wordObj.startY + i][wordObj.startX] = wordObj.searchString[i];
-            }
+            // add empty row if it doesn't exist yet
+            const row = wordObj.startY + i;
+            if (!grid[row]) grid[row] = [];
+            // add value using uppercase for better readability
+            grid[row][wordObj.startX] = valueToAdd.toUpperCase();
         }
         if (!wordObj.solved) comments.push(`${wordObj.num}D: ${wordObj.answer}`);
     });
 
     solvedHorizontals.forEach(wordObj => {
         if (!wordObj.num) wordObj.num = '?';
-        // no need to add empty row, verticals should have added all rows already
         for (let i = 0; i < wordObj.searchString.length; i++) {
-            // add word to grid, or potential solution/unsolved word if it's not solved
-            if (wordObj.solved) {
-                grid[wordObj.startY][wordObj.startX + i] = wordObj.answer[i];
-            } else if (wordObj.potentialSolution) {
-                grid[wordObj.startY][wordObj.startX + i] = wordObj.potentialSolution[i];
-            } else {
-                grid[wordObj.startY][wordObj.startX + i] = wordObj.searchString[i];
-            }
+            // add either the solved word, the potential solution, or unsolved word
+            const valueToAdd = wordObj.solved
+                ? wordObj.answer[i]
+                : wordObj.potentialSolution
+                    ? wordObj.potentialSolution[i]
+                    : wordObj.searchString[i];
+
+            // no need to add empty row, verticals should have added all rows already
+            // add value using uppercase for better readability
+            grid[wordObj.startY][wordObj.startX + i] = valueToAdd.toUpperCase();
         }
         if (!wordObj.solved) comments.push(`${wordObj.num}A: ${wordObj.answer}`);
     });
@@ -286,7 +288,8 @@ function createSolutionGrid(solvedHorizontals, solvedVerticals) {
             // if cell is undefined (whitespace), replace with space
             gridText += (row[i] || ' ') + ' ';
         }
-        gridText += '\n';
+        // replace last added space with newline
+        gridText = gridText.slice(0, -1) + '\n';
     });
     gridText += '```';
     if (comments.length) gridText += `\n||${comments.join('\n')}||\n`;

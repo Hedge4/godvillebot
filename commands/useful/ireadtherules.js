@@ -29,7 +29,7 @@ async function main(message) {
 
         + `\n\n<:r_godvoice:313795720123514880> Consider changing your server nickname to your godname, so people can recognise you more easily! Want to link your Godville profile to your Discord? Use \`${prefix}link\` followed by the URL to your Godville profile or your godname. Check the other commands our custom bot has with the \`${prefix}help\` command!`
 
-        + '\n\n<:ms_milestone:441043753088712704> Enjoy the server! <:ms_gv_logo:313789584720789505>`',
+        + '\n\n<:ms_milestone:441043753088712704> Enjoy the server! <:ms_gv_logo:313789584720789505>',
     );
 
     if (rolesFailed) {
