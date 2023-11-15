@@ -7,9 +7,12 @@ async function main(attachment, maxByteSize) {
         throw (`Error: I couldn't download any content from the file '${attachment.name}' you provided.`);
     }
 
-    const [grid, wordStarts] = getGridFromFile(fileContent);
+    const { grid, wordStarts, gvDate } = getGridFromFile(fileContent);
 
-    return getWordsFromGrid(grid, wordStarts);
+    return {
+        ...getWordsFromGrid(grid, wordStarts),
+        gvDate,
+    };
 }
 
 function getGridFromFile(html) {
@@ -22,10 +25,14 @@ function getGridFromFile(html) {
             + ' 3️⃣ The HTML layout of the crossword was changed, and I can\'t detect it anymore.');
     }
 
+    // get and store Godville date
+    const dateRegex = /id="date"[^>]*?>[^\d<]*?(\d+)[^\d<]*?</;
+    const gvDate = dateRegex.exec(html)?.[1];
+
     // this returns all table rows, and all sub-matches which are the table d's (what is td short for?)
     const rowsRegex = /<tr>[\s\S]*?<\/tr>/g;
     const elemsRegex = /<td class="[^c][\s\S]*?<\/td>/g; // matches all elements except cc_wrap class on the side
-    const numRegex = /class="num">(\d)<\/div>/;
+    const numRegex = /class="num">(\d+)<\/div>/;
     const rows = [...table[0].matchAll(rowsRegex)]; // match all rows in <table />, and convert to array
     if (!rows.length) {
         throw ('Error: I found the crossword in your file, but couldn\'t find any table rows. Either something went wrong with your download,'
@@ -86,7 +93,7 @@ function getGridFromFile(html) {
     }
 
     // woohooo we have built a grid
-    return [grid, wordStarts];
+    return { grid, wordStarts, gvDate };
 }
 
 function getWordsFromGrid(grid, wordStarts) {

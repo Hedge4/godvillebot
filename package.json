@@ -17,6 +17,7 @@
     "node": ">=16.13.2"
   },
   "dependencies": {
+    "canvas": "^2.11.2",
     "discord.js": "~14.6.0",
     "find": "~0.3.0",
     "firebase-admin": "^11.4.1",

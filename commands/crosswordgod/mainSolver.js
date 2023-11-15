@@ -1,11 +1,13 @@
 const { prefix, botName } = require('../../configurations/config.json');
-const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
+const { MessageAttachment, EmbedBuilder } = require('discord.js');
+const { createCanvas } = require('canvas');
 const main = require('../../index');
 const logger = require('../features/logging');
 const timers = require('../features/timers');
 const omnibusManager = require('./omnibusManager');
 const extractWords = require('./wordFinder');
 
+const imageCellSize = 30;
 const maxWords = 25, maxContent = 400, maxWordSize = 75;
 const disabledAfterReset = 5; // in minutes
 const maxHtmlSize = 500; // in kB
@@ -156,19 +158,29 @@ async function solveHtmlRequest(message) {
     }
 
     // BOOM solved
+    const gvDate = extractedWords.gvDate;
     const solvedHorizontals = [], solvedVerticals = [];
     extractedWords.horizontal.forEach(wordObj => { solvedHorizontals.push(solveWord(wordObj, omnibus.omnibusEntries)); });
     extractedWords.vertical.forEach(wordObj => { solvedVerticals.push(solveWord(wordObj, omnibus.omnibusEntries)); });
-    const textGrid = createSolutionGrid(solvedHorizontals, solvedVerticals);
+    const { grid, comments } = createSolutionGrid(solvedHorizontals, solvedVerticals);
+    const textGrid = createSolutionText(grid);
+    const image = createSolutionImage(grid).catch(error => {
+        logger.toConsole(`Crossword: Something went wrong while creating the image. ${error}`);
+        logger.toChannel({
+            content: `Crossword: Something went wrong while creating the image. ${error}`,
+            files: [{ attachment: message.attachments.first().url, name: message.attachments.first().name }],
+        });
+    });
+    const commentsText = comments.length ? `||${comments.join('\n')}||` : '';
+    // if (comments.length) gridText += `\n||${comments.join('\n')}||\n`;
 
     const client = main.getClient();
-    const crosswordEmbed = new Discord.EmbedBuilder()
+    const crosswordEmbed = new EmbedBuilder()
         .setTitle('Godville Times crossword solution')
         .setDescription(solutionText)
         .addFields([
             { name: 'Horizontal solutions', value: `||${solvedHorizontals.map(h => `${h.num}D. ${h.answer}`).join('\n')}||` },
             { name: 'Vertical solutions', value: `||${solvedVerticals.map(v => `${v.num}A. ${v.answer}`).join('\n')}||` },
-            { name: 'Grid solution', value: textGrid },
         ])
         .setColor(0x78de79) // noice green
         .setURL('https://godvillegame.com/news')
@@ -176,8 +188,26 @@ async function solveHtmlRequest(message) {
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() })
         .setTimestamp();
 
+    // add solution image if it exists, otherwise add text grid
+    let imageAttachment;
+    if (image) {
+        const imageName = gvDate ? `Crossword solution - day ${gvDate} ge.png` : 'Crossword solution.png';
+        imageAttachment = new MessageAttachment(image.toBuffer('image/png'), imageName);
+        imageAttachment.setSpoiler(true);
+        // crosswordEmbed.setImage(`attachment://${imageName}`);
+        crosswordEmbed.setImage(imageAttachment.url);
+    } else {
+        crosswordEmbed.addFields([{ name: 'Grid solution', value: textGrid + '\n' + commentsText }]);
+    }
+
+    crosswordEmbed
+        .addFields([
+            { name: '\u200B', value: 'Do you prefer the list of answers, image, or text grid? Let me know!' },
+        ]);
+
     logger.log(`Crossword: Finished solving the crossword in ${message.channel.name}.`);
-    waitMessage.edit({ content: 'Here you go!', embeds: [crosswordEmbed] });
+    if (imageAttachment) waitMessage.edit({ content: 'Here you go!', files: [imageAttachment], embeds: [crosswordEmbed] });
+    else waitMessage.edit({ content: 'Here you go!', embeds: [crosswordEmbed] });
 }
 
 
@@ -237,6 +267,7 @@ function createRegExp(text) {
     return regExp;
 }
 
+// recreate the crossword grid using the solved words
 function createSolutionGrid(solvedHorizontals, solvedVerticals) {
     const grid = [];
     const comments = [];
@@ -276,8 +307,11 @@ function createSolutionGrid(solvedHorizontals, solvedVerticals) {
         if (!wordObj.solved) comments.push(`${wordObj.num}A: ${wordObj.answer}`);
     });
 
-    // convert grid into text message
-    // TODO create image instead, so it can be sent spoilered
+    return { grid, comments };
+}
+
+// convert grid into text message
+function createSolutionText(grid) {
     let gridText = '```fix\n';
     // add > to top left corner if it's empty, so the first spaces don't get truncated by Discord on mobile
     if (!grid[0][0]) grid[0][0] = '>';
@@ -292,10 +326,37 @@ function createSolutionGrid(solvedHorizontals, solvedVerticals) {
         gridText = gridText.slice(0, -1) + '\n';
     });
     gridText += '```';
-    if (comments.length) gridText += `\n||${comments.join('\n')}||\n`;
-    gridText += '\nDo you prefer the list of answers, or grid? Let me know!';
 
     return gridText;
+}
+
+// create image from solved words
+function createSolutionImage(grid) {
+    const canvas = createCanvas(grid[0].length * imageCellSize, grid.length * imageCellSize);
+    const ctx = canvas.getContext('2d');
+
+    // Loop through the grid and draw each cell
+    for (let y = 0; y < grid.length; y++) {
+        for (let x = 0; x < grid[y].length; x++) {
+            const cellValue = grid[y][x];
+
+            if (cellValue !== undefined) {
+                // Draw a rectangle for each cell
+                ctx.fillStyle = 'antiquewhite'; // Set color for characters
+                ctx.fillRect(x * imageCellSize, y * imageCellSize, imageCellSize, imageCellSize);
+
+                // Draw the character in the center of the cell
+                ctx.fillStyle = 'black'; // Set color for text
+                ctx.font = '24px Arial'; // Set font and size
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(cellValue, (x + 0.5) * imageCellSize, (y + 0.5) * imageCellSize);
+            }
+        }
+    }
+
+    // Return the canvas object
+    return canvas;
 }
 
 /**
