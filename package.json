@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.26.0",
+  "version": "5.26.1",
   "updateMsg1": "5.26 Added >listroles and >getrole, which automatically include reactionRoles in the categories.",
   "updateMsg2": "5.25 Reworked crossword solving/detecting code, removed size limit on >solvehtml attachments, added crossword grid solution.",
   "updateMsg3": "5.24 Ported >ireadtherules from Dyno, and bot now sends welcome messages to new members.",
@@ -14,7 +14,7 @@
   "author": "Wawajabba#6917",
   "license": "ISC",
   "engines": {
-    "node": "^16.13.2"
+    "node": ">=16.13.2"
   },
   "dependencies": {
     "discord.js": "~14.6.0",

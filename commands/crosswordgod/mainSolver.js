@@ -8,7 +8,7 @@ const extractWords = require('./wordFinder');
 
 const maxWords = 25, maxContent = 400, maxWordSize = 75;
 const disabledAfterReset = 5; // in minutes
-const maxHtmlSize = 200; // in kB
+const maxHtmlSize = 500; // in kB
 
 async function solveWordsRequest(message, content) {
     // test whether the solver is enabled
