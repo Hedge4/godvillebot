@@ -68,13 +68,13 @@ async function purgeMessages(purgeInstance, channel) {
             if (missedMessages.size > 0) {
                 const newestMessage = missedMessages.first();
                 const oldestMessage = missedMessages.last();
-                const errorMessage = `At least ${missedMessages.size} messages could not be purged, but they should have been deletable. Oldest message: ${oldestMessage.id} (${oldestMessage.createdTimestamp}), newest message: ${newestMessage.id} (${newestMessage.createdTimestamp}). Current timestamp: ${Date.now()}.`;
+                const errorMessage = `At least ${missedMessages.size} messages that should have been deletable could not be purged. Oldest message: ${oldestMessage.id} (${oldestMessage.createdTimestamp}), newest message: ${newestMessage.id} (${newestMessage.createdTimestamp}). Current timestamp: ${Date.now()}.`;
                 throw new Error(errorMessage);
             }
 
             // we've reached the end of the channel, stop purging
             if (!inaccessibleMessages) logger.log(`AutoPurge <#${purgeInstance.channelId}>: No more messages to be deleted, channel is clean.`);
-            else logger.log(`AutoPurge <#${purgeInstance.channelId}>: No more messages to be deleted, channel is clean except for some inaccessible messages.`);
+            else logger.log(`AutoPurge <#${purgeInstance.channelId}>: No more messages to be deleted, except for inaccessible messages.`);
         }
 
     } catch (error) {

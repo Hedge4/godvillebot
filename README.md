@@ -1,5 +1,5 @@
 # GodBot
-Version: 5.26.1
+Version: 5.27.0
 
 I should probably include some sort of description here. Meh, I'll add it later (read: probably never).
 
@@ -35,6 +35,7 @@ Additionally, all files were updated to work with discord.js V13 instead of V12,
 * 5.24 Ported >ireadtherules from Dyno, and bot now sends welcome messages to new members.
 * 5.25 Reworked crossword solving/detecting code, removed size limit on >solvehtml attachments, added crossword grid solution.
 * 5.26 Added >listroles and >getrole, which automatically include reactionRoles in the categories.
+* 5.27 Chatkill timers are now dynamic, depending on the channel's activity in the preceding hour.
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.
