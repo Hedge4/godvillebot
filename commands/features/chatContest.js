@@ -9,14 +9,18 @@ const contestChannel = channels.generalChat;
 const defaultContestTime = 30;
 const minContestTime = 15;
 const maxContestTime = 90;
+const randomFactor = 0.04; // -4% to 4% less/extra time
 const checkMaxMessages = 2000;
 
 // setup for measuring chat activity
 let lastMinute = 0;
-let interactionsThisHour = 0;
+let totalStoredInteractions = 0; // TODO remove if variable stays unused
+let lowestKillTimer = maxContestTime;
 const messagesHistory = {};
-const interactionsPerMinute = new Array(60).fill(0);
-const interactionsHistory = new Array(maxContestTime).fill([]);
+const interactionsStorage = 60; // for how long the amount of interactions per minute is stored
+const interactionsPerMinute = new Array(interactionsStorage).fill(0);
+const killTimerStorage = maxContestTime + 2; // so +1 we get the last x minutes instead of x-1, +1 for extreme drifting
+const killTimerHistory = new Array(killTimerStorage).fill([]);
 const conversionAnchors = { 0: maxContestTime, 5: 60, 15: 40, 25: 30, 50: minContestTime };
 const sortedConversionAnchors = Object.keys(conversionAnchors).sort((a, b) => a - b);
 
@@ -27,9 +31,9 @@ async function onStartup() {
     // TODO:remove - temporarily send current chatkill delay to modlogs every 15 minutes
     const modLogChannel = await main.getClient().channels.cache.get(channels.modLogs);
     setInterval(() => {
-        const killTimer = generateKillTimer();
-        const minutes = Math.round((killTimer / 1000 / 60) * 10) / 10; // to minutes with one decimal
-        modLogChannel.send(`Current chatkill delay: ${minutes} ${quantiseWords(minutes, 'minute')}.`);
+        const minutes = Math.round((generateKillTimer() / 1000 / 60) * 10) / 10; // to minutes with one decimal
+        const minutesLowest = Math.round(lowestKillTimer * 10) / 10;
+        modLogChannel.send(`Current chatkill delay: ${minutes} minutes. Lowest: ${minutesLowest} minutes.`);
     }, 1000 * 60 * 15);
     // this sets lastKilltimestamp, which we need for getLastMessage
     await setLastWinner();
@@ -47,15 +51,15 @@ async function onStartup() {
     let timeRemaining = chatkillTime - elapsed;
 
     // add only latest chat interaction
-    const tempMinute = ~~(lastMessage.createdTimestamp / 1000 / 60) % 60;
+    const relativeMinute = ~~(lastMessage.createdTimestamp / 1000 / 60) % interactionsStorage;
     if (elapsed < 60 * 60 * 1000) {
-        interactionsPerMinute[tempMinute]++;
-        interactionsThisHour++;
+        interactionsPerMinute[relativeMinute]++;
+        totalStoredInteractions++;
     }
-    // add to message history that rolls around every maxContestTime minutes
-    const historyMinute = ~~(Date.now() / 1000 / 60) % maxContestTime;
+    // add to message history that rolls around every killTimerStorage minutes
+    const historyMinute = ~~(Date.now() / 1000 / 60) % killTimerStorage;
     messagesHistory[lastMessage.id] = chatkillTime;
-    interactionsHistory[historyMinute].push(lastMessage.id);
+    killTimerHistory[historyMinute].push(lastMessage.id);
 
     if (timeRemaining >= 0) {
         // set timer if the message hasn't won (yet)
@@ -141,6 +145,7 @@ async function setLastWinner() {
 
     let lastWinnerFound = false;
     let interactionHistoryFilled = false;
+    let interactionsFound = 0;
 
     // caps out after checkMaxMessages messages
     for (let i = 0; i < ~~(checkMaxMessages / 100); i++) {
@@ -150,16 +155,17 @@ async function setLastWinner() {
                 chatCombo++;
                 lastId = msg.author.id;
 
-                // keep searching until we fill the last hour of interactionHistory
+                // keep searching until we fill interactionHistory with [interactionsStorage] minutes of interactions
                 if (!interactionHistoryFilled) {
-                    // if the message is older than an hour, we've filled the history
-                    if (Date.now() - msg.createdTimestamp > 60 * 60 * 1000) {
+                    // if the message is older than [interactionsStorage] minutes, we've filled the history
+                    if (Date.now() - msg.createdTimestamp > interactionsStorage * 60 * 1000) {
                         interactionHistoryFilled = true;
-                        logger.log(`ChatContest: Found ${interactionsThisHour} interactions in the last hour.`);
+                        logger.log(`ChatContest: Found ${interactionsFound} interactions in the last ${interactionsStorage} minutes.`);
                     } else {
-                        const tempMinute = ~~(msg.createdTimestamp / 1000 / 60) % 60;
-                        interactionsPerMinute[tempMinute]++;
-                        interactionsThisHour++;
+                        const relativeMinute = ~~(msg.createdTimestamp / 1000 / 60) % interactionsStorage;
+                        interactionsPerMinute[relativeMinute]++;
+                        interactionsFound++;
+                        totalStoredInteractions++;
                     }
                 }
             }
@@ -184,8 +190,15 @@ async function setLastWinner() {
         messages = await channel.messages.fetch({ limit: 100, before: messages.last().id });
     }
 
-    logger.log(`ChatContest: No successful chat-killer was found in the last ${checkMaxMessages} messages.`
-        + ` Within those messages, chatCombo got up to ${chatCombo}.`);
+    if (!lastWinnerFound) {
+        logger.log(`ChatContest: No successful chat-killer was found in the last ${checkMaxMessages} messages.`
+            + ` Within those messages, chatCombo got up to ${chatCombo}.`);
+    }
+
+    if (!interactionHistoryFilled) {
+        logger.log(`ChatContest: Found ${interactionsFound} interactions in the last ${interactionsStorage} minutes,`
+            + 'but didn\'t reach the end of the message history.');
+    }
 
     // set lastKillTimestamp to the oldest message we found
     channel.messages.fetch(lastId)
@@ -202,7 +215,7 @@ function onNewMessage(message) {
     if (message.author.bot) return;
 
     // get required delay for this message to kill chat
-    const chatkillTime = generateKillTimer();
+    const killTimerMs = generateKillTimer();
 
     // check if this is a new lastMessage, and if chatCombo/interactions should update
     if (!lastMessage || lastMessage.author.id !== message.author.id) {
@@ -211,20 +224,20 @@ function onNewMessage(message) {
         lastMessage = message;
 
         // update chat interactions record
-        const currentMinute = ~~(Date.now() / 1000 / 60) % 60;
+        const currentMinute = ~~(Date.now() / 1000 / 60) % interactionsStorage;
         clearInteractionMinute(currentMinute);
         interactionsPerMinute[currentMinute]++;
-        interactionsThisHour++;
+        totalStoredInteractions++;
     }
 
-    // rolls around every maxContestTime minutes
-    const historyMinute = ~~(Date.now() / 1000 / 60) % maxContestTime;
-    messagesHistory[message.id] = chatkillTime;
-    interactionsHistory[historyMinute].push(message.id);
+    // rolls around every killTimerStorage minutes
+    const historyMinute = ~~(Date.now() / 1000 / 60) % killTimerStorage;
+    messagesHistory[message.id] = killTimerMs;
+    killTimerHistory[historyMinute].push(message.id);
 
     setTimeout(() => {
         winningChatContest(message);
-    }, chatkillTime);
+    }, killTimerMs);
 }
 
 // update lastMessage in case the deleted message was significant, chatCombo is not updated
@@ -241,6 +254,15 @@ async function onMessageDelete(deletedMessage) {
         const minutes = `${~~(elapsed / 60)} ${quantiseWords(~~(elapsed / 60), 'minute')}`;
         const seconds = `${elapsed % 60} ${quantiseWords(elapsed % 60, 'second')}`;
 
+        // === killTimerMs undefined handling explained ===
+        // There are two possible scenarios if killTimerMs is undefined:
+        // 1. The message is older than [killTimerStorage] minutes, and not in the history anymore
+        // 2. The message was never in the history, likely due to bot startup
+        //
+        // In scenario 1, the message is definitely old enough. In scenario 2, we use the default (startup) timer.
+        // ================================================
+        const killTimerMs = messagesHistory[potentialLastMessage.id] || defaultContestTime * 60 * 1000;
+
         // if the previous lastMessage was the message that was deleted or undefined (e.g. right after chatKill)
         if (!lastMessage || lastMessage.id === deletedMessage.id) {
             logger.log('ChatContest: The last message was deleted in the chat contest channel and chatCombo was reduced by one.'
@@ -249,9 +271,7 @@ async function onMessageDelete(deletedMessage) {
             lastMessage = potentialLastMessage;
 
             // also immediately check if this new chatkill eligible message should win the chatContest
-            let killTimer = messagesHistory[potentialLastMessage.id];
-            if (!killTimer) killTimer = defaultContestTime * 60 * 1000;
-            if (Date.now() - potentialLastMessage.createdTimestamp >= killTimer) {
+            if (Date.now() - potentialLastMessage.createdTimestamp >= killTimerMs) {
                 // LATE WIN: since only messages sent after the last win are found, this message should've won
                 winningChatContest(potentialLastMessage, true);
             }
@@ -280,9 +300,7 @@ async function onMessageDelete(deletedMessage) {
         lastMessage = potentialLastMessage;
 
         // also immediately check if this new chatkill eligible message should win the chatContest
-        let killTimer = messagesHistory[potentialLastMessage.id];
-        if (!killTimer) killTimer = defaultContestTime * 60 * 1000;
-        if (Date.now() - potentialLastMessage.createdTimestamp >= killTimer) {
+        if (Date.now() - potentialLastMessage.createdTimestamp >= killTimerMs) {
             // LATE WIN: since only messages sent after the last win are found, this message should've won
             winningChatContest(potentialLastMessage, true);
         }
@@ -318,18 +336,22 @@ async function winningChatContest(message, lateWin = false) {
         return;
     }
 
+    // reset, chatCombo is reset later (before returning)
     lastMessage = null;
     lastKillTimestamp = Date.now();
+    lowestKillTimer = maxContestTime;
 
-    let killTimer = messagesHistory[message.id];
-    if (!killTimer) killTimer = defaultContestTime * 60 * 1000;
-    killTimer = Math.round(killTimer / 1000 / 6) / 10; // to minutes with one decimal
-    let minutes = `${killTimer} ${quantiseWords(killTimer, 'minute')}`;
+    const killTimer = Math.round(messagesHistory[message.id] / 1000 / 6) / 10;
+    // if no killTimer was found, calculate elapsed time since message was sent
+    if (!killTimer) lateWin = true;
 
+    let minutes;
     if (lateWin) {
         const elapsed = ~~((Date.now() - message.createdTimestamp) / 1000); // in seconds
         minutes = Math.round((elapsed / 60) * 10) / 10; // to minutes with one decimal
         minutes = `${minutes} ${quantiseWords(minutes, 'minute')}`;
+    } else {
+        minutes = `${killTimer} ${quantiseWords(killTimer, 'minute')}`;
     }
 
     if (message.author.id === lastWinner) {
@@ -402,21 +424,20 @@ async function winningChatContest(message, lateWin = false) {
     userData.set(User, { merge: true });
 
     logger.log(`ChatContest: ${message.author.tag} / ${message.author.id} won ${gold} gold for being the last to talk in general chat for ${minutes}, after a conversation with chatCombo ${chatCombo}. There was a ${tierChance} chance of getting the reward tier they got. Gold: ${oldGold} -> ${newGold}.`);
-    lastMessage = null;
     chatCombo = 0;
 }
 
 // uses recent history so should only be called for a new message
 // for other messages, use messagesHistory[message.id]
 function generateKillTimer() {
-    // interactionsThisHour: total interactions this last hour (currently not used)
-    // weightedTotalInteractions: weighted so short bursts of activity are less important
+    // [storedInteractions] (unused): total interactions the last [interactionsStorage] minutes
+    // [weightedTotalInteractions]: weighted so short bursts of activity are less important
     const weightedTotalInteractions = interactionsPerMinute.reduce((sum, count) => {
         if (count >= 1) count -= 0.5;
         return sum + Math.sqrt(count);
     }, 0);
 
-    // generate a time in minutes, with a minimum of minContestTime and a maximum of maxContestTime
+    // generate a time in minutes, with a minimum of [minContestTime] and a maximum of [maxContestTime]
     if (weightedTotalInteractions <= sortedConversionAnchors[0]) {
         return conversionAnchors[sortedConversionAnchors[0]] * 60 * 1000;
     }
@@ -424,6 +445,7 @@ function generateKillTimer() {
         return conversionAnchors[sortedConversionAnchors[sortedConversionAnchors.length - 1]] * 60 * 1000;
     }
 
+    // conversionAnchors stores fixed weightedTotalInteractions values and asocciated killTimers
     let lower = sortedConversionAnchors[0];
     let upper;
     for (const point of sortedConversionAnchors) {
@@ -436,17 +458,33 @@ function generateKillTimer() {
         }
     }
 
+    // lerp between the two closest conversionAnchors to get exact killTimer
     const lowerValue = conversionAnchors[lower];
     const upperValue = conversionAnchors[upper];
     const lerpFactor = (weightedTotalInteractions - lower) / (upper - lower);
-    const killTimer = lowerValue + lerpFactor * (upperValue - lowerValue);
+    let killTimer = lowerValue + lerpFactor * (upperValue - lowerValue);
 
+    // store new lowest killTimer if applicable
+    if (killTimer < lowestKillTimer) { lowestKillTimer = killTimer; } else {
+        // if the new killTimer is higher than the lowest, average them so bursts of activity since the last
+        // chatkill are persistent (and don't become irrelevant once they move out of the history)
+        killTimer = (killTimer + lowestKillTimer) / 2;
+    }
+
+    // add a random factor of -4% to 4%
+    const randomMultiplier = 1 + Math.random() * randomFactor * 2 - randomFactor; // [-randomFactor, +randomFactor]
+    killTimer *= randomMultiplier;
+
+    // ensure killTimer is within the [minContestTime] and [maxContestTime] bounds after random factor
+    killTimer = Math.min(Math.max(killTimer, minContestTime), maxContestTime);
+
+    // return killTimer in milliseconds
     return killTimer * 60 * 1000;
 }
 
 // clear this minute's interactions, if not yet cleared by a message
 function clearInteractionsInterval() {
-    const currentMinute = ~~(Date.now() / 1000 / 60) % 60;
+    const currentMinute = ~~(Date.now() / 1000 / 60) % interactionsStorage;
     clearInteractionMinute(currentMinute);
 
     // set timeout for next minute clear (add 1 second as a margin of error)
@@ -458,16 +496,16 @@ function clearInteractionMinute(currentMinute) {
     // only clear history if we're in a new minute
     if (currentMinute === lastMinute) return;
 
-    interactionsThisHour -= interactionsPerMinute[currentMinute];
+    totalStoredInteractions -= interactionsPerMinute[currentMinute];
     interactionsPerMinute[currentMinute] = 0;
     lastMinute = currentMinute;
 
-    // rolls around every maxContestTime minutes
-    const currentHistoryMinute = ~~(Date.now() / 1000 / 60) % maxContestTime;
-    interactionsHistory[currentHistoryMinute].forEach(msgId => {
+    // rolls around every killTimerStorage minutes
+    const currentHistoryMinute = ~~(Date.now() / 1000 / 60) % killTimerStorage;
+    killTimerHistory[currentHistoryMinute].forEach(msgId => {
         if (messagesHistory[msgId]) delete messagesHistory[msgId];
     });
-    interactionsHistory[currentHistoryMinute] = [];
+    killTimerHistory[currentHistoryMinute] = [];
 }
 
 const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;
