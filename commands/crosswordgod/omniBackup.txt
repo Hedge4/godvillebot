@@ -1,4 +1,4 @@
-1698995665468
+1705025767724
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -1848,6 +1848,7 @@ Invisible artifact
 Invisible bottle of ink
 Invisible ink eraser
 Invisible warning sign
+Invite to dungeon
 Invite to Godville
 Iodine solution
 IP address book

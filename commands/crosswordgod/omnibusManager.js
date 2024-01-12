@@ -74,8 +74,8 @@ async function omnibusStartup(auto = false) {
         if (removedText.length > 900) removedText = removedText.substring(0, 900) + ' (...)';
 
         updateMessage += `\nOmnibus: Compared to the backup, ${notInBackup.length} ${quantiseWords(notInBackup.length, 'word was', 'words were')} added, and ${notInOmnibus.length} ${quantiseWords(notInOmnibus.length, 'was', 'were')} removed.`;
-        if (notInBackup.length !== 0) updateMessage += `\n - Added: ${addedText}`;
-        if (notInOmnibus.length !== 0) updateMessage += `\n - Removed: ${removedText}`;
+        if (notInBackup.length !== 0) updateMessage += `\n • Added: ${addedText}`;
+        if (notInOmnibus.length !== 0) updateMessage += `\n • Removed: ${removedText}`;
     }
     logger.log(updateMessage);
 }

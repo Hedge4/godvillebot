@@ -1,5 +1,6 @@
 const { prefix, botName } = require('../../configurations/config.json');
 const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
+const { createCanvas } = require('canvas');
 const main = require('../../index');
 const logger = require('../features/logging');
 const timers = require('../features/timers');
@@ -9,6 +10,7 @@ const extractWords = require('./wordFinder');
 const maxWords = 25, maxContent = 400, maxWordSize = 75;
 const disabledAfterReset = 5; // in minutes
 const maxHtmlSize = 500; // in kB
+const imageCellSizeX = 21, imageCellSizeY = 30; // in pixels
 
 async function solveWordsRequest(message, content) {
     // test whether the solver is enabled
@@ -159,16 +161,16 @@ async function solveHtmlRequest(message) {
     const solvedHorizontals = [], solvedVerticals = [];
     extractedWords.horizontal.forEach(wordObj => { solvedHorizontals.push(solveWord(wordObj, omnibus.omnibusEntries)); });
     extractedWords.vertical.forEach(wordObj => { solvedVerticals.push(solveWord(wordObj, omnibus.omnibusEntries)); });
-    const textGrid = createSolutionGrid(solvedHorizontals, solvedVerticals);
+    const { attachment, commentsText, gridText } = createSolutionGrid(solvedHorizontals, solvedVerticals);
 
     const client = main.getClient();
     const crosswordEmbed = new Discord.EmbedBuilder()
         .setTitle('Godville Times crossword solution')
         .setDescription(solutionText)
         .addFields([
-            { name: 'Horizontal solutions', value: `||${solvedHorizontals.map(h => `${h.num}D. ${h.answer}`).join('\n')}||` },
-            { name: 'Vertical solutions', value: `||${solvedVerticals.map(v => `${v.num}A. ${v.answer}`).join('\n')}||` },
-            { name: 'Grid solution', value: textGrid },
+            // TODO remove these fields, they were made redundant by the image
+            { name: 'Horizontal solutions', value: `||${solvedHorizontals.map(h => `${h.num}A. ${h.answer}`).join('\n')}||` },
+            { name: 'Vertical solutions', value: `||${solvedVerticals.map(v => `${v.num}V. ${v.answer}`).join('\n')}||` },
         ])
         .setColor(0x78de79) // noice green
         .setURL('https://godvillegame.com/news')
@@ -176,8 +178,19 @@ async function solveHtmlRequest(message) {
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() })
         .setTimestamp();
 
+    // add attachment if it exists, otherwise add text grid
+    if (attachment) {
+        // send image (will appear below edited waitMessage)
+        crosswordEmbed.setImage(`attachment://${attachment.name}`);
+        // add comments field if there are any
+        if (commentsText) crosswordEmbed.addFields([{ name: 'Comments', value: commentsText }]);
+    } else {
+        // comments are already added to the text grid
+        crosswordEmbed.addFields([{ name: 'Grid solution', value: gridText }]);
+    }
+
     logger.log(`Crossword: Finished solving the crossword in ${message.channel.name}.`);
-    waitMessage.edit({ content: 'Here you go!', embeds: [crosswordEmbed] });
+    waitMessage.edit({ content: 'Here you go!', embeds: [crosswordEmbed], files: [attachment] });
 }
 
 
@@ -238,10 +251,14 @@ function createRegExp(text) {
 }
 
 function createSolutionGrid(solvedHorizontals, solvedVerticals) {
+    let width = 0;
     const grid = [];
     const comments = [];
 
     solvedVerticals.forEach(wordObj => {
+        // update righternmostValue if necessary
+        if (wordObj.startX >= width) width = wordObj.startX + 1;
+
         for (let i = 0; i < wordObj.searchString.length; i++) {
             // add either the solved word, the potential solution, or unsolved word
             const valueToAdd = wordObj.solved
@@ -262,6 +279,9 @@ function createSolutionGrid(solvedHorizontals, solvedVerticals) {
     solvedHorizontals.forEach(wordObj => {
         if (!wordObj.num) wordObj.num = '?';
         for (let i = 0; i < wordObj.searchString.length; i++) {
+            // update righternmostValue if necessary
+            if (wordObj.startX + i >= width) width = wordObj.startX + i + 1;
+
             // add either the solved word, the potential solution, or unsolved word
             const valueToAdd = wordObj.solved
                 ? wordObj.answer[i]
@@ -270,32 +290,80 @@ function createSolutionGrid(solvedHorizontals, solvedVerticals) {
                     : wordObj.searchString[i];
 
             // no need to add empty row, verticals should have added all rows already
+
+            // if the new value is a dot and the current cell is not empty, skip it to prevent overwriting
+            if (valueToAdd === '.' && grid[wordObj.startY][wordObj.startX + i]) continue;
+
             // add value using uppercase for better readability
             grid[wordObj.startY][wordObj.startX + i] = valueToAdd.toUpperCase();
         }
         if (!wordObj.solved) comments.push(`${wordObj.num}A: ${wordObj.answer}`);
     });
 
-    // convert grid into text message
-    // TODO create image instead, so it can be sent spoilered
-    let gridText = '```fix\n';
-    // add > to top left corner if it's empty, so the first spaces don't get truncated by Discord on mobile
-    if (!grid[0][0]) grid[0][0] = '>';
+    let attachment, commentsText, gridText;
+    try {
+        // convert grid into image solution
+        const gridImage = createImageFromGrid(grid, width);
+        const buffer = gridImage.toBuffer();
+        // get date part of timestamp, and add 1 day to it
+        const timestamp = new Date().toDateString();
+        const filename = `SPOILER Godville Crossword ${timestamp}.png`.replace(/\s+/g, '_'); // underscore because djs sucks
+        // const filename = 'test.png'; // underscore because djs sucks
+        attachment = new Discord.AttachmentBuilder(buffer, { name: filename });
+        commentsText = comments.length ? `||${comments.join('\n')}||` : null;
+        logger.log(`Crossword: Created image solution for ${grid.length}x${width} crossword grid.`);
+    } catch (error) {
+        logger.log(`Crossword ERROR: Couldn't create image solution, falling back to text solution. ${error}`);
+        // backup method, converts grid into text solution
+        gridText = 'ERR: Couldn\'t create image, falling back to text solution.```fix\n';
+        // add > to top left corner if it's empty, so the first spaces don't get truncated by Discord on mobile
+        if (!grid[0][0]) grid[0][0] = '>';
 
-    // concatenate all cells for each row, then concatenate all rows
-    grid.forEach(row => {
-        for (let i = 0; i < row.length; i++) {
-            // if cell is undefined (whitespace), replace with space
-            gridText += (row[i] || ' ') + ' ';
+        // concatenate all cells for each row, then concatenate all rows
+        grid.forEach(row => {
+            for (let i = 0; i < row.length; i++) {
+                // if cell is undefined (whitespace), replace with space
+                gridText += (row[i] || ' ') + ' ';
+            }
+            // replace last added space with newline
+            gridText = gridText.slice(0, -1) + '\n';
+        });
+        gridText += '```';
+        if (comments.length) gridText += `\n||${comments.join('\n')}||\n`;
+        gridText += '\nDo you prefer the list of answers, or grid? Let me know!';
+    }
+
+    return { attachment, commentsText, gridText };
+}
+
+// creates a canvas object from a 2D array of characters
+function createImageFromGrid(grid, width) {
+    const canvas = createCanvas(width * imageCellSizeX, grid.length * imageCellSizeY);
+    const ctx = canvas.getContext('2d');
+
+    // Loop through the grid and draw each cell
+    for (let y = 0; y < grid.length; y++) {
+        for (let x = 0; x < grid[y].length; x++) {
+            const cellValue = grid[y][x];
+
+            if (cellValue !== undefined) {
+                // Draw a rectangle for each cell
+                ctx.fillStyle = 'antiquewhite'; // Set color for characters
+                ctx.fillRect(x * imageCellSizeX, y * imageCellSizeY, imageCellSizeX, imageCellSizeY);
+
+                // Draw the character in the center of the cell
+                ctx.fillStyle = 'black'; // Set color for text
+                // ctx.font = '24px Arial'; // Set font and size
+                ctx.font = 'bold 24px Arial'; // Set font and size
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(cellValue, (x + 0.5) * imageCellSizeX, (y + 0.5) * imageCellSizeY);
+            }
         }
-        // replace last added space with newline
-        gridText = gridText.slice(0, -1) + '\n';
-    });
-    gridText += '```';
-    if (comments.length) gridText += `\n||${comments.join('\n')}||\n`;
-    gridText += '\nDo you prefer the list of answers, or grid? Let me know!';
+    }
 
-    return gridText;
+    // Return the canvas object
+    return canvas;
 }
 
 /**

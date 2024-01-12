@@ -36,6 +36,7 @@ Additionally, all files were updated to work with discord.js V13 instead of V12,
 * 5.25 Reworked crossword solving/detecting code, removed size limit on >solvehtml attachments, added crossword grid solution.
 * 5.26 Added >listroles and >getrole, which automatically include reactionRoles in the categories.
 * 5.27 Chatkill timers are now dynamic, depending on the channel's activity in the preceding hour.
+* 5.28 >solvehtml now sends the crossword solution as an image, and many crossword (bug)fixes.
 
 ## What's new in version 4?
 Version 4 is updated to work with discord.js version 12, and instructions with changed methods have been rewritten.

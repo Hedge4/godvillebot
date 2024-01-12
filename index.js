@@ -1,3 +1,5 @@
+require('canvas');
+
 // space for getters, need to be defined before require() is used
 // this will crash if they are called before code is executed where the variable they return is declared and defined
 exports.getClient = function() { return client; };
