@@ -1,3 +1,4 @@
+// canvas crashes the code if not imported before some other packages (sharp in particular)
 require('canvas');
 
 // space for getters, need to be defined before require() is used
