@@ -63,12 +63,10 @@ async function onStartup() {
 
     if (timeRemaining >= 0) {
         // set timer if the message hasn't won (yet)
-        setTimeout(() => {
-            winningChatContest(lastMessage);
-        }, timeRemaining);
+        setTimeout(winningChatContest, timeRemaining, lastMessage);
 
         // update timeRemaining and elapsed for the logs
-        timeRemaining = ~~(timeRemaining / -1000);
+        timeRemaining = ~~(timeRemaining / 1000);
         elapsed = ~~(elapsed / 1000);
         const secondsElapsed = `${elapsed} ${quantiseWords(elapsed, 'second')}`;
         const minutesRem = `${~~(timeRemaining / 60)} ${quantiseWords(~~(timeRemaining / 60), 'minute')}`;
@@ -235,9 +233,7 @@ function onNewMessage(message) {
     messagesHistory[message.id] = killTimerMs;
     killTimerHistory[historyMinute].push(message.id);
 
-    setTimeout(() => {
-        winningChatContest(message);
-    }, killTimerMs);
+    setTimeout(winningChatContest, killTimerMs, message);
 }
 
 // update lastMessage in case the deleted message was significant, chatCombo is not updated
@@ -265,7 +261,7 @@ async function onMessageDelete(deletedMessage) {
 
         // if the previous lastMessage was the message that was deleted or undefined (e.g. right after chatKill)
         if (!lastMessage || lastMessage.id === deletedMessage.id) {
-            logger.log('ChatContest: The last message was deleted in the chat contest channel and chatCombo was reduced by one.'
+            logger.log('ChatContest: The last message was deleted in the chat contest channel.'
                 + ` Found a new chat kill eligible message by ${potentialLastMessage.author.tag},`
                 + ` sent ${minutes} and ${seconds} ago.`);
             lastMessage = potentialLastMessage;
@@ -275,28 +271,23 @@ async function onMessageDelete(deletedMessage) {
                 // LATE WIN: since only messages sent after the last win are found, this message should've won
                 winningChatContest(potentialLastMessage, true);
             }
-
             return;
         }
 
         // if the message we found is the same as our stored lastMessage
         if (lastMessage.id === potentialLastMessage.id) {
-            logger.log('ChatContest: (PL=) A message was deleted in the chat contest channel and chatCombo was reduced by one.');
             return;
         }
 
         // if lastMessage and potentialLastMessage are different, but lastMessage is older
         // this only happens if the order of requests gets messed up, and potentialLastMessage is outdated
         if (lastMessage.createdTimestamp < potentialLastMessage.createdTimestamp) {
-            logger.log('ChatContest: (PL<) A message was deleted in the chat contest channel and chatCombo was reduced by one.');
             return;
         }
 
         // if potentialLastMessage is older (this means the deleted message previously interrupted a streak from one author)
-        // ! if lastMessage was updated in between and is now newer it'll be replaced by outdated potentialLastMessage
-        logger.log('ChatContest: (PL>) A message was deleted in the chat contest channel and chatCombo was reduced by one.'
-            + ' The deleted message interrupted a message streak by one user, and an older lastMessage was found'
-            + ` sent by ${potentialLastMessage.author.tag}, ${minutes} and ${seconds} ago.`);
+        logger.log('ChatContest: A message interrupting a message streak from one user was deleted in the chat contest channel, so an older lastMessage was found'
+            + ` sent by ${potentialLastMessage.author.tag}, ${minutes} ${quantiseWords(minutes, 'minute')} and ${seconds} ${quantiseWords(seconds, 'second')} ago.`);
         lastMessage = potentialLastMessage;
 
         // also immediately check if this new chatkill eligible message should win the chatContest
@@ -308,25 +299,25 @@ async function onMessageDelete(deletedMessage) {
         return;
     }
 
-    // NO POTENTIAL LAST MESSAGE FOUND AFTER LAST 'IF'-statement
+    // \/ NO POTENTIAL LAST MESSAGE FOUND \/
 
     // if lastMessage is undefined (e.g. right after chatKill)
     if (!lastMessage) {
-        logger.log('ChatContest: A chatkill eligible message was deleted in the chat contest channel and chatCombo was reduced by one.'
-            + ' lastMessage was unknown and also can\'t be found; no messages eligible for chat kills.');
+        logger.log('ChatContest: A chatkill eligible message was deleted in the chat contest channel.'
+            + ' lastMessage was unknown and can\'t be found; no messages eligible for chat kills.');
         return;
     }
 
     // if lastMessage is the message that was deleted, and no new eligible messages are found
     if (lastMessage.id === deletedMessage.id) {
         lastMessage = null;
-        logger.log('ChatContest: The last message was deleted in the chat contest channel and chatCombo was reduced by one.'
-            + ' No new message(s) eligible for chat kills could be found.');
+        logger.log('ChatContest: The most recent message was deleted in the chat contest channel.'
+            + ' No new message eligible for a chat kill could be found.');
         return;
     }
 
     // lastMessage is known so it doesn't matter that we don't know the potential last message
-    logger.log('ChatContest: (L) A message was deleted in the chat contest channel and chatCombo was reduced by one.');
+    // logger.log('ChatContest: A message was deleted in the chat contest channel.');
     return;
 }
 
@@ -427,8 +418,7 @@ async function winningChatContest(message, lateWin = false) {
     chatCombo = 0;
 }
 
-// uses recent history so should only be called for a new message
-// for other messages, use messagesHistory[message.id]
+// \only use to generate a killTimer for a new message, to look up old timers use messagesHistory[message.id]
 function generateKillTimer() {
     // [storedInteractions] (unused): total interactions the last [interactionsStorage] minutes
     // [weightedTotalInteractions]: weighted so short bursts of activity are less important
@@ -437,12 +427,17 @@ function generateKillTimer() {
         return sum + Math.sqrt(count);
     }, 0);
 
-    // generate a time in minutes, with a minimum of [minContestTime] and a maximum of [maxContestTime]
+    // the timer has a minimum of [minContestTime]
     if (weightedTotalInteractions <= sortedConversionAnchors[0]) {
-        return conversionAnchors[sortedConversionAnchors[0]] * 60 * 1000;
+        const killTimer = conversionAnchors[sortedConversionAnchors[0]];
+        // no need to take an average, since the lowest killTimer should always be the same
+        return killTimer * 60 * 1000;
     }
+    // and a maximum of [maxContestTime]
     if (weightedTotalInteractions >= sortedConversionAnchors[sortedConversionAnchors.length - 1]) {
-        return conversionAnchors[sortedConversionAnchors[sortedConversionAnchors.length - 1]] * 60 * 1000;
+        let killTimer = conversionAnchors[sortedConversionAnchors[sortedConversionAnchors.length - 1]];
+        killTimer = (killTimer + lowestKillTimer) / 2; // average with lowest killTimer, preserves bursts of activity
+        return killTimer * 60 * 1000;
     }
 
     // conversionAnchors stores fixed weightedTotalInteractions values and asocciated killTimers
