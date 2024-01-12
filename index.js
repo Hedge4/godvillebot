@@ -82,7 +82,6 @@ const limitedCommandsData = db.collection('data').doc('limited uses');
 const blockedData = db.collection('data').doc('blocked');
 const plannedEvents = db.collection('data').doc('schedule');
 const customCommandsCollection = db.collection('customCommands');
-customCommands.setup(customCommandsCollection);
 
 // set up our globals because stuff being undefined sucks
 global.totalGodpower = 0;
@@ -153,14 +152,17 @@ client.on('ready', () => {
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() })
         .setTimestamp();
     client.channels.cache.get(channels.botville).send({ embeds: [startEmbed] });
-    const delay1 = crosswordTimers.getUpdateDelay(); // delay before news automatically updates
-    const delay2 = daily.resetDelay(true)[0];
-    const delay3 = crosswordTimers.getNewsDelay(); // delay before the next newsping
+    const { delay: delay1, logText: logText1 } = crosswordTimers.getUpdateDelay(); // delay before news automatically updates
+    const { delay: delay2, logText: logText2 } = daily.getResetDelay();
+    const { delay: delay3, logText: logText3 } = crosswordTimers.getNewsDelay(); // delay before the next newsping
+    logger.toConsole(`--------------------------------------------------------\n${logText1}\n${logText2}\n${logText3}\n--------------------------------------------------------`);
+    logger.toChannel(`\`\`\`\n${logText1}\n${logText2}\n${logText3}\`\`\``);
 
     // set timeouts and get data such as the last chat kill / ongoing DM contests
     setTimeout(crosswordTimers.dailyUpdate, delay1);
     setTimeout(daily.reset, delay2, limitedCommandsData);
     setTimeout(crosswordTimers.newsPing, delay3);
+    customCommands.setup(customCommandsCollection);
     botDMs.checkDMContest(client);
     chatContest.startupCheck();
     reactionRoles.load(client);

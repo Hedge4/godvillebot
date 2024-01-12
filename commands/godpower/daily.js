@@ -9,7 +9,7 @@ async function checkDaily(message, limitedCommandsData, userData) {
 
         const userDoc = await userData.get();
         const User = {};
-        if(userDoc.data()[message.author.id] === undefined) {
+        if (userDoc.data()[message.author.id] === undefined) {
             User[message.author.id] = {
                 godpower: 0,
                 gold: 0,
@@ -28,13 +28,13 @@ async function checkDaily(message, limitedCommandsData, userData) {
         message.reply(`<:stat_gold:401414686651711498> You received **${goldAdd}** daily gold. You now have **${newGold}** gold.`);
         logger.log(`${message.author.tag} used their daily in ${message.channel.name}. Gold: ${oldGold} -> ${newGold}.`);
     } else {
-        const delay = getResetTimer(false);
+        const { delayHours, delayMins, delaySecs } = getResetTimer();
         logger.log(`${message.author.tag} tried to use their daily in ${message.channel.name}, but had already used it.`);
-        message.reply(`You already used your daily! Dailies reset in ${delay[1]} ${quantiseWords(delay[1], 'hour')}, ${delay[2]} ${quantiseWords(delay[2], 'minute')} and ${delay[4]} ${quantiseWords(delay[4], 'second')}.`);
+        message.reply(`You already used your daily! Dailies reset in ${delayHours} ${quantiseWords(delayHours, 'hour')}, ${delayMins} ${quantiseWords(delayMins, 'minute')} and ${delaySecs} ${quantiseWords(delaySecs, 'second')}.`);
     }
 }
 
-function getResetTimer(show) {
+function getResetTimer() {
     const output = timers.getDelay(0, 0);
     const delay = output.delay;
     const then = output.goalDate;
@@ -42,25 +42,22 @@ function getResetTimer(show) {
     const delayMins = output.minutesFromNow;
     const delaySecs = output.secondsFromNow;
 
-    if (show === true) {
-        logger.toConsole(`--------------------------------------------------------\nNext daily reset scheduled for ${then}, in ${delayHours} ${quantiseWords(delayHours, 'hour')} and ${delayMins} ${quantiseWords(delayMins, 'minute')}.\n--------------------------------------------------------`);
-        logger.toChannel(`\`\`\`\nNext daily reset scheduled for ${then}, in ${delayHours} ${quantiseWords(delayHours, 'hour')} and ${delayMins} ${quantiseWords(delayMins, 'minute')}.\`\`\``);
-    }
-    return [delay, delayHours, delayMins, then, delaySecs];
+    const logText = `Next daily reset scheduled for ${then.toUTCString()}, in ${delayHours} ${quantiseWords(delayHours, 'hour')} and ${delayMins} ${quantiseWords(delayMins, 'minute')}.`;
+    return { delay, delayHours, delayMins, delaySecs, logText };
 }
 
 function dailyReset(limitedCommandsData) {
-    const delay = getResetTimer(true);
+    const { delay, logText } = getResetTimer();
     const dailiesUsed = usedDaily.length;
     usedDaily = [];
     limitedCommandsData.set({ daily: usedDaily });
-    logger.toConsole(`Successfully reset use of the >daily command! ${dailiesUsed} ${quantiseWords(dailiesUsed, 'daily was', 'dailies were')} used yesterday.`);
-    logger.toChannel(`**Successfully reset use of the >daily command! ${dailiesUsed} ${quantiseWords(dailiesUsed, 'daily was', 'dailies were')} used yesterday.**`);
-    setTimeout(dailyReset, delay[0], limitedCommandsData);
+    logger.toConsole(`--------------------------------------------------------\nSuccessfully reset use of the >daily command! ${dailiesUsed} ${quantiseWords(dailiesUsed, 'daily was', 'dailies were')} used yesterday.\n${logText}\n--------------------------------------------------------`);
+    logger.toChannel(`**Successfully reset use of the >daily command! ${dailiesUsed} ${quantiseWords(dailiesUsed, 'daily was', 'dailies were')} used yesterday.**\`\`\`\n${logText}\`\`\``);
+    setTimeout(dailyReset, delay, limitedCommandsData);
 }
 
 const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;
 
 exports.daily = checkDaily;
-exports.resetDelay = getResetTimer;
+exports.getResetDelay = getResetTimer;
 exports.reset = dailyReset;
