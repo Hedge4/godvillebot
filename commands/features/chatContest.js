@@ -14,7 +14,6 @@ const checkMaxMessages = 2000;
 
 // setup for measuring chat activity
 let lastMinute = 0;
-let totalStoredInteractions = 0; // TODO remove if variable stays unused
 let lowestKillTimer = maxContestTime;
 const messagesHistory = {};
 const interactionsStorage = 60; // for how long the amount of interactions per minute is stored
@@ -28,13 +27,6 @@ const sortedConversionAnchors = Object.keys(conversionAnchors).sort((a, b) => a 
 async function onStartup() {
     // start clearing old interaction history every minute
     clearInteractionsInterval();
-    // TODO:remove - temporarily send current chatkill delay to modlogs every 15 minutes
-    const modLogChannel = await main.getClient().channels.cache.get(channels.modLogs);
-    setInterval(() => {
-        const minutes = Math.round((generateKillTimer() / 1000 / 60) * 10) / 10; // to minutes with one decimal
-        const minutesLowest = Math.round(lowestKillTimer * 10) / 10;
-        modLogChannel.send(`Current chatkill delay: ${minutes} minutes. Lowest: ${minutesLowest} minutes.`);
-    }, 1000 * 60 * 15);
     // this sets lastKilltimestamp, which we need for getLastMessage
     await setLastWinner();
 
@@ -54,7 +46,6 @@ async function onStartup() {
     const relativeMinute = ~~(lastMessage.createdTimestamp / 1000 / 60) % interactionsStorage;
     if (elapsed < 60 * 60 * 1000) {
         interactionsPerMinute[relativeMinute]++;
-        totalStoredInteractions++;
     }
     // add to message history that rolls around every killTimerStorage minutes
     const historyMinute = ~~(Date.now() / 1000 / 60) % killTimerStorage;
@@ -163,7 +154,6 @@ async function setLastWinner() {
                         const relativeMinute = ~~(msg.createdTimestamp / 1000 / 60) % interactionsStorage;
                         interactionsPerMinute[relativeMinute]++;
                         interactionsFound++;
-                        totalStoredInteractions++;
                     }
                 }
             }
@@ -225,7 +215,6 @@ function onNewMessage(message) {
         const currentMinute = ~~(Date.now() / 1000 / 60) % interactionsStorage;
         clearInteractionMinute(currentMinute);
         interactionsPerMinute[currentMinute]++;
-        totalStoredInteractions++;
     }
 
     // rolls around every killTimerStorage minutes
@@ -491,7 +480,6 @@ function clearInteractionMinute(currentMinute) {
     // only clear history if we're in a new minute
     if (currentMinute === lastMinute) return;
 
-    totalStoredInteractions -= interactionsPerMinute[currentMinute];
     interactionsPerMinute[currentMinute] = 0;
     lastMinute = currentMinute;
 
