@@ -29,13 +29,19 @@ async function suggest(client, message, content) {
 
 // detect a message in the suggestion/log server. index.js already checks for the right channel
 function onMessage(message, client) {
-    if (Object.values(botOwners).includes(message.author.id)) {
-        if (message.content.toLowerCase().startsWith('accept')) {
-            return accept(message, client);
+    try {
+        if (Object.values(botOwners).includes(message.author.id)) {
+            if (message.content.toLowerCase().startsWith('accept')) {
+                return accept(message, client);
+            }
+            if (message.content.toLowerCase().startsWith('reject')) {
+                return reject(message, client);
+            }
         }
-        if (message.content.toLowerCase().startsWith('reject')) {
-            return reject(message, client);
-        }
+    } catch (error) {
+        logger.log('An error accepting/rejecting a suggestion:');
+        logger.log(error);
+        message.reply('There was an oopsie! But no crash this time :D');
     }
 }
 
@@ -179,7 +185,7 @@ async function reject(message, client) {
     }
     const contextSection = contents.slice(0, contents.indexOf('`'));
     const usernameID = / \/ ([0-9]*) /.exec(contextSection);
-    let username = /--- (.*?#[0-9]*?) /.exec(contextSection)[1]; // this errors if suggestion in invalid format!
+    let username = /--- (.*?(?:#[0-9]*?)?) /.exec(contextSection)[1]; // this errors if suggestion in invalid format!
     let user;
     if (usernameID) user = getUsers.One(usernameID[1], client);
     else user = getUsers.One(username, client);
