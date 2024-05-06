@@ -29,20 +29,22 @@ async function suggest(client, message, content) {
 
 // detect a message in the suggestion/log server. index.js already checks for the right channel
 function onMessage(message, client) {
-    try {
         if (Object.values(botOwners).includes(message.author.id)) {
             if (message.content.toLowerCase().startsWith('accept')) {
-                return accept(message, client);
+                accept(message, client).catch(error => {
+                    logger.log('ERROR: While accepting a suggestion:');
+                    logger.log(error);
+                    message.channel.send('There was an oopsie! But no crash this time :D');
+                });
             }
             if (message.content.toLowerCase().startsWith('reject')) {
-                return reject(message, client);
+                reject(message, client).catch(error => {
+                    logger.log('ERROR: While rejecting a suggestion:');
+                    logger.log(error);
+                    message.channel.send('There was an oopsie! But no crash this time :D');
+                });
             }
         }
-    } catch (error) {
-        logger.log('An error accepting/rejecting a suggestion:');
-        logger.log(error);
-        message.reply('There was an oopsie! But no crash this time :D');
-    }
 }
 
 async function accept(message, client) {
