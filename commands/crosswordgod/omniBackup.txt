@@ -1,4 +1,4 @@
-1705025767724
+1715024323917
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -624,6 +624,7 @@ Cardboard shuriken
 Care spray
 Career growth hormone
 Carnivorous thimble
+Carpal funnel
 Carriage of justice
 Carrot and stick gift set
 Carrot on a stick
@@ -1485,6 +1486,7 @@ Goblet of ire
 Gobstarter
 God tags
 “God-Hero” dictionary
+“GodlyFans” subscription
 “Godopoly” boardgame
 Godpowder
 Godville Admin bobblehead
@@ -1777,6 +1779,7 @@ Imbalance sheet
 Immobile phone
 Immoral compass
 Immunity booster rocket
+Imperial Merch
 Imperfect attendance award
 Implosive detonator
 Imported bookmark
@@ -1977,6 +1980,7 @@ Legally binding rope
 Legally blinding contract
 Legally-smuggled goods
 Lemmings' guide to cliff diving
+Lemon cello
 Lemon limestone
 Lemon-scented weapon wipe
 Less-than-stellar star chart
@@ -2157,6 +2161,7 @@ Metaphorical cookie
 Meteor showerhead
 Metric spork
 Microchips and dip
+Microfiche and chips
 Micrognomicon
 Micropotatochip
 Mid-fight snack
@@ -2206,6 +2211,7 @@ Missing jigsaw piece
 Missing link
 Missing puzzle piece
 Missionary positioning system
+Misstep counter
 Mistaken identity card
 Mithril putty
 Mixed message
@@ -2393,6 +2399,7 @@ Oil of “olé!”
 Old diary
 Old piece of equipment
 Old wife's tail
+Olive brunch
 Olympic Mentalist
 Omnicillin
 Omnipotentiometer
@@ -2525,6 +2532,7 @@ Paper trowel
 Paperback audiobook
 Paradigm shifter
 Parallel cross
+Parallel limes
 Parallel universe navigator
 Parallel university map
 Parallel world map
@@ -2792,6 +2800,7 @@ Prosthetic brain
 Prosthetic table leg
 Prototypewriter
 Prototypo
+Proverbial thing
 Psalm lotion
 Pseudoscientific evidence
 Psionic tonic
@@ -3273,6 +3282,7 @@ Spot of bother remover
 Spotless record
 Spread sheet
 Spreadsheet music
+Spring cleanser
 Sprig of unlucky heather
 Spy manual
 SQL injection syringe
@@ -3679,6 +3689,7 @@ Urn of phoenix ashes
 Used artifact
 Used mad lib
 Used multipass
+Used starter kit
 Useful junk
 Useless artifact
 Vacant genie's lamp
@@ -3881,6 +3892,7 @@ Abracadaver
 Abridged Troll
 Academia Nut
 Access Denier
+Accidentist
 Achievement Hunter
 Achilles’ Healer
 Acid Reindeer
@@ -3913,6 +3925,7 @@ Ale-Chemist
 Algebrawler
 Alien Space Bat
 Allergenie
+All-seeing eyewitness
 Alma Monster
 Alpacalypse
 Alpha Centaur
@@ -4025,7 +4038,7 @@ Bagstabber
 Bald Eagle Scout
 Bald Mammoth
 Ballistic Slug
-Balloonatic
+Balatic
 Ballpoint Penguin
 Balrogue
 Bananaconda
@@ -4093,6 +4106,7 @@ Bicyclops
 Big Bad Bed Bug
 Bigger Badder Wolf
 Biggerfoot
+Bike Peddler
 Binary Canary
 Bio-degrader
 Biological Nightmare
@@ -4131,6 +4145,7 @@ Blunderachiever
 Blundertaker
 Blunt Instrumentalist
 Boa Conscriptor
+Boarbarian
 Boartender
 Bobble-Headed Hydra
 Bodily Ogre
@@ -4261,6 +4276,7 @@ Cherry Possum
 Cheshire Rat
 Chesthugger
 Chewbaccacabra
+Chicken Bouillonaire
 Chicken in a Guy Suit
 Chief of Staph
 Chili Con Carnivore
@@ -4308,6 +4324,7 @@ Comic Con Artist
 Commandodo
 Common Dominator
 Compsognathus
+Concreature
 Concussionist
 Conga Lion
 Congenital Defector
@@ -4318,6 +4335,7 @@ Continental Drifter
 Contraband Mule
 Contraband Snuggler
 Contrabandit
+Conversation Ender
 Cookie Mobster
 Cookie Monster
 Cooling Fanatic
@@ -4394,6 +4412,7 @@ Daydream Bereaver
 Daymare
 Dead Horse
 Dead Ringer
+Dead sea serpent
 Dead Sea Troll
 Dead Survivor
 Dead Terrorist
@@ -4410,6 +4429,7 @@ Defective Inspector
 Defence Attorney
 Defender of Injustice
 Deformed Rabbit
+Dehumanizer
 Déjà-Vulture
 Delirium Tremendous
 Deliverator
@@ -4446,6 +4466,7 @@ Dire Squirrel
 Dirt Devil
 Dirty Cheetah
 Disarmadillo
+Disassembly Lion
 Disasterisk
 Disastronaut
 Discardinal
@@ -4455,6 +4476,8 @@ Discordion Player
 Disenchanted Wizard
 Disgruntled Customer
 Disgruntled Postal Clerk
+Dismissionary
+Displeasurebot
 Disrespectre
 Distilled Spirit
 Djinn-in-Tunic
@@ -4618,6 +4641,7 @@ Feral Rocking Horse
 Ferocita
 Fiction Fairy
 Fiend of a Fiend
+Fiendly reminder
 Fifth Elephant
 Fight Cub
 Fightaholic
@@ -4626,6 +4650,7 @@ Fighty Duck
 File Executioner
 Filefry
 Final Frontiersman
+Finger Lickin' Goon
 Finger Puppet Master
 Fire Ent
 Fire Hydra
@@ -4677,6 +4702,7 @@ Fragmatist
 Fragrant Skunk
 Frankenfurter
 Frankintestine
+Free-Range Prisoner
 Freed Radical
 Freelancelot
 Freezard
@@ -4696,6 +4722,7 @@ Full Metal Jackrabbit
 Full-Metal Arsonist
 Fun Dementalist
 Fund Raider
+Fundead
 Funeral Crasher
 Furinda
 G.I. Foe
@@ -4811,6 +4838,7 @@ Guardian Gnome
 Guerilla Gorilla
 Guest of Horror
 Guest User
+Guidance Chancellor
 Guild Usurper
 Guilt Leader
 Guilty Plesiosaur
@@ -4818,6 +4846,7 @@ Guitar Hero
 Gummi Bear
 Gummy Wyrm
 Gunboat Diplomat
+Gunwhale
 Gurgly
 Guttersniper
 Habeas Corpse
@@ -4838,9 +4867,11 @@ Happy Little Accident
 Hare-Less Rabbit
 Harebrained Schemer
 Harlem Gnometrotter
+Harmada
 Harming Bird
 Harmster
 Harpoonessa
+Harpoonproof Hydra
 Harpy Medium
 Harrier Pigeon
 Harvester of Sorrow
@@ -4886,6 +4917,7 @@ Hickory Dickory Duck
 Hidden Dragon
 Hidden Valley Rancher
 Higgs Bison
+High Class Clown
 High Horse
 Hindsight Seer
 Hiphopopotamus
@@ -4899,6 +4931,7 @@ Hoarse Whisperer
 Hobo Sapien
 Hobo-Cop
 Hold-Up Comedian
+Hole Hog
 Holey Cow
 Holey Ghost
 Holy Carp
@@ -4925,6 +4958,7 @@ Hugs Bison
 Human Wrongs Activist
 Humanatee
 Humming Bard
+Humpback Quail
 Humpty Dumpling
 Hunchback of Monsterdam
 Hungry Hungry Hypocrite
@@ -4964,6 +4998,7 @@ Immunogoblin
 Imp-Personator
 Impaladin
 Impedimentor
+Improper Gander
 Imposterior
 Impuritan
 Incendiary Firefly
@@ -5044,6 +5079,7 @@ Jitter-Bug
 Jugglernaut
 Jumping Slider
 Jungle Bookie
+Junk Foodie
 Jurassic Lark
 Juxtaphysician
 Kamelkaze
@@ -5153,6 +5189,7 @@ Lollipop Snatcher
 Lone Rearranger
 Lonely Hive Mind
 Long and Winding Rodent
+Loonicorn
 Loose Changeling
 Loose Shrew
 Lootlicker
@@ -5214,6 +5251,7 @@ Maul Cop
 Maul Rat
 Maxwell's Demon
 Meanwhale
+Meat Loafer
 Meddler of Honor
 Medieval Knieval
 Mediocrates
@@ -5309,9 +5347,12 @@ Morse Whisperer
 Mortal Frienemy
 Mortal Tomcat
 Mortal Wombat
+Mortar Shellfish
 Mosh Pitbull
 Moss Cow
+Motivational Poser
 Motley Crew
+Motorgoat
 Motor Cyclops
 Motor Pike
 Motorcyclops
@@ -5368,6 +5409,7 @@ News Flasher
 Next Available Agent
 Niceferatu
 Nicelander
+Nightmarionette
 Nine Inch Snail
 Ninja Pirate
 Ninja Tortoise
@@ -5392,8 +5434,10 @@ Northpole Dancer
 Nosferatuna
 Nostradamoose
 Not a Big Dealer
+Not Dead Yeti
 Not-of-this-Earth Worm
 Not-So-Brave Knight
+Not-So-Gentleman
 Not-so-Scary Monster
 Notary of Death
 Novel Protagonist
@@ -5498,6 +5542,7 @@ Pastafarian Prophet
 Pathological Friar
 Patronizing Saint
 Pawn of the Dead
+Paywalrus
 Peace Corpse
 Peacebreaker
 Peacelock
@@ -5585,6 +5630,7 @@ Possessed Exorcist
 Post-Mortem Artist
 Postal Snail
 Postman of the Apocalypse
+Postmodern Caveman
 Postmonster General
 Postmortem Graduate
 Poulpy
@@ -5694,6 +5740,7 @@ Recapitated Horseman
 Recessive Genie
 Rector Yoda
 Recurring Foe
+Recycled Bottlesnake
 Recycloholic
 Recyclops
 Red Bull
@@ -5730,6 +5777,7 @@ Rigor Mantis
 Rigorous Mortician
 Ring Wyrm
 Rival Guild Fanboy
+Rivalkyrie
 River Banker
 Road Krill
 Roadgunner
@@ -5739,6 +5787,7 @@ Robber Chicken
 Robber Ducky
 Robbing Hood
 Robbing Hoodlum
+Robo Sapien
 Robot Chicken
 Rock 'n Gnoll
 Rock Lobster
@@ -5810,11 +5859,14 @@ Sci-Fly
 Scientific Method Actor
 Scorntrooper
 Scotch Guard
+Scowlodon
 Screen Slaver
 Screwfish
 Sea Harpoonia
 Sea Troll
+Sealebrity
 Search Engineer
+Seaghoul
 Seashelly
 Seasick Crocodile
 Seasoned Veterinarian
@@ -5842,6 +5894,7 @@ Semi-Demi-God
 Sensei of Humor
 Sentineel
 Septic Tank Commander
+Serafin
 Serial Killer Bee
 Serial Numberer
 Serial Self-Killer
@@ -5881,6 +5934,7 @@ Shoulder Devil
 Shoving Leopard
 Shrimposter
 Shrimpy
+Shroommate
 Shrunken Headmaster
 Shudderbug
 Shyborg
@@ -5957,6 +6011,7 @@ Sooth Slayer
 Sorceopath
 Sore Winner
 Soul Catcher
+Soul Custodian
 Soul Eater
 Soul Farmer
 Soul Inmate
@@ -6032,6 +6087,7 @@ Street Fighter
 Street Mage
 Stripeless Zebra
 Stunt Double Agent
+Stuporhero
 Sturgeon General
 Stuttering Mime
 Stuttering Spellcaster
@@ -6060,6 +6116,7 @@ Supermanimal
 Supersonic Hedgehog
 Supersonic Woodpecker
 Superstarfish
+Supreme Courtier
 Surprise Mechanic
 Surreal Killer
 Surveillance Chimera
@@ -6110,7 +6167,9 @@ Terror Dactyl
 Terror-aki Chicken
 Terrorbyte
 Terrorformer
+Therapriest
 There-Wolf
+Thermonuclear Warlock
 Thesaurus Rex
 Thief of Time
 Thieving Vending Machine
@@ -6219,6 +6278,7 @@ Uncivil Servant
 Uncivillian
 Uncommon Ancestor
 Uncountable Sheep
+Uncredited Extra
 Undead Pixel
 Undead Pixie
 Underbed Monster
@@ -6334,7 +6394,7 @@ Wi-Fly
 Wicked Glitch of the West
 Wight Watcher
 Wiki Lynx
-Wild Balloon Animal
+Wild Bal Animal
 Wild Borg
 Wild Guest
 Wild Heir
@@ -7518,6 +7578,7 @@ Soulstone
 Sound barrier
 Spacemarine's battle armor
 Spaceship trooper's gauntlets
+Spam filter
 Spam grenade
 Spatula of mightiness
 Speedo of light
