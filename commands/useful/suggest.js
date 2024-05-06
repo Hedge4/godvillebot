@@ -31,16 +31,16 @@ async function suggest(client, message, content) {
 function onMessage(message, client) {
         if (Object.values(botOwners).includes(message.author.id)) {
             if (message.content.toLowerCase().startsWith('accept')) {
-                accept(message, client).catch(error => {
+                accept(message, client).catch(e => {
                     logger.log('ERROR: While accepting a suggestion:');
-                    logger.log(error);
+                    logger.error(e);
                     message.channel.send('There was an oopsie! But no crash this time :D');
                 });
             }
             if (message.content.toLowerCase().startsWith('reject')) {
-                reject(message, client).catch(error => {
+                reject(message, client).catch(e => {
                     logger.log('ERROR: While rejecting a suggestion:');
-                    logger.log(error);
+                    logger.error(e);
                     message.channel.send('There was an oopsie! But no crash this time :D');
                 });
             }

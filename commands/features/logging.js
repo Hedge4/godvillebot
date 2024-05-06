@@ -97,6 +97,17 @@ function logBoth(logMessage) {
     logChannel(logMessage);
 }
 
+function logError(logMessage) {
+    if (!(logMessage instanceof Error)) {
+        return logBoth(logMessage);
+    }
+
+    console.error(logMessage);
+    logMessage = logMessage.stack;
+    logMessage = logMessage.replace(/hedde(_?v(an)?_?heerde)?/gi, 'USER');
+    logChannel('```' + logMessage + '```');
+}
+
 /**
  * Takes an object or string and adds it to the queue.
  * @param {Object|String} logMessage - The object or string to be logged.
@@ -161,6 +172,7 @@ function getChannel() {
 
 exports.start = startup;
 exports.log = logBoth;
+exports.error = logError;
 exports.toChannel = logChannel;
 exports.toConsole = logConsole;
 exports.getChannel = getChannel;

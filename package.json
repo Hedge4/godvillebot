@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.28.1",
+  "version": "5.28.2",
   "updateMsg1": "5.28 >solvehtml now sends the crossword solution as an image!",
   "updateMsg2": "5.26 Added >listroles and >getrole, which automatically include reactionRoles in the categories.",
   "updateMsg3": "5.24 Ported >ireadtherules from Dyno, and bot now sends welcome messages to new members.",
