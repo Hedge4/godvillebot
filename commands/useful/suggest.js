@@ -79,7 +79,7 @@ async function accept(message, client) {
     }
     const contextSection = contents.slice(0, contents.indexOf('`'));
     const usernameID = / \/ ([0-9]*) /.exec(contextSection);
-    let username = /--- (.*?#[0-9]*?) /.exec(contextSection)[1]; // this errors if suggestion in invalid format!
+    let username = /--- (.*?(?:#[0-9]*?)?) /.exec(contextSection)[1]; // this errors if suggestion in invalid format!
     let user;
     if (usernameID) user = getUsers.One(usernameID[1], client);
     else user = getUsers.One(username, client);
