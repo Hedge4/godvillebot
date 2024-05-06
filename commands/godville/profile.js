@@ -315,6 +315,7 @@ async function getGodData(URL, channel) {
     const rx_trader = />(Trader since )(\d+)\/(\d+)\/(\d+)/;
     const rx_creatureMaster = />(Creature Master since )(\d+)\/(\d+)\/(\d+)/;
     const rx_bookmaker = />(Bookmaker since )(\d+)\/(\d+)\/(\d+)/;
+    const rx_soulmaster = />(Soulmaster since )(\d+)\/(\d+)\/(\d+)/;
 
     const temple = rx_temple.exec(html);
     const ark = rx_ark.exec(html);
@@ -322,7 +323,8 @@ async function getGodData(URL, channel) {
     const trader = rx_trader.exec(html);
     const creatureMaster = rx_creatureMaster.exec(html);
     const bookmaker = rx_bookmaker.exec(html);
-    const achievements = [temple, ark, animalist, trader, creatureMaster, bookmaker];
+    const soulmaster = rx_soulmaster.exec(html);
+    const achievements = [temple, ark, animalist, trader, creatureMaster, bookmaker, soulmaster];
 
     let achievementsString = function() {
         // test if any achievements are defined

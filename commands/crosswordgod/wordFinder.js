@@ -25,7 +25,7 @@ function getGridFromFile(html) {
     // this returns all table rows, and all sub-matches which are the table d's (what is td short for?)
     const rowsRegex = /<tr>[\s\S]*?<\/tr>/g;
     const elemsRegex = /<td class="[^c][\s\S]*?<\/td>/g; // matches all elements except cc_wrap class on the side
-    const numRegex = /class="num">(\d)<\/div>/;
+    const numRegex = /class="num">(\d+)<\/div>/;
     const rows = [...table[0].matchAll(rowsRegex)]; // match all rows in <table />, and convert to array
     if (!rows.length) {
         throw ('Error: I found the crossword in your file, but couldn\'t find any table rows. Either something went wrong with your download,'
