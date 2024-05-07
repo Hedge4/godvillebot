@@ -40,7 +40,8 @@
         ["randomnick", ["nick", "nickname", "changenick", "changenickname", "randomnickname"]],
         ["no", ["nope"]],
         ["bonk", []],
-        ["roll", ["dice"]]
+        ["roll", ["dice"]],
+        ["pet", []]
     ],
 
     "moderator": [
