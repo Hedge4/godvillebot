@@ -3,7 +3,7 @@ const godWiki = require('./godwiki');
 const link = require('./link');
 const profile = require('./profile');
 
-function redirect(cmd, content, message, client, Discord, godData) {
+function redirect(cmd, content, message, client, godData) {
     switch (cmd) {
         case 'profile':
             return profile.showProfile(message, content, godData);
@@ -12,7 +12,7 @@ function redirect(cmd, content, message, client, Discord, godData) {
         case 'showlink':
             return profile.showLink(message, content, client, godData);
         case 'guides':
-            return guide(message, content, Discord);
+            return guide(message, content);
         case 'godwiki':
             return godWiki(content, message);
         case 'link':

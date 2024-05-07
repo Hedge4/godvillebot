@@ -1,5 +1,6 @@
 const { prefix, serversServed, channels } = require('../../configurations/config.json');
 const logger = require('../features/logging');
+const { EmbedBuilder } = require('discord.js');
 
 const noXpChannels = [
     channels.botville,
@@ -13,7 +14,7 @@ const noXpPrefixes = ['?', 't!', '!', '>', ':', ';'];
 const cooldownSecondsAmount = 20;
 const godpowerCooldown = new Set(); // to create a cooldown between each time a user can earn godpower
 
-async function giveGodpower(message, userData, Discord, client) {
+async function giveGodpower(message, userData, client) {
     if (noXpChannels.includes(message.channel.id)) return; // spam channels
     if (message.guild.id !== serversServed.godvilleServer) return; // wrong servers
     if (godpowerCooldown.has(message.author.id)) return; // on cooldown
@@ -79,7 +80,7 @@ async function giveGodpower(message, userData, Discord, client) {
         const member = await message.guild.members.fetch(message.author);
         const nickname = member.displayName ? member.displayName : message.author.tag;
 
-        const lvlUpEmbed = new Discord.EmbedBuilder()
+        const lvlUpEmbed = new EmbedBuilder()
             .setColor('d604cf')
             .setTitle(nickname + ' levelled UP! <:screen_pantheonup:441043802325778442>')
             .setDescription(`You gathered ${nextLevel} godpower <:stat_godpower:401412765232660492> and reached level ${User[message.author.id].level}! :tada: - You now have a total of ${User[message.author.id].total_godpower} godpower. You'll need ${newNextLevel} more godpower for level ${newLevel + 1}.`)

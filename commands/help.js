@@ -1,4 +1,5 @@
 const { prefix, channels, botName } = require('../configurations/config.json');
+const { EmbedBuilder } = require('discord.js');
 const logger = require('./features/logging');
 
 const commands_list = [
@@ -131,12 +132,12 @@ const commands_list = [
         'Admin only. Pauses the bot for [minutes] minutes, 1 minute if no number is specified. The number will be rounded up and has to be in the range 1-60.'],
 ];
 
-function constructHelp(message, Discord, client) {
+function constructHelp(message, client) {
     let text = '**__List of commands and functions:__**\n';
     for (let i = 0; i < commands_list.length; i++) {
         text += `\`${commands_list[i][1]}\` ${commands_list[i][2]}\n`;
     }
-    const helpEmbed = new Discord.EmbedBuilder()
+    const helpEmbed = new EmbedBuilder()
         .setTitle(`${botName} commands`)
         .setColor(0x63CCBE) // Soft blue
         .setDescription(`${botName} gives XP, or 'godpower' for talking, and provides several other Godville related functions, such as linking your profile and daily crossword solutions. Use \`${prefix}help [command]\` for more information on a specific command/function.\n\n` + text)
@@ -147,9 +148,9 @@ function constructHelp(message, Discord, client) {
     return helpEmbed;
 }
 
-function constructSpecificHelp(message, Discord, client, element) {
+function constructSpecificHelp(message, client, element) {
     if (!element[4]) {
-        const specificHelpEmbed = new Discord.EmbedBuilder()
+        const specificHelpEmbed = new EmbedBuilder()
             .setTitle(`Help for ${element[1]}`)
             .setColor(0x63CCBE) // Soft blue
             .setDescription(element[3])
@@ -170,7 +171,7 @@ function constructSpecificHelp(message, Discord, client, element) {
         }
         if (examplesList.length) examplesList.push(examples); // if we made use of examplesList, add the last examples as well
 
-        const specificHelpEmbed = new Discord.EmbedBuilder()
+        const specificHelpEmbed = new EmbedBuilder()
             .setTitle(`Help for ${element[1]}`)
             .setColor(0x63CCBE) // Soft blue
             .setDescription(element[3] + '\n\u200B')
@@ -192,14 +193,14 @@ function constructSpecificHelp(message, Discord, client, element) {
     }
 }
 
-function chooseHelp(message, Discord, client) {
+function chooseHelp(message, client) {
     const arg = message.content.toLowerCase().slice(5).trim();
     let helpEmbed = '';
     if (!arg || !arg.length) {
-        helpEmbed = constructHelp(message, Discord, client);
+        helpEmbed = constructHelp(message, client);
     } else if (!commands_list.some(function(e) {
         if (arg === e[0]) {
-            helpEmbed = constructSpecificHelp(message, Discord, client, e);
+            helpEmbed = constructSpecificHelp(message, client, e);
             return true;
         }
     })) {

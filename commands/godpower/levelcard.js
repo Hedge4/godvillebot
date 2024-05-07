@@ -1,7 +1,8 @@
 const logger = require('../features/logging');
 const getUsers = require('../features/getUsers');
+const { EmbedBuilder } = require('discord.js');
 
-async function displayLevel(message, msgContent, userData, Discord, client) {
+async function displayLevel(message, msgContent, userData, client) {
 
     let user;
     if (msgContent.length) {
@@ -44,7 +45,7 @@ async function displayLevel(message, msgContent, userData, Discord, client) {
         requestedUser = requestedUser + ' / ' + member.displayName;
     }
 
-    const lvlEmbed = new Discord.EmbedBuilder()
+    const lvlEmbed = new EmbedBuilder()
         .setAuthor({ name: requestedUser })
         .setColor('32cd32')
         .addFields([

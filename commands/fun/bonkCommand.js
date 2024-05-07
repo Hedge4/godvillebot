@@ -1,10 +1,11 @@
 const logger = require('../features/logging');
 const { clientId } = require('../../configurations/config.json');
-const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
+const { AttachmentBuilder } = require('discord.js');
 const sharp = require('sharp');
 const https = require('https');
 
 const imageSize = 216; // original image is 432, so we take half for clean resizing
+const imagePath = './images/bonk.jpg';
 const pfpBonkeeSize = Math.round(0.2 * imageSize / 2) * 2;
 const pfpBonkerSize = Math.round(0.31 * imageSize / 2) * 2;
 const leftBonkeeGap = Math.round(0.05 * imageSize);
@@ -92,7 +93,7 @@ async function main(message) {
             .toBuffer();
 
         // load our bonk image
-        const bonk = await sharp('./images/bonk.jpg')
+        const bonk = await sharp(imagePath)
             .resize(imageSize, imageSize) // resize so we ensure the ratio between sizes is correct
             .png()
             .toBuffer(); // output to buffer to 'apply' changes (idk)
@@ -154,7 +155,7 @@ async function main(message) {
             .toBuffer(); // this is our final output
 
         // share the created image with the world
-        const attachment = new Discord.AttachmentBuilder(newImage);
+        const attachment = new AttachmentBuilder(newImage);
         message.channel.send({ files: [attachment] });
 
         // one big catch all because I'm lazy

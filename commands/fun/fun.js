@@ -9,7 +9,7 @@ const hugCommand = require('./hugCommand.js');
 const roll = require('./diceRoll.js');
 const pet = require('./petCommand.js');
 
-function redirect(cmd, content, message, Discord, client) {
+function redirect(cmd, content, message, client) {
     // these functions should only work in command channels
     const isCommandChannel = Object.values(channels.commandsAllowed).includes(message.channel.id);
 

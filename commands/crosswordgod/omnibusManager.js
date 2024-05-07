@@ -2,8 +2,7 @@
 const { botOwners, botName } = require('../../configurations/config.json');
 const main = require('../../index');
 const logger = require('../features/logging');
-
-const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
+const { EmbedBuilder } = require('discord.js');
 const https = require('https');
 const fs = require('fs');
 
@@ -12,6 +11,7 @@ let lastUpdated;
 let nextUpdateTimer;
 let backup = [];
 let omnibus;
+const backupPath = './commands/crosswordgod/omniBackup.txt';
 const refreshBreak = 15;
 const autoUpdateDelay = 60 * 24;
 const expectedAmount = 6000; // right now, the omnibus list has 7357 items.
@@ -22,7 +22,7 @@ async function backupStartup() {
     try {
         // read backup file
         backup = [];
-        fs.readFileSync('./commands/crosswordgod/omniBackup.txt', 'utf-8').split(/\r?\n/).forEach(function(line) {
+        fs.readFileSync(backupPath, 'utf-8').split(/\r?\n/).forEach(function(line) {
             backup.push(line);
         });
 
@@ -141,7 +141,7 @@ async function refreshOmnibus(message) {
 
     // create nice embed for the update message, which we can add to
     const client = main.getClient();
-    const updateEmbed = new Discord.EmbedBuilder()
+    const updateEmbed = new EmbedBuilder()
         .setTitle(`⏫ Successfully refreshed online Omnibus list with ${omnibus.length} total entries!`)
         .setColor(0x0092db) // noice blue
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() })
@@ -287,7 +287,7 @@ async function createBackup(message) {
 
     // create nice embed for the backup update message
     const client = main.getClient();
-    const backupUpdateEmbed = new Discord.EmbedBuilder()
+    const backupUpdateEmbed = new EmbedBuilder()
         .setTitle(result.Title)
         .setDescription(result.Description)
         .setColor(0x0092db) // noice blue
@@ -339,7 +339,7 @@ async function createBackupFile() {
     // now we can create a new omniBackup.txt
     try {
         const updateTime = Date.now();
-        const backupFile = fs.createWriteStream('./commands/crosswordgod/omniBackup.txt', {
+        const backupFile = fs.createWriteStream(backupPath, {
             flags: 'w',
         });
         backupFile.write(`${updateTime}\n`); // record the time backup was last updated on the first line

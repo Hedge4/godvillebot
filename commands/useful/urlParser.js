@@ -1,5 +1,5 @@
-const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
 const { prefix, botName } = require('../../configurations/config.json');
+const { EmbedBuilder } = require('discord.js');
 const startupFile = require('../../index');
 const logger = require('../features/logging');
 
@@ -62,7 +62,7 @@ async function main(message, content) {
     }
 
     const client = startupFile.getClient();
-    const embed = new Discord.EmbedBuilder()
+    const embed = new EmbedBuilder()
         .setTitle('Parsed URL')
         .setColor(0x632db4) // purpleee
         .setDescription(embedBody)

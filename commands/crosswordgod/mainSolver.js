@@ -1,5 +1,5 @@
 const { prefix, botName } = require('../../configurations/config.json');
-const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
+const { AttachmentBuilder, EmbedBuilder } = require('discord.js');
 const { createCanvas } = require('canvas');
 const main = require('../../index');
 const logger = require('../features/logging');
@@ -164,7 +164,7 @@ async function solveHtmlRequest(message) {
     const { attachment, commentsText, gridText } = createSolutionGrid(solvedHorizontals, solvedVerticals);
 
     const client = main.getClient();
-    const crosswordEmbed = new Discord.EmbedBuilder()
+    const crosswordEmbed = new EmbedBuilder()
         .setTitle('Godville Times crossword solution')
         .setDescription(solutionText)
         .addFields([
@@ -309,7 +309,7 @@ function createSolutionGrid(solvedHorizontals, solvedVerticals) {
         const timestamp = new Date().toDateString();
         const filename = `SPOILER Godville Crossword ${timestamp}.png`.replace(/\s+/g, '_'); // underscore because djs sucks
         // const filename = 'test.png'; // underscore because djs sucks
-        attachment = new Discord.AttachmentBuilder(buffer, { name: filename });
+        attachment = new AttachmentBuilder(buffer, { name: filename });
         commentsText = comments.length ? `||${comments.join('\n')}||` : null;
         logger.log(`Crossword: Created image solution for ${grid.length}x${width} crossword grid.`);
     } catch (error) {

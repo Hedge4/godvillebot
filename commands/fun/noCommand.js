@@ -1,9 +1,10 @@
 const logger = require('../features/logging');
 const { clientId } = require('../../configurations/config.json');
-const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
+const { AttachmentBuilder } = require('discord.js');
 const sharp = require('sharp');
 const https = require('https');
 
+const imagePath = './images/nope.png';
 const resizeSize = 216; // original size is 300
 
 async function main(message) {
@@ -40,7 +41,7 @@ async function main(message) {
             .resize(resizeSize, resizeSize) // Resize the underside image
             .greyscale(); // we make it boring
 
-        await sharp('./images/nope.png')
+        await sharp(imagePath)
             .resize(resizeSize, resizeSize)
             .toBuffer({ resolveWithObject: true }) // buffers all the waaaaaaay
             .then(({ data }) => { // We now have the data / info of that buffer
@@ -54,7 +55,7 @@ async function main(message) {
                 throw ('Error: ', err);
             });
 
-        const attachment = new Discord.AttachmentBuilder(imageToEdit);
+        const attachment = new AttachmentBuilder(imageToEdit);
 
         message.channel.send({ files: [attachment] });
 

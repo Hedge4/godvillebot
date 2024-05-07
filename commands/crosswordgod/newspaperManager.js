@@ -1,8 +1,9 @@
 const { prefix, botOwners, roles, botName } = require('../../configurations/config.json');
-const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
+const { EmbedBuilder } = require('discord.js');
 const main = require('../../index');
 const logger = require('../features/logging');
 const https = require('https');
+
 const news = {
     edition: undefined,
     date: undefined,
@@ -25,7 +26,7 @@ function sendNewspaper(channel, mentionGods = false) {
     const missingEmbedsList = [];
 
     // create introduction and add it to sendList
-    const introductionEmbed = new Discord.EmbedBuilder()
+    const introductionEmbed = new EmbedBuilder()
         .setTitle(`Godville Times issue ${news.edition} on day ${news.date} g.e.`)
         .setDescription('[Claim your free daily coupon...](https://godvillegame.com/news#cpn_name)'
             + '\n\nDid you know I can solve the newspaper\'s crossword for you? You just have to send me the words! '
@@ -38,7 +39,7 @@ function sendNewspaper(channel, mentionGods = false) {
     embedsList.push(introductionEmbed);
 
     if (news.forecast) {
-        const forecastEmbed = new Discord.EmbedBuilder()
+        const forecastEmbed = new EmbedBuilder()
             .setTitle('Daily Forecast')
             .setDescription('[Click here for an explanation about forecast effects.](https://wiki.godvillegame.com/Daily_Forecast#List_of_possible_forecasts)\n\n' + news.forecast)
             .setURL('https://godvillegame.com/news')
@@ -49,7 +50,7 @@ function sendNewspaper(channel, mentionGods = false) {
     } else { missingEmbedsList.push('The Daily Forecast couldn\'t be loaded today.'); }
 
     if (news.famousHeroes) {
-        const famousEmbed = new Discord.EmbedBuilder()
+        const famousEmbed = new EmbedBuilder()
             .setTitle('Famous Heroes')
             .setDescription(news.famousHeroes)
             .setURL('https://godvillegame.com/news')
@@ -60,7 +61,7 @@ function sendNewspaper(channel, mentionGods = false) {
     } else { missingEmbedsList.push('The Famous Heroes couldn\'t be loaded today.'); }
 
     if (news.guildSpotlight) {
-        const guildEmbed = new Discord.EmbedBuilder()
+        const guildEmbed = new EmbedBuilder()
             .setTitle('Guild Spotlight')
             .setDescription(news.guildSpotlight)
             .setURL('https://godvillegame.com/news')

@@ -1,7 +1,8 @@
 const logger = require('../features/logging');
 const getUsers = require('../features/getUsers');
+const { EmbedBuilder } = require('discord.js');
 
-async function displayGold(message, msgContent, userData, Discord, client) {
+async function displayGold(message, msgContent, userData, client) {
 
     let user;
     if (msgContent.length) {
@@ -34,7 +35,7 @@ async function displayGold(message, msgContent, userData, Discord, client) {
         userName = userName + ' / ' + member.displayName;
     }
 
-    const goldEmbed = new Discord.EmbedBuilder()
+    const goldEmbed = new EmbedBuilder()
         .setAuthor({ name: userName })
         .setColor('ffd700')
         .addFields([{ name: 'Gold <:stat_gold:401414686651711498>', value: User[user.id].gold.toString(), inline: true }])

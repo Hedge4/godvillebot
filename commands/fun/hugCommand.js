@@ -1,9 +1,9 @@
 const logger = require('../features/logging');
-const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
+const { AttachmentBuilder } = require('discord.js');
 const sharp = require('sharp');
 const https = require('https');
 
-const imgPath = './images/hug3.png';
+const imagePath = './images/hug3.png';
 const imageSize = 200; // 216 would be more consistent, but starting res is 200px
 const pfpHuggeeSize = Math.round(0.33 * imageSize / 2) * 2;
 const pfpHuggerSize = Math.round(0.365 * imageSize / 2) * 2;
@@ -76,7 +76,7 @@ async function main(message) {
         });
 
         // load our hug image
-        const hug = await sharp(imgPath)
+        const hug = await sharp(imagePath)
             .resize(imageSize, imageSize) // resizing disabled because this image is already 300 x 300 pixels
             .png()
             .toBuffer(); // output to buffer to 'apply' changes (idk)
@@ -135,7 +135,7 @@ async function main(message) {
             .toBuffer(); // this is our final output
 
         // share the created image with the world
-        const attachment = new Discord.AttachmentBuilder(newImage);
+        const attachment = new AttachmentBuilder(newImage);
         message.channel.send({ files: [attachment] });
 
         // one big catch all because I'm lazy

@@ -8,8 +8,7 @@ exports.getGodData = function() { return godData; };
 exports.getUserData = function() { return userData; };
 
 // discord connection setup, bot login is at bottom of file
-const Discord = require('discord.js'); // TODO: remove, import only the specifically needed part
-const { Client, GatewayIntentBits, Partials, ChannelType } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, ChannelType, EmbedBuilder } = require('discord.js');
 const client = new Client({
     intents: [
         GatewayIntentBits.GuildMessages,
@@ -147,7 +146,7 @@ client.on('ready', () => {
     }
 
     // oh right now we actually say the bot is online in the main bot channel
-    const startEmbed = new Discord.EmbedBuilder()
+    const startEmbed = new EmbedBuilder()
         .setTitle('**Successfully restarted!**')
         .setColor('ffffff')
         .setDescription(`${botName} version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.
@@ -221,7 +220,7 @@ client.on('messageCreate', (message) => {
         }
 
         // check if a user should be given godpower for this message
-        giveXP(message, userData, Discord, client);
+        giveXP(message, userData, client);
 
         // see if a message applies for the chat contest
         chatContest.newMessage(message);
@@ -239,11 +238,11 @@ client.on('messageCreate', (message) => {
             if (Object.values(channels.commandsAllowed).includes(message.channel.id)) {
                 for (let i = 0; i < godpower.length; i++) {
                     if (cmd == godpower[i][0]) {
-                        return godpowerModule(cmd, content, message, Discord, client, userData, limitedCommandsData);
+                        return godpowerModule(cmd, content, message, client, userData, limitedCommandsData);
                     }
                     for (let j = 0; j < godpower[i][1].length; j++) {
                         if (cmd == godpower[i][1][j]) {
-                            return godpowerModule(godpower[i][0], content, message, Discord, client, userData, limitedCommandsData);
+                            return godpowerModule(godpower[i][0], content, message, client, userData, limitedCommandsData);
                         }
                     }
                 }
@@ -251,7 +250,7 @@ client.on('messageCreate', (message) => {
 
             // the help command
             if (cmd == 'help') {
-                return help(message, Discord, client);
+                return help(message, client);
             }
 
             // redirect crossword module commands (only command/news channels)
@@ -271,11 +270,11 @@ client.on('messageCreate', (message) => {
             // redirect godville module commands
             for (let i = 0; i < godville.length; i++) {
                 if (cmd == godville[i][0]) {
-                    return godvilleModule(cmd, content, message, client, Discord, godData);
+                    return godvilleModule(cmd, content, message, client, godData);
                 }
                 for (let j = 0; j < godville[i][1].length; j++) {
                     if (cmd == godville[i][1][j]) {
-                        return godvilleModule(godville[i][0], content, message, client, Discord, godData);
+                        return godvilleModule(godville[i][0], content, message, client, godData);
                     }
                 }
             }
@@ -295,11 +294,11 @@ client.on('messageCreate', (message) => {
             // redirect fun module commands
             for (let i = 0; i < fun.length; i++) {
                 if (cmd == fun[i][0]) {
-                    return funModule(cmd, content, message, Discord, client);
+                    return funModule(cmd, content, message, client);
                 }
                 for (let j = 0; j < fun[i][1].length; j++) {
                     if (cmd == fun[i][1][j]) {
-                        return funModule(fun[i][0], content, message, Discord, client);
+                        return funModule(fun[i][0], content, message, client);
                     }
                 }
             }

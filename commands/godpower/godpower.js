@@ -5,12 +5,12 @@ const getRanking = require('./ranking');
 const limitedCommands = require('./daily');
 const changegold = require('./changegold');
 
-function redirect(cmd, content, message, Discord, client, userData, limitedCommandsData) {
+function redirect(cmd, content, message, client, userData, limitedCommandsData) {
     switch (cmd) {
         case 'level':
-            return displayLevel(message, content, userData, Discord, client);
+            return displayLevel(message, content, userData, client);
         case 'gold':
-            return displayGold(message, content, userData, Discord, client);
+            return displayGold(message, content, userData, client);
         case 'toggle-mentions':
             return toggleMentions(message, userData);
         case 'ranking':

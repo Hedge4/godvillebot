@@ -1,4 +1,5 @@
 const { prefix } = require('../../configurations/config.json');
+const { EmbedBuilder } = require('discord.js');
 const logger = require('../features/logging');
 
 const guides_list = [
@@ -38,9 +39,9 @@ function showGuidesList(message) {
     message.reply(`Here are all ${guides_list.length} currently available guides:\n${text}`);
 }
 
-function showGuide(message, guide_number, Discord) {
+function showGuide(message, guide_number) {
     const index_number = guide_number - 1;
-    const guide_embed = new Discord.EmbedBuilder()
+    const guide_embed = new EmbedBuilder()
         .setTitle(guides_list[index_number][0])
         .setURL(guides_list[index_number][2])
         .setColor(0xFFD300) // Dark yellow
@@ -50,7 +51,7 @@ function showGuide(message, guide_number, Discord) {
     logger.log(`${message.author.tag} requested guide ${guide_number}, "${guides_list[index_number][0]}", in channel ${message.channel.name}.`);
 }
 
-function listOrGuide(message, number, Discord) {
+function listOrGuide(message, number) {
     if (!number.length) {
         showGuidesList(message);
     } else {
@@ -61,7 +62,7 @@ function listOrGuide(message, number, Discord) {
             return message.reply('That guide number doesn\'t exist.');
         }
         number = Math.floor(number);
-        showGuide(message, number, Discord);
+        showGuide(message, number);
     }
 }
 
