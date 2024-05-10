@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.29.0",
+  "version": "5.29.1",
   "updateMsg1": "5.29 Added >pet, the first gif generating command!",
   "updateMsg2": "5.28 >solvehtml now sends the crossword solution as an image!",
   "updateMsg3": "5.26 Added >listroles and >getrole, which automatically include reactionRoles in the categories.",

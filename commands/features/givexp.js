@@ -48,7 +48,10 @@ async function giveGodpower(message, userData, client) {
             level: 0,
         };
         User[message.author.id].last_username = message.author.tag;
-        await userData.set(User, { merge: true });
+        await userData.set(User, { merge: true }).catch((error) => {
+            logger.log('ERROR creating user data in giveGodpower: ');
+            logger.error(error);
+        });
     } else {
         User[message.author.id] = userDoc.data()[message.author.id];
     }
@@ -91,8 +94,14 @@ async function giveGodpower(message, userData, client) {
     }
 
     User[message.author.id].last_username = message.author.tag;
-    userData.set(User, { merge: true });
-    userData.update({ 1: totalGodpower });
+    userData.set(User, { merge: true }).catch((error) => {
+        logger.log('ERROR updating user data in giveGodpower: ');
+        logger.error(error);
+    });
+    userData.update({ 1: totalGodpower }).catch((error) => {
+        logger.log('ERROR updating total godpower in giveGodpower: ');
+        logger.error(error);
+    });
 
     setTimeout(() => {
         godpowerCooldown.delete(message.author.id);
