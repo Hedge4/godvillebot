@@ -1,4 +1,4 @@
-1715024323917
+1723265089503
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -193,6 +193,7 @@ Bag of empty promises
 Bag of filthy prawns
 Bag of holy shiitake mushrooms
 Bag of jellyfish sticks
+Bag of knuckle crackers
 Bag of legally-smuggled goods
 Bag of limited holding
 Bag of liquid nails
@@ -693,6 +694,7 @@ Chick magnet
 Chicken magnet
 Chicken noodle soap
 Chicken noodle soup
+Chicken scratch
 <span style="white-space:pre;"><span style="display: inline-block; margin-right: 0.2em; font-weight: normal; font-family: &#39;Twemoji Mozilla&#39;, &#39;Apple Color Emoji&#39;, &#39;Segoe UI Emoji&#39;, &#39;Segoe UI Symbol&#39;, &#39;Noto Color Emoji&#39;, &#39;EmojiOne Color&#39;, &#39;Android Emoji&#39;,EmojiSymbols, &#39;EmojiOne Mozilla&#39;, &#39;Noto Color Emoji Compat&#39;, emoji, sans-serif;">🦃</span>Chicken salad</span>
 Chicken's finger
 Childhood dream
@@ -1512,7 +1514,6 @@ Golden facepalm
 Golden fiddle
 Golden LEGO brick
 Golden parachute
-Golden pumpkin
 Golden pumpkin pie
 Golden snitch
 Golden ticket
@@ -2034,7 +2035,6 @@ Load of codswallop
 Loading bar
 Loadstone
 Loaf of liquid bread
-Lock of %hero%'s hair
 Log of rhythm
 Log-a-rhythm
 Logarithmic abacus
@@ -2474,6 +2474,7 @@ Outlandish data bank
 Outlandish gold-oyster
 Outlandish hexbox
 Overclocked watch
+Overdue library scroll
 Overflow chart
 Overflowing cup of resentment
 Overflowing ideabox
@@ -3275,6 +3276,7 @@ Spoilage alert
 &lt;spoiler alert&gt;
 Spoils of peace
 Spontaneous combustion engine
+Spool of hamstring
 Spool of story thread
 Spork
 Spot of bother
@@ -3396,6 +3398,7 @@ Sword in a scone
 Synonym bun
 Table of elementals
 Table of malcontents
+Tablebottom game
 Tablet of contents
 Tablet of random numbers
 Tail of the %monster%
@@ -3667,6 +3670,7 @@ Unresponsive script
 Unscrewdriver
 Unsigned death warrant
 Unsigned petition
+Unspeakable horoscope
 Unsplittable banana
 Unsupported feature
 Unsustainable model
@@ -3743,7 +3747,6 @@ Visible concern
 Vitameatavegamin
 Voice of treason
 Voice strainer
-Voicebox
 Volcanic ashtray
 Volcanic rash
 Volcano insurance policy
@@ -3939,7 +3942,6 @@ Amiable Snowman
 Ammoknight
 Anaphylactic Shark
 Anarchitect
-Ancient Demon
 Ancient Geek
 Angel of Death Metal
 Angel of Debt
@@ -4361,7 +4363,9 @@ Cow Lich
 Cowlossus
 CPU Hog
 Crabbessa
+Crabbot
 Crabomination
+Crabtain
 Cracked Kraken
 Crackerjackal
 Crane of Thought
@@ -4412,7 +4416,7 @@ Daydream Bereaver
 Daymare
 Dead Horse
 Dead Ringer
-Dead sea serpent
+Dead Sea Serpent
 Dead Sea Troll
 Dead Survivor
 Dead Terrorist
@@ -4518,7 +4522,6 @@ Dress Code Decrypter
 Drillissa
 Drinkerbell
 Drop Bear
-Drowned Captain
 Dryer Gnome
 Ducktator
 Duct Ape
@@ -4654,7 +4657,6 @@ Finger Lickin' Goon
 Finger Puppet Master
 Fire Ent
 Fire Hydra
-Firebreathing Dragoon
 Firefox
 First Impressionist
 First Person Shooter
@@ -5213,7 +5215,6 @@ Lying King
 MacDeath
 Machiavillain
 Macroorgansim
-Mad Clown
 Mad Hacker
 Mad Scientist
 Madmiral
@@ -5227,7 +5228,7 @@ Major Buzzkill
 Major Disappointment
 Major Problem
 Malignant Tutor
-ManBearPig
+Manbearpig
 Manglerfish
 Maniacrobat
 Manufracturer
@@ -5252,6 +5253,7 @@ Maul Rat
 Maxwell's Demon
 Meanwhale
 Meat Loafer
+Mechalodon
 Meddler of Honor
 Medieval Knieval
 Mediocrates
@@ -5259,13 +5261,13 @@ Mediogre
 Medusa's Hairdresser
 Mega Pixel
 Megahurtz
+Megalodonkey
 Megaphony
 Megatribble
 Meh-Warrior
 Melee Archer
 Mental Hygienist
 Menthol Camel
-Meowntain Cat
 Merchant of Menace
 Meringutan
 Merit Badger
@@ -5351,7 +5353,6 @@ Mortar Shellfish
 Mosh Pitbull
 Moss Cow
 Motivational Poser
-Motley Crew
 Motorgoat
 Motor Cyclops
 Motor Pike
@@ -5431,6 +5432,7 @@ Non-Euclidean Geomancer
 Non-Terminal Repeating Phantasm
 Nondescript Villain
 Northpole Dancer
+Nose runner
 Nosferatuna
 Nostradamoose
 Not a Big Dealer
@@ -5585,6 +5587,7 @@ Pigasus
 Piggy Banker
 Piggybank Robber
 Pignoramus
+Pilgrim mage
 Pillage Elder
 Pillager of Society
 Pillow Fighter
@@ -5617,6 +5620,7 @@ Pocketwatchdog
 Pokergeist
 Polardroid
 Polaroid Bear
+Police Syren
 Political Party Crasher
 Political Satyr
 Pollen-Allergic Bee
@@ -5835,7 +5839,6 @@ Sanctimonious Whiner
 Sandboxer
 Sans Sheriff
 Santa Claws
-Sarcastic Samurai
 Satan Claus
 Satan's Little Helper
 Satanic Colt
@@ -6003,6 +6006,7 @@ Solar Bear
 Solar-Powered Owl
 Soldier of Misfortune
 Sole Eater
+Solicitaur
 Son of a Glitch
 Son of a Gun
 Son of a Witch
@@ -6102,6 +6106,7 @@ Submarine Star
 Subscribbler
 Substitute Creature
 Subtracting Adder
+Subwoofing dog
 Sulkworm
 Sulphuric Aphid
 Sumo Ninja
@@ -6247,6 +6252,7 @@ Trojan Piñata
 Troll Booth Attendant
 Tropical Yeti
 Trouble Shooter
+Troubled Sole
 Truth-or-Dare Devil
 Tsarfish
 Tubercolossus
@@ -6385,7 +6391,6 @@ Whambulance Driver
 What's-its-Face
 Whatchamacallit
 Wheredigo
-Wherewolf
 Whippersnapper
 Whipster
 Whistleblowing Referee
@@ -6396,6 +6401,7 @@ Wight Watcher
 Wiki Lynx
 Wild Bal Animal
 Wild Borg
+Wild Fireman
 Wild Guest
 Wild Heir
 Wild Thing
@@ -6429,7 +6435,6 @@ Wumpus
 Wurst Nightmare
 Wuss in Boots
 Yakety Yak
-Yellow Bear
 Yellow Brick Rogue
 Yellow Snowman
 Yoga Bear
@@ -7921,39 +7926,106 @@ Turn of Rincewind
 Unbearable boredom
 Win on points
 Winged swing
+All Inn
 Anville
+At the Dragon
+B-Trees Forest
 Bad Gateway
+Balsamic Cheese Inn
+Bat Cave
+Bat Country
+Beer Bay
 Beerburgh
+Blood-Curdling Stream
+Boatmurdered
 Bosswell
+Brain Slugs Farm
+Brokeback Knoll
 Bumchester
+Caravanserai
+Cave of Dwarves Glory
+Cave of the Weak-Witted Oracle
+Chosen One's Graveyard
+Cliff of The Lonely Hero
+Cliff of Unrequited Love
+Close Encounters of the Third Kind Hill
+Desert of Former Alkies
 Dessertown
 Deville
 Dogville
+Dunquestin
 Egopolis
 El Herado
+Forgotten Woods
 Ghost Town
 Godville
 Godvillewood
 Healiopolis
 Heisenburg
+Hell's Kitchen
+Here There Be Flagons
 Herolympus
 Herostan
 Herowin
+Khaki-colored Dragon
+Lake of Maiden's Tears
+Land of Landmarks
+Lap of Luxury
 Laplandville
 Last Resort
+Little Big Pond
 Los Adminos
 Los Demonos
 Lostway
+Madchester
+Meadows of Eternal Tranquility
+Molotov's Cocktail Bar
 Monsterdam
 Monstro City
+Net Troll's Bridge
+New Ork
 Newland
 Next Station
 Nothingham
+Oasis of Deadman's Hand
+Paradise City
+Passage of the Last Man Lying
+Pathway of Lemmings
+Plateau of Low Gravity
+Pleasantree
 Quirkytown
 Roflopolis
 San Satanos
+Seven Deadly Inns
+Shepherd's Stuff
+Silly Cone Valley
 Simpletown
+Space Bar
+Strawberry Fields
+Swamp of Missed Kamikazes
+The Battle Hamster Farm
+The Battle Toad
+The Den of Iniquity
+The Drunken Clam
+The Field of Special Magic
+The Glass Cannon
+The Mended Drum
+The Rumor Mill
+The Rusty Goblin
+The Spring of Eternal Senility
+The Sword &amp; Sandal
+The Valley of Lost Hopes
+The Whinery
 Tradeburg
+Trans-Astral Highway
+Triffids' Valley
 Trollbridge
+Uncanny Valley
+Underwhere
+Unpleasantville
 Unsettlement
 Unspecifiedistan
+Valley of the Blind
+Vector Field
+Wasteland of Insomnia
+Witt's End
