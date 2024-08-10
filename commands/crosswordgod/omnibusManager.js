@@ -240,31 +240,27 @@ function parseOmnibusEntries(omnibusHtml) {
     const monsterRegex = /id="GV-Monsters".*?<ul>(.*?)<\/ul>/s;
     const equipmentRegex = /id="GV-Equipment".*?<ul>(.*?)<\/ul>/s;
     const skillRegex = /id="GV-Skills".*?<ul>(.*?)<\/ul>/s;
+    const geographyRegex = /id="GV-Geography".*?<ul>(.*?)<\/ul>/s;
     let artifactEntries = artifactRegex.exec(omnibusHtml)[1];
     let monsterEntries = monsterRegex.exec(omnibusHtml)[1];
     let equipmentEntries = equipmentRegex.exec(omnibusHtml)[1];
     let skillEntries = skillRegex.exec(omnibusHtml)[1];
+    let geographyEntries = geographyRegex.exec(omnibusHtml)[1];
 
-    if (!artifactEntries || !monsterEntries || !equipmentEntries || !skillEntries) return null;
+    if (!artifactEntries || !monsterEntries || !equipmentEntries || !skillEntries || !geographyEntries) return null;
     artifactEntries = artifactEntries.split(/\r?\n/);
     monsterEntries = monsterEntries.split(/\r?\n/);
     equipmentEntries = equipmentEntries.split(/\r?\n/);
     skillEntries = skillEntries.split(/\r?\n/);
-    const allListEntries = artifactEntries.concat(monsterEntries, equipmentEntries, skillEntries);
+    geographyEntries = geographyEntries.split(/\r?\n/);
+    const allListEntries = artifactEntries.concat(monsterEntries, equipmentEntries, skillEntries, geographyEntries);
     const allEntries = allListEntries.map(function(e) {
         return e.slice(4, -5).trim();
     });
 
-    // towns are hardcoded because they're not on the same page
-    const townEntries = ['Anville', 'Bad Gateway', 'Beerburgh', 'Bosswell', 'Bumchester', 'Dessertown', 'Deville',
-        'Dogville', 'Egopolis', 'El Herado', 'Ghost Town', 'Godville', 'Godvillewood', 'Healiopolis', 'Heisenburg',
-        'Herolympus', 'Herostan', 'Herowin', 'Laplandville', 'Last Resort', 'Los Adminos', 'Los Demonos', 'Lostway',
-        'Monsterdam', 'Monstro City', 'Newland', 'Next Station', 'Nothingham', 'Quirkytown', 'Roflopolis', 'San Satanos',
-        'Simpletown', 'Tradeburg', 'Trollbridge', 'Unsettlement', 'Unspecifiedistan'];
-
-    // add towns and remove duplicates before returning
+    // remove duplicates before returning
     const seen = {};
-    return allEntries.concat(townEntries).filter(function(item) {
+    return allEntries.filter(function(item) {
         return seen.hasOwnProperty(item.toLowerCase()) ? false : (seen[item.toLowerCase()] = true);
     });
 }

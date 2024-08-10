@@ -1,9 +1,9 @@
 {
   "name": "godbot",
-  "version": "5.29.1",
-  "updateMsg1": "5.29 Added >pet, the first gif generating command!",
-  "updateMsg2": "5.28 >solvehtml now sends the crossword solution as an image!",
-  "updateMsg3": "5.26 Added >listroles and >getrole, which automatically include reactionRoles in the categories.",
+  "version": "5.29.2",
+  "updateMsg1": "5.29.2 GodBot can now solve locations from the crossword as well!",
+  "updateMsg2": "5.29 Added >pet, the first command that generates a gif!",
+  "updateMsg3": "5.28 >solvehtml now sends the crossword solution as an image.",
   "private": "true",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "main": "index.js",
