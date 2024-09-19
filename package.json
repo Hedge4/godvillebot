@@ -24,5 +24,11 @@
     "gifencoder": "^2.0.1",
     "png-file-stream": "^1.2.1",
     "sharp": "~0.33.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.10.0",
+    "eslint": "^9.10.0",
+    "globals": "^15.9.0"
   }
 }
