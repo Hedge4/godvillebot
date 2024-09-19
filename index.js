@@ -31,8 +31,9 @@ const client = new Client({
 
 // certain variables used in this file
 const { version, updateMsg1, updateMsg2, updateMsg3 } = require('./package.json');
-const { channels, prefix, token, serversServed, botOwners, roles, botName, clientId } = require('./configurations/config.json');
+const { channels, prefix, serversServed, botOwners, roles, botName, clientId } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator, crossword } = require('./configurations/commands.json');
+const { DISCORD: { token }, FIREBASE: serviceAccount } = require('./configurations/secret.json');
 
 // load any dependencies here
 
@@ -73,7 +74,6 @@ const hugCommand = require('./commands/fun/hugCommand.js');
 
 // firebase database setup and login
 const admin = require('firebase-admin');
-const serviceAccount = require('./configurations/serviceAccountKey.json');
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });

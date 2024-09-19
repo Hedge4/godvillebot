@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "5.29.2",
+  "version": "6.0.0",
   "updateMsg1": "5.29.2 GodBot can now solve locations from the crossword as well!",
   "updateMsg2": "5.29 Added >pet, the first command that generates a gif!",
   "updateMsg3": "5.28 >solvehtml now sends the crossword solution as an image.",
