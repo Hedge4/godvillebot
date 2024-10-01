@@ -1,7 +1,5 @@
-# GodBot
+# GodBot Changelog
 Version: 6.0.0
-
-I should probably include some sort of description here. Meh, I'll add it later (read: probably never).
 
 ## What's new in version 6?
 Version 6 only removes the bot's Discord token and Firebase accountServiceKey from the repository, moving them to an untracked file 'secret.json'. You can find an example file at [example-secret.json](configurations/example-secret.json). This opens up the possibility of finally making the repository public, after I add a license and perhaps make the README.md a bit nicer.
@@ -11,7 +9,7 @@ Version 5 includes a full rewrite off all files related to the Godville Times ne
 
 Additionally, all files were updated to work with discord.js V13 instead of V12, and methods and prompts were updated accordingly. I also revisited how the bot calculates delays and created a `timers.js` feature file, building up to a tasks scheduling system that will be introduced next. `index.js` now has getter methods for often referenced objects like `Discord` and `client`, and the bot owner can send messages/embeds to specific channels through the bot. Lastly, the bot can now be used to send a message including files and embeds to a specific channel or user.
 
-### What has been added since?
+### What has been changed since?
 * 5.1 Added >no, which takes a mentioned user's profile picture, greyscales it, and overlays a red 'forbidden' sign.
 * 5.2 Added >remindme, and a scheduler file + document in the database to keep track of scheduled events.
 * 5.3 Added boss, shop, bookmaker medal and bricks/logs/pairs/words/savings progress to >profile and >gvprofile cards!
@@ -48,7 +46,7 @@ I've added more logging lines for commands that weren't (completely) logged yet,
 the bot now also sends a message to its dedicated logging channel on Discord, for a more permanent logging solution.
 Lastly, commands now support aliases and are sorted into modules (as of version 4.2).
 
-### What has been added since?
+### What has been changed since?
 * 4.1 GodBot now shows the last update's changes on startup.
 * 4.2 Commands now support aliases and all commands/files have been ordered in four different modules.
 * 4.3 Added code to run contests through the bot's DMs, which can be easily turned on or off.
@@ -67,7 +65,7 @@ Version 3 adds the functionality of CrosswordGod to GodBot, so just running one 
 It means rewriting some of CrosswordGod's code so it can be run as a function instead of the worker file,
 adding python libraries and the packages find, fs and python-shell to take over all functionality.
 
-### What has been added since?
+### What has been changed since?
 * 3.1 Added structure for commands that can only be used once a day.
 * 3.2 Added a >daily command for 7-19 gold every day.
 * 3.3 Completely changed the >help command and added help functions for specific commands.
@@ -89,7 +87,7 @@ adding python libraries and the packages find, fs and python-shell to take over 
 Version 2 entails a major rewrite of all the code.
 There's now a 'commands' folder with separate files for each function/command.
 
-### What has been added since?
+### What has been changed since?
 * 2.1 Added a simple >guides command that displays all guides stored in an array 'guides'. >guides [number] displays a more detailed description and hyperlink of that guide.
 * 2.2 The >help command now uses an array to store commands and their usage. It is expandable to later include more detailed descriptions for >help [specific command].
 * 2.3 Added a >purge command that can only be used in the courtroom to keep it nice and tidy as easily as possible.
@@ -107,7 +105,7 @@ There's now a 'commands' folder with separate files for each function/command.
 ## What's new in version 1?
 Version 0 was only about creating the XP and gold system, but version 1 focusses on making the bot work online. The bot now uses a database to store userdata instead of a local file, and the bot is now hosted on Heroku. All userdata is reset.
 
-### What has been added since?
+### What has been changed since?
 * 1.1 It is now possible to check someone's else level or gold by mentioning them.
 * 1.2 >level now also displays someone's total godpower stat.
 * 1.3 When a user is awarded godpower, the bot now also stores their most up-to-date username to the database.
@@ -119,7 +117,7 @@ Version 0 was only about creating the XP and gold system, but version 1 focusses
 ## Version 0
 In version 0 the bot could only detect messages and award a user a certain amount of XP/godpower.
 
-### What has been added since?
+### What has been changed since?
 * 0.1 The bot now uses a local file to store userdata between restarts.
 * 0.2 >level has been added and can be used to check your level and godpower, and how much godpower you need to reach the next one.
 * 0.3 Gold has been added and is awarded on level-ups. It can be checked with >gold.
