@@ -25,6 +25,8 @@ GodBot was created as a custom bot for the unofficial Godville Discord server. G
 - some moderation functions,
 - and a logging system.
 
+[Check out the full changelog here.](./CHANGELOG.md)
+
 ## License
 
 This project is not licensed for public or commercial use. Please see the [LICENSE.md](./LICENSE.md) file for details. You may study the code and reuse small parts for educational purposes, but redistribution or commercial use requires permission.

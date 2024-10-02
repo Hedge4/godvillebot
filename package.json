@@ -1,18 +1,23 @@
 {
   "name": "godbot",
   "version": "6.0.0",
+  "license": "UNLICENSED",
+  "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "updateMsg1": "5.29.2 GodBot can now solve locations from the crossword as well!",
   "updateMsg2": "5.29 Added >pet, the first command that generates a gif!",
   "updateMsg3": "5.28 >solvehtml now sends the crossword solution as an image.",
+  "author": "Hedde van Heerde <heddevanheerde4@gmail.com>",
+  "contributors": [],
+  "keywords": ["godbot", "godville", "discord", "bot"],
   "private": "true",
-  "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
+  "repository": {
+    "type": "git",
+    "url": "https://https://github.com/Hedge4/godvillebot"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "Wawajabba#6917",
-  "license": "ISC",
   "engines": {
     "node": ">=16.9.0"
   },
