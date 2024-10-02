@@ -65,10 +65,10 @@ Installing and running this code should be fairly easy and you can follow the in
 ### Instructions to run the code anyway:
 ```bash
 # Clone the repository
-git clone https://github.com/Hedge4/your-project.git
+git clone https://github.com/Hedge4/godvillebot.git
 
 # Navigate to the project directory
-cd your-project
+cd godvillebot
 
 # Install dependencies
 npm install
