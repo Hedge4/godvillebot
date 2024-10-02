@@ -80,3 +80,11 @@ node .
 ## Contact
 
 For any questions or contributions, feel free to contact me at [heddevanheerde4@gmail.com](mailto:heddevanheerde4@gmail.com) or on Discord ([@wawajabba](https://discordapp.com/channels/@me/346301339548123136/)).
+
+## Support me
+
+GodBot is a passion project, and while I don't intend to earn any money from it, any support is appreciated. If you’d like to show your appreciation, you can tip me through Ko-fi:
+
+- [Ko-fi (wawajabba)](https://ko-fi.com/wawajabba)
+
+Feedback, ideas or contributions motivate me and are appreciated just as much. Thank you for your support!
