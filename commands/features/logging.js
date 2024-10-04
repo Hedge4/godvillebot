@@ -93,6 +93,7 @@ function startup(channel) {
 }
 
 function logBoth(logMessage) {
+    // TODO: return a Promise that resolves when channel is done
     logConsole(logMessage);
     logChannel(logMessage);
 }
@@ -113,6 +114,7 @@ function logError(logMessage) {
  * @param {Object|String} logMessage - The object or string to be logged.
  */
 function logChannel(logMessage) {
+    // TODO: return a Promise that resolves when the message is sent
     // get text from object if it's an object, empty string if there is no text
     const isPlainString = typeof logMessage === 'string';
     const logText = isPlainString ? logMessage : logMessage.content || '';
@@ -157,6 +159,7 @@ async function sendChannel(logMessage) {
             });
     } else {
         // restart or something?
+        // TODO: implement
     }
 }
 

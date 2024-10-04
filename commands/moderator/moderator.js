@@ -2,6 +2,7 @@ const block = require('./block.js');
 const breakCmd = require('./break');
 const purge = require('./purge');
 const roleColour = require('./roleColour');
+const leave = require('./leave');
 
 function redirect(cmd, content, message, client, blockedData) {
     switch (cmd) {
@@ -17,6 +18,8 @@ function redirect(cmd, content, message, client, blockedData) {
             return purge(client, message);
         case 'rolecolour':
             return roleColour(client, message, content);
+        case 'leave':
+            return leave(client, message);
         default:
             return message.reply(`The '${cmd}' command does not seem to be correctly set up.`);
     }
