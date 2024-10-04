@@ -12,7 +12,7 @@
   "private": "true",
   "repository": {
     "type": "git",
-    "url": "https://https://github.com/Hedge4/godvillebot"
+    "url": "https://github.com/Hedge4/godvillebot"
   },
   "main": "index.js",
   "scripts": {

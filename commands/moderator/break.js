@@ -1,4 +1,5 @@
-const { token, channels } = require('../../configurations/config.json');
+const { channels } = require('../../configurations/config.json');
+const { DISCORD: { token } } = require('../../configurations/secret.json');
 const logger = require('../features/logging');
 
 async function pauseBot(message, client) {
