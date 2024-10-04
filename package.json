@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "license": "UNLICENSED",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "updateMsg1": "5.29.2 GodBot can now solve locations from the crossword as well!",
@@ -8,7 +8,12 @@
   "updateMsg3": "5.28 >solvehtml now sends the crossword solution as an image.",
   "author": "Hedde van Heerde <heddevanheerde4@gmail.com>",
   "contributors": [],
-  "keywords": ["godbot", "godville", "discord", "bot"],
+  "keywords": [
+    "godbot",
+    "godville",
+    "discord",
+    "bot"
+  ],
   "private": "true",
   "repository": {
     "type": "git",
