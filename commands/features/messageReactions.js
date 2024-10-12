@@ -61,7 +61,7 @@ const reactionEvents = Object.values({
         noDoubleReactions: true, // no reaction if another text reaction was sent already
         cooldown: { delay: 42 * 1000 }, // 42 seconds
         alternativeReaction: '🎃',
-        disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, '1020381945714200596'],
+        disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, channels.ideabox, '1020381945714200596'],
         triggers: [
             { value: 'spook' },
             { value: 'monster' },
@@ -159,7 +159,6 @@ const reactionEvents = Object.values({
             'https://tenor.com/view/horror-gif-5045237',
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTC39EgG5Mpeh3XIOzyVRLypp_BKq3nIbRlug',
             'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUTh_Yt30tjEyG5kkNyBgKwXfefNlfrqiKJQ',
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTju30MOyVsDNZSF8mtRUFNpi4zX7AeOiXHng',
             'https://tenor.com/view/pumpkin-gif-23554708',
             'https://tenor.com/view/fall-autumn-goodmorning-morning-season-gif-23324284',
             'https://tenor.com/view/ghost-gif-13060487',
