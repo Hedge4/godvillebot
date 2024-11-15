@@ -1,8 +1,12 @@
 # GodBot Changelog
-Version: 6.0.0
+Version: 6.2.0
 
 ## What's new in version 6?
 Version 6 only removes the bot's Discord token and Firebase accountServiceKey from the repository, moving them to an untracked file 'secret.json'. You can find an example file at [example-secret.json](configurations/example-secret.json). This opens up the possibility of finally making the repository public, after I add a license and perhaps make the README.md a bit nicer.
+
+### What has been changed since?
+* 6.1 Mods can now force the bot to leave a server in case of emergencies.
+* 6.2 Godville's blog posts are now automatically published to #godville-blogs.
 
 ## What's new in version 5?
 Version 5 includes a full rewrite off all files related to the Godville Times newspaper, removing any leftover Python files and related dependencies in the process. This version re-introduces a daily summary of the newspaper, and commands to solve the crossword through downloading and parsing the [Omnibus list](https://wiki.godvillegame.com/Omnibus_List) by either uploading an HTML file of the newspaper or an array of terms to solve.
