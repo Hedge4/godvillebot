@@ -105,7 +105,6 @@ function logError(logMessage) {
 
     console.error(logMessage);
     logMessage = logMessage.stack;
-    logMessage = logMessage.replace(/hedde(_?v(an)?_?heerde)?/gi, 'USER');
     logChannel('```' + logMessage + '```');
 }
 

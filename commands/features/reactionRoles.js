@@ -59,6 +59,11 @@ const categoryData = {
                 roleId: '385257763649093633',
                 desc: 'Schedule arena fights',
             },
+            '0️⃣': {
+                fullName: 'Blogping',
+                roleId: '1306791626311729162',
+                desc: 'Get mentioned for new Godville blog posts!',
+            },
             '2️⃣': {
                 fullName: 'Sparping',
                 roleId: '901969781589176330',

@@ -56,6 +56,7 @@ const randomMessages = require('./commands/features/randomMessages');
 const botDMs = require('./commands/features/botDMs');
 const chatContest = require('./commands/features/chatContest');
 const autoPurge = require('./commands/features/autoPurge');
+const blogUpdates = require('./commands/features/blogUpdates');
 const daily = require('./commands/godpower/daily');
 const suggest = require('./commands/useful/suggest');
 const block = require('./commands/moderator/block.js');
@@ -78,12 +79,14 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
 const db = admin.firestore();
-const userData = db.collection('data').doc('users');
-const godData = db.collection('data').doc('gods');
-const limitedCommandsData = db.collection('data').doc('limited uses');
-const blockedData = db.collection('data').doc('blocked');
-const plannedEvents = db.collection('data').doc('schedule');
 const customCommandsCollection = db.collection('customCommands');
+const otherDataCollection = db.collection('data');
+const userData = otherDataCollection.doc('users');
+const godData = otherDataCollection.doc('gods');
+const limitedCommandsData = otherDataCollection.doc('limited uses');
+const blockedData = otherDataCollection.doc('blocked');
+const plannedEvents = otherDataCollection.doc('schedule');
+const blogData = otherDataCollection.doc('blog');
 
 // set up our globals because stuff being undefined sucks
 global.totalGodpower = 0;
@@ -170,6 +173,7 @@ client.on('ready', () => {
     reactionRoles.load(client);
     getRoles.setup(client);
     autoPurge.setup();
+    blogUpdates.setup(blogData);
     randomMessages(client);
 
     // load data such as the newspaper and the omnibus list

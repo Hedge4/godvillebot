@@ -1,7 +1,7 @@
 const { prefix, roles, channels, serversServed } = require('../../configurations/config.json');
 const getters = require('../../index');
 const logger = require('../features/logging');
-const defaultRoles = [roles.deities, roles.eventping, roles.arena, roles.data, roles.dungeon, roles.ideabox, roles.newspaper, roles.sail];
+const defaultRoles = [roles.deities, roles.eventping, roles.arena, roles.data, roles.dungeon, roles.ideabox, roles.newspaper, roles.sail, roles.blogPing];
 
 async function main(message) {
     // ignore if channel isn't botville
