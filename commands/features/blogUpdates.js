@@ -2,12 +2,11 @@ const https = require('https');
 const xml2js = require('xml2js');
 const TurndownService = require('turndown');
 const { EmbedBuilder } = require('discord.js');
-const { channels, botName } = require('../../configurations/config.json');
+const { botName, roles, channels } = require('../../configurations/config.json');
 const getters = require('../../index');
 const logger = require('./logging');
 
 const rssUrl = 'https://feeds.feedburner.com/Godville-Blog';
-const blogPingRole = '1306791626311729162';
 let firebaseDoc = null;
 let lastBlogId;
 
@@ -138,7 +137,7 @@ function sendBlogUpdate(blogItem) {
         .setColor(0x00FF00)
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() });
 
-    blogChannel.send({ content: `New blog post <@&${blogPingRole}>!`, embeds: [embed] })
+    blogChannel.send({ content: `New blog post <@&${roles.blogPing}>!`, embeds: [embed] })
         .then((msg) => {
             if (msg.crosspostable) {
                 msg.crosspost();
