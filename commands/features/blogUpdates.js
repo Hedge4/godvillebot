@@ -21,10 +21,6 @@ function onStartup(blogDoc) {
 
     // Check for updates every 5 minutes
     setInterval(checkForUpdates, 5 * 60 * 1000);
-
-    setTimeout(() => {
-        checkForUpdates();
-    }, 5000);
 }
 
 // Function to fetch and parse RSS feed
@@ -156,16 +152,3 @@ function sendBlogUpdate(blogItem) {
 
 
 exports.setup = onStartup;
-
-
-// todo
-// const { FIREBASE: serviceAccount } = require('../../configurations/secret.json');
-// const admin = require('firebase-admin');
-// admin.initializeApp({
-//     credential: admin.credential.cert(serviceAccount),
-// });
-// const db = admin.firestore();
-// const otherDataCollection = db.collection('data');
-// const blogData = otherDataCollection.doc('blog');
-// onStartup(blogData);
-// setTimeout(checkForUpdates, 3000);
