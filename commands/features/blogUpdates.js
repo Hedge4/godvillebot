@@ -107,7 +107,7 @@ function checkForUpdates() {
         });
 }
 
-function sendBlogUpdate(blogItem) {
+async function sendBlogUpdate(blogItem) {
     const client = getters.getClient();
     const blogChannel = client.channels.cache.get(channels.blogUpdates);
 
@@ -127,13 +127,13 @@ function sendBlogUpdate(blogItem) {
     const embed = new EmbedBuilder()
         .setTitle(title)
         .setURL(link)
-        .setThumbnail('https://godvillegame.com/images/logo_gv.png')
         .setDescription(markdown)
         .setTimestamp(new Date(pubDate))
         .setColor(0x00FF00)
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() });
 
-    blogChannel.send({ content: `New blog post <@&${roles.blogPing}>!`, embeds: [embed] })
+    await blogChannel.send({ content: `New blog post <@&${roles.blogPing}>!` });
+    blogChannel.send({ embeds: [embed] })
         .then((msg) => {
             if (msg.crosspostable) {
                 msg.crosspost();
@@ -147,7 +147,7 @@ function sendBlogUpdate(blogItem) {
             modLogs.send(errMsg);
         });
 
-        logger.log(`BLOG: New blog posted: ${title} - ${link}`);
+    logger.log(`BLOG: New blog posted: ${title} - ${link}`);
 }
 
 

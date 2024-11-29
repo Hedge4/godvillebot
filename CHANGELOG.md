@@ -1,5 +1,5 @@
 # GodBot Changelog
-Version: 6.2.0
+Whoop whoop!
 
 ## What's new in version 6?
 Version 6 only removes the bot's Discord token and Firebase accountServiceKey from the repository, moving them to an untracked file 'secret.json'. You can find an example file at [example-secret.json](configurations/example-secret.json). This opens up the possibility of finally making the repository public, after I add a license and perhaps make the README.md a bit nicer.
