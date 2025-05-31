@@ -1,4 +1,4 @@
-1744015533027
+1748712591365
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -4613,6 +4613,7 @@ Criminal Master Mime
 Critical Bug
 Critical Drinker
 Critical Mastodon
+Critical Overthinker
 Crooked Ruler
 Croquet Mullet
 Cross Checker
@@ -4918,6 +4919,7 @@ Flathead Shrew
 Flattering Ram
 Flaw Enforcer
 Flawyer
+Flayer One
 Fleasaur
 Floating Eyeball
 Floodgatekeeper
@@ -5135,6 +5137,7 @@ Haunted House Cat
 Hawaiian Puncher
 Hawktopus
 Hazmatador
+Hazmutt
 He-Who-Must-Be-Ashamed
 Headhaunter
 Headless Chicken
@@ -5548,6 +5551,7 @@ Micromanager
 Middle Aged Mutant Turtle
 Midlife Crisis Negotiator
 Mighty Keyboard Warrior
+Migratory Birdwatcher
 Milestone Golem
 Milestone Guardian
 Military Mite
@@ -5606,6 +5610,7 @@ Monster Superior
 Monster-in-Law
 Monster's Stunt Double
 Monsters' Rights Activist
+Monstera Non Grata
 Monstrous Appetite
 Monterey Jackal
 Monty Python
@@ -5671,6 +5676,7 @@ Net Troll
 Neuro Sturgeon
 Never-Ending Storyteller
 Nevermind Flayer
+Nevermortician
 Neverwinter Knight
 Neverwinter Wight
 New Times Roman
@@ -6054,6 +6060,7 @@ Rifle Shrimp
 Rigor Mantis
 Rigorous Mortician
 Ring Wyrm
+Ring-a-Dingo
 Rival Guild Fanboy
 Rivalkyrie
 River Banker
@@ -6242,6 +6249,7 @@ Skelebrity
 Skeletaur
 Skeletoff
 Skeleton Crewmate
+Skeletubbly
 Sketchy Artist
 Skilleton
 Skyote
@@ -6637,6 +6645,7 @@ Virtual Realtor
 Virtual Threat
 Visible Man
 Vital Organist
+Vitamin Demon
 Vogon Poet
 Volcanic Roc
 Volunterrier
@@ -6740,6 +6749,7 @@ ZomBee
 Zombie Snail
 Zombie's Ghost
 Zombo-Wirt
+Zomnivore
 Zy Goat
 1-up mushroom
 128-bit encryption
