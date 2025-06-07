@@ -61,7 +61,7 @@ const reactionEvents = Object.values({
         noDoubleReactions: true, // no reaction if another text reaction was sent already
         cooldown: { delay: 42 * 1000 }, // 42 seconds
         alternativeReaction: '🎃',
-        disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, channels.ideabox, '1020381945714200596'],
+        disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.goodville, channels.writing, channels.ideabox, '1020381945714200596'],
         triggers: [
             { value: 'spook' },
             { value: 'monster' },
@@ -187,7 +187,7 @@ const reactionEvents = Object.values({
         noDoubleReactions: true, // no reaction if another text reaction was sent already
         cooldown: { delay: 42 * 1000 }, // 42 seconds
         alternativeReaction: '1040373925407891468',
-        disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.wholesome, channels.writing, '1020381945714200596'],
+        disabled: [channels.venting, channels.appeals, channels.politicsDebate, channels.goodville, channels.writing, '1020381945714200596'],
         triggers: [
             { value: /\bgermans?\b/, isRegex: true },
             { value: /\bchrist(mas)?\b/, isRegex: true },

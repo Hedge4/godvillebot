@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "6.2.1",
+  "version": "6.2.2",
   "license": "UNLICENSED",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "updateMsg1": "6.2.0 Godville's blog posts are now automatically published to #godville-blogs.",

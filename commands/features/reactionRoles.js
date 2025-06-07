@@ -172,11 +172,6 @@ const categoryData = {
                 roleId: '321021944432689153',
                 desc: '',
             },
-            '⚖️': {
-                fullName: 'Philosophy',
-                roleId: '733458541418905603',
-                desc: '',
-            },
             '🗞️': {
                 fullName: 'Politics and debate',
                 alts: ['politics', 'debate'],
@@ -212,10 +207,10 @@ const categoryData = {
                 desc: '',
             },
             '<:cbc_kittyhug:669704540433416192>': {
-                fullName: 'Wholesome content',
-                alts: ['wholesome'],
+                fullName: 'Goodville',
+                alts: ['wholesome', 'wholesomeness'],
                 roleId: '734018519443701770',
-                desc: '',
+                desc: 'Positive and wholesome content',
             },
             '✍️': {
                 fullName: 'Writing',
