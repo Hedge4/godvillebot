@@ -192,6 +192,7 @@ async function fatalErrorHandler(err) {
 // =========================================================
 
 async function logUnloggedCrashes() {
+    logger.log('ErrHandler: Checking for unlogged crashes...');
     if (!fs.existsSync(crashFile)) return;
 
     let crashes;
@@ -206,9 +207,9 @@ async function logUnloggedCrashes() {
     const channel = await client.channels.fetch(channels.crashLogs);
 
     // log crashes that weren't logged to Discord before shutdown and update their 'logged' property
-    logger.log(`ErrHandler: Found ${crashes.length} unlogged crashes, logging to Discord...`);
     for (const crash of crashes) {
         if (crash.logged) continue; // will be truthy if defined
+        logger.log('ErrHandler: Found an unlogged crash, logging to Discord...');
         const restartTime = new Date().toISOString();
         crash.logged = `After restart at ${restartTime}`;
         await channel.send('<@346301339548123136> Missed crash report:\n```'
@@ -218,6 +219,7 @@ async function logUnloggedCrashes() {
 
     // write updated crashes back to file
     fs.writeFileSync(crashFile, JSON.stringify(crashes, null, 2));
+    logger.log('ErrHandler: Finished logging unlogged crashes to Discord and updated file.');
 }
 
 // =========================================================
