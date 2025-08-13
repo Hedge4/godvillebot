@@ -121,6 +121,7 @@ blockedData.get().then(doc => {
 const fs = require('fs');
 const path = require('path');
 const crashFile = path.join(__dirname, 'crashes.json');
+global.isShuttingDown = false;
 
 const crashObject = (err) => {
     const id = Math.random().toString(36).slice(2, 10);
@@ -157,10 +158,20 @@ process.on('uncaughtException', async (err) => {
     fatalErrorHandler(err);
 });
 async function fatalErrorHandler(err) {
-    console.error('Fatal error occurred, logging crash:', err);
+    console.error('Fatal error occurred, logging crash and shutting down.', err);
+    global.isShuttingDown = true; // stop normal behaviour and reactions
+
+    // Disconnect from Firebase to prevent any further writes
+    try {
+        await admin.app().delete();
+        console.log('Successfully disconnected from Firebase.');
+    } catch (dbErr) {
+        console.error('Failed to disconnect from Firebase during shutdown:', dbErr);
+    }
+
     const crashObj = crashObject(err);
 
-    // first attempt to log to Discord for 10s with sendCrashLog()
+    // attempt to log to Discord so we know if this succeeded when logging to crashes.json
     await Promise.race([
         sendCrashLog(crashObj),
         new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout sending crash log')), 10000)),
@@ -291,6 +302,7 @@ client.on('ready', () => {
 // ==========================================================
 
 client.on('messageCreate', (message) => {
+    if (global.isShuttingDown) return;
     // ignore any messages from bots or people blocked from interacting with the bot
     if (message.author.bot) { return; }
     if (botBlocked.includes(message.author.id)) { return; }
@@ -449,6 +461,7 @@ client.on('messageCreate', (message) => {
 });
 
 client.on('messageDelete', deletedMessage => {
+    if (global.isShuttingDown) return;
     if (deletedMessage.partial) return; // we don't do anything with this and it'll crash the next line
     if (deletedMessage.author.bot) { return; } // when removing this add it to chatContest.deleteMessage()
 
@@ -457,6 +470,7 @@ client.on('messageDelete', deletedMessage => {
 
 // handle reactions added to (cached) messages
 client.on('messageReactionAdd', async (reaction, user) => {
+    if (global.isShuttingDown) return;
     // ignore any reactions from bots
     if (user.bot) { return; }
 
@@ -492,6 +506,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 // handle reactions removed from (cached) messages
 client.on('messageReactionRemove', async (reaction, user) => {
+    if (global.isShuttingDown) return;
     // ignore any reactions from bots
     if (user.bot) { return; }
 
@@ -518,6 +533,7 @@ client.on('messageReactionRemove', async (reaction, user) => {
 
 // handle new threads being created
 client.on('threadCreate', async (threadChannel, newlyCreated) => {
+    if (global.isShuttingDown) return;
     if (!newlyCreated) { return; } // for now we don't do anything with older threads (this shouldn't happen anyway since bot is admin)
     if (!threadChannel.guildId || !Object.values(serversServed).includes(threadChannel.guildId)) { return; } // eww DM or wrong guild
 
@@ -546,6 +562,7 @@ client.on('threadCreate', async (threadChannel, newlyCreated) => {
 
 // handle new members joining and send them a welcome message
 client.on('guildMemberAdd', (member) => {
+    if (global.isShuttingDown) return;
     // make sure this is the main Godville server
     if (member.guild.id !== serversServed.godvilleServer) return;
 
