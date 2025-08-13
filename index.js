@@ -115,6 +115,68 @@ blockedData.get().then(doc => {
 });
 
 // =========================================================
+// ===================== CRASH HANDLER =====================
+// =========================================================
+
+const fs = require('fs');
+const path = require('path');
+const crashFile = path.join(__dirname, 'crashes.json');
+
+const crashObject = (err) => {
+    const id = Math.random().toString(36).slice(2, 10);
+    const timestamp = Date.now();
+    const time = new Date(timestamp).toISOString();
+    return { id, time, timestamp, message: err?.stack || String(err), logged: 'Before full shutdown' };
+};
+
+function recordCrash(crashObj) {
+    let crashes = [];
+    if (fs.existsSync(crashFile)) {
+        try {
+            crashes = JSON.parse(fs.readFileSync(crashFile));
+        } catch (_) {
+            console.log('Failed to read or parse crash log file, starting fresh.');
+        }
+    }
+    crashes.push(crashObj);
+    fs.writeFileSync(crashFile, JSON.stringify(crashes, null, 2));
+}
+
+async function sendCrashLog(crashObj) {
+    const channel = await client.channels.fetch(channels.crashLogs);
+    // crashMessage should have each property on a new line, n spaces so total is 10 characters, a colon, space, and the value
+    await channel.send('<@346301339548123136> Fatal error occurred, crash log:\n```'
+        + Object.entries(crashObj).map(([key, value]) => `${key.padEnd(9)} : ${value}`).join('\n')
+        + '```');
+}
+
+process.on('unhandledRejection', async (reason) => {
+    fatalErrorHandler(reason);
+});
+process.on('uncaughtException', async (err) => {
+    fatalErrorHandler(err);
+});
+async function fatalErrorHandler(err) {
+    console.error('Fatal error occurred, logging crash:', err);
+    const crashObj = crashObject(err);
+
+    // first attempt to log to Discord for 10s with sendCrashLog()
+    await Promise.race([
+        sendCrashLog(crashObj),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout sending crash log')), 10000)),
+    ]).catch((sendErr) => {
+        console.error('Failed to send crash log to Discord, writing only to file.', sendErr);
+        crashObj.logged = false;
+        crashObj.sendErr = sendErr.message || String(sendErr);
+    });
+
+    // then write crash to file
+    recordCrash(crashObj);
+    console.log('Finished logging crash, exiting process.');
+    process.exit(1);
+}
+
+// =========================================================
 // ============ AFTER CONNECTION TO DISCORD API ============
 // =========================================================
 
