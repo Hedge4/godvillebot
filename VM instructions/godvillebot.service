@@ -1,0 +1,16 @@
+[Unit]
+Description=Godville Discord Bot
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /home/hedde_vheerde/godvillebot/index.js
+WorkingDirectory=/home/hedde_vheerde/godvillebot
+User=hedde_vheerde
+Group=hedde_vheerde
+Restart=on-failure
+RestartSec=15min
+StartLimitIntervalSec=2h
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target

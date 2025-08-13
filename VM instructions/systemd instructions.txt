@@ -1,0 +1,55 @@
+Installing:
+- Create the service file with 'sudo nano /etc/systemd/system/godvillebot.service'
+- Paste the service file information and use Ctrl + O, then Enter to save, Ctrl + X to exit.
+- Reload systemd configuration: 'sudo systemctl daemon-reload'
+- Enable the service: 'sudo systemctl enable godvillebot.service'
+- Start the service: 'sudo systemctl start godvillebot.service'
+
+General:
+- After enabling the service ('sudo systemctl enable godvillebot.service'),
+  the bot will automatically start when the Compute Engine instance (re)starts.
+- To update the repository, connect through SSH and run 'cd godvillebot' and 'git pull'.
+- To restart the bot with these changes, run 'sudo systemctl restart godvillebot.service'.
+
+Service Commands:
+
+1.  To reload systemd configuration after making changes to the .service file:
+    sudo systemctl daemon-reload
+
+2.  To enable the service to start automatically on boot:
+    sudo systemctl enable godvillebot.service
+
+3.  To disable the service (prevent it from starting on boot, but doesn't stop it if running):
+    sudo systemctl disable godvillebot.service
+
+4.  To start the godvillebot service:
+    sudo systemctl start godvillebot.service
+
+5.  To stop the godvillebot service:
+    sudo systemctl stop godvillebot.service
+
+6.  To restart the godvillebot service (stops then starts it):
+    sudo systemctl restart godvillebot.service
+
+7.  To view the current status of the godvillebot service (running, stopped, failed, etc.):
+    systemctl status godvillebot.service
+
+Viewing Service Logs:
+
+8.  To view current and past logs for the godvillebot service (use 'q' to exit less):
+    journalctl -u godvillebot.service
+
+9.  To view logs and follow new entries in real-time (like 'tail -f'):
+    journalctl -u godvillebot.service -f
+
+10. To view logs from a specific boot:
+    journalctl -b -u godvillebot.service
+
+11. To view logs since a specific time (e.g., last hour, yesterday):
+    journalctl --since "1 hour ago" -u godvillebot.service
+    journalctl --since "yesterday" -u godvillebot.service
+    journalctl --since "2025-08-13 08:30:00" -u godvillebot.service
+    journalctl --since "2025-08-13" -u godvillebot.service (assumes 00:00:00)
+    journalctl --since "08:30:00" -u godvillebot.service (assumes today)
+
+https://man7.org/linux/man-pages/man1/journalctl.1.html#FILTERING_OPTIONS
