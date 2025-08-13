@@ -1,4 +1,4 @@
-1748712591365
+1755060239889
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -212,6 +212,7 @@ Bag of rejected suggestions
 Bag of scrabble tiles
 Bag of shoulder chips
 Bag of smithereens
+Bag of trench fries
 Bag of trophies
 Bag of unicorn flakes
 Baking soda volcano
@@ -3751,9 +3752,11 @@ Trendy cyclops sunglass
 Triangular root
 Tribble
 Tribble repellent
+Tribblobite
 Tricky part
 Tricycle kickstand
 Trigger-happy meal
+Trigonomicon
 Tripewriter
 Triple cross
 Triple-dog dare
@@ -3887,6 +3890,7 @@ Untruth serum
 Untuned harmonica
 Unturned stone
 Untwistable plot
+Unused equipment
 Unused icon
 Unused potential
 Unused variable
@@ -3983,6 +3987,7 @@ Wasted talent
 Water gun silencer
 Water-damaged umbrella
 Water-soluble fish
+Water-soluble watermark
 Watergun ammo
 Waterlemon
 Waterlog
@@ -4126,6 +4131,7 @@ Acid Trip Advisor
 Acid-Breathing Penguin
 Acrophobic Dragon
 Actual Monster
+Ad Minister
 Adamant Atheist
 Adamantine Golem
 Adamantine Skeleton
@@ -4388,6 +4394,7 @@ Boogy Knight
 Book Wyrm
 Boolean XORcist
 Boomerangutan
+Boondog
 Boozerker
 Borderline Collie
 Born-Again Zombie
@@ -4417,6 +4424,7 @@ Bridezilla
 Broadbandit
 Brown-Eyed Ghoul
 Browser Historian
+Brutalist
 Bubble Burster
 Bubble Raptor
 Bubblewrap Mummy
@@ -4714,6 +4722,7 @@ Discomancer
 Discontent Creator
 Discordion Player
 Disenchanted Wizard
+Disillusioner
 Disgruntled Customer
 Disgruntled Postal Clerk
 Dismissionary
@@ -4758,6 +4767,7 @@ Dreadwinner
 Dream Shatterer
 Dream Weaver
 Dress Code Decrypter
+Drill Serpent
 Drillissa
 Drinkerbell
 Drop Bear
@@ -4772,6 +4782,7 @@ Dunce Instructor
 Dungeon Keeper
 Dungeon Sweeper
 Duperman
+Duplicat
 Dust Bunny
 Dust Devil
 Dyna Mite
@@ -5133,7 +5144,9 @@ Harpoonproof Hydra
 Harpy Medium
 Harrier Pigeon
 Harvester of Sorrow
+Haunted Ghostwriter
 Haunted House Cat
+Haunter-Gatherer
 Hawaiian Puncher
 Hawktopus
 Hazmatador
@@ -5161,6 +5174,7 @@ Hell's Kitten
 Hellaphant
 Hellevangelist
 Hellevator Operator
+Hellucination
 Hemogoblin
 Hemophiliac Skeleton
 Hemophobic Vampire
@@ -5338,6 +5352,7 @@ Jaywalking Chicken
 Jealous Sidekick
 Jelly Golem
 Jellydancer
+Jerk O'Lantern
 Jerkules
 Jibber-Jabberwocky
 Jitter-Bug
@@ -5501,6 +5516,8 @@ Manbearpig
 Manglerfish
 Maniacrobat
 Manufracturer
+Marathon Speedrunner
+Marble Villain
 Margarine Fly
 Marital Artist
 Marquis de Sad
@@ -5523,6 +5540,7 @@ Maxwell's Demon
 Meanwhale
 Meat Loafer
 Mechalodon
+Mechavellian
 Meddler of Honor
 Medieval Knieval
 Mediocrates
@@ -5543,6 +5561,7 @@ Merit Badger
 Mermalade
 Mermelly
 Metal Slug
+Metaphysical Trainer
 Methylated Spirit
 Methylated Spiritualist
 Metro Gnome
@@ -5550,6 +5569,7 @@ Microchimp
 Micromanager
 Middle Aged Mutant Turtle
 Midlife Crisis Negotiator
+Midnightmare
 Mighty Keyboard Warrior
 Migratory Birdwatcher
 Milestone Golem
@@ -5568,6 +5588,7 @@ Minotourist
 Mis-Conductor
 Misanthropic Lycanthrope
 Misanthropologist
+Misbehavioral Therapist
 Mischieftain
 Misdirector
 Misery Shopper
@@ -5670,6 +5691,7 @@ Necromantis
 Necropanzer
 Necrophobic Zombie
 Neferkitty
+Negligentleman
 Neighborhood Witch
 Nerd of Steel
 Net Troll
@@ -5712,6 +5734,7 @@ Nosferatuna
 Nostradamoose
 Not a Big Dealer
 Not Dead Yeti
+Not-My-Typist
 Not-of-this-Earth Worm
 Not-So-Brave Knight
 Not-So-Gentleman
@@ -5804,10 +5827,12 @@ Pangoblin
 Panic Attacker
 Pannacotta Warrior
 Panteater
+Pantheon Auditor
 Panzer Dragon
 Paper Pusher
 Paranoid Android
 Paranormal Activist
+Parasightseer
 Parasitic Symbiote
 Parking Cricket
 Parole Model
@@ -6156,6 +6181,7 @@ Search Engineer
 Seashelly
 Seasick Crocodile
 Seasoned Veterinarian
+Second Sightseer
 Secret Satan
 Secretary of Fate
 Secretary of Offense
@@ -6263,6 +6289,7 @@ Slim Reaper
 Slime Shady
 Slithy Tove
 Slow Wight
+Smackademic
 Smackerel
 Smashing Pumpkin
 Smoke Detective
@@ -6493,6 +6520,7 @@ Ticking Crocodile
 Tickle Monster
 Tiger Lily
 Time Consumer
+Time Cruncher
 Time Fly
 Tin Foil Cat
 Tinkerhell
@@ -6570,6 +6598,7 @@ Unbearable Grizzly
 Uncanny Valet
 Uncertainty Principal
 Unchangeling
+Uncharted Terrier
 Unchosen One
 Uncivil Servant
 Uncivillian
@@ -6609,6 +6638,7 @@ Unpopped Colonel
 Unprintable Character
 Unreal Estate Agent
 Unregistered Pet
+Unsettler
 Unsolicited Adviser
 Unstable Constable
 Unsuitable Suitor
@@ -6629,6 +6659,7 @@ Vampirate
 Vampire Brat
 Vamplifier
 Vanillain
+Vaudevillain
 Vegan Devourer
 Vegetarian Vulture
 Velcromancer
@@ -7701,6 +7732,7 @@ Prenuptial agreement
 Priority mail
 Prisoner's handcuffs
 Privacy screen
+Prodigal sunglasses
 Protective custody
 Protective pentagram
 Proxy protection
@@ -7774,6 +7806,7 @@ Rusty crowbar
 Rusty metal boots
 Sacrificial limb
 Sacrificial vestment
+Safe Ward
 Saint's frock
 Sandals of time
 Santa's claws
@@ -7879,6 +7912,7 @@ Socks of thunder
 Solar disc
 Solar flares
 Solar ice cap
+Solar-powered sunglasses
 Solar wind chimes
 Solar windbreaker
 Sole protector
