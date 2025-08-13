@@ -177,6 +177,39 @@ async function fatalErrorHandler(err) {
 }
 
 // =========================================================
+// ============ LOG UNLOGGED CRASHES TO DISCORD ============
+// =========================================================
+
+async function logUnloggedCrashes() {
+    if (!fs.existsSync(crashFile)) return;
+
+    let crashes;
+    try {
+        crashes = JSON.parse(fs.readFileSync(crashFile));
+    } catch (err) {
+        logger.log(`ErrHandler: Failed to read or parse crash log file: ${err}`);
+        return;
+    }
+    if (crashes.length === 0) return;
+
+    const channel = await client.channels.fetch(channels.crashLogs);
+
+    // log crashes that weren't logged to Discord before shutdown and update their 'logged' property
+    logger.log(`ErrHandler: Found ${crashes.length} unlogged crashes, logging to Discord...`);
+    for (const crash of crashes) {
+        if (crash.logged) continue; // will be truthy if defined
+        const restartTime = new Date().toISOString();
+        crash.logged = `After restart at ${restartTime}`;
+        await channel.send('<@346301339548123136> Missed crash report:\n```'
+            + Object.entries(crash).map(([key, value]) => `${key.padEnd(9)} : ${value}`).join('\n')
+            + '```');
+    }
+
+    // write updated crashes back to file
+    fs.writeFileSync(crashFile, JSON.stringify(crashes, null, 2));
+}
+
+// =========================================================
 // ============ AFTER CONNECTION TO DISCORD API ============
 // =========================================================
 
@@ -203,6 +236,11 @@ client.on('ready', () => {
         \nLogged in to the following guilds: ${loggedInGuilds}
         \nNewly added:\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}\`\`\``);
     client.user.setActivity(`${prefix}help | By Wawajabba`);
+
+    // log unlogged crashes to #crash-logs channel
+    logUnloggedCrashes().catch(err => {
+        logger.log('ErrHandler: Failed to log unlogged crashes:', err);
+    });
 
     // this isn't even necessary anymore as I define it as zero by default now so it's never undefined
     // but I'm keeping it here because it's hilarious that my solution to this would be to make it worse and reset it
