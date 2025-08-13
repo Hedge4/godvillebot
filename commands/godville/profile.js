@@ -213,7 +213,7 @@ async function downloadGodPage(URL) {
 
 async function getGodData(URL, channel) {
     const html = await downloadGodPage(URL).catch((error) => {
-        logger.log(`Profile: Failed to get any html for URL ${URL}.\n` + error);
+        logger.log(`Profile: Failed to get any html for URL ${URL}.\n` + error?.stack || String(error));
         channel.send('Could not obtain online data. If the URL is correct, this is most likely a connection error, or I was blocked from accessing the website.');
         return null;
     });

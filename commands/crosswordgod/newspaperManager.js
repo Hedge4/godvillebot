@@ -234,7 +234,7 @@ async function downloadNewspaper() {
             logger.log(`News: Received html from ${URL} successfully.`);
             return result;
         }).catch((error) => {
-            logger.log(`News: Oops! Something went wrong when downloading from url ${URL}!\nError: ` + error);
+            logger.log(`News: Oops! Something went wrong when downloading from url ${URL}!\nError: ` + error?.stack || String(error));
             return null;
         });
 

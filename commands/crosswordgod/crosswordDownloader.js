@@ -41,7 +41,7 @@ async function downloadAttachment(URL, maxByteSize) {
         }
         return result;
     }).catch((error) => {
-        throw(`Error: Something went wrong when downloading from url ${URL}!\nError: ` + error);
+        throw(`Error: Something went wrong when downloading from url ${URL}!\nError: ` + error?.stack || String(error));
     });
 
     // convert buffer to string

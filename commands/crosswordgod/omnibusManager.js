@@ -227,7 +227,7 @@ async function downloadOmnibus() {
             logger.log(`Omnibus: Successfully received html from ${URL}`);
             return result;
         }).catch((error) => {
-            logger.log(`Omnibus: Oops! Something went wrong when downloading from url ${URL}!\nError: ` + error);
+            logger.log(`Omnibus: Oops! Something went wrong when downloading from url ${URL}!\nError: ` + error?.stack || String(error));
             return null;
         });
 
