@@ -30,8 +30,8 @@ const client = new Client({
 // ==========================================================
 
 // certain variables used in this file
-const { version, updateMsg1, updateMsg2, updateMsg3 } = require('./package.json');
-const { channels, prefix, serversServed, botOwners, roles, botName, clientId } = require('./configurations/config.json');
+const { version } = require('./package.json');
+const { channels, prefix, serversServed, botOwners, roles, botName, clientId, updateMsgs } = require('./configurations/config.json');
 const { godville, godpower, fun, useful, moderator, crossword } = require('./configurations/commands.json');
 const { DISCORD: { token }, FIREBASE: serviceAccount } = require('./configurations/secret.json');
 
@@ -239,13 +239,15 @@ client.on('ready', () => {
     const currentDate = new Date();
     const logsChannel = client.channels.cache.get(channels.logs);
     const loggedInGuilds = client.guilds.cache.map(e => { return e.name; }).sort().join(', ');
+    const updateMsgsV1 = updateMsgs.length ? updateMsgs.join('\n• ') : 'No updates available.';
+    const updateMsgsV2 = updateMsgs.length ? updateMsgs.join('\n- ') : 'No updates available.';
     logger.start(logsChannel);
     logger.toConsole(`\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!`);
     logger.toConsole(`Logged in to the following guilds: ${loggedInGuilds}`);
-    logger.toConsole(`\nNewly added:\n• ${updateMsg1}\n• ${updateMsg2}\n• ${updateMsg3}`);
+    logger.toConsole(`\nNewly added:\n• ${updateMsgsV1}`);
     logger.toChannel(`\`\`\`fix\n${currentDate} - Logged in as ${client.user.tag}, version ${version}!
         \nLogged in to the following guilds: ${loggedInGuilds}
-        \nNewly added:\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}\`\`\``);
+        \nNewly added:\n• ${updateMsgsV1}\`\`\``);
     client.user.setActivity(`${prefix}help | By Wawajabba`);
 
     // log unlogged crashes to #crash-logs channel
@@ -264,7 +266,7 @@ client.on('ready', () => {
         .setTitle('**Successfully restarted!**')
         .setColor('ffffff')
         .setDescription(`${botName} version ${version} is now running again.\nTo see a list of commands, use '${prefix}help'.
-            \n**Newly added:**\n• ${updateMsg1}\n• ${updateMsg2}\n• ${updateMsg3}`)
+            \n**Newly added:**\n- ${updateMsgsV2}`)
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() })
         .setTimestamp();
     client.channels.cache.get(channels.botville).send({ embeds: [startEmbed] });

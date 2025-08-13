@@ -12,6 +12,12 @@
         "botServer": "670981647663104011"
     },
 
+    "updateMsgs": [
+        "6.3.0 Log unexpected fatal errors to #crash-logs and a JSON file, automatically send unlogged crash logs after the bot's next restart.",
+        "6.2.0 Godville's blog posts are now automatically published to #godville-blogs.",
+        "6.0.0 GodBot's code is now public at https://github.com/Hedge4/godvillebot, feel free to contribute!"
+    ],
+
     "roles": {
         "admin": "313448657540349962",
         "mutedMainServer": "393653576485961738",
