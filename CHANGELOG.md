@@ -7,6 +7,7 @@ Version 6 only removes the bot's Discord token and Firebase accountServiceKey fr
 ### What has been changed since?
 * 6.1 Mods can now force the bot to leave a server in case of emergencies.
 * 6.2 Godville's blog posts are now automatically published to #godville-blogs.
+* 6.3 Log unexpected fatal errors to #crash-logs and a JSON file, automatically send unlogged crash logs after the bot's next restart.
 
 ## What's new in version 5?
 Version 5 includes a full rewrite off all files related to the Godville Times newspaper, removing any leftover Python files and related dependencies in the process. This version re-introduces a daily summary of the newspaper, and commands to solve the crossword through downloading and parsing the [Omnibus list](https://wiki.godvillegame.com/Omnibus_List) by either uploading an HTML file of the newspaper or an array of terms to solve.

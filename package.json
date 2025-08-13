@@ -1,11 +1,11 @@
 {
   "name": "godbot",
-  "version": "6.2.2",
+  "version": "6.3.0",
   "license": "UNLICENSED",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
-  "updateMsg1": "6.2.0 Godville's blog posts are now automatically published to #godville-blogs.",
-  "updateMsg2": "6.0.0 GodBot's code is now public at https://github.com/Hedge4/godvillebot, feel free to contribute!",
-  "updateMsg3": "5.29.2 GodBot can now solve locations from the crossword as well!",
+  "updateMsg1": "6.3.0 Log unexpected fatal errors to #crash-logs and a JSON file, automatically send unlogged crash logs after the bot's next restart.",
+  "updateMsg2": "6.2.0 Godville's blog posts are now automatically published to #godville-blogs.",
+  "updateMsg3": "6.0.0 GodBot's code is now public at https://github.com/Hedge4/godvillebot, feel free to contribute!",
   "author": "Hedde van Heerde <heddevanheerde4@gmail.com>",
   "contributors": [],
   "keywords": [
