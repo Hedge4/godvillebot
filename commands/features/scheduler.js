@@ -88,6 +88,11 @@ function scheduleEvent(event, timestamp) {
 }
 
 function executeEvent(event) {
+    if (global.isShuttingDown) {
+        console.log(`SCHEDULER: Skipping execution of event ${event.id} because the bot is shutting down.`);
+        return;
+    }
+
     const type = event.type;
     const id = event.id;
     // we don't need type or id outside of this function

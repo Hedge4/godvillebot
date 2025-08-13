@@ -115,6 +115,112 @@ blockedData.get().then(doc => {
 });
 
 // =========================================================
+// ===================== CRASH HANDLER =====================
+// =========================================================
+
+const fs = require('fs');
+const path = require('path');
+const crashFile = path.join(__dirname, 'crashes.json');
+global.isShuttingDown = false;
+
+const crashObject = (err) => {
+    const id = Math.random().toString(36).slice(2, 10);
+    const timestamp = Date.now();
+    const time = new Date(timestamp).toISOString();
+    return { id, time, timestamp, message: err?.stack || String(err), logged: 'Before full shutdown' };
+};
+
+function recordCrash(crashObj) {
+    let crashes = [];
+    if (fs.existsSync(crashFile)) {
+        try {
+            crashes = JSON.parse(fs.readFileSync(crashFile));
+        } catch (_) {
+            console.log('Failed to read or parse crash log file, starting fresh.');
+        }
+    }
+    crashes.push(crashObj);
+    fs.writeFileSync(crashFile, JSON.stringify(crashes, null, 2));
+}
+
+async function sendCrashLog(crashObj) {
+    const channel = await client.channels.fetch(channels.crashLogs);
+    // crashMessage should have each property on a new line, n spaces so total is 10 characters, a colon, space, and the value
+    await channel.send('<@346301339548123136> Fatal error occurred, crash log:\n```'
+        + Object.entries(crashObj).map(([key, value]) => `${key.padEnd(9)} : ${value}`).join('\n')
+        + '```');
+}
+
+process.on('unhandledRejection', async (reason) => {
+    fatalErrorHandler(reason);
+});
+process.on('uncaughtException', async (err) => {
+    fatalErrorHandler(err);
+});
+async function fatalErrorHandler(err) {
+    console.error('Fatal error occurred, logging crash and shutting down.', err);
+    global.isShuttingDown = true; // stop normal behaviour and reactions
+
+    // Disconnect from Firebase to prevent any further writes
+    try {
+        await admin.app().delete();
+        console.log('Successfully disconnected from Firebase.');
+    } catch (dbErr) {
+        console.error('Failed to disconnect from Firebase during shutdown:', dbErr);
+    }
+
+    const crashObj = crashObject(err);
+
+    // attempt to log to Discord so we know if this succeeded when logging to crashes.json
+    await Promise.race([
+        sendCrashLog(crashObj),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout sending crash log')), 10000)),
+    ]).catch((sendErr) => {
+        console.error('Failed to send crash log to Discord, writing only to file.', sendErr);
+        crashObj.logged = false;
+        crashObj.sendErr = sendErr.message || String(sendErr);
+    });
+
+    // then write crash to file
+    recordCrash(crashObj);
+    console.log('Finished logging crash, exiting process.');
+    process.exit(1);
+}
+
+// =========================================================
+// ============ LOG UNLOGGED CRASHES TO DISCORD ============
+// =========================================================
+
+async function logUnloggedCrashes() {
+    if (!fs.existsSync(crashFile)) return;
+
+    let crashes;
+    try {
+        crashes = JSON.parse(fs.readFileSync(crashFile));
+    } catch (err) {
+        logger.log(`ErrHandler: Failed to read or parse crash log file: ${err}`);
+        return;
+    }
+    if (crashes.length === 0) return;
+
+    const channel = await client.channels.fetch(channels.crashLogs);
+
+    // log crashes that weren't logged to Discord before shutdown and update their 'logged' property
+    logger.log(`ErrHandler: Found ${crashes.length} unlogged crashes, logging to Discord...`);
+    for (const crash of crashes) {
+        if (crash.logged) continue; // will be truthy if defined
+        const restartTime = new Date().toISOString();
+        crash.logged = `After restart at ${restartTime}`;
+        await channel.send('<@346301339548123136> Missed crash report:\n```'
+            + Object.entries(crash).map(([key, value]) => `${key.padEnd(9)} : ${value}`).join('\n')
+            + '```');
+    }
+
+    // write updated crashes back to file
+    fs.writeFileSync(crashFile, JSON.stringify(crashes, null, 2));
+}
+
+// =========================================================
 // ============ AFTER CONNECTION TO DISCORD API ============
 // =========================================================
 
@@ -141,6 +247,11 @@ client.on('ready', () => {
         \nLogged in to the following guilds: ${loggedInGuilds}
         \nNewly added:\n • ${updateMsg1}\n • ${updateMsg2}\n • ${updateMsg3}\`\`\``);
     client.user.setActivity(`${prefix}help | By Wawajabba`);
+
+    // log unlogged crashes to #crash-logs channel
+    logUnloggedCrashes().catch(err => {
+        logger.log('ErrHandler: Failed to log unlogged crashes:', err);
+    });
 
     // this isn't even necessary anymore as I define it as zero by default now so it's never undefined
     // but I'm keeping it here because it's hilarious that my solution to this would be to make it worse and reset it
@@ -191,6 +302,7 @@ client.on('ready', () => {
 // ==========================================================
 
 client.on('messageCreate', (message) => {
+    if (global.isShuttingDown) return;
     // ignore any messages from bots or people blocked from interacting with the bot
     if (message.author.bot) { return; }
     if (botBlocked.includes(message.author.id)) { return; }
@@ -349,6 +461,7 @@ client.on('messageCreate', (message) => {
 });
 
 client.on('messageDelete', deletedMessage => {
+    if (global.isShuttingDown) return;
     if (deletedMessage.partial) return; // we don't do anything with this and it'll crash the next line
     if (deletedMessage.author.bot) { return; } // when removing this add it to chatContest.deleteMessage()
 
@@ -357,6 +470,7 @@ client.on('messageDelete', deletedMessage => {
 
 // handle reactions added to (cached) messages
 client.on('messageReactionAdd', async (reaction, user) => {
+    if (global.isShuttingDown) return;
     // ignore any reactions from bots
     if (user.bot) { return; }
 
@@ -392,6 +506,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 // handle reactions removed from (cached) messages
 client.on('messageReactionRemove', async (reaction, user) => {
+    if (global.isShuttingDown) return;
     // ignore any reactions from bots
     if (user.bot) { return; }
 
@@ -418,6 +533,7 @@ client.on('messageReactionRemove', async (reaction, user) => {
 
 // handle new threads being created
 client.on('threadCreate', async (threadChannel, newlyCreated) => {
+    if (global.isShuttingDown) return;
     if (!newlyCreated) { return; } // for now we don't do anything with older threads (this shouldn't happen anyway since bot is admin)
     if (!threadChannel.guildId || !Object.values(serversServed).includes(threadChannel.guildId)) { return; } // eww DM or wrong guild
 
@@ -446,6 +562,7 @@ client.on('threadCreate', async (threadChannel, newlyCreated) => {
 
 // handle new members joining and send them a welcome message
 client.on('guildMemberAdd', (member) => {
+    if (global.isShuttingDown) return;
     // make sure this is the main Godville server
     if (member.guild.id !== serversServed.godvilleServer) return;
 
