@@ -13,6 +13,7 @@
     },
 
     "updateMsgs": [
+        "6.4.0 Adds a nice surprise!",
         "6.3.0 Log unexpected fatal errors to #crash-logs and a JSON file, automatically send unlogged crash logs after the bot's next restart.",
         "6.2.0 Godville's blog posts are now automatically published to #godville-blogs.",
         "6.0.0 GodBot's code is now public at https://github.com/Hedge4/godvillebot, feel free to contribute!"
@@ -41,10 +42,10 @@
         "dmLogs": "770764720763305984",
         "modLogs": "773630834912526386",
         "crashLogs": "1405026253357973575",
-        
+
         "reactionRoles": "817221446140166155",
         "sendViaBot": "895718320664371280",
-        
+
         "generalChat": "313398424911347712",
         "rules": "549800024389845002",
         "botville": "315874239779569666",
