@@ -24,7 +24,6 @@ module.exports = [...compat.extends('eslint:recommended'), {
         globals: {
             ...globals.node,
             totalGodpower: 'writable',
-            usedDaily: 'writable',
             botBlocked: 'writable',
             xpBlocked: 'writable',
             suggestBlocked: 'writable',

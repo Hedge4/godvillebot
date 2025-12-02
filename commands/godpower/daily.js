@@ -3,6 +3,7 @@ const timers = require('../features/timers');
 const scheduler = require('../features/scheduler');
 
 let limitedCommandsDataRef;
+let usedDaily = [];
 
 async function checkDaily(message, userData) {
     if (!usedDaily.includes(message.author.id)) {
@@ -50,8 +51,9 @@ function getResetTimer() {
 }
 
 // limitedCommandsData is the Firestore document reference that stores who has used their daily
-function startup(limitedCommandsData, delay) {
+function startup(limitedCommandsData, usedDailyParam, delay) {
     limitedCommandsDataRef = limitedCommandsData;
+    usedDaily = usedDailyParam;
     scheduleNextReset(delay);
 }
 

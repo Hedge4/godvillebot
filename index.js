@@ -90,7 +90,7 @@ const blogData = otherDataCollection.doc('blog');
 
 // set up our globals because stuff being undefined sucks
 global.totalGodpower = 0;
-global.usedDaily = [];
+let usedDaily = [];
 global.imageBlocked = [];
 global.botBlocked = [];
 global.reactionRolesBlocked = [];
@@ -263,7 +263,7 @@ client.on('ready', () => {
     scheduler.start(plannedEvents).then(() => {
         // only schedule new events once the scheduler is ready
         setTimeout(crosswordTimers.dailyUpdate, crosswordDelay); // TODO: use scheduler for this
-        daily.startup(limitedCommandsData, dailyResetDelay);
+        daily.startup(limitedCommandsData, usedDaily, dailyResetDelay);
         setTimeout(crosswordTimers.newsPing, newsResetDelay); // TODO: use scheduler for this
     });
 
