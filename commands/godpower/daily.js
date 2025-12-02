@@ -9,7 +9,7 @@ async function checkDaily(message, userData) {
     if (!usedDaily.includes(message.author.id)) {
         const goldAdd = Math.floor(Math.random() * 21) + 22;
         usedDaily.push(message.author.id);
-        limitedCommandsDataRef.set({ daily: usedDaily });
+        limitedCommandsDataRef.set({ daily: usedDaily }, { merge: true });
 
         const userDoc = await userData.get();
         const User = {};
@@ -72,7 +72,7 @@ function scheduleNextReset(delay) {
 async function executeReset() {
     const dailiesUsed = usedDaily.length;
     usedDaily = [];
-    limitedCommandsDataRef.set({ daily: usedDaily });
+    limitedCommandsDataRef.set({ daily: usedDaily }, { merge: true });
     const { delay, logText } = getResetTimer();
     logger.toConsole(`--------------------------------------------------------\nSuccessfully reset use of the >daily command! ${dailiesUsed} ${quantiseWords(dailiesUsed, 'daily was', 'dailies were')} used yesterday.\n${logText}\n--------------------------------------------------------`);
     logger.toChannel(`**Successfully reset use of the >daily command! ${dailiesUsed} ${quantiseWords(dailiesUsed, 'daily was', 'dailies were')} used yesterday.**\`\`\`\n${logText}\`\`\``);

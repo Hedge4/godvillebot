@@ -58,6 +58,7 @@ const chatContest = require('./commands/features/chatContest');
 const autoPurge = require('./commands/features/autoPurge');
 const blogUpdates = require('./commands/features/blogUpdates');
 const daily = require('./commands/godpower/daily');
+const monthly = require('./commands/godpower/monthly');
 const suggest = require('./commands/useful/suggest');
 const block = require('./commands/moderator/block.js');
 const reactionRoles = require('./commands/features/reactionRoles.js');
@@ -91,6 +92,7 @@ const blogData = otherDataCollection.doc('blog');
 // set up our globals because stuff being undefined sucks
 global.totalGodpower = 0;
 let usedDaily = [];
+let usedMonthly = [];
 global.imageBlocked = [];
 global.botBlocked = [];
 global.reactionRolesBlocked = [];
@@ -105,6 +107,7 @@ userData.get()
 limitedCommandsData.get()
     .then(doc => {
         usedDaily = doc.data()['daily'];
+        usedMonthly = doc.data()['monthly'];
     });
 blockedData.get().then(doc => {
     imageBlocked = doc.data()['image'];
@@ -264,6 +267,7 @@ client.on('ready', () => {
         // only schedule new events once the scheduler is ready
         setTimeout(crosswordTimers.dailyUpdate, crosswordDelay); // TODO: use scheduler for this
         daily.startup(limitedCommandsData, usedDaily, dailyResetDelay);
+        monthly.startup(limitedCommandsData, usedMonthly);
         setTimeout(crosswordTimers.newsPing, newsResetDelay); // TODO: use scheduler for this
     });
 

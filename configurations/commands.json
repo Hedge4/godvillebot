@@ -13,6 +13,7 @@
         ["ranking", ["rankings", "leaderboard"]],
         ["gold", ["riches", "dabloons", "dabloon"]],
         ["daily", []],
+        ["monthly", ["januarily", "februarily", "marchly", "aprily", "mayly", "junely", "julyly", "augustly", "septemberly", "octoberly", "novemberly", "decemberly"]],
         ["toggle-mentions", ["togglementions"]],
         ["changegold", ["modifygold", "addgold", "agold", "removegold", "rgold", "goldadd", "goldremove"]]
     ],

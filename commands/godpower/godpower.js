@@ -3,6 +3,7 @@ const displayLevel = require('./levelcard');
 const displayGold = require('./goldcard');
 const getRanking = require('./ranking');
 const limitedCommands = require('./daily');
+const monthlyCommands = require('./monthly');
 const changegold = require('./changegold');
 
 function redirect(cmd, content, message, client, userData) {
@@ -17,6 +18,8 @@ function redirect(cmd, content, message, client, userData) {
             return getRanking(message, content, userData);
         case 'daily':
             return limitedCommands.daily(message, userData);
+        case 'monthly':
+            return monthlyCommands.monthly(message, userData);
         case 'changegold':
             return changegold(message, content, userData);
         default:
