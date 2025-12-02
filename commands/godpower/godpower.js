@@ -5,7 +5,7 @@ const getRanking = require('./ranking');
 const limitedCommands = require('./daily');
 const changegold = require('./changegold');
 
-function redirect(cmd, content, message, client, userData, limitedCommandsData) {
+function redirect(cmd, content, message, client, userData) {
     switch (cmd) {
         case 'level':
             return displayLevel(message, content, userData, client);
@@ -16,7 +16,7 @@ function redirect(cmd, content, message, client, userData, limitedCommandsData) 
         case 'ranking':
             return getRanking(message, content, userData);
         case 'daily':
-            return limitedCommands.daily(message, limitedCommandsData, userData);
+            return limitedCommands.daily(message, userData);
         case 'changegold':
             return changegold(message, content, userData);
         default:

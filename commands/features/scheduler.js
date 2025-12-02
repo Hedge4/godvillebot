@@ -1,16 +1,23 @@
 const FieldValue = require('firebase-admin').firestore.FieldValue;
 const logger = require('./logging');
 
+// feature modules
 const reminder = require('../useful/reminder');
+const daily = require('../godpower/daily');
 
-const allowedTypes = ['reminder'];
+const allowedTypes = ['reminder', 'daily'];
+const uniqueEventTypes = ['daily']; // event types that can only exist once
 let eventsDoc;
 let nextId = 0;
+
+// Track all scheduled events by ID: { eventId: { type, timeoutId } }
+// This prevents 'unique' event dupes and allows for easy event management (e.g., cancellation) in the future
+const scheduledEvents = {};
 
 
 function startup(dbDoc) {
     eventsDoc = dbDoc;
-    dbDoc.get().then(doc => {
+    return dbDoc.get().then(doc => {
         const data = doc.data();
         if (!data) {
             logger.log('No scheduled events found in the database!');
@@ -33,7 +40,8 @@ function startup(dbDoc) {
             count++;
         });
 
-        nextId = data['nextId'] || highestId;
+        // keep whichever is higher: the nextId from the database, or highestId + 1
+        nextId = Math.max(data['nextId'] || 0, highestId + 1);
         logger.log(`SCHEDULER: Scheduled ${count} events from the database. Next event id is ${nextId}.`);
     });
 }
@@ -47,6 +55,15 @@ function createEvent(event) {
 
         if (!allowedTypes.includes(event.type)) reject(`${event.type} is not a valid event type! This is a code error.`);
 
+        // Check if this is a unique event type and one is already scheduled
+        if (uniqueEventTypes.includes(event.type)) {
+            const existingEventId = Object.keys(scheduledEvents).find(id => scheduledEvents[id].type === event.type);
+            if (existingEventId) {
+                logger.log(`SCHEDULER: Ignoring attempt to schedule duplicate unique event type "${event.type}". Already scheduled with id ${existingEventId}.`);
+                resolve(null); // Return null to indicate the event was not created
+                return;
+            }
+        }
 
         const eventId = nextId++;
         eventsDoc.set({ [eventId]: event, nextId: nextId }, { merge: true })
@@ -67,6 +84,13 @@ function scheduleEvent(event, timestamp) {
     const now = new Date().getTime();
     const delay = timestamp - now;
 
+    // if the event is in the past, execute it immediately
+    if (delay <= 0) {
+        logger.log(`SCHEDULER: Executing event ${event.id} immediately because it is in the past.`);
+        executeEvent(event);
+        return;
+    }
+
     // timeout delay is stored as a 32-bit signed int, which is a little over 24 days
     // plan events 3 days into the future at most for accuracy
     if (delay > 3 * 24 * 60 * 60 * 1000) {
@@ -75,29 +99,39 @@ function scheduleEvent(event, timestamp) {
         reducedDelay = reducedDelay > Math.pow(2, 31) - 1 ? Math.pow(2, 31) - 1 : reducedDelay;
 
         // run scheduleEvent again closer to the intended timestamp
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
             scheduleEvent(event, timestamp);
         }, reducedDelay);
+
+        // Track this event
+        scheduledEvents[event.id] = { type: event.type, timeoutId };
         return;
     }
 
     // schedule the actual execution of the event (if it's within 3 days)
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
         executeEvent(event);
     }, delay);
+
+    // Track this event
+    scheduledEvents[event.id] = { type: event.type, timeoutId };
 }
 
 function executeEvent(event) {
     if (global.isShuttingDown) {
+        // note: the event will stay in the database and be executed on next startup
         console.log(`SCHEDULER: Skipping execution of event ${event.id} because the bot is shutting down.`);
         return;
     }
 
+    // we don't need type or id outside of this function
     const type = event.type;
     const id = event.id;
-    // we don't need type or id outside of this function
     delete event.type;
     delete event.id;
+
+    // Clean up tracking for this event
+    delete scheduledEvents[id];
 
     // delete from Firebase
     eventsDoc.update({
@@ -107,6 +141,8 @@ function executeEvent(event) {
     switch (type) {
         case 'reminder':
             return reminder.send(event);
+        case 'daily':
+            return daily.executeReset();
         default:
             logger.log(`SCHEDULER ERROR: Failed to execute event ${id} of invalid type ${type}.`);
     }

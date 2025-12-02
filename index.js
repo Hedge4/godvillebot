@@ -234,9 +234,6 @@ client.on('ready', () => {
         guild.members.fetch();
     });
 
-    // only if our client is ready we can do these stuffs
-    scheduler.start(plannedEvents);
-
     // send log messages that bot is online I guess
     const currentDate = new Date();
     const logsChannel = client.channels.cache.get(channels.logs);
@@ -257,6 +254,19 @@ client.on('ready', () => {
         logger.log('ErrHandler: Failed to log unlogged crashes:', err);
     });
 
+    // delays for the scheduler, and related log messages
+    const { delay: crosswordDelay, logText: logText1 } = crosswordTimers.getUpdateDelay(); // delay before news automatically updates
+    const { delay: dailyResetDelay, logText: logText2 } = daily.getResetDelay();
+    const { delay: newsResetDelay, logText: logText3 } = crosswordTimers.getNewsDelay(); // delay before the next newsping
+
+    // start scheduler and other timed events once client and logger are ready
+    scheduler.start(plannedEvents).then(() => {
+        // only schedule new events once the scheduler is ready
+        setTimeout(crosswordTimers.dailyUpdate, crosswordDelay); // TODO: use scheduler for this
+        daily.startup(limitedCommandsData, dailyResetDelay);
+        setTimeout(crosswordTimers.newsPing, newsResetDelay); // TODO: use scheduler for this
+    });
+
     // this isn't even necessary anymore as I define it as zero by default now so it's never undefined
     // but I'm keeping it here because it's hilarious that my solution to this would be to make it worse and reset it
     if (!totalGodpower || totalGodpower === 0) {
@@ -272,16 +282,10 @@ client.on('ready', () => {
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() })
         .setTimestamp();
     client.channels.cache.get(channels.botville).send({ embeds: [startEmbed] });
-    const { delay: delay1, logText: logText1 } = crosswordTimers.getUpdateDelay(); // delay before news automatically updates
-    const { delay: delay2, logText: logText2 } = daily.getResetDelay();
-    const { delay: delay3, logText: logText3 } = crosswordTimers.getNewsDelay(); // delay before the next newsping
     logger.toConsole(`--------------------------------------------------------\n${logText1}\n${logText2}\n${logText3}\n--------------------------------------------------------`);
     logger.toChannel(`\`\`\`\n${logText1}\n${logText2}\n${logText3}\`\`\``);
 
     // set timeouts and get data such as the last chat kill / ongoing DM contests
-    setTimeout(crosswordTimers.dailyUpdate, delay1);
-    setTimeout(daily.reset, delay2, limitedCommandsData);
-    setTimeout(crosswordTimers.newsPing, delay3);
     customCommands.setup(customCommandsCollection);
     botDMs.checkDMContest(client);
     chatContest.startupCheck();
@@ -358,11 +362,11 @@ client.on('messageCreate', (message) => {
             if (Object.values(channels.commandsAllowed).includes(message.channel.id)) {
                 for (let i = 0; i < godpower.length; i++) {
                     if (cmd == godpower[i][0]) {
-                        return godpowerModule(cmd, content, message, client, userData, limitedCommandsData);
+                        return godpowerModule(cmd, content, message, client, userData);
                     }
                     for (let j = 0; j < godpower[i][1].length; j++) {
                         if (cmd == godpower[i][1][j]) {
-                            return godpowerModule(godpower[i][0], content, message, client, userData, limitedCommandsData);
+                            return godpowerModule(godpower[i][0], content, message, client, userData);
                         }
                     }
                 }

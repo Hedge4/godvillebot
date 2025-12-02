@@ -1,11 +1,14 @@
 const logger = require('../features/logging');
 const timers = require('../features/timers');
+const scheduler = require('../features/scheduler');
 
-async function checkDaily(message, limitedCommandsData, userData) {
+let limitedCommandsDataRef;
+
+async function checkDaily(message, userData) {
     if (!usedDaily.includes(message.author.id)) {
         const goldAdd = Math.floor(Math.random() * 21) + 22;
         usedDaily.push(message.author.id);
-        limitedCommandsData.set({ daily: usedDaily });
+        limitedCommandsDataRef.set({ daily: usedDaily });
 
         const userDoc = await userData.get();
         const User = {};
@@ -46,18 +49,39 @@ function getResetTimer() {
     return { delay, delayHours, delayMins, delaySecs, logText };
 }
 
-function dailyReset(limitedCommandsData) {
-    const { delay, logText } = getResetTimer();
+// limitedCommandsData is the Firestore document reference that stores who has used their daily
+function startup(limitedCommandsData, delay) {
+    limitedCommandsDataRef = limitedCommandsData;
+    scheduleNextReset(delay);
+}
+
+function scheduleNextReset(delay) {
+    const timestamp = Date.now() + delay;
+
+    // This event will be ignored if another daily reset is already scheduled
+    scheduler.create({
+        type: 'daily',
+        timestamp: timestamp,
+    }).catch(error => {
+        logger.log(`Error scheduling next daily reset: ${error}`);
+    });
+}
+
+async function executeReset() {
     const dailiesUsed = usedDaily.length;
     usedDaily = [];
-    limitedCommandsData.set({ daily: usedDaily });
+    limitedCommandsDataRef.set({ daily: usedDaily });
+    const { delay, logText } = getResetTimer();
     logger.toConsole(`--------------------------------------------------------\nSuccessfully reset use of the >daily command! ${dailiesUsed} ${quantiseWords(dailiesUsed, 'daily was', 'dailies were')} used yesterday.\n${logText}\n--------------------------------------------------------`);
     logger.toChannel(`**Successfully reset use of the >daily command! ${dailiesUsed} ${quantiseWords(dailiesUsed, 'daily was', 'dailies were')} used yesterday.**\`\`\`\n${logText}\`\`\``);
-    setTimeout(dailyReset, delay, limitedCommandsData);
+
+    // Schedule the next daily reset
+    scheduleNextReset(delay);
 }
 
 const quantiseWords = (count, singular, plural = singular + 's') => `${count !== 1 ? plural : singular}`;
 
 exports.daily = checkDaily;
 exports.getResetDelay = getResetTimer;
-exports.reset = dailyReset;
+exports.startup = startup;
+exports.executeReset = executeReset;
