@@ -58,6 +58,7 @@ const chatContest = require('./commands/features/chatContest');
 const autoPurge = require('./commands/features/autoPurge');
 const blogUpdates = require('./commands/features/blogUpdates');
 const daily = require('./commands/godpower/daily');
+const weekly = require('./commands/godpower/weekly');
 const monthly = require('./commands/godpower/monthly');
 const suggest = require('./commands/useful/suggest');
 const block = require('./commands/moderator/block.js');
@@ -92,6 +93,7 @@ const blogData = otherDataCollection.doc('blog');
 // set up our globals because stuff being undefined sucks
 global.totalGodpower = 0;
 let usedDaily = [];
+let usedWeekly = [];
 let usedMonthly = [];
 global.imageBlocked = [];
 global.botBlocked = [];
@@ -107,6 +109,7 @@ userData.get()
 limitedCommandsData.get()
     .then(doc => {
         usedDaily = doc.data()['daily'];
+        usedWeekly = doc.data()['weekly'];
         usedMonthly = doc.data()['monthly'];
     });
 blockedData.get().then(doc => {
@@ -260,13 +263,15 @@ client.on('ready', () => {
     // delays for the scheduler, and related log messages
     const { delay: crosswordDelay, logText: logText1 } = crosswordTimers.getUpdateDelay(); // delay before news automatically updates
     const { delay: dailyResetDelay, logText: logText2 } = daily.getResetDelay();
-    const { delay: newsResetDelay, logText: logText3 } = crosswordTimers.getNewsDelay(); // delay before the next newsping
+    const { delayMs: weeklyResetDelay, logText: logText3 } = weekly.getResetDelay();
+    const { delay: newsResetDelay, logText: logText4 } = crosswordTimers.getNewsDelay(); // delay before the next newsping
 
     // start scheduler and other timed events once client and logger are ready
     scheduler.start(plannedEvents).then(() => {
         // only schedule new events once the scheduler is ready
         setTimeout(crosswordTimers.dailyUpdate, crosswordDelay); // TODO: use scheduler for this
         daily.startup(limitedCommandsData, usedDaily, dailyResetDelay);
+        weekly.startup(limitedCommandsData, usedWeekly, weeklyResetDelay);
         monthly.startup(limitedCommandsData, usedMonthly);
         setTimeout(crosswordTimers.newsPing, newsResetDelay); // TODO: use scheduler for this
     });
@@ -286,8 +291,8 @@ client.on('ready', () => {
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() })
         .setTimestamp();
     client.channels.cache.get(channels.botville).send({ embeds: [startEmbed] });
-    logger.toConsole(`--------------------------------------------------------\n${logText1}\n${logText2}\n${logText3}\n--------------------------------------------------------`);
-    logger.toChannel(`\`\`\`\n${logText1}\n${logText2}\n${logText3}\`\`\``);
+    logger.toConsole(`--------------------------------------------------------\n${logText1}\n${logText2}\n${logText3}\n${logText4}\n--------------------------------------------------------`);
+    logger.toChannel(`\`\`\`\n${logText1}\n${logText2}\n${logText3}\n${logText4}\`\`\``);
 
     // set timeouts and get data such as the last chat kill / ongoing DM contests
     customCommands.setup(customCommandsCollection);

@@ -4,10 +4,11 @@ const logger = require('./logging');
 // feature modules
 const reminder = require('../useful/reminder');
 const daily = require('../godpower/daily');
+const weekly = require('../godpower/weekly');
 const monthly = require('../godpower/monthly');
 
-const allowedTypes = ['reminder', 'daily', 'monthly'];
-const uniqueEventTypes = ['daily', 'monthly']; // event types that can only exist once
+const allowedTypes = ['reminder', 'daily', 'weekly', 'monthly'];
+const uniqueEventTypes = ['daily', 'weekly', 'monthly']; // event types that can only exist once
 let eventsDoc;
 let nextId = 0;
 
@@ -144,6 +145,8 @@ function executeEvent(event) {
             return reminder.send(event);
         case 'daily':
             return daily.executeReset();
+        case 'weekly':
+            return weekly.executeReset();
         case 'monthly':
             return monthly.executeReset();
         default:

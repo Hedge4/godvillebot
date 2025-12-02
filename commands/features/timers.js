@@ -45,6 +45,45 @@ function getDelay(targetHourUTC, targetMinuteUTC) {
 }
 
 /**
+ * Calculates the delay until the next week (Monday 00:00 UTC).
+ * @returns {Object} An object containing:
+ *   - delayMs: Total delay in milliseconds
+ *   - targetDate: The Date object of the target moment
+ *   - days: Days remaining until the target
+ *   - hours: Hours remaining (not including full days)
+ *   - minutes: Minutes remaining (not including full hours)
+ *   - seconds: Seconds remaining (not including full minutes)
+ */
+function getWeeklyDelay() {
+    const now = new Date();
+    const currentDay = now.getUTCDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+
+    // Calculate days until next Monday (day 1)
+    let daysUntilMonday = (1 - currentDay + 7) % 7;
+    if (daysUntilMonday === 0) {
+        daysUntilMonday = 7; // If today is Monday, target next Monday
+    }
+
+    const targetDate = new Date(Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate() + daysUntilMonday,
+        0,
+        0,
+        0,
+        0,
+    ));
+
+    const delayMs = targetDate.valueOf() - now.valueOf();
+    const daysLeft = Math.floor(delayMs / (1000 * 60 * 60 * 24));
+    const hoursLeft = Math.floor((delayMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutesLeft = Math.floor((delayMs % (1000 * 60 * 60)) / (1000 * 60));
+    const secondsLeft = Math.floor((delayMs % (1000 * 60)) / 1000);
+
+    return { delayMs, targetDate, daysLeft, hoursLeft, minutesLeft, secondsLeft };
+}
+
+/**
  * Calculates the delay until the first day of next month at 00:00 UTC.
  * @returns {Object} An object containing:
  *   - delayMs: Total delay in milliseconds
@@ -112,4 +151,5 @@ function getLongDelay(options) {
 
 exports.getDelay = getDelay;
 exports.getLongDelay = getLongDelay;
+exports.getWeeklyDelay = getWeeklyDelay;
 exports.getMonthlyDelay = getMonthlyDelay;
