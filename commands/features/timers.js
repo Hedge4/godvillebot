@@ -45,6 +45,40 @@ function getDelay(targetHourUTC, targetMinuteUTC) {
 }
 
 /**
+ * Calculates the delay until the first day of next month at 00:00 UTC.
+ * @returns {Object} An object containing:
+ *   - delayMs: Total delay in milliseconds
+ *   - targetDate: The Date object of the target moment
+ *   - days: Days remaining until the target
+ *   - hours: Hours remaining (not including full days)
+ *   - minutes: Minutes remaining (not including full hours)
+ *   - seconds: Seconds remaining (not including full minutes)
+ */
+function getMonthlyDelay() {
+    const now = new Date();
+
+    // Calculate first day of next month
+    let year = now.getUTCFullYear();
+    let month = now.getUTCMonth() + 1;
+
+    if (month > 11) {
+        month = 0;
+        year += 1;
+    }
+
+    const targetDate = new Date(Date.UTC(year, month, 1, 0, 0, 0, 0));
+
+    const delayMs = targetDate.valueOf() - now.valueOf();
+    const daysLeft = Math.floor(delayMs / (1000 * 60 * 60 * 24));
+    const hoursLeft = Math.floor((delayMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutesLeft = Math.floor((delayMs % (1000 * 60 * 60)) / (1000 * 60));
+    const secondsLeft = Math.floor((delayMs % (1000 * 60)) / 1000);
+
+    return { delayMs, targetDate, daysLeft, hoursLeft, minutesLeft, secondsLeft };
+}
+
+// TODO use for reminder or something else with a date picker?
+/**
  * More expansive version of getDelay() that returns the delay until any specific moment in the future.
  * @param {Object} options - Configuration object for the target date. All properties are optional and default to current UTC time values.
  * @param {number} [options.year] - The target year (defaults to current UTC year).
@@ -78,3 +112,4 @@ function getLongDelay(options) {
 
 exports.getDelay = getDelay;
 exports.getLongDelay = getLongDelay;
+exports.getMonthlyDelay = getMonthlyDelay;

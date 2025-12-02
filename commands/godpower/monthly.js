@@ -60,18 +60,7 @@ function startup(limitedCommandsData, usedMonthlyParam) {
 }
 
 function scheduleNextReset() {
-    const now = new Date();
-    const targetDate = {
-        date: 1, // 1st of the month
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-        milliseconds: 0,
-        month: now.getUTCMonth() + 1 > 11 ? 0 : now.getUTCMonth() + 1, // next month
-        year: now.getUTCMonth() + 1 > 11 ? now.getUTCFullYear() + 1 : now.getUTCFullYear(), // next year if month rolls over
-    };
-
-    const timestamp = Date.now() + timers.getLongDelay(targetDate);
+    const timestamp = Date.now() + timers.getMonthlyDelay().delayMs;
 
     // This event will be ignored if another monthly reset is already scheduled
     scheduler.create({
