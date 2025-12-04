@@ -13,6 +13,11 @@ const monthsLower = ['januarily', 'februarily', 'marchly', 'aprily', 'mayly', 'j
 async function checkMonthly(message, userData) {
     const commandUsed = message.content.toLowerCase().slice(prefix.length).split(/\s+/)[0];
     const currentMonth = new Date().getUTCMonth();
+    if (commandUsed === 'monthly') {
+        // make fun of them because they deserve it lmao
+        logger.log(`${message.author.tag} tried to use ${prefix}monthly in ${message.channel.name} but we don't even have that command lmaoooo, what a flippin' idiot :rofl:`);
+        return;
+    }
     if (commandUsed !== monthsLower[currentMonth]) {
         // only accept the correct spelling for the current month
         return;
