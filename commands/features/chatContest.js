@@ -3,11 +3,11 @@ const main = require('../../index');
 const logger = require('../features/logging');
 
 // basic setup for chat contests
-const contestActive = false;
+const contestActive = true;
 let lastMessage = null, lastWinner = '', chatCombo = 0;
 let lastKillTimestamp;
-const contestChannel = channels.generalChat;
-const defaultContestTime = 30;
+const contestChannel = channels.badville;
+const defaultContestTime = 15;
 const minContestTime = 15;
 const maxContestTime = 90;
 const randomFactor = 0.04; // -4% to 4% less/extra time
@@ -418,6 +418,10 @@ async function winningChatContest(message, lateWin = false) {
 
 // \only use to generate a killTimer for a new message, to look up old timers use messagesHistory[message.id]
 function generateKillTimer() {
+    // TODO: revert
+    // temporarily use fixed killTimer
+    return defaultContestTime * 60 * 1000;
+
     // [storedInteractions] (unused): total interactions the last [interactionsStorage] minutes
     // [weightedTotalInteractions]: weighted so short bursts of activity are less important
     const weightedTotalInteractions = interactionsPerMinute.reduce((sum, count) => {
