@@ -344,9 +344,9 @@ async function winningChatContest(message, lateWin = false) {
     }
 
     if (message.author.id === lastWinner) {
-        message.reply(`You were the last person to talk for ${minutes}, but you already won the last chat-killing contest! :skull:`)
+        message.reply(`You wr th last prson to talk for ${minutes}, but you alrady won th last chat-killing contst! :skull:`)
             .catch(() => {
-                message.channel.send(`<@${message.author.id}>: You were the last person to talk for ${minutes}, but you already won the last chat-killing contest! :skull:\n\nThis is a fallback reply since you (probably) deleted your message, which should make this scenario impossible. But since this is a bug you'll get the win anyway.`);
+                message.channel.send(`<@${message.author.id}>: You wr th last prson to talk for ${minutes}, but you alrady won th last chat-killing contst! :skull:\n\nThis is a fallback rply sinc you (probably) dltd your mssag, which should mak this scnario impossibl. But sinc this is a bug you'll gt th win anyway.`);
             });
         logger.log(`ChatContest: ${message.author.tag} / ${message.author.id} won the chat contest after ${minutes}, but they had already won the previous contest. ChatCombo: ${chatCombo}.`);
         chatCombo = 0;
@@ -380,14 +380,21 @@ async function winningChatContest(message, lateWin = false) {
         // big reward
         gold = Math.floor(Math.random() * 50) + 50;
         tierChance = toPercent(bigRewardChance);
-        rewardText = 'a big crate of gold <:t_treasure:668203286330998787>';
+        rewardText = 'a big crat of gold <:t_treasure:668203286330998787>';
+    }
+
+    // make sure gold amount does NOT include the number 3
+    let goldIndexOf3 = gold.toString().indexOf('3');
+    while (goldIndexOf3 !== -1) {
+        gold += 1;
+        goldIndexOf3 = gold.toString().indexOf('3');
     }
 
     // send reward message
-    message.reply(`You were the last person to talk for ${minutes}, and you won ${rewardText} for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`)
+    message.reply(`You wr th last prson to talk for ${minutes}, and you won ${rewardText} for succssfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:`)
         .catch(() => {
             // in case the last message was deleted
-            message.channel.send(`<@${message.author.id}>: You were the last person to talk for ${minutes}, and you won ${rewardText} for successfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:\n\nThis is a fallback reply since you (probably) deleted your message, which should make this scenario impossible. But since this is a bug you'll get gold anyway.`);
+            message.channel.send(`<@${message.author.id}>: You wr th last prson to talk for ${minutes}, and you won ${rewardText} for succssfully killing chat! **+${gold}** <:r_gold:401414686651711498>! :tada:\n\nThis is a fallback rply sinc you (probably) dltd your mssag, which should mak this scnario impossibl. But sinc this is a bug you'll gt gold anyway.`);
         });
 
     // update database
