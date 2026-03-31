@@ -27,7 +27,7 @@ const sortedConversionAnchors = Object.keys(conversionAnchors).sort((a, b) => a 
 // on startup, get the latest message that could apply for the chat contest
 async function onStartup() {
     if (!contestActive) return;
-    
+
     // start clearing old interaction history every minute
     clearInteractionsInterval();
     // this sets lastKilltimestamp, which we need for getLastMessage
@@ -177,6 +177,8 @@ async function setLastWinner() {
             if (lastWinnerFound && interactionHistoryFilled) return;
         }
 
+        // break if there are no more messages
+        if (messages.size < 100) break;
         // get the next 100 messages to check
         messages = await channel.messages.fetch({ limit: 100, before: messages.last().id });
     }
@@ -202,7 +204,7 @@ async function setLastWinner() {
 // start contest timer for the last message in general chat, if it's eligible
 function onNewMessage(message) {
     if (!contestActive) return;
-    
+
     // filter out wrong channels and bots
     if (message.channel.id !== contestChannel) return;
     if (message.author.bot) return;
@@ -233,7 +235,7 @@ function onNewMessage(message) {
 // update lastMessage in case the deleted message was significant, chatCombo is not updated
 async function onMessageDelete(deletedMessage) {
     if (!contestActive) return;
-    
+
     if (deletedMessage.channel.id !== contestChannel) { return; }
     if (deletedMessage.createdTimestamp <= lastKillTimestamp) { return; }
 
