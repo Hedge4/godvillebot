@@ -2,7 +2,7 @@ const { channels, roles } = require('../../configurations/config.json');
 const logger = require('./logging');
 
 const badvilleChannelId = channels.badville;
-const mutedRole = roles.mutedMainServer;
+const mutedRole = '1488704245648850984';
 const bananaHammerEmoji = 'a_bananahammer:399054359343792141';
 const bannedEmoji = 'a_banned:1488668149518831738';
 
@@ -28,9 +28,7 @@ async function muteUser(message, durationSeconds, addBannedEmoji = false) {
     }
 
     try {
-        // Ignore admins/bots
         if (!member.manageable) return;
-        if (member.roles.cache.has(roles.admin)) return;
         if (member.user.bot) return;
 
         // Track mute

@@ -291,7 +291,7 @@ client.on('ready', () => {
             \n**Newly added:**\n- ${updateMsgsV2}`)
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() })
         .setTimestamp();
-    // client.channels.cache.get(channels.botville).send({ embeds: [startEmbed] });
+    client.channels.cache.get(channels.botville).send({ embeds: [startEmbed] });
     logger.toConsole(`--------------------------------------------------------\n${logText1}\n${logText2}\n${logText3}\n${logText4}\n--------------------------------------------------------`);
     logger.toChannel(`\`\`\`\n${logText1}\n${logText2}\n${logText3}\n${logText4}\`\`\``);
 

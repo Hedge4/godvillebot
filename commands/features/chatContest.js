@@ -7,7 +7,7 @@ const contestActive = true;
 let lastMessage = null, lastWinner = '', chatCombo = 0;
 let lastKillTimestamp;
 const contestChannel = channels.badville;
-const defaultContestTime = 15;
+const defaultContestTime = 10;
 const minContestTime = 15;
 const maxContestTime = 90;
 const randomFactor = 0.04; // -4% to 4% less/extra time
