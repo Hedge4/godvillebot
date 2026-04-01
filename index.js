@@ -70,6 +70,7 @@ const omnibus = require('./commands/crosswordgod/omnibusManager.js');
 const crosswordTimers = require('./commands/crosswordgod/newsUpdates.js');
 const sendViaBot = require('./commands/features/sendViaBot');
 const hugCommand = require('./commands/fun/hugCommand.js');
+const badville = require('./commands/features/badville.js');
 
 // ==========================================================
 // ================ FIREBASE AND SETUP LOGIC ================
@@ -290,7 +291,7 @@ client.on('ready', () => {
             \n**Newly added:**\n- ${updateMsgsV2}`)
         .setFooter({ text: `${botName} is brought to you by Wawajabba`, iconURL: client.user.avatarURL() })
         .setTimestamp();
-    client.channels.cache.get(channels.botville).send({ embeds: [startEmbed] });
+    // client.channels.cache.get(channels.botville).send({ embeds: [startEmbed] });
     logger.toConsole(`--------------------------------------------------------\n${logText1}\n${logText2}\n${logText3}\n${logText4}\n--------------------------------------------------------`);
     logger.toChannel(`\`\`\`\n${logText1}\n${logText2}\n${logText3}\n${logText4}\`\`\``);
 
@@ -357,6 +358,9 @@ client.on('messageCreate', (message) => {
 
         // see if a message applies for the chat contest
         chatContest.newMessage(message);
+
+        // TODO: revert
+        badville.handleBadvilleMessage(message);
 
         // react to a message if it contains a certain (active) trigger
         messageReactions(message);
