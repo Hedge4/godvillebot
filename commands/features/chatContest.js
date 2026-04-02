@@ -338,9 +338,9 @@ async function winningChatContest(message, lateWin = false) {
     if (lateWin) {
         const elapsed = ~~((Date.now() - message.createdTimestamp) / 1000); // in seconds
         minutes = Math.round((elapsed / 60) * 10) / 10; // to minutes with one decimal
-        minutes = `${minutes} ${quantiseWords(minutes, 'minut')}`;
+        minutes = `${minutes} ${quantiseWords(minutes, 'minute')}`;
     } else {
-        minutes = `${killTimer} ${quantiseWords(killTimer, 'minut')}`;
+        minutes = `${killTimer} ${quantiseWords(killTimer, 'minute')}`;
     }
 
     if (message.author.id === lastWinner) {

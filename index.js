@@ -481,23 +481,6 @@ client.on('messageCreate', (message) => {
     }
 });
 
-client.on('messageUpdate', async (oldMessage, newMessage) => {
-    if (global.isShuttingDown) return;
-
-    if (newMessage.partial) {
-        try {
-            await newMessage.fetch();
-        } catch (error) {
-            logger.log(`ErrHandler: Failed to fetch messageUpdate partial: ${error.message}`);
-            return;
-        }
-    }
-
-    if (oldMessage.content === newMessage.content) return;
-
-    badville.handleBadvilleMessageEdit(newMessage);
-});
-
 client.on('messageDelete', deletedMessage => {
     if (global.isShuttingDown) return;
     if (deletedMessage.partial) return; // we don't do anything with this and it'll crash the next line
