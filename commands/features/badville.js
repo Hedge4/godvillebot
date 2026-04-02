@@ -14,7 +14,7 @@ function hasLetterE(text) {
     let cleanText = text.replace(/<a?:[^:>\s]+:\d+>/g, '');
     cleanText = cleanText.replace(/<(?:@(?:!|&)?|#)\d+>/g, '');
     // VERY aggressive E detection - it's a very bad letter and we must be as thorough as possible in preventing evildoers from finding ways to sneak it in. Includes Latin, Greek, Cyrillic, Phonetic, Math, Currency, and Leet speak variations
-    const eRegex = /[^eèéêëēĕėęěȅȇȩḙḛḝẹẻẽếềểễệɛεеёє€℮ℯℇ℈∃∄∈∉∊3ǝə∑Σæœₑᵉⅇ³ЭЗえ]/i;
+    const eRegex = /[eèéêëēĕėęěȅȇȩḙḛḝẹẻẽếềểễệɛεеёє€℮ℯℇ℈∃∄∈∉∊3ǝə∑Σæœₑᵉⅇ³ЭЗえ]/i;
     return eRegex.test(cleanText);
 }
 
