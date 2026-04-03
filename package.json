@@ -1,6 +1,6 @@
 {
   "name": "godbot",
-  "version": "6.4.6",
+  "version": "6.4.7",
   "license": "UNLICENSED",
   "description": "The 'GodBot' bot code, created for the unofficial Discord server of web and mobile game Godville.",
   "author": "Hedde van Heerde <heddevanheerde4@gmail.com>",
@@ -26,7 +26,7 @@
     "node": ">=16.9.0"
   },
   "dependencies": {
-    "canvas": "^2.11.2",
+    "canvas": "^3.2.3",
     "discord.js": "^14.14.0",
     "find": "~0.3.0",
     "firebase-admin": "^12.1.0",
@@ -41,5 +41,12 @@
     "@eslint/js": "^9.10.0",
     "eslint": "^9.10.0",
     "globals": "^15.9.0"
+  },
+  "overrides": {
+    "tar": "^7.0.0",
+    "canvas": "^3.2.3",
+    "@google-cloud/storage": "^7.0.0",
+    "teeny-request": "^9.0.0",
+    "http-proxy-agent": "^7.0.0"
   }
 }
