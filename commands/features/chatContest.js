@@ -319,6 +319,16 @@ async function onMessageDelete(deletedMessage) {
     return;
 }
 
+/**
+ * Resolve a chat-killing contest for the given message: award the winner, update contest state, and persist user rewards.
+ *
+ * Determines whether the provided message is the current contest winner, prevents consecutive wins by the same user,
+ * selects a reward tier based on the current chat streak, sends a reply (with fallback) announcing the reward,
+ * and updates the persisted user record with the awarded gold. Also resets relevant contest runtime state (e.g., lastMessage, lastKillTimestamp, lowestKillTimer, chatCombo) and logs the outcome.
+ *
+ * @param {import('discord.js').Message} message - The candidate winning message in the contest channel.
+ * @param {boolean} [lateWin=false] - If true, treat the win as having occurred later than the configured kill timer (affects the reported elapsed time).
+ */
 async function winningChatContest(message, lateWin = false) {
     // check if this message is still the last message in general chat
     if (!lastMessage || message.id !== lastMessage.id) {
@@ -416,7 +426,15 @@ async function winningChatContest(message, lateWin = false) {
     chatCombo = 0;
 }
 
-// \only use to generate a killTimer for a new message, to look up old timers use messagesHistory[message.id]
+/**
+ * Compute the dynamic countdown (in ms) a new message must survive before winning, based on recent chat activity.
+ *
+ * The returned value is the kill timer in milliseconds, derived from a weighted aggregation of recent per-minute interactions,
+ * interpolated across configured conversion anchors, adjusted toward recent lowest timers to preserve activity bursts,
+ * randomized by ±randomFactor, and clamped to the configured min and max contest times.
+ *
+ * @returns {number} Kill timer in milliseconds (bounded between minContestTime and maxContestTime, after random adjustment).
+ */
 function generateKillTimer() {
     // [storedInteractions] (unused): total interactions the last [interactionsStorage] minutes
     // [weightedTotalInteractions]: weighted so short bursts of activity are less important
