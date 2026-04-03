@@ -1,4 +1,4 @@
-1755060239889
+1775181857807
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -1331,6 +1331,7 @@ Fairy ale
 Fairy's tail
 Fake guild badge
 Fake sunburn kit
+Fake out menu
 Faked potato
 Fallen hero's last will
 Fallen star
@@ -1855,6 +1856,7 @@ Icebreaker
 Iceburger
 Iced tea cozy
 ID-10T form
+Idea lamp
 Idea polisher
 Ideabox rejection letter
 Ideabox survival guide
@@ -3977,6 +3979,7 @@ Wall nut
 Wallflower fertiliser
 Wallflower fertilizer
 War bonds and adhesives
+War grime
 Wardrobe malfunction
 Warp seed
 Warrior seasoning
@@ -4173,6 +4176,7 @@ Amiable Snowman
 Ammoknight
 Anaphylactic Shark
 Anarchitect
+Anarchonda
 Ancient Geek
 Angel of Death Metal
 Angel of Debt
@@ -4234,6 +4238,7 @@ Atheist Mantis
 Athlete's Foot Soldier
 Atom Miser
 Atomic Kitten
+Atomic Shrimp
 Attention Seeker
 Attention Spaniel
 Attilla the Nun
@@ -4284,6 +4289,7 @@ Baracotta
 Barbeerian
 Barber of Godville
 Bard Against Humanity
+Bard of Education
 Bard of Prey
 Bardvark
 Bargoyle
@@ -4793,6 +4799,7 @@ E-book Worm
 E-Bowler
 E-Mailman
 Eager Beaver
+Earbug
 Earlier Worm
 Early Bird
 Earthworm Djinn
@@ -4840,6 +4847,7 @@ Escargolem
 Eternal Dalmatian
 Eternal Optometrist
 Evangelical Atheist
+Evergreen Giant
 Evil Genius
 Evil Giraffe
 Evil Minion
@@ -6292,6 +6300,7 @@ Slow Wight
 Smackademic
 Smackerel
 Smashing Pumpkin
+Smellcaster
 Smoke Detective
 Smoking Gunslinger
 Smooth Criminal
@@ -7064,6 +7073,7 @@ Comfort zone
 Communication barrier
 Compass of misdirection
 Compound bow tie
+Compound eyeglasses
 Concrete boots of agility
 Conquistador's cuirass
 Conscript's coat
@@ -7083,6 +7093,7 @@ Cowboy's lariat
 Crime ring
 Croaking device
 Crosshairs
+Crowdsurfing board
 Crown molding
 Crypto-mining helmet
 Crystal armor
@@ -7213,6 +7224,7 @@ Extra large sword of compensation
 Extra set of hands
 Extra-large domino
 Eye of the liger
+Eye of the needle
 Eye tunes
 Eyepatch of the tiger
 Fabric of society
@@ -7727,6 +7739,7 @@ Portrait of the president
 Potato gun
 Power gloves
 Power ranger's armor
+Pre-emptive spike
 Pre-socked sandals
 Prenuptial agreement
 Priority mail
@@ -7969,6 +7982,7 @@ Suicide watch
 Suit of l'amour
 Sumo suit
 Super visor
+Superficial charm
 Superhero's leotard
 Superhero's unitard
 Surge protector
