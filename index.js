@@ -70,7 +70,6 @@ const omnibus = require('./commands/crosswordgod/omnibusManager.js');
 const crosswordTimers = require('./commands/crosswordgod/newsUpdates.js');
 const sendViaBot = require('./commands/features/sendViaBot');
 const hugCommand = require('./commands/fun/hugCommand.js');
-const badville = require('./commands/features/badville.js');
 
 // ==========================================================
 // ================ FIREBASE AND SETUP LOGIC ================
@@ -359,9 +358,6 @@ client.on('messageCreate', (message) => {
         // see if a message applies for the chat contest
         chatContest.newMessage(message);
 
-        // TODO: revert
-        badville.handleBadvilleMessage(message);
-
         // react to a message if it contains a certain (active) trigger
         messageReactions(message);
 
@@ -481,6 +477,7 @@ client.on('messageCreate', (message) => {
     }
 });
 
+/*
 client.on('messageUpdate', async (oldMessage, newMessage) => {
     if (global.isShuttingDown) return;
 
@@ -493,10 +490,12 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
         }
     }
 
+    // ignore messages that don't modify content (e.g. embed/attachment updates)
     if (oldMessage.content === newMessage.content) return;
 
-    badville.handleBadvilleMessageEdit(newMessage);
+    // for future features
 });
+*/
 
 client.on('messageDelete', deletedMessage => {
     if (global.isShuttingDown) return;
