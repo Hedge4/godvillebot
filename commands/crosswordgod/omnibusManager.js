@@ -235,27 +235,41 @@ async function downloadOmnibus() {
 }
 
 
+/**
+ * Parses the HTML of the Omnibus page to extract all entries for each category.
+ * @param {string} omnibusHtml The HTML of the Omnibus page.
+ * @returns {Array<string> | null} An array of all entries in the Omnibus list, or null if parsing failed.
+ */
 function parseOmnibusEntries(omnibusHtml) {
-    const artifactRegex = /id="GV-Artifacts".*?<ul>(.*?)<\/ul>/s;
-    const monsterRegex = /id="GV-Monsters".*?<ul>(.*?)<\/ul>/s;
-    const equipmentRegex = /id="GV-Equipment".*?<ul>(.*?)<\/ul>/s;
-    const skillRegex = /id="GV-Skills".*?<ul>(.*?)<\/ul>/s;
-    const geographyRegex = /id="GV-Geography".*?<ul>(.*?)<\/ul>/s;
-    let artifactEntries = artifactRegex.exec(omnibusHtml)[1];
-    let monsterEntries = monsterRegex.exec(omnibusHtml)[1];
-    let equipmentEntries = equipmentRegex.exec(omnibusHtml)[1];
-    let skillEntries = skillRegex.exec(omnibusHtml)[1];
-    let geographyEntries = geographyRegex.exec(omnibusHtml)[1];
+    const categories = [
+        { name: 'Artifacts', regex: /id="GV-Artifacts".*?<ul>(.*?)<\/ul>/s },
+        { name: 'Monsters', regex: /id="GV-Monsters".*?<ul>(.*?)<\/ul>/s },
+        { name: 'Equipment', regex: /id="GV-Equipment".*?<ul>(.*?)<\/ul>/s },
+        { name: 'Skills', regex: /id="GV-Skills".*?<ul>(.*?)<\/ul>/s },
+        { name: 'Geography', regex: /id="GV-Geography".*?<ul>(.*?)<\/ul>/s },
+    ];
 
-    if (!artifactEntries || !monsterEntries || !equipmentEntries || !skillEntries || !geographyEntries) return null;
-    artifactEntries = artifactEntries.split(/\r?\n/);
-    monsterEntries = monsterEntries.split(/\r?\n/);
-    equipmentEntries = equipmentEntries.split(/\r?\n/);
-    skillEntries = skillEntries.split(/\r?\n/);
-    geographyEntries = geographyEntries.split(/\r?\n/);
-    const allListEntries = artifactEntries.concat(monsterEntries, equipmentEntries, skillEntries, geographyEntries);
-    const allEntries = allListEntries.map(function(e) {
-        return e.slice(4, -5).trim();
+    // Extract the entries for each category.
+    const categoryEntries = categories.map(function(category) {
+        const match = category.regex.exec(omnibusHtml);
+        return { name: category.name, entries: match && match[1] };
+    });
+
+    // Check if any category failed to parse, log the failed categories and return null if any failed.
+    const failedCategories = categoryEntries
+        .filter(function(category) { return !category.entries; })
+        .map(function(category) { return category.name; });
+    if (failedCategories.length) {
+        const logMessage = `Omnibus: Failed to parse categor${failedCategories.length === 1 ? 'y' : 'ies'}: ${failedCategories.join(', ')}.`;
+        logger.logFile({ attachment: Buffer.from(omnibusHtml), name: 'omnibus.html' }, logMessage);
+        return null;
+    }
+
+    // Split each category into individual lines and remove its list markup.
+    const allEntries = categoryEntries.flatMap(function(category) {
+        return category.entries.split(/\r?\n/).map(function(entry) {
+            return entry.slice(4, -5).trim();
+        });
     });
 
     // remove duplicates before returning

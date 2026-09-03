@@ -8,27 +8,43 @@ let started = false;
 class FakeQueue {
     #timeout;
     #elements = [];
+    #pending = Promise.resolve();
+
+    #messageLength(element) {
+        if (typeof element === 'string') return element.length;
+        return typeof element?.content === 'string' ? element.content.length : 0;
+    }
 
     #totalLength() {
         let sum = 0;
         this.#elements.forEach(element => {
-            sum += element.length;
+            sum += this.#messageLength(element);
         });
         return sum;
     }
 
-    async enqueue(logMessage) {
+    enqueue(logMessage) {
+        const operation = this.#pending.then(async function() {
+            await this.#enqueue(logMessage);
+        }.bind(this));
+        this.#pending = operation.catch(function(error) {
+            console.error('ERROR: LOGGER QUEUE FAILED: ' + error);
+        });
+        return operation;
+    }
+
+    async #enqueue(logMessage) {
         let queueEmptied = Promise.resolve();
 
         // empty queue first if it would become too large
-        if (this.#totalLength() + logMessage.length > maxQueueSize) {
-            queueEmptied = this.#empty();
+        if (this.#totalLength() + this.#messageLength(logMessage) > maxQueueSize) {
+            queueEmptied = this.#emptyNow();
         }
 
         // if logMessage is not a string, don't cocatenate content but immediately send as is
         if (typeof logMessage !== 'string') {
             // empty queue first if it already has elements
-            if (this.#elements.length > 0) queueEmptied = this.#empty();
+            if (this.#elements.length > 0) queueEmptied = this.#emptyNow();
             // await emptying (if emptying started and queueEmptied is now pending)
             await queueEmptied;
             queueEmptied = sendChannel(logMessage); // store Promise if we need to await again
@@ -38,7 +54,7 @@ class FakeQueue {
         // don't queue if the element is too large, send immediately and return
         if (logMessage.length > maxQueueSize) {
             // empty queue first if it already has elements
-            if (this.#elements.length > 0) queueEmptied = this.#empty();
+            if (this.#elements.length > 0) queueEmptied = this.#emptyNow();
             // await emptying (if emptying started and queueEmptied is now pending)
             await queueEmptied;
             queueEmptied = sendChannel(logMessage); // store Promise if we need to await again
@@ -52,22 +68,33 @@ class FakeQueue {
         if (this.#elements.length === 1) {
             // set timer if not already active to clear queue every x milliseconds
             this.#timeout = setTimeout(function() {
-                this.#empty();
+                this.empty();
             }.bind(this), queueWaitTime);
         }
+    }
+
+    empty() {
+        const operation = this.#pending.then(function() {
+            return this.#emptyNow();
+        }.bind(this));
+        this.#pending = operation.catch(function(error) {
+            console.error('ERROR: LOGGER QUEUE FAILED: ' + error);
+        });
+        return operation;
     }
 
     /**
      * Empties the queue and sends the messages to the channel.
      * returns {Promise} - A promise that resolves when the queue is empty.
      */
-    async #empty() {
+    async #emptyNow() {
         // copy entire array and empty it
         const combinedMessage = (this.#elements.splice(0, this.#elements.length)).join('\n');
         // clear timer in case it wasn't cleared yet
         if (this.#timeout && !this.#timeout._destroyed) {
             clearTimeout(this.#timeout);
         }
+        this.#timeout = undefined;
 
         // in case queue was empty
         if (!combinedMessage) return;
@@ -144,6 +171,27 @@ function logChannel(logMessage) {
     }
 }
 
+async function logFile(file, message) {
+    await channelQueue.empty();
+
+    try {
+        if (!file || !Buffer.isBuffer(file.attachment) || !file.name) {
+            throw new Error('The file must have a Buffer attachment and a name.');
+        }
+        if (file.attachment.length > 1024 * 1024) {
+            throw new Error('The file exceeds the 1MB limit.');
+        }
+    } catch (error) {
+        if (message) logBoth(message);
+        logBoth(error);
+        return;
+    }
+
+    if (message) logConsole(message);
+    logConsole(`Logger: Sent file ${file.name} (${file.attachment.length} bytes).`);
+    await sendChannel({ content: message, files: [file] });
+}
+
 async function sendChannel(logMessage) {
     if (started) {
         // we can await sendChannel() before sending another logMessage
@@ -170,11 +218,10 @@ function getChannel() {
     return logsChannel;
 }
 
-// add recent memory that can be requested by bot owner (keep track of console only / channel only)
-
 exports.start = startup;
 exports.log = logBoth;
 exports.error = logError;
 exports.toChannel = logChannel;
+exports.logFile = logFile;
 exports.toConsole = logConsole;
 exports.getChannel = getChannel;
