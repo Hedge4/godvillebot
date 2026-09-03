@@ -20,6 +20,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "major": "npm version major",
+    "minor": "npm version minor",
     "patch": "npm version patch --no-git-tag-version"
   },
   "engines": {
