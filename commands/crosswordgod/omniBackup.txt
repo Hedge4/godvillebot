@@ -1,4 +1,4 @@
-1775181857807
+1788398452469
 0% discount coupon
 1-calorie meal
 1-for-the-price-of-2 voucher
@@ -101,6 +101,7 @@ Apocalypse insurance
 Apocalypstick
 Apothecary in a bottle
 Apple cipher
+Aptly named item
 Aqua vitae
 Aqueduct tape
 Arcade token
@@ -1645,6 +1646,7 @@ Grounded broomstick
 Grounds for complaint
 Grown-up safety lock
 Grudge holster
+Grudge matchbook
 Guacamolecule
 Guarantee of dissatisfaction
 Guess list
@@ -4124,6 +4126,7 @@ Abandoned Tamagotchi
 Abominable Sandman
 Abracadaver
 Abridged Troll
+Absolute Boar
 Academia Nut
 Access Denier
 Accidentist
@@ -4194,6 +4197,7 @@ Anti-Social Worker
 Antibody Builder
 Antihero
 Ape of Wrath
+Apex Scavenger
 Apex Vegetarian
 Apocalypse Cow
 Apocalyptic Bunny
@@ -4252,6 +4256,7 @@ Auto Pirate
 Autobotanist
 Autocorrections Officer
 Autoexec Bat
+Automobeetle
 Autonomouse
 Autoparrot
 Autophobic Recluse
@@ -4485,6 +4490,7 @@ Cattlefish
 Cautionary Tailor
 Caveat Temptor
 Cawing Wumpus
+CD-Ram
 Ceiling Cat
 Celery Stalker
 Celestial Body-Builder
@@ -4526,12 +4532,14 @@ Chesthugger
 Chewbaccacabra
 Chicken Bouillonaire
 Chicken in a Guy Suit
+Chicken Tender
 Chief of Staph
 Chili Con Carnivore
 Chimpanzealot
 Chimpunzee
 Chip Monk
 Chinkilla
+Chlorokiller
 Chocolate Elemental
 Chocolate Moose
 Cholestroll
@@ -4568,6 +4576,7 @@ Colorblind Chameleon
 Colossal Microbe
 Combat Ant
 Combat Wombat
+Combo Mealworm
 Combustible Piñata
 Comedic Deliveryman
 Comic Con Artist
@@ -4697,6 +4706,7 @@ Depressed Robot
 Depresso Machine
 Desert Beagle
 Desert Eagle
+Designated Drunkard
 Desperado
 Desperadon't
 Desperate House Elf
@@ -4939,6 +4949,7 @@ Flattering Ram
 Flaw Enforcer
 Flawyer
 Flayer One
+Fleamason
 Fleasaur
 Floating Eyeball
 Floodgatekeeper
@@ -5194,6 +5205,7 @@ Hermetic Crab
 Hermitic Seal
 Heromnivore
 Hexplorer
+Hextremist
 Hibernaut
 Hickory Dickory Duck
 Hidden Dragon
@@ -5329,6 +5341,7 @@ Interior Desecrator
 Interloping Antelope
 Internet Explorer
 Interragator
+Interraptor
 Interrupting Cow
 Intraterrestrial
 Inverted Mouse
@@ -5408,6 +5421,7 @@ Knightmare
 Knightning Gale
 Knitpicker
 Koalafied Expert
+Koboldermort
 Kooky Monster
 Kung Fool
 Kung Pow Chicken
@@ -5474,6 +5488,7 @@ Loan Shark
 Lobo Cop
 Loch Ness Lobster
 Loch Ness Mobster
+Locomotivational Speaker
 Lode Runner
 Logistical Nightmare
 Lollipop Snatcher
@@ -5664,6 +5679,7 @@ Mouse Divided
 Mouse of Ill Repute
 Mouseferatu
 Moving Target
+Muay Tiger
 Mudslinger
 Muffin Man
 Multi-Porpoise
@@ -5763,6 +5779,8 @@ Oblique Angel
 Obscene Jester
 Obscentinel
 Obsolete Techie
+Obstacle Horse
+Obstructor of Justice
 Obtuse Angler
 OctoBear
 Octopella
@@ -5928,6 +5946,7 @@ Plywood Golem
 Pocket Monster
 Pocketwatchdog
 Podcat
+Pogo Stickler
 Pokergeist
 Polardroid
 Polaroid Bear
@@ -6107,11 +6126,12 @@ Robbing Hood
 Robbing Hoodlum
 Robo Sapien
 Robot Chicken
-Rock 'n Gnoll
 Rock Lobster
+Rock 'n Gnoll
 Rock'em Sock'em Robot
 Rocket Propelled Gremlin
 Rockin' Troll
+Rocking Cherub
 Rocktopus
 Rocky Raccoon
 Rocky Roadie
@@ -6119,6 +6139,7 @@ Roflraptor
 Roger Robot
 Role Reverser
 Rolling Boulder
+Roly-Polymath
 Rom-Communist
 Roman Aqua-duck
 Romanticore
@@ -6296,6 +6317,7 @@ Slightly Invisible Man
 Slim Reaper
 Slime Shady
 Slithy Tove
+Sloblin
 Slow Wight
 Smackademic
 Smackerel
@@ -6469,6 +6491,7 @@ Tackle-U Elmo
 Tactical Joker
 Tae Kwon Dodo
 Talking Donkey
+Talking Headmaster
 Talkshow Ghost
 Tankfish
 Tap Dancing Spider
@@ -6581,6 +6604,7 @@ Troll Booth Attendant
 Tropical Yeti
 Trouble Shooter
 Troubled Sole
+Trufflemaker
 Truth-or-Dare Devil
 Tsarfish
 Tubercolossus
@@ -6604,6 +6628,7 @@ Ultra Violent Ray
 Ultraviolent Lamb
 Unaccompanied Miner
 Unbearable Grizzly
+Unbearable Weightlifter
 Uncanny Valet
 Uncertainty Principal
 Unchangeling
@@ -7236,6 +7261,7 @@ Fake ID
 Fallen Angel's battle bracers
 Fan-mail
 Fancy monocle
+Fanged dentures
 Faraday cage
 Farcefield
 Feet of strength
@@ -7296,6 +7322,7 @@ Giant wasp stinger
 Gladiator's net
 Glamorous chest armor
 Glass necklace
+Glasses of hindsight
 Glossy black helmet with gas mask
 Gloves of ambidexterity
 Gloves of eternal damnation
@@ -7838,6 +7865,7 @@ Secondhand glove
 Security breeches
 Security gourd
 Security question
+Selective earring
 Self-cutting axe
 Self-portrait
 Self-propelled battering ram
@@ -7960,6 +7988,7 @@ Static field
 Steam-powered exoskeleton
 Steam-powered hammer
 Steel wool mittens
+Steeled nerves
 Steelettos
 Steelmaker's gauntlets
 Stiff upper lip
